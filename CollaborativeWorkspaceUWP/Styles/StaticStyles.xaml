@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customusercontrols="using:CollaborativeWorkspaceUWP.CustomControls.UserControls">
+
+    <Style TargetType="StackPanel" x:Name="TitleBar">
+        <Setter Property="Padding" Value="10, 0, 0, 0"/>
+        <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
+
+    <Style TargetType="Frame" x:Name="HomeViewFrame">
+        <Setter Property="Margin" Value="15" />
+    </Style>
+
+
+    <Style TargetType="TextBlock" x:Name="TaskViewTitle">
+        <Setter Property="Text" Value="Task view"/>
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Margin" Value="10, 0, 0, 0" />
+    </Style>
+
+
+</ResourceDictionary>

@@ -1,0 +1,25 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="TextBlock" x:Name="TableHeader">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Name="TableCell">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="10"/>
+    </Style>
+
+    <Style TargetType="Border" x:Name="Cell">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SystemAccentColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+</ResourceDictionary>
+
