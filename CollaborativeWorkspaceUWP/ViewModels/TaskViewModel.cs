@@ -42,11 +42,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void AddNewTask(UserTask task)
+        public void AddNewTask(string name, long status, long priority, string descripion)
         {
-            Tasks.Add(task);
+            UserTask task = new UserTask(0, name, descripion, status, priority, 0, 0, 0);
+            tasks.Add(task);
             taskDataHandler.AddTask(task);
-            NotifyPropertyChanged(nameof(Tasks));
         }
 
     }

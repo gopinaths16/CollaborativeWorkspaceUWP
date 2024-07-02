@@ -24,10 +24,6 @@
                 <template:TableDataTemplate />
 
                 <ResourceDictionary>
-                    <Style TargetType="Pivot" x:Name="TaskTab">
-                        <Setter Property="Margin" Value="0, 20, 0, 0"/>
-                        <Setter Property="FontSize" Value="10" />
-                    </Style>
 
                     <Style TargetType="PivotItem" x:Name="TaskTabItem">
                         <Setter Property="FontSize" Value="2" />
@@ -36,6 +32,54 @@
                     <Style TargetType="StackPanel" x:Name="PivotRightHeader">
                         <Setter Property="Margin" Value="0, 10, 20, 0" />
                     </Style>
+
+                    <Style TargetType="Grid" x:Name="ProjectTaskView">
+                        <Setter Property="Margin" Value="0, 20, 0, 0" />
+                    </Style>
+
+                    <Style TargetType="ContentDialog" x:Name="AddProjectDialogStyle">
+                        <Setter Property="CornerRadius" Value="5" />
+                    </Style>
+
+                    <Style TargetType="TextBox" x:Name="TextBoxCustom">
+                        <Setter Property="CornerRadius" Value="2" />
+                        <Setter Property="Margin" Value="0, 5, 0, 20" />
+                    </Style>
+
+                    <Style TargetType="ComboBox" x:Name="ComboBoxCustom">
+                        <Setter Property="CornerRadius" Value="2" />
+                        <Setter Property="Margin" Value="0, 5, 0, 0" />
+                    </Style>
+
+                    <Style TargetType="StackPanel" x:Name="AddProjectDialogContentStyle">
+                        <Setter Property="Margin" Value="0, 10, 0, 0" />
+                    </Style>
+
+                    <DataTemplate x:Key="ProjectListViewItemTemplate" 
+                                  x:DataType="models:Project">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}"
+                                       Grid.Column="0"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="WordEllipsis"
+                                       MaxLines="1"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Grid.Column="1">
+                            </StackPanel>
+
+                        </Grid>
+                    </DataTemplate>
+
+                    <DataTemplate x:Key="ComboboxItemTemplate"
+                                  x:DataType="models:PriorityData">
+                        <TextBlock Text="{Binding Priority}" />
+                    </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -45,30 +89,23 @@
     <Grid Name="TaskViewPanel">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <TextBlock Name="Title" 
-                   Style="{StaticResource TaskViewTitle}" 
-                   RelativePanel.AlignTopWithPanel="True" 
-                   RelativePanel.AlignLeftWithPanel="True"
-                   Grid.Row="0"
-                   Visibility="Visible"/>
 
         <Pivot x:Name="TaskTabView"
-               Style="{StaticResource TaskTab}"
+               Title="Task View"
                Visibility="Visible"
-               Grid.Row="1">
-            
-            
+               Grid.Row="0">
+
+
             <Pivot.RightHeader>
                 <StackPanel Style="{StaticResource PivotRightHeader}">
                 </StackPanel>
             </Pivot.RightHeader>
 
             <PivotItem Header="By Projects">
-                <Grid>
+                <Grid Name="ProjectTaskViewGrid"
+                      Style="{StaticResource ProjectTaskView}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -78,123 +115,28 @@
                         <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
 
-                    <ContentDialog x:Name="termsOfUseContentDialog"
-           PrimaryButtonText="Accept" IsPrimaryButtonEnabled="False"
-           CloseButtonText="Cancel"
-                                   IsEnabled="True">
-                        <ContentDialog.TitleTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="ms-appx:///Assets/SmallLogo.png" Width="40" Height="40" Margin="10,0"/>
-                                    <TextBlock Text="Terms of use"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ContentDialog.TitleTemplate>
-                        <StackPanel>
-                            <TextBlock TextWrapping="WrapWholeWords">
-        <Run>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor
-             congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus
-             malesuada libero, sit amet commodo magna eros quis urna.</Run><LineBreak/>
-        <Run>Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</Run><LineBreak/>
-        <Run>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-             ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.</Run><LineBreak/>
-        <Run>Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc.
-             Mauris eget neque at sem venenatis eleifend. Ut nonummy.</Run>
-                            </TextBlock>
-                        </StackPanel>
-                    </ContentDialog>
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="0"
-                                Orientation="Vertical"
-                                Margin="0, 20, 0, 0">
-                        <Grid BorderBrush="{StaticResource SystemAccentColor}"
-                              BorderThickness="2"
-                              Padding="20"
-                              CornerRadius="5">
-                            <Grid.RowDefinitions >
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <TextBox x:Name="ProjectName" 
-                                     PlaceholderText="Project Name"
-                                     Background="Transparent"
-                                     SelectionHighlightColor="Transparent"
-                                     BorderThickness="0, 0, 0, 1"
-                                     Grid.Row="0"
-                                     Grid.Column="0"
-                                     Grid.ColumnSpan="3"/>
-
-                            <StackPanel Margin="0, 20, 0, 0" 
-                                        Grid.Row="1"
+                    <SplitView Name="ProjectListSplitView"
+                               IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen}"
+                               DisplayMode="Inline">
+                        
+                        <SplitView.Pane>
+                            <StackPanel Grid.Row="0"
                                         Grid.Column="0"
-                                        Grid.ColumnSpan="3"
-                                        Orientation="Horizontal">
-                                <ComboBox Name="ProjectStatus"
-                                          PlaceholderText="Status"
-                                          CornerRadius="2">
-                                    <x:String>Planning</x:String>
-                                    <x:String>InProgress</x:String>
-                                    <x:String>Completed</x:String>
-                                </ComboBox>
-                                <ComboBox Name="ProjectPriority"
-                                          Margin="10, 0, 0, 0"
-                                          PlaceholderText="Priority"
-                                          CornerRadius="2">
-                                    <x:String>Low</x:String>
-                                    <x:String>Medium</x:String>
-                                    <x:String>High</x:String>
-                                </ComboBox>
+                                        Orientation="Vertical"
+                                        Margin="20, 20, 20, 0">
+
+                                <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
+                                                                           ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
+                                                                           ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                                                           AllowAdditionToListView="True"
+                                                                           OnItemAddClick="AddProjectButton_ButtonClick"
+                                                                           Margin="0, 20, 0, 0"
+                                                                           ListViewItemClicked="ProjectListView_ItemClick"/>
+
                             </StackPanel>
-
-                            <StackPanel Grid.Row="2"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="3"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        Margin="0, 20, 0, 0">
-                                <customusercontrol:CustomIconButtonControl Name="AddProjectButton" 
-                                                                           ButtonIcon="&#xED0E;"
-                                                                           ButtonContent="Add Project"
-                                                                           ButtonClick="AddProjectButton_ButtonClick"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <ListView Name="ProjectListView" 
-                                  ItemsSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
-                                  Margin="0, 20, 0, 0"
-                                  IsItemClickEnabled="True"
-                                  ItemClick="ProjectListView_ItemClick">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Project">
-                                    <Grid Padding="10"
-                                          BorderBrush="{StaticResource SystemAccentColor}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Name}"
-                                                   Grid.Column="0"
-                                                   TextWrapping="Wrap"
-                                                   TextTrimming="WordEllipsis"
-                                                   MaxLines="1"/>
-
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Right"
-                                                    Grid.Column="1">
-                                        </StackPanel>
-                                        
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
+                        </SplitView.Pane>
+                        
+                    </SplitView>
 
                     <StackPanel Name="TaskListView" 
                                 Grid.Row="0"
@@ -206,6 +148,7 @@
                               BorderThickness="2"
                               Padding="20"
                               CornerRadius="5">
+                            
                             <Grid.RowDefinitions >
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
@@ -323,7 +266,7 @@
 
                 </Grid>
             </PivotItem>
-            
+
             <PivotItem Header="Table View"
                        Style="{StaticResource TaskTabItem}">
                 <Grid x:Name="Table"
@@ -344,12 +287,43 @@
 
             <PivotItem Header="Heirarchy View"
                        Style="{StaticResource TaskTabItem}">
-                
+
             </PivotItem>
         </Pivot>
 
-        
+        <ContentDialog x:Name="AddProjectDialog"
+                       Style="{StaticResource AddProjectDialogStyle}">
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Add Project" 
+                                   Grid.Column="0"/>
+                    </Grid>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <Grid>
+                <StackPanel x:Name="AddProjectDialogContent"
+                            Style="{StaticResource AddProjectDialogContentStyle}">
 
+                    <TextBlock Text="Name" />
+                    <TextBox Name="AddProjectDialogProjectName"
+                             PlaceholderText="Project Name"
+                             Style="{StaticResource TextBoxCustom}"
+                             Text="{x:Bind addProjectViewModel.Project.Name, Mode=TwoWay}"/>
+
+                    <TextBlock Text="Priority" />
+                    <ComboBox Name="AddProjectDialogPriority"
+                             PlaceholderText="Priority"
+                             Style="{StaticResource ComboBoxCustom}"
+                             ItemsSource="{x:Bind addProjectViewModel.PriorityData}"
+                             ItemTemplate="{StaticResource ComboboxItemTemplate}"/>
+
+                </StackPanel>
+            </Grid>
+        </ContentDialog>
 
     </Grid>
 </Page>

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj": {}
+    "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj": {}
   },
   "projects": {
-    "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj": {
+    "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
+        "projectUniqueName": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
         "projectName": "CollaborativeWorkspaceUWP",
-        "projectPath": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
+        "projectPath": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
         "packagesPath": "C:\\Users\\gopinath-13558\\.nuget\\packages\\",
-        "outputPath": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\obj\\",
+        "outputPath": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [

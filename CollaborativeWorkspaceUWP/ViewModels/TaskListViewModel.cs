@@ -38,12 +38,5 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             Tasks = taskDataHandler.GetTasksForProject(projectId);
             NotifyPropertyChanged(nameof(Tasks));
         }
-
-        public void AddNewTask(UserTask task)
-        {
-            Tasks.Add(task);
-            taskDataHandler.AddTask(task);
-            NotifyPropertyChanged(nameof(Tasks));
-        }
     }
 }

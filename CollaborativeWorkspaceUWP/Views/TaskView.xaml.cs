@@ -28,6 +28,7 @@ namespace CollaborativeWorkspaceUWP.Views
         TaskViewModel taskViewModel;
         ProjectListViewModel projectListViewModel;
         TaskDetailsViewModel taskDetailsViewModel;
+        AddProjectViewModel addProjectViewModel;
 
         TaskListViewModel taskListViewModel;
 
@@ -40,6 +41,7 @@ namespace CollaborativeWorkspaceUWP.Views
             projectListViewModel = new ProjectListViewModel();
             taskListViewModel = new TaskListViewModel();
             taskDetailsViewModel = new TaskDetailsViewModel();
+            addProjectViewModel = new AddProjectViewModel();
 
             this.DataContext = taskViewModel;
             //TaskViewTable.DataContext = taskViewModel;
@@ -50,11 +52,10 @@ namespace CollaborativeWorkspaceUWP.Views
         {
 
         }
-
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            projectListViewModel.CurrProj = (Project)e.ClickedItem;
-            taskListViewModel.GetTasksForProject(projectListViewModel.CurrProj.Id);
+            Project currProject = (Project)e.ClickedItem;
+            taskListViewModel.GetTasksForProject(currProject.Id);
             SelectProjectMessage.Visibility = Visibility.Collapsed;
             TaskDetailsView.Visibility = Visibility.Collapsed;
             SelectTaskMessage.Visibility = Visibility.Visible;
@@ -78,23 +79,23 @@ namespace CollaborativeWorkspaceUWP.Views
             task.Name = taskName;
             task.Status = (int)taskStatus;
             task.Priority = (int)taskPriority;
-            task.ProjectId = projectListViewModel.CurrProj.Id;
 
-            taskListViewModel.AddNewTask(task);
+
         }
 
-        private void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
+        private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            string projectName = ProjectName.Text;
-            Status projectStatus = GetStatus(ProjectStatus.SelectedValue.ToString());
-            Priority projectPriority = GetPriority(ProjectPriority.SelectedValue.ToString());
-            
-            Project project = new Project();
-            project.Name = projectName;
-            project.Status = (int)projectStatus;
-            project.Priority = (int)projectPriority;
+            //string projectName = ProjectName.Text;
+            //Status projectStatus = GetStatus(ProjectStatus.SelectedValue.ToString());
+            //Priority projectPriority = GetPriority(ProjectPriority.SelectedValue.ToString());
 
-            projectListViewModel.AddProject(project);
+            //Project project = new Project();
+            //project.Name = projectName;
+            //project.Status = (int)projectStatus;
+            //project.Priority = (int)projectPriority;
+
+            //projectListViewModel.AddProject(project);
+            await AddProjectDialog.ShowAsync();
         }
 
         private Status GetStatus(string status)
