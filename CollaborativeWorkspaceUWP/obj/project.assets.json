@@ -10477,11 +10477,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
+      "projectUniqueName": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
       "projectName": "CollaborativeWorkspaceUWP",
-      "projectPath": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
+      "projectPath": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj",
       "packagesPath": "C:\\Users\\gopinath-13558\\.nuget\\packages\\",
-      "outputPath": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\obj\\",
+      "outputPath": "E:\\personal\\Gopinath\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [

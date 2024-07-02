@@ -50,10 +50,11 @@ namespace CollaborativeWorkspaceUWP.Views
         {
 
         }
+
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Project currProject = (Project)e.ClickedItem;
-            taskListViewModel.GetTasksForProject(currProject.Id);
+            projectListViewModel.CurrProj = (Project)e.ClickedItem;
+            taskListViewModel.GetTasksForProject(projectListViewModel.CurrProj.Id);
             SelectProjectMessage.Visibility = Visibility.Collapsed;
             TaskDetailsView.Visibility = Visibility.Collapsed;
             SelectTaskMessage.Visibility = Visibility.Visible;
@@ -77,8 +78,9 @@ namespace CollaborativeWorkspaceUWP.Views
             task.Name = taskName;
             task.Status = (int)taskStatus;
             task.Priority = (int)taskPriority;
+            task.ProjectId = projectListViewModel.CurrProj.Id;
 
-
+            taskListViewModel.AddNewTask(task);
         }
 
         private void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)

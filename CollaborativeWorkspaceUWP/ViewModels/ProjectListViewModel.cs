@@ -12,6 +12,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class ProjectListViewModel : BaseViewModel
     {
         ObservableCollection<Project> projects;
+        private Project currProj;
 
         ProjectDataHandler projectDataHandler;
 
@@ -20,6 +21,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             get { return projects; }
             set { projects = value; }
         }
+
+        public Project CurrProj
+        {
+            get { return currProj; }
+            set { currProj = value; }
+        }
+
         public ProjectListViewModel()
         {
             projectDataHandler = new ProjectDataHandler();
