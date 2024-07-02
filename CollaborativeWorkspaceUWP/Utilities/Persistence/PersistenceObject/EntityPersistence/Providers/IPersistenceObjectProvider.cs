@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
     public interface IPersistenceObjectProvider
     {
         ITaskPersistence GetTaskPersistenceObject();
+
+        IProjectPersistence GetProjectPersistenceObject();
     }
 }

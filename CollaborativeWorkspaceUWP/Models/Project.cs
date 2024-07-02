@@ -9,21 +9,25 @@ namespace CollaborativeWorkspaceUWP.Models
     public class Project
     {
 
-        private long _id;
+        private double _id;
         private string _name;
-        private string _status;
-        private string _priority;
-        private long _teamspaceId;
-        private long _ownerId;
+        private int _status;
+        private int _priority;
+        private double _teamspaceId;
+        private double _ownerId;
 
-        public long Id { get { return _id; } set { _id = value; } }
+        public double Id { get { return _id; } set { _id = value; } }
         public string Name { get { return _name; } set { _name = value; } }
-        public string Status { get { return _status; } set { _status = value; } }
-        public string Priority { get { return _priority; } set { _priority = value; } }
-        public long TeamsapceId {  get { return _teamspaceId; } set { _teamspaceId = value; } }
-        public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
+        public int Status { get { return _status; } set { _status = value; } }
+        public int Priority { get { return _priority; } set { _priority = value; } }
+        public double TeamsapceId {  get { return _teamspaceId; } set { _teamspaceId = value; } }
+        public double OwnerId { get { return _ownerId; } set { _ownerId = value; } }
 
-        public Project(long id, string name, string status, string priority, long teamspaceId, long ownerId)
+        public Project()
+        {
+
+        }
+        public Project(double id, string name, int status, int priority, double teamspaceId, double ownerId)
         {
             this._id = id;
             this._name = name;

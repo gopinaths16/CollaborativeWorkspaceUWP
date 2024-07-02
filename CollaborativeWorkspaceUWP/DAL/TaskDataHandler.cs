@@ -38,7 +38,6 @@ namespace CollaborativeWorkspaceUWP.DAL
                 persistenceObject.Dispose();
             }
         }
-
         public ObservableCollection<UserTask> GetAllTasks()
         {
             ITaskPersistence persistenceObject = null;
@@ -51,6 +50,30 @@ namespace CollaborativeWorkspaceUWP.DAL
                 tasks = persistenceObject.GetAllTasks();
             } 
             catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return tasks;
+        }
+        public ObservableCollection<UserTask> GetTasksForProject(double projectId)
+        {
+            ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetTasksForProjectContext(projectId);
+                Persistence.Instance.Get(persistenceObject);
+                tasks = persistenceObject.GetAllTasks();
+            }
+            catch(Exception ex)
             {
 
             }

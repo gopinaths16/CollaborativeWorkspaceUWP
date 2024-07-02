@@ -1,6 +1,4 @@
-﻿using CollaborativeWorkspaceUWP.Models.Comm;
-using CollaborativeWorkspaceUWP.Models;
-using CollaborativeWorkspaceUWP.Utilities.Comm;
+﻿using CollaborativeWorkspaceUWP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,20 +22,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public HomeViewModel()
         {
             IsTaskWindowOpen = false;
-            ViewModelEventManager.Instance.Subscribe<TaskWindowOpenEventArgs>(OnTaskWindowOpen);
-            ViewModelEventManager.Instance.Subscribe<AddTaskWindowOpenEvent>(OnAddNewTaskPopupOpen);
-        }
-
-        private void OnTaskWindowOpen(TaskWindowOpenEventArgs e)
-        {
-            IsTaskWindowOpen = e.IsWindowOpen;
-            NotifyPropertyChanged(nameof(IsTaskWindowOpen));
-        }
-
-        private void OnAddNewTaskPopupOpen(AddTaskWindowOpenEvent e)
-        {
-            IsTaskWindowOpen = e.IsWindowOpen;
-            NotifyPropertyChanged(nameof(IsTaskWindowOpen));
         }
     }
 }

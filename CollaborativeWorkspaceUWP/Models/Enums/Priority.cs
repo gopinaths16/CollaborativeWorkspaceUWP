@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CollaborativeWorkspaceUWP.Models
+namespace CollaborativeWorkspaceUWP.Models.Enums
 {
     public enum Priority
     {
-        Low,
-        Medium,
-        High
+        LOW,
+        MEDIUM,
+        HIGH
     }
 }

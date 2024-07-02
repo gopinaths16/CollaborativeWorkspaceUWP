@@ -60,10 +60,17 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence
             {
                 var dbSchema = await StorageFile.GetFileFromApplicationUriAsync(new Uri(PathToDBSchema));
                 string queries = await FileIO.ReadTextAsync(dbSchema);
-                foreach (string query in queries.Split('\n'))
+                foreach (string query in queries.Split("\r\n"))
                 {
-                    SQLiteCommand command = new SQLiteCommand(query);
-                    ExecuteQuery(command);
+                    try
+                    {
+                        SQLiteCommand command = new SQLiteCommand(query);
+                        ExecuteQuery(command);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
 
             }

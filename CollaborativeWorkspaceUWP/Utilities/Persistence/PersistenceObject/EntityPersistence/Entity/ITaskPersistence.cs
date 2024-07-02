@@ -12,6 +12,8 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
     {
         void SetAddContext(UserTask task);
         void SetGetAllTasksContext();
+
+        void SetGetTasksForProjectContext(double projectId);
         ObservableCollection<UserTask> GetAllTasks();
     }
 }

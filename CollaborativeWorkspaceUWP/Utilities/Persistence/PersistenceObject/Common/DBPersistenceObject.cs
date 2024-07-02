@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
 {
-    public class DBPersistenceObject : IPersistenceObject
+    public abstract class DBPersistenceObject : IPersistenceObject
     {
         private SQLiteCommand query;
         private SQLiteDataReader reader;

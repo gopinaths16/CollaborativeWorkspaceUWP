@@ -30,7 +30,7 @@
                     </Style>
 
                     <Style TargetType="PivotItem" x:Name="TaskTabItem">
-                        <Setter Property="FontSize" Value="10" />
+                        <Setter Property="FontSize" Value="2" />
                     </Style>
 
                     <Style TargetType="StackPanel" x:Name="PivotRightHeader">
@@ -42,95 +42,287 @@
 
     </Page.Resources>
 
-    <Grid 
-                Name="TaskViewPanel">
+    <Grid Name="TaskViewPanel">
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
         <TextBlock Name="Title" 
                    Style="{StaticResource TaskViewTitle}" 
                    RelativePanel.AlignTopWithPanel="True" 
                    RelativePanel.AlignLeftWithPanel="True"
                    Grid.Row="0"
-                   Visibility="Collapsed"/>
+                   Visibility="Visible"/>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <ListView ItemsSource="{Binding Tasks}"
-                      Grid.Row="0"
-                      Grid.Column="0"
-                      ScrollViewer.VerticalScrollMode="Enabled"
-                      IsItemClickEnabled="True"
-                      ItemClick="ListView_ItemClick"
-                      BorderBrush="{StaticResource SystemAccentColor}"
-                      CornerRadius="5">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:UserTask">
-                        <StackPanel Orientation="Vertical"
-                                    Margin="10">
-                            <TextBlock Text="{Binding Name}" FontSize="30" Padding="5" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Priority:" Padding="5" />
-                                <TextBlock Text="{Binding Priority}" Padding="5" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Status:" Padding="5" />
-                                <TextBlock Text="{Binding Status}" Padding="5" />
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <StackPanel Grid.Row="0"
-                        Grid.Column="1"
-                        Margin="20, 0, 0, 0"
-                        BorderBrush="{StaticResource SystemAccentColor}"
-                        CornerRadius="5">
-                <TextBlock Text="{Binding CurrentTask.Name}" Padding="10" FontSize="50"/>
-                <TextBlock Text="{Binding CurrentTask.Description}" Padding="10" FontSize="20"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0"
-                        Grid.Column="2"
-                        Margin="20"
-                        Orientation="Horizontal"
-                        BorderBrush="{StaticResource SystemAccentColor}"
-                        CornerRadius="5">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Name:" Padding="5" />
-                    <TextBlock Text="Status:" Padding="5" />
-                    <TextBlock Text="Priority:" Padding="5" />
-                    <TextBlock Text="Description:" Padding="5" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Width="200">
-                    <TextBox Name="TaskName" Padding="5" />
-                    <TextBox Name="TaskStatus" Padding="5" />
-                    <TextBox Name="TaskDescription" Padding="5" />
-                    <TextBox Name="TaskPriority" Padding="5" />
-                    <Button Name="AddTaskButton" Click="AddTaskButton_Click" Content="Add new Task" />
-                </StackPanel>
-            </StackPanel>
-
-        </Grid>
         <Pivot x:Name="TaskTabView"
                Style="{StaticResource TaskTab}"
-               Visibility="Collapsed">
+               Visibility="Visible"
+               Grid.Row="1">
+            
             
             <Pivot.RightHeader>
                 <StackPanel Style="{StaticResource PivotRightHeader}">
-                    <customusercontrol:CustomIconButtonControl ButtonIcon="&#xED0E;"
-                                                               ButtonContent="New Task"
-                                                               ButtonClick="CustomIconButtonControl_ButtonClick"/>
                 </StackPanel>
             </Pivot.RightHeader>
+
+            <PivotItem Header="By Projects">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ContentDialog x:Name="termsOfUseContentDialog"
+           PrimaryButtonText="Accept" IsPrimaryButtonEnabled="False"
+           CloseButtonText="Cancel"
+                                   IsEnabled="True">
+                        <ContentDialog.TitleTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="ms-appx:///Assets/SmallLogo.png" Width="40" Height="40" Margin="10,0"/>
+                                    <TextBlock Text="Terms of use"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ContentDialog.TitleTemplate>
+                        <StackPanel>
+                            <TextBlock TextWrapping="WrapWholeWords">
+        <Run>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor
+             congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus
+             malesuada libero, sit amet commodo magna eros quis urna.</Run><LineBreak/>
+        <Run>Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</Run><LineBreak/>
+        <Run>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+             ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.</Run><LineBreak/>
+        <Run>Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc.
+             Mauris eget neque at sem venenatis eleifend. Ut nonummy.</Run>
+                            </TextBlock>
+                        </StackPanel>
+                    </ContentDialog>
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Orientation="Vertical"
+                                Margin="0, 20, 0, 0">
+                        <Grid BorderBrush="{StaticResource SystemAccentColor}"
+                              BorderThickness="2"
+                              Padding="20"
+                              CornerRadius="5">
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox x:Name="ProjectName" 
+                                     PlaceholderText="Project Name"
+                                     Background="Transparent"
+                                     SelectionHighlightColor="Transparent"
+                                     BorderThickness="0, 0, 0, 1"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"/>
+
+                            <StackPanel Margin="0, 20, 0, 0" 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Orientation="Horizontal">
+                                <ComboBox Name="ProjectStatus"
+                                          PlaceholderText="Status"
+                                          CornerRadius="2">
+                                    <x:String>Planning</x:String>
+                                    <x:String>InProgress</x:String>
+                                    <x:String>Completed</x:String>
+                                </ComboBox>
+                                <ComboBox Name="ProjectPriority"
+                                          Margin="10, 0, 0, 0"
+                                          PlaceholderText="Priority"
+                                          CornerRadius="2">
+                                    <x:String>Low</x:String>
+                                    <x:String>Medium</x:String>
+                                    <x:String>High</x:String>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="0, 20, 0, 0">
+                                <customusercontrol:CustomIconButtonControl Name="AddProjectButton" 
+                                                                           ButtonIcon="&#xED0E;"
+                                                                           ButtonContent="Add Project"
+                                                                           ButtonClick="AddProjectButton_ButtonClick"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <ListView Name="ProjectListView" 
+                                  ItemsSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
+                                  Margin="0, 20, 0, 0"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="ProjectListView_ItemClick">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Project">
+                                    <Grid Padding="10"
+                                          BorderBrush="{StaticResource SystemAccentColor}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Grid.Column="0"
+                                                   TextWrapping="Wrap"
+                                                   TextTrimming="WordEllipsis"
+                                                   MaxLines="1"/>
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    Grid.Column="1">
+                                        </StackPanel>
+                                        
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <StackPanel Name="TaskListView" 
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Orientation="Vertical"
+                                Margin="20, 20, 0, 0"
+                                Visibility="Collapsed">
+                        <Grid BorderBrush="{StaticResource SystemAccentColor}"
+                              BorderThickness="2"
+                              Padding="20"
+                              CornerRadius="5">
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="TaskName"
+                                     PlaceholderText="Task Name"
+                                     Background="Transparent"
+                                     SelectionHighlightColor="Transparent"
+                                     BorderThickness="0, 0, 0, 1"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"/>
+
+                            <StackPanel Margin="0, 20, 0, 0" 
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Orientation="Horizontal">
+                                <ComboBox Name="TaskStatus"
+                                          PlaceholderText="Status"
+                                          CornerRadius="2">
+                                    <x:String>Planning</x:String>
+                                    <x:String>InProgress</x:String>
+                                    <x:String>Completed</x:String>
+                                </ComboBox>
+                                <ComboBox Name="TaskPriority"
+                                          Margin="10, 0, 0, 0"
+                                          PlaceholderText="Priority"
+                                          CornerRadius="2">
+                                    <x:String>Low</x:String>
+                                    <x:String>Medium</x:String>
+                                    <x:String>High</x:String>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="0, 20, 0, 0">
+                                <customusercontrol:CustomIconButtonControl Name="AddTaskButton" 
+                                                                           ButtonIcon="&#xED0E;"
+                                                                           ButtonContent="Add Task"
+                                                                           ButtonClick="AddTaskButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <ListView Name="TaskListViewByProject" 
+                                  ItemsSource="{x:Bind taskListViewModel.Tasks, Mode=TwoWay}"
+                                  Margin="0, 20, 0, 0"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="TaskListView_ItemClick">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:UserTask">
+                                    <Grid Padding="10"
+                                          BorderBrush="{StaticResource SystemAccentColor}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Grid.Column="0"
+                                                   TextWrapping="Wrap"
+                                                   TextTrimming="WordEllipsis"
+                                                   MaxLines="1"/>
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    Grid.Column="1">
+                                        </StackPanel>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <StackPanel Name="SelectProjectMessage"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Select a Project to proceed further"
+                                   Foreground="Gray"
+                                   FontSize="30"/>
+                    </StackPanel>
+
+                    <StackPanel Name="SelectTaskMessage"
+                                Grid.Column="2"
+                                Grid.ColumnSpan="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed">
+                        <TextBlock Text="Select a Task to proceed further"
+                                   Foreground="Gray"
+                                   FontSize="30"/>
+                    </StackPanel>
+
+                    <StackPanel Name="TaskDetailsView"
+                                Orientation="Vertical"
+                                Padding="20"
+                                Visibility="Collapsed"
+                                Grid.Column="2">
+                        <TextBlock Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay}"
+                                   FontSize="20"/>
+                    </StackPanel>
+
+                </Grid>
+            </PivotItem>
             
             <PivotItem Header="Table View"
                        Style="{StaticResource TaskTabItem}">
@@ -149,9 +341,10 @@
 
                 </Grid>
             </PivotItem>
+
             <PivotItem Header="Heirarchy View"
                        Style="{StaticResource TaskTabItem}">
-
+                
             </PivotItem>
         </Pivot>
 

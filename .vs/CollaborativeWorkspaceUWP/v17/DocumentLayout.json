@@ -3,40 +3,32 @@
   "WorkspaceRootPath": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|d:\\personal\\repos\\collaborativeworkspaceuwp\\collaborativeworkspaceuwp\\dal\\taskdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\dal\\taskdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\entitypersistence\\providers\\imp\\dbpersistenceobjectprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\entitypersistence\\providers\\imp\\dbpersistenceobjectprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\common\\dbpersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\common\\dbpersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\common\\ipersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\common\\ipersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\entitypersistence\\tasks\\imp\\dbpersistence\\taskdbpersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\utilities\\persistence\\persistenceobject\\entitypersistence\\tasks\\imp\\dbpersistence\\taskdbpersistenceobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\views\\taskview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|d:\\personal\\repos\\collaborativeworkspaceuwp\\collaborativeworkspaceuwp\\views\\taskview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\views\\taskview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\models\\organization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\views\\taskview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\views\\taskview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\models\\sprint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\models\\sprint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\viewmodels\\tasklistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\viewmodels\\tasklistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\viewmodels\\projectlistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\viewmodels\\projectlistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\viewmodels\\taskviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\viewmodels\\taskviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\viewmodels\\taskdetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\viewmodels\\taskdetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\collaborativeworkspaceuwp\\dal\\taskdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6EB90849-BAB1-49BA-8E71-512EE7BEB3F8}|CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP.csproj|solutionrelative:collaborativeworkspaceuwp\\dal\\taskdatahandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,111 +46,87 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TaskDataHandler.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:54:01.049Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DBPersistenceObjectProvider.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Providers\\Imp\\DBPersistenceObjectProvider.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Providers\\Imp\\DBPersistenceObjectProvider.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Providers\\Imp\\DBPersistenceObjectProvider.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Providers\\Imp\\DBPersistenceObjectProvider.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:53:24.085Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IPersistenceObject.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\IPersistenceObject.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\IPersistenceObject.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\IPersistenceObject.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\IPersistenceObject.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:53:15.989Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "DBPersistenceObject.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\DBPersistenceObject.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\DBPersistenceObject.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\DBPersistenceObject.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\Common\\DBPersistenceObject.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAhAAAA",
+              "Title": "TaskListViewModel.cs",
+              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskListViewModel.cs",
+              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\ViewModels\\TaskListViewModel.cs",
+              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskListViewModel.cs",
+              "RelativeToolTip": "CollaborativeWorkspaceUWP\\ViewModels\\TaskListViewModel.cs",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAlwCcAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:52:59.894Z"
+              "WhenOpened": "2024-07-01T12:17:44.091Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "TaskDBPersistenceObject.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Tasks\\Imp\\DBPersistence\\TaskDBPersistenceObject.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Tasks\\Imp\\DBPersistence\\TaskDBPersistenceObject.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Tasks\\Imp\\DBPersistence\\TaskDBPersistenceObject.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Utilities\\Persistence\\PersistenceObject\\EntityPersistence\\Tasks\\Imp\\DBPersistence\\TaskDBPersistenceObject.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAqwA0AAAA+AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:52:52.264Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "TaskView.xaml",
               "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Views\\TaskView.xaml",
               "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Views\\TaskView.xaml",
               "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Views\\TaskView.xaml",
               "RelativeToolTip": "CollaborativeWorkspaceUWP\\Views\\TaskView.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-06-28T12:52:45.09Z"
+              "WhenOpened": "2024-07-01T12:10:13.196Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Organization.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Models\\Organization.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Models\\Organization.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Models\\Organization.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Models\\Organization.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAAAAAA",
+              "DocumentIndex": 5,
+              "Title": "TaskDetailsViewModel.cs",
+              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskDetailsViewModel.cs",
+              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\ViewModels\\TaskDetailsViewModel.cs",
+              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskDetailsViewModel.cs",
+              "RelativeToolTip": "CollaborativeWorkspaceUWP\\ViewModels\\TaskDetailsViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:52:39.275Z"
+              "WhenOpened": "2024-07-01T12:30:01.143Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Sprint.cs",
-              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Models\\Sprint.cs",
-              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Models\\Sprint.cs",
-              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Models\\Sprint.cs",
-              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Models\\Sprint.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:52:38.525Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "TaskViewModel.cs",
               "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskViewModel.cs",
               "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\ViewModels\\TaskViewModel.cs",
               "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\TaskViewModel.cs",
               "RelativeToolTip": "CollaborativeWorkspaceUWP\\ViewModels\\TaskViewModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAeAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T12:52:25.925Z"
+              "WhenOpened": "2024-07-01T12:08:47.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TaskView.xaml.cs",
+              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Views\\TaskView.xaml.cs",
+              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\Views\\TaskView.xaml.cs",
+              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\Views\\TaskView.xaml.cs",
+              "RelativeToolTip": "CollaborativeWorkspaceUWP\\Views\\TaskView.xaml.cs",
+              "ViewState": "AQIAADsAAAAAAAAAAAAwwI8AAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-01T12:08:08.397Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TaskDataHandler.cs",
+              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
+              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
+              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
+              "RelativeToolTip": "CollaborativeWorkspaceUWP\\DAL\\TaskDataHandler.cs",
+              "ViewState": "AQIAABkAAAAAAAAAAADgv0EAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-01T12:27:16.716Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProjectListViewModel.cs",
+              "DocumentMoniker": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\ProjectListViewModel.cs",
+              "RelativeDocumentMoniker": "CollaborativeWorkspaceUWP\\ViewModels\\ProjectListViewModel.cs",
+              "ToolTip": "D:\\Personal\\repos\\CollaborativeWorkspaceUWP\\CollaborativeWorkspaceUWP\\ViewModels\\ProjectListViewModel.cs",
+              "RelativeToolTip": "CollaborativeWorkspaceUWP\\ViewModels\\ProjectListViewModel.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABoAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-01T12:17:22.843Z"
             }
           ]
         }

@@ -1,5 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Models.Enums;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Providers;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Providers.Imp;
 using System;
@@ -28,6 +29,11 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public ITaskPersistence GetTaskPersistenceObject()
         {
             return _provider.GetTaskPersistenceObject();
+        }
+
+        public IProjectPersistence GetProjectPersistenceObject()
+        {
+            return _provider.GetProjectPersistenceObject();
         }
 
     }

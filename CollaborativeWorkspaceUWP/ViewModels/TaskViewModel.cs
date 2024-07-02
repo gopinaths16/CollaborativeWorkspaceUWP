@@ -6,8 +6,6 @@ using System.Windows.Input;
 using CollaborativeWorkspaceUWP.Models;
 using Windows.UI.Popups;
 using CollaborativeWorkspaceUWP.Utilities;
-using CollaborativeWorkspaceUWP.Models.Comm;
-using CollaborativeWorkspaceUWP.Utilities.Comm;
 using CollaborativeWorkspaceUWP.DAL;
 using System.Collections.ObjectModel;
 
@@ -25,20 +23,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             taskDataHandler = new TaskDataHandler();
             tasks = taskDataHandler.GetAllTasks();
-            ButtonCommand = new RelayCommand<UserTask>(OnButtonClicked);
-        }
-
-        private async void OnButtonClicked(UserTask item)
-        {
-            if (item != null)
-            {
-                ViewModelEventManager.Instance.Publish(new TaskWindowOpenEventArgs() { CurrentTask = item, IsWindowOpen = true });
-            }
-        }
-
-        public void CreateNewTask()
-        {
-            ViewModelEventManager.Instance.Publish(new AddTaskWindowOpenEvent() { IsWindowOpen = true });
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -58,7 +42,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void AddNewTask(string name, string status, string priority, string descripion)
+        public void AddNewTask(string name, long status, long priority, string descripion)
         {
             UserTask task = new UserTask(0, name, descripion, status, priority, 0, 0, 0);
             tasks.Add(task);

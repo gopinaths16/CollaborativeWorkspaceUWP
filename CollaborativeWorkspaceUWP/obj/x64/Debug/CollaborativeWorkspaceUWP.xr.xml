@@ -6,11 +6,7 @@
     <RootPropertyPathName Name="IsAddTaskPopupOpen" />
     <RootPropertyPathName Name="IsTaskWindowOpen" />
     <RootPropertyPathName Name="Tasks" />
-    <RootPropertyPathName Name="CurrentTask" />
-    <RootPropertyPathName Name="Description" />
     <RootPropertyPathName Name="Name" />
-    <RootPropertyPathName Name="Status" />
-    <RootPropertyPathName Name="Priority" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -35,8 +31,10 @@
       <RootProperty Name="MaxLines" />
       <RootProperty Name="TextTrimming" />
       <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Visibility" />
-      <RootProperty Name="Padding" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="Inlines" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.FrameworkElement">
       <RootProperty Name="VerticalAlignment" />
@@ -69,50 +67,23 @@
       <RootProperty Name="Children" />
       <RootProperty Name="Orientation" />
       <RootProperty Name="Padding" />
-      <RootProperty Name="Name" />
       <RootProperty Name="Style" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Margin" />
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="CornerRadius" />
-      <RootProperty Name="Width" />
+      <RootProperty Name="Name" />
+      <RootProperty Name="Visibility" />
     </RootType>
-    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension" />
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension">
+      <RootProperty Name="Mode" />
+    </RootType>
     <RootType FullName="CollaborativeWorkspaceUWP.CustomControls.UserControls.CustomIconButtonControl">
+      <RootProperty Name="Name" />
       <RootProperty Name="ButtonIcon" />
       <RootProperty Name="ButtonContent" />
       <RootEvent Name="ButtonClick" />
     </RootType>
     <RootType FullName="CollaborativeWorkspaceUWP.CustomControls.UserControls.TableControl" />
-    <RootType FullName="Windows.UI.Xaml.Controls.Page">
-      <RootProperty Name="Background" />
-      <RootProperty Name="Content" />
-      <RootProperty Name="DataContext" />
-      <RootProperty Name="Resources" />
-      <RootProperty Name="Name" />
-      <RootEvent Name="Loaded" />
-    </RootType>
-    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.ThemeResourceExtension" />
-    <RootType FullName="Windows.UI.Xaml.Controls.Grid">
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="BorderThickness" />
-      <RootProperty Name="CornerRadius" />
-      <RootProperty Name="RowDefinitions" />
-      <RootProperty Name="ColumnDefinitions" />
-      <RootProperty Name="Children" />
-      <RootProperty Name="Name" />
-      <RootProperty Name="Style" />
-      <RootMethod Name="GetRow" />
-      <RootMethod Name="SetRow" />
-      <RootMethod Name="GetColumn" />
-      <RootMethod Name="SetColumn" />
-      <RootMethod Name="GetColumnSpan" />
-      <RootMethod Name="SetColumnSpan" />
-      <RootMethod Name="GetRowSpan" />
-      <RootMethod Name="SetRowSpan" />
-    </RootType>
-    <RootType FullName="CollaborativeWorkspaceUWP.MainPage" />
     <RootType FullName="Windows.UI.Xaml.Controls.Border">
       <RootProperty Name="Padding" />
       <RootProperty Name="BorderBrush" />
@@ -124,6 +95,26 @@
     <RootType FullName="Windows.UI.Xaml.Controls.Frame">
       <RootProperty Name="Name" />
       <RootProperty Name="Style" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Grid">
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="CornerRadius" />
+      <RootProperty Name="RowDefinitions" />
+      <RootProperty Name="ColumnDefinitions" />
+      <RootProperty Name="Children" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="Name" />
+      <RootProperty Name="Style" />
+      <RootProperty Name="Padding" />
+      <RootMethod Name="GetRow" />
+      <RootMethod Name="SetRow" />
+      <RootMethod Name="GetColumn" />
+      <RootMethod Name="SetColumn" />
+      <RootMethod Name="GetColumnSpan" />
+      <RootMethod Name="SetColumnSpan" />
+      <RootMethod Name="GetRowSpan" />
+      <RootMethod Name="SetRowSpan" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
       <RootProperty Name="Template" />
@@ -139,6 +130,15 @@
       <RootProperty Name="Mode" />
     </RootType>
     <RootType FullName="CollaborativeWorkspaceUWP.Templates.TableDataTemplate" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Page">
+      <RootProperty Name="Background" />
+      <RootProperty Name="Content" />
+      <RootProperty Name="DataContext" />
+      <RootProperty Name="Resources" />
+      <RootProperty Name="Name" />
+      <RootEvent Name="Loaded" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.ThemeResourceExtension" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.AddTaskView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.CurrentTaskView" />
     <RootType FullName="CollaborativeWorkspaceUWP.ViewModels.HomeViewModel" />
@@ -161,7 +161,9 @@
     <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
       <RootProperty Name="Name" />
       <RootProperty Name="PlaceholderText" />
-      <RootProperty Name="Padding" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="SelectionHighlightColor" />
+      <RootProperty Name="BorderThickness" />
     </RootType>
     <RootType FullName="CollaborativeWorkspaceUWP.Views.LoginView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.OrganizationView" />
@@ -176,8 +178,8 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.PivotItem">
       <RootProperty Name="Header" />
-      <RootProperty Name="Style" />
       <RootProperty Name="Content" />
+      <RootProperty Name="Style" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.RelativePanel">
       <RootMethod Name="GetAlignTopWithPanel" />
@@ -189,18 +191,38 @@
       <RootProperty Name="ItemsSource" />
       <RootProperty Name="ItemTemplate" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ContentDialog">
+      <RootProperty Name="PrimaryButtonText" />
+      <RootProperty Name="IsPrimaryButtonEnabled" />
+      <RootProperty Name="CloseButtonText" />
+      <RootProperty Name="IsEnabled" />
+      <RootProperty Name="TitleTemplate" />
+      <RootProperty Name="Content" />
+    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ListView">
+      <RootProperty Name="Name" />
       <RootProperty Name="ItemsSource" />
+      <RootProperty Name="Margin" />
       <RootProperty Name="IsItemClickEnabled" />
-      <RootProperty Name="BorderBrush" />
-      <RootProperty Name="CornerRadius" />
       <RootProperty Name="ItemTemplate" />
       <RootEvent Name="ItemClick" />
     </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
-      <RootMethod Name="GetVerticalScrollMode" />
-      <RootMethod Name="SetVerticalScrollMode" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ComboBox">
+      <RootProperty Name="Name" />
+      <RootProperty Name="PlaceholderText" />
+      <RootProperty Name="CornerRadius" />
+      <RootProperty Name="Items" />
+      <RootProperty Name="Margin" />
     </RootType>
+    <RootType FullName="System.String" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Image">
+      <RootProperty Name="Source" />
+      <RootProperty Name="Width" />
+      <RootProperty Name="Height" />
+      <RootProperty Name="Margin" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Documents.Run" />
+    <RootType FullName="Windows.UI.Xaml.Documents.LineBreak" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.TaskView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.TeamspaceView" />
   </Roots.RootTypes>

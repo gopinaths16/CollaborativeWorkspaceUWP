@@ -125,24 +125,18 @@
     <Compile Include="CustomControls\UserControls\TableControl.xaml.cs">
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DAL\ProjectDataHandler.cs" />
     <Compile Include="DAL\TaskDataHandler.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Comm\AddTaskPopupOpenEventArgs.cs" />
-    <Compile Include="Models\Comm\TaskWindowOpenEventArgs.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
+    <Compile Include="Models\Enums\Priority.cs" />
+    <Compile Include="Models\Enums\Status.cs" />
     <Compile Include="Models\Organization.cs" />
-    <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\TableDataTemplate.cs" />
-    <Compile Include="Utilities\Comm\IEventManager.cs" />
-    <Compile Include="Utilities\Comm\ViewModelEventHandler.cs" />
-    <Compile Include="Utilities\Comm\RelayCommand.cs" />
     <Compile Include="Utilities\Persistence\Handlers\IPersistenceHandler.cs" />
     <Compile Include="Utilities\Persistence\Managers\IPersistenceManager.cs" />
     <Compile Include="Utilities\Persistence\Managers\DBPersistenceManager.cs" />
@@ -150,18 +144,23 @@
     <Compile Include="Utilities\Persistence\Persistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Common\DBPersistenceObject.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Common\IPersistenceObject.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Entity\Imp\DBPersistence\ProjectDBPersistenceObject.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Entity\IProjectPersistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Providers\Imp\DBPersistenceObjectProvider.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Providers\IPersistenceObjectProvider.cs" />
-    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Tasks\ITaskPersistence.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Entity\ITaskPersistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\PersistanceObjectManager.cs" />
-    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Tasks\Imp\DBPersistence\TaskDBPersistenceObject.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\Entity\Imp\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\OrganizationListViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModel.cs" />
+    <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="ViewModels\SprintViewModel.cs" />
+    <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
+    <Compile Include="ViewModels\TaskListViewModel.cs" />
     <Compile Include="ViewModels\TaskViewModel.cs" />
     <Compile Include="ViewModels\TeamspaceViewModel.cs" />
     <Compile Include="Views\SubViews\AddTaskView.xaml.cs">
@@ -220,10 +219,6 @@
     <Page Include="CustomControls\UserControls\TableControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\TableStyleDictionary.xaml">
       <SubType>Designer</SubType>

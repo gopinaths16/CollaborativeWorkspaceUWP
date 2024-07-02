@@ -34,15 +34,25 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
+        public void SetGetTasksForProjectContext(double projectId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS WHERE PROJECTID=@ProjectId";
+            command.Parameters.AddWithValue("@ProjectId", projectId);
+            Query = command;
+        }
         public ObservableCollection<UserTask> GetAllTasks()
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
             try
             {
-                while (Reader.Read())
+                if(Reader != null)
                 {
-                    UserTask task = new UserTask(0, Reader.GetString(1), Reader.GetString(2), Reader.GetString(3), Reader.GetString(4), Reader.GetInt64(5), Reader.GetInt64(6), Reader.GetInt64(7));
-                    tasks.Add(task);
+                    while (Reader.Read())
+                    {
+                        UserTask task = new UserTask(Reader.GetDouble(0), Reader.GetString(1), null, Reader.GetInt64(3), Reader.GetInt64(4), Reader.GetDouble(5), Reader.GetDouble(6), Reader.GetDouble(7));
+                        tasks.Add(task);
+                    }
                 }
             }
             catch (Exception ex)
@@ -55,5 +65,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             }
             return tasks;
         }
+
+        
     }
 }

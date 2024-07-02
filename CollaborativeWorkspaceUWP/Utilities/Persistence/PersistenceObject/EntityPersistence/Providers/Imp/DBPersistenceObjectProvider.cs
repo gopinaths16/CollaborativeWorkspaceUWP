@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity.Imp.DBPersistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,11 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         public ITaskPersistence GetTaskPersistenceObject()
         {
             return new TaskDBPersistenceObject();
+        }
+
+        public IProjectPersistence GetProjectPersistenceObject()
+        {
+            return new ProjectDBPersistenceObject();
         }
     }
 }

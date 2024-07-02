@@ -86,12 +86,15 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Name="TopBar" 
-                    Grid.Row="0"
+        <Grid x:Name="TitleBar" 
+              Background="Transparent">
+        </Grid>
+        
+        <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource TitleBar}">
             <Button Name="HomeViewBtn" 
-                    Style="{StaticResource HomwButton}" 
+                    Style="{StaticResource HomwButton}"
                     Click="HomeButton_Click" />
             <Button Name="ProjectViewBtn" 
                     Style="{StaticResource ProjectViewButton}" 
@@ -102,6 +105,12 @@
             <Button Name="SprintViewBtn" 
                     Style="{StaticResource SprintViewButton}" 
                     Click="SprintViewButton_Click" />
+
+            <TextBlock x:Name="AppTitleTextBlock"
+                       Text="CWP" 
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"/>
         </StackPanel>
 
         <Frame Name="HomeViewFrame" 
