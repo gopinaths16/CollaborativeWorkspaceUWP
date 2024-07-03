@@ -34,13 +34,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { isProjectListPaneOpen = value; }
         }
 
-        public void AddProject(Project project)
+        public void AddProjectToList(Project project)
         {
-            projectDataHandler.AddProject(project);
-            projects = projectDataHandler.GetAllProjects();
-            NotifyPropertyChanged(nameof(Projects));
+            Projects.Add(project);
+            NotifyPropertyChanged(nameof(Project));
         }
 
-        
     }
 }

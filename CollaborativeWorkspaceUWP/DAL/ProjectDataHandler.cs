@@ -21,14 +21,16 @@ namespace CollaborativeWorkspaceUWP.DAL
             persistanceObjectManager = new PersistanceObjectManager(PersistenceMode.SQLITE);
         }
 
-        public void AddProject(Project project)
+        public Project AddProject(Project project)
         {
             IProjectPersistence persistenceObject = null;
+            Project result = null;
             try
             {
                 persistenceObject = persistanceObjectManager.GetProjectPersistenceObject();
                 persistenceObject.SetAddContext(project);
-                Persistence.Instance.Add(persistenceObject);
+                Persistence.Instance.Get(persistenceObject);
+                result = persistenceObject.GetProject();
             }
             catch(Exception ex)
             {
@@ -41,6 +43,7 @@ namespace CollaborativeWorkspaceUWP.DAL
                     persistenceObject.Dispose();
                 }
             }
+            return result;
         }
 
         public ObservableCollection<Project> GetAllProjects()
@@ -60,7 +63,10 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             finally
             {
-
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
             }
             return projects;
         }

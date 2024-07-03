@@ -25,7 +25,6 @@ namespace CollaborativeWorkspaceUWP.Views
     /// </summary>
     public sealed partial class TaskView : Page
     {
-        TaskViewModel taskViewModel;
         ProjectListViewModel projectListViewModel;
         TaskDetailsViewModel taskDetailsViewModel;
         AddProjectViewModel addProjectViewModel;
@@ -36,15 +35,12 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             this.InitializeComponent();
             
-            taskViewModel = new TaskViewModel();
             
             projectListViewModel = new ProjectListViewModel();
             taskListViewModel = new TaskListViewModel();
             taskDetailsViewModel = new TaskDetailsViewModel();
             addProjectViewModel = new AddProjectViewModel();
 
-            this.DataContext = taskViewModel;
-            //TaskViewTable.DataContext = taskViewModel;
             
         }
 
@@ -55,7 +51,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             Project currProject = (Project)e.ClickedItem;
-            taskListViewModel.GetTasksForProject(currProject.Id);
+            taskListViewModel.GetTasksForProject(currProject);
             SelectProjectMessage.Visibility = Visibility.Collapsed;
             TaskDetailsView.Visibility = Visibility.Collapsed;
             SelectTaskMessage.Visibility = Visibility.Visible;
@@ -71,79 +67,38 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            string taskName = TaskName.Text;
-            Status taskStatus = GetStatus(TaskStatus.SelectedValue.ToString());
-            Priority taskPriority = GetPriority(TaskPriority.SelectedValue.ToString());
+            //string taskName = TaskName.Text;
+            //StatusEnum taskStatus = GetStatus(TaskStatus.SelectedValue.ToString());
+            //PriorityEnum taskPriority = GetPriority(TaskPriority.SelectedValue.ToString());
 
-            UserTask task = new UserTask();
-            task.Name = taskName;
-            task.Status = (int)taskStatus;
-            task.Priority = (int)taskPriority;
+            //UserTask task = new UserTask();
+            //task.Name = taskName;
+            //task.Status = (int)taskStatus;
+            //task.Priority = (int)taskPriority;
 
 
         }
 
         private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            //string projectName = ProjectName.Text;
-            //Status projectStatus = GetStatus(ProjectStatus.SelectedValue.ToString());
-            //Priority projectPriority = GetPriority(ProjectPriority.SelectedValue.ToString());
-
-            //Project project = new Project();
-            //project.Name = projectName;
-            //project.Status = (int)projectStatus;
-            //project.Priority = (int)projectPriority;
-
-            //projectListViewModel.AddProject(project);
             await AddProjectDialog.ShowAsync();
         }
 
-        private Status GetStatus(string status)
+        private async void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            Status result = Status.PLANNING;
-            switch(status)
-            {
-                case "Planning":
-                    result = Status.PLANNING;
-                    break;
+            string projectName = AddProjectDialogProjectName.Text;
+            Status projectStatus = ((Status)AddProjectDialogStatus.SelectedItem);
+            Priority projectPriority = ((Priority)AddProjectDialogPriority.SelectedItem);
 
-                case "InProgress":
-                    result = Status.INPROGRESS;
-                    break;
+            Project project = new Project();
+            project.Name = projectName;
+            project.Status = projectStatus.Value;
+            project.Priority = projectPriority.Value;
 
-                case "Completed":
-                    result = Status.COMPLETED;
-                    break;
+            Project result = addProjectViewModel.AddProject(project);
+            projectListViewModel.AddProjectToList(result);
 
-                default:
-                    result = Status.PLANNING;
-                    break;
-            }
-            return result;
-        }
-
-        private Priority GetPriority(string priority)
-        {
-            Priority result = Priority.LOW;
-            switch (priority)
-            {
-                case "Low":
-                    result = Priority.LOW;
-                    break;
-
-                case "Medium":
-                    result = Priority.MEDIUM;
-                    break;
-
-                case "High":
-                    result = Priority.HIGH;
-                    break;
-
-                default:
-                    result = Priority.LOW;
-                    break;
-            }
-            return result;
+            AddProjectDialog.Hide();
         }
     }
 }

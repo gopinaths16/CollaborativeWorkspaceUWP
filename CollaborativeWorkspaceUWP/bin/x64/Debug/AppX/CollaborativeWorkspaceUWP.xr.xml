@@ -8,9 +8,7 @@
     <RootPropertyPathName Name="ButtonCommand" />
     <RootPropertyPathName Name="IsAddTaskPopupOpen" />
     <RootPropertyPathName Name="IsTaskWindowOpen" />
-    <RootPropertyPathName Name="Priority" />
     <RootPropertyPathName Name="Name" />
-    <RootPropertyPathName Name="Tasks" />
   </Roots.PropertyPathNames>
   <Roots.RootTypes>
     <RootType FullName="Windows.UI.Xaml.Application">
@@ -36,6 +34,7 @@
       <RootProperty Name="TextTrimming" />
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Margin" />
       <RootProperty Name="Foreground" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.FrameworkElement">
@@ -76,7 +75,6 @@
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
       <RootProperty Name="Name" />
-      <RootProperty Name="Margin" />
       <RootProperty Name="Visibility" />
     </RootType>
     <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.BindExtension">
@@ -118,6 +116,8 @@
       <RootProperty Name="Background" />
       <RootProperty Name="Name" />
       <RootProperty Name="Style" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Visibility" />
       <RootProperty Name="Padding" />
       <RootMethod Name="GetRow" />
       <RootMethod Name="SetRow" />
@@ -148,13 +148,8 @@
       <RootProperty Name="ListViewItemSource" />
       <RootProperty Name="ListViewItemTemplate" />
       <RootProperty Name="AllowAdditionToListView" />
-      <RootProperty Name="Margin" />
       <RootEvent Name="OnItemAddClick" />
       <RootEvent Name="ListViewItemClicked" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.Frame">
-      <RootProperty Name="Name" />
-      <RootProperty Name="Style" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.DataTemplate">
       <RootProperty Name="Template" />
@@ -179,6 +174,9 @@
     <RootType FullName="Windows.UI.Xaml.Controls.ContentControl">
       <RootProperty Name="Content" />
     </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Frame">
+      <RootProperty Name="Name" />
+    </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.SplitView">
       <RootProperty Name="IsPaneOpen" />
       <RootProperty Name="DisplayMode" />
@@ -198,19 +196,14 @@
       <RootProperty Name="PlaceholderText" />
       <RootProperty Name="Style" />
       <RootProperty Name="Text" />
-      <RootProperty Name="Background" />
-      <RootProperty Name="SelectionHighlightColor" />
-      <RootProperty Name="BorderThickness" />
     </RootType>
     <RootType FullName="CollaborativeWorkspaceUWP.Views.LoginView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.OrganizationView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.ProjectView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.SprintView" />
-    <RootType FullName="CollaborativeWorkspaceUWP.ViewModels.TaskViewModel" />
     <RootType FullName="Windows.UI.Xaml.Controls.PivotItem">
       <RootProperty Name="Header" />
       <RootProperty Name="Content" />
-      <RootProperty Name="Style" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ContentDialog">
       <RootProperty Name="Style" />
@@ -223,9 +216,6 @@
       <RootProperty Name="Style" />
       <RootProperty Name="ItemsSource" />
       <RootProperty Name="ItemTemplate" />
-      <RootProperty Name="CornerRadius" />
-      <RootProperty Name="Items" />
-      <RootProperty Name="Margin" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.Pivot">
       <RootProperty Name="Title" />
@@ -233,11 +223,12 @@
       <RootProperty Name="RightHeader" />
       <RootProperty Name="Items" />
     </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.ItemsControl">
-      <RootProperty Name="ItemsSource" />
-      <RootProperty Name="ItemTemplate" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
+      <RootProperty Name="Margin" />
+      <RootProperty Name="HorizontalScrollBarVisibility" />
+      <RootProperty Name="VerticalScrollBarVisibility" />
+      <RootProperty Name="Content" />
     </RootType>
-    <RootType FullName="System.String" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.TaskView" />
     <RootType FullName="CollaborativeWorkspaceUWP.Views.TeamspaceView" />
   </Roots.RootTypes>

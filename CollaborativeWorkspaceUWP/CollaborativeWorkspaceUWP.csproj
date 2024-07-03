@@ -130,12 +130,13 @@
     <Compile Include="DAL\StatusDataHandler.cs" />
     <Compile Include="DAL\TaskDataHandler.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
-    <Compile Include="Models\Enums\Priority.cs" />
-    <Compile Include="Models\Enums\Status.cs" />
+    <Compile Include="Models\Enums\PriorityEnum.cs" />
+    <Compile Include="Models\Enums\StatusEnum.cs" />
     <Compile Include="Models\Organization.cs" />
-    <Compile Include="Models\PriorityData.cs" />
+    <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Sprint.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="Models\StatusData.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />

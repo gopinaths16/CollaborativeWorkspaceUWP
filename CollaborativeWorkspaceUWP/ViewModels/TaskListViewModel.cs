@@ -14,7 +14,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     {
         ObservableCollection<UserTask> tasks;
         TaskDataHandler taskDataHandler;
-
+        
         public TaskListViewModel()
         {
             taskDataHandler = new TaskDataHandler();
@@ -23,19 +23,19 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public ObservableCollection<UserTask> Tasks
         {
-            get
-            {
-                return tasks;
-            }
-            set
-            {
-                tasks = value;
-            }
+            get { return tasks; }
+            set { tasks = value; }
+        }
+        public String CurrentProjectName
+        {
+            get; set;
         }
 
-        public void GetTasksForProject(double projectId)
+        public void GetTasksForProject(Project project)
         {
-            Tasks = taskDataHandler.GetTasksForProject(projectId);
+            Tasks = taskDataHandler.GetTasksForProject(project.Id);
+            CurrentProjectName = project.Name;
+            NotifyPropertyChanged(nameof(CurrentProjectName));
             NotifyPropertyChanged(nameof(Tasks));
         }
     }

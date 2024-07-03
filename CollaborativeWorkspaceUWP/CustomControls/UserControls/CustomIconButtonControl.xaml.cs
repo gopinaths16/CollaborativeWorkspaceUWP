@@ -65,21 +65,21 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(WidthProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ButtonContent.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonContentProperty =
-            DependencyProperty.Register("ButtonContent", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
+        public SolidColorBrush ButtonBackground
+        {
+            get { return (SolidColorBrush)GetValue(ButtonBackgroundProperty); }
+            set { SetValue(ButtonBackgroundProperty, value); }
+        }
 
-        // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("ButtonIcon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty ButtonContentProperty = DependencyProperty.Register("ButtonContent", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
 
-        // Using a DependencyProperty as the backing store for ButtonCommand.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonCommandProperty =
-            DependencyProperty.Register("ButtonCommand", typeof(ICommand), typeof(CustomIconButtonControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("ButtonIcon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
 
-        // Using a DependencyProperty as the backing store for Width.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty WidthProperty =
-            DependencyProperty.Register("Width", typeof(int), typeof(CustomIconButtonControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty ButtonCommandProperty = DependencyProperty.Register("ButtonCommand", typeof(ICommand), typeof(CustomIconButtonControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(int), typeof(CustomIconButtonControl), new PropertyMetadata(0));
+
+        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register("ButtonBackground", typeof(SolidColorBrush), typeof(CustomIconButtonControl), null);
 
         public CustomIconButtonControl()
         {

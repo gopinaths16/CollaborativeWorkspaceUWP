@@ -115,7 +115,6 @@
 
         <Frame Name="HomeViewFrame" 
                Grid.ColumnSpan="2"
-               Style="{StaticResource HomeViewFrame}"
                Grid.Row="1"/>
 
         <SplitView IsPaneOpen="{Binding IsTaskWindowOpen, Mode=TwoWay}"

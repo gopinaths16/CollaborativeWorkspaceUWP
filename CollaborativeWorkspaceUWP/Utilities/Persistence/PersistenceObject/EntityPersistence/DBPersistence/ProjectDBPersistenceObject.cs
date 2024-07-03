@@ -14,7 +14,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         public void SetAddContext(Project project)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_PROJECT_DETAILS(NAME, STATUS, PRIORITY, TEAMSPACEID, OWNERID) VALUES(@Name, @Status, @Priority, @TeamspaceId, @OwnerId)";
+            command.CommandText = @"INSERT INTO CW_PROJECT_DETAILS(NAME, STATUS, PRIORITY, TEAMSPACEID, OWNERID) VALUES(@Name, @Status, @Priority, @TeamspaceId, @OwnerId) RETURNING ID, NAME, STATUS, PRIORITY, TEAMSPACEID, OWNERID";
             command.Parameters.AddWithValue("@Name", project.Name);
             command.Parameters.AddWithValue("@Status", project.Status);
             command.Parameters.AddWithValue("@Priority", project.Priority);
@@ -53,6 +53,27 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
 
             }
             return projects;
+        }
+
+        public Project GetProject()
+        {
+            Project project = null;
+            try
+            {
+                if (Reader != null && Reader.Read())
+                {
+                    project = new Project(Reader.GetInt64(0), Reader.GetString(1), Reader.GetInt32(2), Reader.GetInt32(3), Reader.GetInt64(4), Reader.GetInt64(5));
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+            return project;
         }
     }
 }

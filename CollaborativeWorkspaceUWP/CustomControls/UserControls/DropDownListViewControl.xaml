@@ -15,6 +15,7 @@
         
         <Style TargetType="TextBlock" x:Key="DropdownTitleStyle">
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
         </Style>
         
         <Style TargetType="Button" x:Key="OpenDropdownButtonStyle">

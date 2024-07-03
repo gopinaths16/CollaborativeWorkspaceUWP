@@ -16,7 +16,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetAddContext(UserTask task)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId)";
+            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId) RETURNING NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID";
             command.Parameters.AddWithValue("@Name", task.Name);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Status", task.Status);
@@ -65,7 +65,5 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             }
             return tasks;
         }
-
-        
     }
 }

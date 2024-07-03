@@ -13,16 +13,16 @@ namespace CollaborativeWorkspaceUWP.DAL
     {
         public PriorityDataHandler() { }
 
-        public List<PriorityData> GetPriorityDataForUI()
+        public List<Priority> GetPriorityDataForUI()
         {
-            List<PriorityData> result = new List<PriorityData>();
+            List<Priority> result = new List<Priority>();
             try
             {
-                foreach (Priority priority in Enum.GetValues(typeof(Priority)).Cast<Priority>())
+                foreach (PriorityEnum priority in Enum.GetValues(typeof(PriorityEnum)).Cast<PriorityEnum>())
                 {
-                    PriorityData priorityData = new PriorityData();
-                    priorityData.Priority = priority.ToString();
-                    priorityData.PriorityValue = (int)priority;
+                    Priority priorityData = new Priority();
+                    priorityData.Name = priority.ToString();
+                    priorityData.Value = (int)priority;
                     result.Add(priorityData);
                 }
             }
