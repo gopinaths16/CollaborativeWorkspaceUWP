@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Models;
+﻿using CollaborativeWorkspaceUWP.DAL;
+using CollaborativeWorkspaceUWP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class TaskDetailsViewModel : BaseViewModel
     {
         UserTask currTask;
+        Status status;
+        Priority priority;
+
+        List<Priority> priorityList;
+        List<Status> statusList;
+
+        PriorityDataHandler priorityDataHandler;
+        StatusDataHandler statusDataHandler;
 
         public UserTask CurrTask
         {
@@ -17,13 +26,29 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set
             {
                 currTask = value;
+                currTask.StatusData = GetTaskStatus();
+                currTask.PriorityData = GetTaskPriority();
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
 
         public TaskDetailsViewModel()
         {
+            priorityDataHandler = new PriorityDataHandler();
+            statusDataHandler = new StatusDataHandler();
 
+            priorityList = priorityDataHandler.GetPriorityData();
+            statusList = statusDataHandler.GetStatusData();
+        }
+
+        public Priority GetTaskPriority()
+        {
+            return priorityList.Where(priority => priority.Value == CurrTask.Priority).ToList()[0];
+        }
+
+        public Status GetTaskStatus()
+        {
+            return statusList.Where(status => status.Value == CurrTask.Status).ToList()[0];
         }
 
     }

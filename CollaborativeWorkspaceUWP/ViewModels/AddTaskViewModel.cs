@@ -34,8 +34,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
             taskDataHandler = new TaskDataHandler();
-            PriorityData = priorityDataHandler.GetPriorityDataForUI();
-            StatusData = statusDataHandler.GetStatusDataForUI();
+            PriorityData = priorityDataHandler.GetPriorityData();
+            StatusData = statusDataHandler.GetStatusData();
         }
 
         public UserTask AddTask(UserTask task)

@@ -27,6 +27,16 @@ namespace CollaborativeWorkspaceUWP.Models
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
         public long AssigneeId { get { return _assigneeId; } set { _assigneeId = value; } }
 
+        public Status StatusData
+        {
+            get; set;
+        }
+
+        public Priority PriorityData
+        {
+            get; set;
+        }
+
         public UserTask()
         {
 

@@ -13,7 +13,7 @@ namespace CollaborativeWorkspaceUWP.DAL
     {
         public PriorityDataHandler() { }
 
-        public List<Priority> GetPriorityDataForUI()
+        public List<Priority> GetPriorityData()
         {
             List<Priority> result = new List<Priority>();
             try

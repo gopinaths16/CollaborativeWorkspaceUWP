@@ -12,7 +12,7 @@ namespace CollaborativeWorkspaceUWP.DAL
     {
         public StatusDataHandler() { }
 
-        public List<Status> GetStatusDataForUI()
+        public List<Status> GetStatusData()
         {
             List<Status> result = new List<Status>();
             try

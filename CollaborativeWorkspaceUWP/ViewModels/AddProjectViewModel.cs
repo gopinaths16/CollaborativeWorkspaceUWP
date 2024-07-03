@@ -34,8 +34,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
             projectDataHandler = new ProjectDataHandler();
-            PriorityData = priorityDataHandler.GetPriorityDataForUI();
-            StatusData = statusDataHandler.GetStatusDataForUI();
+            PriorityData = priorityDataHandler.GetPriorityData();
+            StatusData = statusDataHandler.GetStatusData();
         }
 
         public Project AddProject(Project project)
