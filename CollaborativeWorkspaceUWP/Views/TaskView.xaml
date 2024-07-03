@@ -66,6 +66,19 @@
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
 
+                    <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
+                        <Setter Property="BorderThickness" Value="0.5" />
+                        <Setter Property="CornerRadius" Value="5" />
+                        <Setter Property="BorderBrush" Value="{StaticResource SystemAccentColor}" />
+                        <Setter Property="Margin" Value="20, 0, 0, 10" />
+                        <Setter Property="Padding" Value="10" />
+                    </Style>
+
+                    <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
+                        <Setter Property="Margin" Value="10, 20, 0, 0" />
+                        <Setter Property="VerticalAlignment" Value="Top" />
+                    </Style>
+
                     <DataTemplate x:Key="ProjectListViewItemTemplate" 
                                   x:DataType="models:Project">
                         <Grid>
@@ -251,9 +264,15 @@
                     <Grid Name="TaskDetailsView"
                           Padding="20"
                           Visibility="Collapsed"
-                          Grid.Column="2">
+                          Grid.Column="2"
+                          Style="{StaticResource TaskDetailsViewGridDisplay}">
 
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
@@ -262,16 +281,58 @@
                             <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2">
                             <TextBlock Text="&#xE73A;"
                                        FontFamily="Segoe MDL2 Assets"
-                                       Margin="0, 0, 20, 0"
+                                       Margin="10, 0, 20, 0"
                                        FontSize="40"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                             <TextBlock Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay}"
                                        Style="{StaticResource TaskDetailsViewTitleStyle}" />
                         </StackPanel>
+
+                        <customusercontrol:IconedLabelControl Grid.Row="1"
+                                                              Grid.Column="0"
+                                                              Icon="&#xE700;"
+                                                              ContentText="Description"
+                                                              Style="{StaticResource LabelStyles}"/>
+
+                        <TextBlock x:Name="TaskDescription"
+                                   Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=OneWay}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Margin="0, 20, 0, 0"
+                                   TextWrapping="Wrap"/>
+
+                        <customusercontrol:IconedLabelControl Grid.Row="2"
+                                                              Grid.Column="0"
+                                                              Icon="&#xF13C;"
+                                                              ContentText="Priority"
+                                                              Style="{StaticResource LabelStyles}"/>
+
+                        <TextBlock x:Name="TaskPriority"
+                                   Text="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay}"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Margin="0, 20, 0, 0"
+                                   TextWrapping="Wrap"/>
+
+                        <customusercontrol:IconedLabelControl Grid.Row="3"
+                                                              Grid.Column="0"
+                                                              Icon="&#xF143;"
+                                                              ContentText="Status"
+                                                              Style="{StaticResource LabelStyles}"/>
+
+                        <TextBlock x:Name="TaskStatus"
+                                   Text="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay}"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Margin="0, 20, 0, 0"
+                                   TextWrapping="Wrap"/>
                     </Grid>
 
                 </Grid>

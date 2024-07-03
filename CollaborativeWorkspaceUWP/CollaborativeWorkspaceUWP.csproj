@@ -125,6 +125,9 @@
     <Compile Include="CustomControls\UserControls\DropDownListViewControl.xaml.cs">
       <DependentUpon>DropDownListViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
+      <DependentUpon>IconedLabelControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DAL\PriorityDataHandler.cs" />
     <Compile Include="DAL\ProjectDataHandler.cs" />
     <Compile Include="DAL\StatusDataHandler.cs" />
@@ -218,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\DropDownListViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
