@@ -30,13 +30,13 @@
     <AppXManifest Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-07-03T07:16:06.135</Modified>
+      <Modified>2024-07-03T10:29:49.701</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\CollaborativeWorkspaceUWP.exe">
       <PackagePath>entrypoint\CollaborativeWorkspaceUWP.exe</PackagePath>
-      <Modified>2024-07-03T07:16:04.486</Modified>
+      <Modified>2024-07-03T10:29:49.028</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\UWPNuGetPackages\runtime.win10-x64.microsoft.netcore.universalwindowsplatform\6.2.14\runtimes\win10-x64\lib\uap10.0.15138\System.Runtime.dll">
       <PackagePath>System.Runtime.dll</PackagePath>
@@ -56,7 +56,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\Assets\DBSchema\Sqlite\DatabaseSchema.sql">
       <PackagePath>Assets\DBSchema\Sqlite\DatabaseSchema.sql</PackagePath>
-      <Modified>2024-07-01T09:27:55.376</Modified>
+      <Modified>2024-07-03T09:58:21.378</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
@@ -98,71 +98,71 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\CollaborativeWorkspaceUWP.xr.xml">
       <PackagePath>CollaborativeWorkspaceUWP.xr.xml</PackagePath>
-      <Modified>2024-07-03T06:59:27.874</Modified>
+      <Modified>2024-07-03T10:05:36.838</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.278</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\CustomControls\UserControls\CustomIconButtonControl.xbf">
       <PackagePath>CustomControls\UserControls\CustomIconButtonControl.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.284</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\CustomControls\UserControls\DropDownListViewControl.xbf">
       <PackagePath>CustomControls\UserControls\DropDownListViewControl.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.284</Modified>
+      <Modified>2024-07-03T10:29:48.871</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Styles\TableStyleDictionary.xbf">
       <PackagePath>Styles\TableStyleDictionary.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.265</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Styles\ThemedStyles.xbf">
       <PackagePath>Styles\ThemedStyles.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.274</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Styles\StaticStyles.xbf">
       <PackagePath>Styles\StaticStyles.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.278</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Templates\TableDataTemplate.xbf">
       <PackagePath>Templates\TableDataTemplate.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.295</Modified>
+      <Modified>2024-07-03T10:29:48.871</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\SubViews\AddTaskView.xbf">
       <PackagePath>Views\SubViews\AddTaskView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.296</Modified>
+      <Modified>2024-07-03T10:29:48.871</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\SubViews\CurrentTaskView.xbf">
       <PackagePath>Views\SubViews\CurrentTaskView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.296</Modified>
+      <Modified>2024-07-03T10:29:48.871</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\HomeView.xbf">
       <PackagePath>Views\HomeView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.305</Modified>
+      <Modified>2024-07-03T10:29:48.871</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\LoginView.xbf">
       <PackagePath>Views\LoginView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.309</Modified>
+      <Modified>2024-07-03T10:29:48.887</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\OrganizationView.xbf">
       <PackagePath>Views\OrganizationView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.309</Modified>
+      <Modified>2024-07-03T10:29:48.887</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\ProjectView.xbf">
       <PackagePath>Views\ProjectView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.316</Modified>
+      <Modified>2024-07-03T10:29:48.887</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\SprintView.xbf">
       <PackagePath>Views\SprintView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.316</Modified>
+      <Modified>2024-07-03T10:29:48.887</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\TaskView.xbf">
       <PackagePath>Views\TaskView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.265</Modified>
+      <Modified>2024-07-03T10:29:48.856</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Views\TeamspaceView.xbf">
       <PackagePath>Views\TeamspaceView.xbf</PackagePath>
-      <Modified>2024-07-03T07:16:04.325</Modified>
+      <Modified>2024-07-03T10:29:48.887</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Windows Kits\10\UnionMetadata\10.0.22621.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -170,11 +170,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2024-07-03T06:04:43.218</Modified>
+      <Modified>2024-07-03T09:14:56.681</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\Personal\repos\CollaborativeWorkspaceUWP\CollaborativeWorkspaceUWP\bin\x64\Debug\Core\CollaborativeWorkspaceUWP.exe">
       <PackagePath>CollaborativeWorkspaceUWP.exe</PackagePath>
-      <Modified>2024-07-03T07:16:06.116</Modified>
+      <Modified>2024-07-03T10:29:49.685</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
