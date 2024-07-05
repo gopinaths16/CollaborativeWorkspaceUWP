@@ -22,7 +22,7 @@ namespace CollaborativeWorkspaceUWP.DAL
                 {
                     Priority priorityData = new Priority();
                     priorityData.Name = priority.ToString();
-                    priorityData.Value = (int)priority;
+                    priorityData.Id = (int)priority;
                     result.Add(priorityData);
                 }
             }

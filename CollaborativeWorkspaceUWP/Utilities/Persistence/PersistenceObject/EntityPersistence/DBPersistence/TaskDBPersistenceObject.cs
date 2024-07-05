@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
 {
@@ -34,13 +35,23 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
-        public void SetGetTasksForProjectContext(double projectId)
+        public void SetGetTasksForProjectContext(long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
             command.CommandText = @"SELECT * FROM CW_TASK_DETAILS WHERE PROJECTID=@ProjectId";
             command.Parameters.AddWithValue("@ProjectId", projectId);
             Query = command;
         }
+
+        public void SetGetNonSubTasksContext(long taskId, long projectId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS WHERE PROJECTID=@ProjectId AND PARENT_TASK_ID IS NULL AND ID != @Id";
+            command.Parameters.AddWithValue("@ProjectId", projectId);
+            command.Parameters.AddWithValue("@Id", taskId);
+            Query = command;
+        }
+
         public ObservableCollection<UserTask> GetAllTasks()
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();

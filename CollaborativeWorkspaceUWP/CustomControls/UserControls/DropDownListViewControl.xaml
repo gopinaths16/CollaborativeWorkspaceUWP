@@ -58,6 +58,7 @@
                   Margin="0, 10, 0, 0"
                   ItemClick="{x:Bind _itemClickEventHandler}"
                   ItemsSource="{x:Bind ListViewItemSource}" 
-                  ItemTemplate="{x:Bind ListViewItemTemplate}" />
+                  ItemTemplate="{x:Bind ListViewItemTemplate}"
+                  ItemContainerStyle="{StaticResource ListViewItemStyle}"/>
     </Grid>
 </UserControl>

@@ -21,7 +21,7 @@ namespace CollaborativeWorkspaceUWP.DAL
                 {
                     Status statusData = new Status();
                     statusData.Name = status.ToString();
-                    statusData.Value = (int)status;
+                    statusData.Id = (int)status;
                     result.Add(statusData);
                 }
             }

@@ -15,6 +15,46 @@
         <Setter Property="Margin" Value="10, 0, 0, 0" />
     </Style>
 
+    <AcrylicBrush x:Key="MainBackgroundAcrylicBrush"
+                  BackgroundSource="HostBackdrop"
+                  TintColor="#7F000000"
+                  TintOpacity="0.8"/>
+
+    <AcrylicBrush x:Key="AccentAcrylicBrush"
+                  BackgroundSource="HostBackdrop"
+                  TintColor="{StaticResource SystemAccentColor}"
+                  TintOpacity="0.6"/>
+
+    <AcrylicBrush x:Key="SecondaryAcrylicBrush"
+                  BackgroundSource="HostBackdrop"
+                  TintColor="Black"
+                  TintOpacity="0.6"/>
+
+    <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="OuterContainer" Background="{TemplateBinding Background}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed"/>
+                                <VisualState x:Name="Selected"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Button" x:Key="ButtonNoBackground">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource SystemAccentColor}" />

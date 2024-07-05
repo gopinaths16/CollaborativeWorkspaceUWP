@@ -43,12 +43,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public Priority GetTaskPriority()
         {
-            return priorityList.Where(priority => priority.Value == CurrTask.Priority).ToList()[0];
+            return priorityList.Where(priority => priority.Id == CurrTask.Priority).ToList()[0];
         }
 
         public Status GetTaskStatus()
         {
-            return statusList.Where(status => status.Value == CurrTask.Status).ToList()[0];
+            return statusList.Where(status => status.Id == CurrTask.Status).ToList()[0];
         }
 
     }

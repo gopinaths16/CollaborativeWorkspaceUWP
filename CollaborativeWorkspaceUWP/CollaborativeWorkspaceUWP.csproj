@@ -135,12 +135,12 @@
     <Compile Include="Models\Enums\PersistenceMode.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />
     <Compile Include="Models\Enums\StatusEnum.cs" />
+    <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\Status.cs" />
-    <Compile Include="Models\StatusData.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -161,6 +161,7 @@
     <Compile Include="Utilities\Persistence\PersistenceObject\PersistanceObjectManager.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
+    <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />

@@ -65,7 +65,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return tasks;
         }
-        public ObservableCollection<UserTask> GetTasksForProject(double projectId)
+        public ObservableCollection<UserTask> GetTasksForProject(long projectId)
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
             ITaskPersistence persistenceObject = null;
@@ -83,6 +83,31 @@ namespace CollaborativeWorkspaceUWP.DAL
             finally
             {
                 if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return tasks;
+        }
+
+        public  ObservableCollection<UserTask> GetNonSubTasks(long taskId, long projectId)
+        {
+            ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetNonSubTasksContext(taskId, projectId);
+                Persistence.Instance.Get(persistenceObject);
+                tasks = persistenceObject.GetAllTasks();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
                 {
                     persistenceObject.Dispose();
                 }

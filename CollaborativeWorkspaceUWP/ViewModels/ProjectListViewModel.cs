@@ -31,7 +31,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public bool IsProjectListPaneOpen
         {
             get { return isProjectListPaneOpen; }
-            set { isProjectListPaneOpen = value; }
+            set { 
+                isProjectListPaneOpen = value;
+                NotifyPropertyChanged(nameof(IsProjectListPaneOpen));
+            }
         }
 
         public void AddProjectToList(Project project)

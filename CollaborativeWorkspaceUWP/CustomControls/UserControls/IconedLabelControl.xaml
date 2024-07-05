@@ -15,12 +15,14 @@
                    Text="{x:Bind Icon}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
+                   FontSize="15"
                    Margin="5, 0, 5, 0"
                    Foreground="Gray"/>
         <TextBlock x:Name="LabelContent"
                    Text="{x:Bind ContentText}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Foreground="Gray"/>
+                   Foreground="Gray"
+                   FontSize="15"/>
     </StackPanel>
 </UserControl>

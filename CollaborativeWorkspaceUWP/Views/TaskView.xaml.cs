@@ -30,6 +30,7 @@ namespace CollaborativeWorkspaceUWP.Views
         TaskDetailsViewModel taskDetailsViewModel;
         AddProjectViewModel addProjectViewModel;
         AddTaskViewModel addTaskViewModel;
+        AddSubTaskViewModel addSubTaskViewModel;
 
         public TaskView()
         {
@@ -41,6 +42,7 @@ namespace CollaborativeWorkspaceUWP.Views
             taskDetailsViewModel = new TaskDetailsViewModel();
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
+            addSubTaskViewModel = new AddSubTaskViewModel();
         }
 
         private void CustomIconButtonControl_ButtonClick(object sender, RoutedEventArgs e)
@@ -97,8 +99,8 @@ namespace CollaborativeWorkspaceUWP.Views
 
             Project project = new Project();
             project.Name = projectName;
-            project.Status = projectStatus.Value;
-            project.Priority = projectPriority.Value;
+            project.Status = projectStatus.Id;
+            project.Priority = projectPriority.Id;
 
             Project result = addProjectViewModel.AddProject(project);
             projectListViewModel.AddProjectToList(result);
@@ -112,8 +114,8 @@ namespace CollaborativeWorkspaceUWP.Views
 
             task.Name = AddTaskDialogTaskName.Text;
             task.Description = AddTaskDialogDescription.Text;
-            task.Status = ((Status)AddTaskDialogStatus.SelectedItem).Value;
-            task.Priority = ((Priority)AddTaskDialogPriority.SelectedItem).Value;
+            task.Status = ((Status)AddTaskDialogStatus.SelectedItem).Id;
+            task.Priority = ((Priority)AddTaskDialogPriority.SelectedItem).Id;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
@@ -132,6 +134,22 @@ namespace CollaborativeWorkspaceUWP.Views
         private void CloseTaskDialogButton_Click(object sender, RoutedEventArgs e)
         {
             AddTaskDialog.Hide();
+        }
+
+        private void OpenSplitViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            projectListViewModel.IsProjectListPaneOpen = !projectListViewModel.IsProjectListPaneOpen;
+        }
+
+        private async void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            addSubTaskViewModel.LoadNonSubTasks(taskDetailsViewModel.CurrTask);
+            await AddSubTaskDialog.ShowAsync();
+        }
+
+        private void CloseSubTaskDialog_Click(object sender, RoutedEventArgs e)
+        {
+            AddSubTaskDialog.Hide();
         }
     }
 }

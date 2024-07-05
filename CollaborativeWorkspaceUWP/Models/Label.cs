@@ -1,15 +1,14 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Media;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Priority
+    public class Label
     {
-        public string Name { get; set; }
         public long Id { get; set; }
+        public string Name { get; set; }
     }
 }

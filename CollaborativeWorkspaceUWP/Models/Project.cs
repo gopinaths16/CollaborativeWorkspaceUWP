@@ -11,15 +11,15 @@ namespace CollaborativeWorkspaceUWP.Models
 
         private long _id;
         private string _name;
-        private int _status;
-        private int _priority;
+        private long _status;
+        private long _priority;
         private long _teamspaceId;
         private long _ownerId;
 
         public long Id { get { return _id; } set { _id = value; } }
         public string Name { get { return _name; } set { _name = value; } }
-        public int Status { get { return _status; } set { _status = value; } }
-        public int Priority { get { return _priority; } set { _priority = value; } }
+        public long Status { get { return _status; } set { _status = value; } }
+        public long Priority { get { return _priority; } set { _priority = value; } }
         public long TeamsapceId {  get { return _teamspaceId; } set { _teamspaceId = value; } }
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
 
@@ -27,7 +27,7 @@ namespace CollaborativeWorkspaceUWP.Models
         {
 
         }
-        public Project(long id, string name, int status, int priority, long teamspaceId, long ownerId)
+        public Project(long id, string name, long status, long priority, long teamspaceId, long ownerId)
         {
             this._id = id;
             this._name = name;

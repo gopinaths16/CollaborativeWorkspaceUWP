@@ -15,7 +15,7 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public long Id { get { return _id; } set { this._id = value; } }
         public string Name { get { return _name; } set { this._name = value; } }
-        public long Owner { get { return _ownerId; } set { this._ownerId = value; } }
+        public long OwnerId { get { return _ownerId; } set { this._ownerId = value; } }
 
         public Organization(long id, string name, long owner)
         {
