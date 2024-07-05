@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence;
+using Windows.UI.Xaml.Media;
 
 namespace CollaborativeWorkspaceUWP.DAL
 {
@@ -100,6 +101,54 @@ namespace CollaborativeWorkspaceUWP.DAL
                 persistenceObject.SetGetNonSubTasksContext(taskId, projectId);
                 Persistence.Instance.Get(persistenceObject);
                 tasks = persistenceObject.GetAllTasks();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return tasks;
+        }
+
+        public void AddSubTaskForTask(long parentTaskId, long childTaskId)
+        {
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetAddSubTaskContext(parentTaskId, childTaskId);
+                Persistence.Instance.Add(persistenceObject);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+        }
+
+        public ObservableCollection<UserTask> GetAllSubTasks(long parentTaskId)
+        {
+            ITaskPersistence persistenceObject = null;
+            ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetAllSubTasksContext(parentTaskId);
+                Persistence.Instance.Get(persistenceObject);
+                tasks = persistenceObject.GetAllTasks();
+
             }
             catch (Exception ex)
             {

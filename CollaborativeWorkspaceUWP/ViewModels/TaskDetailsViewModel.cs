@@ -2,6 +2,7 @@
 using CollaborativeWorkspaceUWP.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
+        TaskDataHandler taskDataHandler;
 
         public UserTask CurrTask
         {
@@ -28,6 +30,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 currTask.StatusData = GetTaskStatus();
                 currTask.PriorityData = GetTaskPriority();
+                currTask.SubTasks = GetAllSubTasks();
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
@@ -36,6 +39,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
+            taskDataHandler = new TaskDataHandler();
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
@@ -51,5 +55,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return statusList.Where(status => status.Id == CurrTask.Status).ToList()[0];
         }
 
+        public ObservableCollection<UserTask> GetAllSubTasks()
+        {
+            return taskDataHandler.GetAllSubTasks(currTask.Id);
+        }
     }
 }

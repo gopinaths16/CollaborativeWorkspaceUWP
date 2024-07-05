@@ -17,7 +17,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetAddContext(UserTask task)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID";
+            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId, 0) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID";
             command.Parameters.AddWithValue("@Name", task.Name);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Status", task.Status);
@@ -31,14 +31,14 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetGetAllTasksContext()
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS";
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID";
             Query = command;
         }
 
         public void SetGetTasksForProjectContext(long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS WHERE PROJECTID=@ProjectId";
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID WHERE CWT.PROJECTID=@ProjectId";
             command.Parameters.AddWithValue("@ProjectId", projectId);
             Query = command;
         }
@@ -46,9 +46,26 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetGetNonSubTasksContext(long taskId, long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS WHERE PROJECTID=@ProjectId AND PARENT_TASK_ID IS NULL AND ID != @Id";
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID WHERE CWT.PROJECTID=@ProjectId AND CWT.PARENT_TASK_ID=0 AND CWT.ID != @Id";
             command.Parameters.AddWithValue("@ProjectId", projectId);
             command.Parameters.AddWithValue("@Id", taskId);
+            Query = command;
+        }
+
+        public void SetAddSubTaskContext(long parentTaskId, long childTaskId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET PARENT_TASK_ID=@ParentTaskId WHERE ID=@ChildTaskId";
+            command.Parameters.AddWithValue("@ParentTaskId", parentTaskId);
+            command.Parameters.AddWithValue("@ChildTaskId", childTaskId);
+            Query = command;
+        }
+
+        public void SetGetAllSubTasksContext(long parentTaskId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT * FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID WHERE CWT.PARENT_TASK_ID=@ParentTaskId";
+            command.Parameters.AddWithValue("@ParentTaskId", parentTaskId);
             Query = command;
         }
 
@@ -61,14 +78,9 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
                 {
                     while (Reader.Read())
                     {
-                        UserTask task = new UserTask(Reader.GetInt64(0), 
-                            Reader.GetString(1), 
-                            Reader.GetString(2), 
-                            Reader.GetInt32(3), 
-                            Reader.GetInt32(4), 
-                            Reader.GetInt64(5), 
-                            Reader.GetInt64(6), 
-                            Reader.GetInt64(7));
+                        UserTask task = new UserTask(Reader.GetInt64(0), Reader.GetString(1), Reader.GetString(2), Reader.GetInt32(3), Reader.GetInt32(4), Reader.GetInt64(5), Reader.GetInt64(6), Reader.GetInt64(7), Reader.GetInt64(8));
+                        task.StatusData = new Status(Reader.GetInt64(9), Reader.GetString(10));
+                        task.PriorityData = new Priority(Reader.GetInt64(11), Reader.GetString(12));
                         tasks.Add(task);
                     }
                 }
@@ -91,14 +103,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             {
                 if (Reader != null && Reader.Read())
                 {
-                    task = new UserTask(Reader.GetInt64(0), 
-                        Reader.GetString(1), 
-                        Reader.GetString(2), 
-                        Reader.GetInt32(3), 
-                        Reader.GetInt32(4),
-                        Reader.GetInt64(5), 
-                        Reader.GetInt64(6), 
-                        Reader.GetInt64(7));
+                    task = new UserTask(Reader.GetInt64(0), Reader.GetString(1), Reader.GetString(2), Reader.GetInt32(3), Reader.GetInt32(4), Reader.GetInt64(5), Reader.GetInt64(6), Reader.GetInt64(7), Reader.GetInt64(8));
                 }
             }
             catch (Exception ex)

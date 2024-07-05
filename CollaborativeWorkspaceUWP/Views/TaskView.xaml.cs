@@ -143,13 +143,25 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            addSubTaskViewModel.LoadNonSubTasks(taskDetailsViewModel.CurrTask);
+            addSubTaskViewModel.CurrTask = taskDetailsViewModel.CurrTask;
+            addSubTaskViewModel.LoadNonSubTasks();
             await AddSubTaskDialog.ShowAsync();
         }
 
         private void CloseSubTaskDialog_Click(object sender, RoutedEventArgs e)
         {
             AddSubTaskDialog.Hide();
+        }
+
+        private void SubTaskListViewByProject_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UserTask task = (UserTask)e.ClickedItem;
+            addSubTaskViewModel.AddSubTaskForCurrTask(task);
+        }
+
+        private void OpenSubTaskButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

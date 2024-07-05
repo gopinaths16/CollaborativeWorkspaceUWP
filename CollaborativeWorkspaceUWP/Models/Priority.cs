@@ -9,7 +9,15 @@ namespace CollaborativeWorkspaceUWP.Models
 {
     public class Priority
     {
-        public string Name { get; set; }
         public long Id { get; set; }
+        public string Name { get; set; }
+        
+        public Priority() { }
+
+        public Priority(long id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

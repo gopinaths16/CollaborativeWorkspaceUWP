@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace CollaborativeWorkspaceUWP.Models
         public long AssigneeId { get { return _assigneeId; } set { _assigneeId = value; } }
         public long ParentTaskId { get { return _parentTaskId; } set { _parentTaskId = value; } }
 
-        public List<UserTask> SubTasks { get; set; }
+        public ObservableCollection<UserTask> SubTasks { get; set; }
 
         public Status StatusData{ get; set; }
 
@@ -37,7 +38,7 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public UserTask() {}
 
-        public UserTask(long id, string name, string description, int status, int priority, long projectId, long ownerId, long assigneeId)
+        public UserTask(long id, string name, string description, int status, int priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
         {
             Id = id;
             Name = name;
@@ -47,6 +48,7 @@ namespace CollaborativeWorkspaceUWP.Models
             ProjectId = projectId;
             OwnerId = ownerId;
             AssigneeId = assigneeId;
+            ParentTaskId = parentTaskId;
         }
 
     }
