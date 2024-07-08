@@ -14,11 +14,11 @@ namespace CollaborativeWorkspaceUWP.DAL
 {
     public class ProjectDataHandler
     {
-        private PersistanceObjectManager persistanceObjectManager;
+        private PersistenceObjectManager persistanceObjectManager;
 
         public ProjectDataHandler()
         {
-            persistanceObjectManager = new PersistanceObjectManager(PersistenceMode.SQLITE);
+            persistanceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
         }
 
         public Project AddProject(Project project)

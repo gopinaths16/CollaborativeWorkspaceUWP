@@ -15,11 +15,11 @@ namespace CollaborativeWorkspaceUWP.DAL
 {
     public class TaskDataHandler
     {
-        private PersistanceObjectManager persistanceObjectManager;
+        private PersistenceObjectManager persistanceObjectManager;
 
         public TaskDataHandler()
         {
-            persistanceObjectManager = new PersistanceObjectManager(PersistenceMode.SQLITE);
+            persistanceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
         }
 
         public UserTask AddTask(UserTask task)

@@ -14,11 +14,11 @@ namespace CollaborativeWorkspaceUWP.DAL
 {
     public class OrganizationDataHandler
     {
-        private PersistanceObjectManager persistanceObjectManager;
+        private PersistenceObjectManager persistanceObjectManager;
 
         public OrganizationDataHandler()
         {
-            persistanceObjectManager = new PersistanceObjectManager(PersistenceMode.SQLITE);
+            persistanceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
         }
 
         public Organization AddOrganization(Organization organization)

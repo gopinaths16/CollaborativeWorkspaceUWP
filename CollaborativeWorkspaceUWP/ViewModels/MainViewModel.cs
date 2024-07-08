@@ -14,16 +14,24 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private ObservableCollection<Organization> organizations;
+        private ObservableCollection<Teamspace> teamspaces;
+
         private bool addOrganizationTriggered;
         private Organization currOrganization;
-        private int selectedOrganizationIndex;
 
-        private OrganizationDataHandler organizationDataHandler = null;
+        private OrganizationDataHandler organizationDataHandler;
+        private TeamspaceDataHandler teamspaceDataHandler;
 
         public ObservableCollection<Organization> Organizations
         {
             get { return organizations; }
             set { organizations = value; }
+        }
+
+        public ObservableCollection<Teamspace> TeamspacesForCurrOrganization
+        {
+            get { return teamspaces; }
+            set { teamspaces = value; }
         }
 
         public bool AddOrganizationTriggered
@@ -41,6 +49,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public MainViewModel()
         {
             organizationDataHandler = new OrganizationDataHandler();
+            teamspaceDataHandler = new TeamspaceDataHandler();
 
             organizations = organizationDataHandler.GetAllOrganizations();
         }
@@ -68,7 +77,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void SetCurrOrganization(Organization organization)
         {
             CurrOrganization = organization;
+            TeamspacesForCurrOrganization = teamspaceDataHandler.GetAllTeamspacesForCurrOrganization(organization.Id);
             NotifyPropertyChanged(nameof(CurrOrganization));
+        }
+
+        public void CreateTeamspaceInCurrentOrganization(Teamspace teamspace)
+        {
+            teamspace = teamspaceDataHandler.AddTeamspace(teamspace);
+            TeamspacesForCurrOrganization.Add(teamspace);
+            NotifyPropertyChanged(nameof(TeamspacesForCurrOrganization));
         }
     }
 }

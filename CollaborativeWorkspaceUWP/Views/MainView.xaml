@@ -13,13 +13,11 @@
     Background="{ThemeResource MainBackgroundAcrylicBrush}"
     Loaded="Page_Loaded">
 
-    <Page.Resources>
+    <Page.DataContext>
+        <vm:MainViewModel />
+    </Page.DataContext>
 
-        <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter" />
-        <converters:CollectionToVisibilityConverterInverse x:Key="CollectionToVisibilityConverterInverse" />
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
-        <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    <Page.Resources>
 
         <Style TargetType="Button" x:Name="NavigationButtonStyle">
             <Setter Property="Margin" Value="0, 10, 10, 10" />
@@ -61,14 +59,16 @@
 
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2"
-                    Style="{StaticResource TitleBar}">
+                    Style="{StaticResource TitleBar}"
+                    Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+
+            <TextBlock Text="{Binding TeamspacesForCurrOrganization.Count, Mode=OneWay}" />
 
             <ComboBox Name="SelectOrganizationCombobox"
                       Margin="0, 10, 10, 10"
                       ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
                       ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
-                      CornerRadius="2"
-                      Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                      CornerRadius="2"/>
 
             <Button Name="ProjectViewBtn" 
                     Style="{StaticResource NavigationButtonStyle}"
@@ -100,8 +100,11 @@
         <Frame Name="HomeViewFrame" 
                Grid.ColumnSpan="2"
                Grid.Row="1"
-               Background="{StaticResource MainBackgroundAcrylicBrush}"/>
+               Background="{StaticResource MainBackgroundAcrylicBrush}"
+               Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"/>
 
+        <!--#region Select Organization Content dialog starts-->
+        
         <ContentDialog x:Name="SelectOrgDialog"
                        Style="{StaticResource ContentDialogStyle}">
 
@@ -189,5 +192,7 @@
             </StackPanel>
         </ContentDialog>
 
+        <!--#endregion-->
+        
     </Grid>
 </Page>

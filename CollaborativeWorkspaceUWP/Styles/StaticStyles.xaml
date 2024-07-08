@@ -1,13 +1,19 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
     xmlns:customusercontrols="using:CollaborativeWorkspaceUWP.CustomControls.UserControls">
+
+    <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter" />
+    <converters:CollectionToVisibilityConverterInverse x:Key="CollectionToVisibilityConverterInverse" />
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
+    <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
 
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
         <Setter Property="Orientation" Value="Horizontal" />
     </Style>
-
 
     <Style TargetType="TextBlock" x:Name="TaskViewTitle">
         <Setter Property="Text" Value="Task view"/>

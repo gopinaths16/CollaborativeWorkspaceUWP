@@ -31,6 +31,7 @@ namespace CollaborativeWorkspaceUWP.Views
         AddProjectViewModel addProjectViewModel;
         AddTaskViewModel addTaskViewModel;
         AddSubTaskViewModel addSubTaskViewModel;
+        MainViewModel mainViewModel;
 
         public TaskView()
         {
@@ -162,6 +163,32 @@ namespace CollaborativeWorkspaceUWP.Views
         private void OpenSubTaskButton_ButtonClick(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if(e.Parameter is MainViewModel mainViewModel)
+            {
+                this.mainViewModel = mainViewModel;
+                this.DataContext = mainViewModel;
+            }
+        }
+
+        private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = 0 };
+            mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
+            AddTeamspaceDialog.Hide();
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
+            {
+                await AddTeamspaceDialog.ShowAsync();
+            }
         }
     }
 }

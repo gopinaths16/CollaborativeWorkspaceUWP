@@ -17,8 +17,9 @@ namespace CollaborativeWorkspaceUWP.Models
         public long Id { get { return _id; } set { this._id = value; } }
         public string Name { get { return _name; } set { this._name = value; } }
         public long OrgId { get { return _orgId; } set { this._orgId = value; } }
-        public long Owner { get { return _ownerId; } set { this._ownerId = value; } }
+        public long OwnerId { get { return _ownerId; } set { this._ownerId = value; } }
 
+        public Teamspace() { }
 
         public Teamspace(long id, string name, long orgId, long owner)
         {

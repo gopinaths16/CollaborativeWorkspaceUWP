@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
 {
-    public class PersistanceObjectManager
+    public class PersistenceObjectManager
     {
         private IPersistenceObjectProvider _provider;
 
-        public PersistanceObjectManager(PersistenceMode mode)
+        public PersistenceObjectManager(PersistenceMode mode)
         {
             switch (mode)
             {
@@ -39,6 +39,11 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public IOrganizationPersistence GetOrganizationPersistenceObject()
         {
             return _provider.GetOrganizationPersistenceObject();
+        }
+
+        public ITeamspacePersistence GetTeamspacePersistenceObject()
+        {
+            return _provider.GetTeamspacePersistenceObject();
         }
     }
 }

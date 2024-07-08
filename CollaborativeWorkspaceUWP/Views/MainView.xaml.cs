@@ -37,6 +37,8 @@ namespace CollaborativeWorkspaceUWP.Views
 
             mainViewModel = new MainViewModel();
 
+            this.DataContext = mainViewModel;
+
             CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
@@ -69,7 +71,7 @@ namespace CollaborativeWorkspaceUWP.Views
             mainViewModel.SetCurrOrganization(organization);
             SelectOrganizationCombobox.SelectedItem = organization;
             SelectOrgDialog.Hide();
-            HomeViewFrame.Navigate(typeof(TaskView));
+            HomeViewFrame.Navigate(typeof(TaskView), this.DataContext);
         }
 
         private void AddNewOrganizationButton_ButtonClick(object sender, RoutedEventArgs e)

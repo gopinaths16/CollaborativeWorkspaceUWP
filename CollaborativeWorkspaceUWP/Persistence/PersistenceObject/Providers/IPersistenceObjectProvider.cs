@@ -12,5 +12,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         ITaskPersistence GetTaskPersistenceObject();
         IProjectPersistence GetProjectPersistenceObject();
         IOrganizationPersistence GetOrganizationPersistenceObject();
+        ITeamspacePersistence GetTeamspacePersistenceObject();
     }
 }

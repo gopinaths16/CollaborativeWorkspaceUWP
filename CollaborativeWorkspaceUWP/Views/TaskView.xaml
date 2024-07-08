@@ -8,10 +8,16 @@
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource MainBackgroundAcrylicBrush}">
+    Background="{ThemeResource MainBackgroundAcrylicBrush}"
+    Loaded="Page_Loaded">
+
+    <Page.DataContext>
+        <vm:MainViewModel />
+    </Page.DataContext>
     
     <Page.Resources>
 
@@ -238,7 +244,8 @@
         </Grid.RowDefinitions>
 
         <Pivot x:Name="TaskTabView"
-               Grid.Row="0">
+               Grid.Row="0"
+               Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
 
 
             <Pivot.RightHeader>
@@ -644,5 +651,51 @@
         
         <!--#endregion-->
 
+        <!--#region Add Teamspace Dialog starts-->
+        
+        <ContentDialog x:Name="AddTeamspaceDialog"
+                       Style="{StaticResource ContentDialogStyle}"
+                       Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="Add Teamspace"
+                                   FontSize="25"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+
+            <StackPanel x:Name="AddTeamspacesDialogContent"
+                Style="{StaticResource DialogContentStyle}">
+
+                <StackPanel>
+
+                    <TextBlock Text="There seem to be no Teamspace present in the currently selected project, Kindly create a Teamspace to proceed further"
+                               TextWrapping="Wrap"
+                               Foreground="Gray"
+                               Margin="0, 0, 0, 20"/>
+
+                    <TextBlock Text="Name"
+                               Grid.Column="0"/>
+                    <TextBox Name="TeamspaceName"
+                             PlaceholderText="Teamspace Name"
+                             Style="{StaticResource TextBoxCustom}"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <customusercontrol:CustomIconButtonControl Name="AddTeamspaceButton"
+                                                                   ButtonIcon="&#xE948;"
+                                                                   ButtonContent="Add Teamspace"
+                                                                   ButtonClick="AddTeamspace_ButtonClick"
+                                                                   ButtonBackground="{StaticResource SystemAccentColor}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+        </ContentDialog>
+
+        <!--#endregion-->
+        
     </Grid>
 </Page>
