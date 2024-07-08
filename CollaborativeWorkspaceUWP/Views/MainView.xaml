@@ -1,0 +1,193 @@
+﻿<Page
+    x:Class="CollaborativeWorkspaceUWP.Views.HomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.Views"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
+    xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource MainBackgroundAcrylicBrush}"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+
+        <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter" />
+        <converters:CollectionToVisibilityConverterInverse x:Key="CollectionToVisibilityConverterInverse" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
+        <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+
+        <Style TargetType="Button" x:Name="NavigationButtonStyle">
+            <Setter Property="Margin" Value="0, 10, 10, 10" />
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="CornerRadius" Value="3" />
+        </Style>
+        
+        <Style TargetType="Border" x:Name="AddNewTaskPopupBorder" >
+            <Setter Property="BorderBrush" Value="{StaticResource ApplicationForegroundThemeBrush}" />
+            <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="400" />
+        </Style>
+
+        <DataTemplate x:Key="AllOrganizationsListViewItemTemplate"
+                      x:DataType="models:Organization">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+        
+    </Page.Resources>
+
+    <Grid Background="{StaticResource MainBackgroundAcrylicBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="TitleBar" 
+              Background="Transparent">
+        </Grid>
+
+        <StackPanel Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource TitleBar}">
+
+            <ComboBox Name="SelectOrganizationCombobox"
+                      Margin="0, 10, 10, 10"
+                      ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
+                      ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
+                      CornerRadius="2"
+                      Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+
+            <Button Name="ProjectViewBtn" 
+                    Style="{StaticResource NavigationButtonStyle}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE70B;"
+                    Click="ProjectViewButton_Click"
+                    Visibility="Collapsed"/>
+            
+            <Button Name="TaskViewBtn" 
+                    Style="{StaticResource NavigationButtonStyle}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE73A;"
+                    Click="TaskViewButton_Click"/>
+            
+            <Button Name="SprintViewBtn" 
+                    Style="{StaticResource NavigationButtonStyle}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE804;"
+                    Click="SprintViewButton_Click"
+                    Visibility="Collapsed"/>
+
+            <TextBlock x:Name="AppTitleTextBlock"
+                       Text="CWP" 
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <Frame Name="HomeViewFrame" 
+               Grid.ColumnSpan="2"
+               Grid.Row="1"
+               Background="{StaticResource MainBackgroundAcrylicBrush}"/>
+
+        <ContentDialog x:Name="SelectOrgDialog"
+                       Style="{StaticResource ContentDialogStyle}">
+
+            <StackPanel x:Name="SelectOrgDialogContent"
+                        Style="{StaticResource DialogContentStyle}">
+
+                <Grid Margin="0, 0, 0, 25"
+                      Visibility="{x:Bind mainViewModel.AddOrganizationTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Organizations"
+                               FontSize="25"
+                               Grid.Column="0"/>
+                    <customusercontrol:CustomIconButtonControl Name="AddNewOrganizationButton"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               ButtonIcon="&#xE948;"
+                                                               ButtonContent="Add"
+                                                               ButtonStyle="{StaticResource ButtonNoBackground}"
+                                                               ButtonClick="AddNewOrganizationButton_ButtonClick"
+                                                               Grid.Column="1"/>
+                </Grid>
+
+                <Grid Margin="0, 0, 0, 25"
+                      Visibility="{x:Bind mainViewModel.AddOrganizationTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Name="GoBackToAllOrganizationsButton" 
+                            Style="{StaticResource ButtonNoBackground}"
+                            Margin="0, 0, 5, 0"
+                            Click="GoBackToAllOrganizationsButton_Click"
+                            FontFamily="Segoe MDL2 Assets"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="&#xE830;"
+                            Grid.Column="0"/>
+                    <TextBlock Text="Add Organization"
+                               FontSize="25"
+                               Grid.Column="1"/>
+                </Grid>
+
+                <Grid Visibility="{x:Bind mainViewModel.AddOrganizationTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}">
+                    <ListView Name="AllOrganizationsList" 
+                              ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
+                              ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
+                              Margin="0, 20, 0, 0"
+                              IsItemClickEnabled="True"
+                              ItemClick="AllOrganizationsList_ItemClick"
+                              ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                              Visibility="{x:Bind mainViewModel.Organizations, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+
+                    <StackPanel Name="NoOrganizationsAvailableMessage"
+                                Margin="0, 20, 0, 0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{x:Bind mainViewModel.Organizations, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                        <TextBlock Text="No Organizations Available"
+                                   Foreground="Gray"
+                                   FontSize="15"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Visibility="{x:Bind mainViewModel.AddOrganizationTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                    <TextBlock Text="Name"
+                               Grid.Column="0"/>
+                    <TextBox Name="OrgName"
+                             PlaceholderText="Organization Name"
+                             Style="{StaticResource TextBoxCustom}"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <customusercontrol:CustomIconButtonControl Name="AddOrganizationButton"
+                                                                   ButtonIcon="&#xE948;"
+                                                                   ButtonContent="Add Organization"
+                                                                   ButtonClick="AddOrganizationButton_ButtonClick"
+                                                                   ButtonBackground="{StaticResource SystemAccentColor}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+        </ContentDialog>
+
+    </Grid>
+</Page>

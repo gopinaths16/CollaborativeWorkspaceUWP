@@ -84,5 +84,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                 DropdownListView.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            OpenDropdownButton.Content = "\uE70D";
+            DropdownListView.Visibility = Visibility.Visible;
+        }
     }
 }

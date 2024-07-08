@@ -31,23 +31,9 @@
                         <Setter Property="Margin" Value="0, 20, 0, 0" />
                     </Style>
 
-                    <Style TargetType="ContentDialog" x:Name="ContentDialogStyle">
-                        <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
-                    </Style>
-
-                    <Style TargetType="TextBox" x:Name="TextBoxCustom">
-                        <Setter Property="CornerRadius" Value="2" />
-                        <Setter Property="Margin" Value="0, 5, 0, 20" />
-                    </Style>
-
                     <Style TargetType="ComboBox" x:Name="ComboBoxCustom">
                         <Setter Property="CornerRadius" Value="2" />
                         <Setter Property="Margin" Value="0, 5, 0, 20" />
-                    </Style>
-
-                    <Style TargetType="StackPanel" x:Name="DialogContentStyle">
-                        <Setter Property="Margin" Value="0, 10, 0, 0" />
                     </Style>
 
                     <Style TargetType="TextBlock" x:Name="TaskListProjectTitleStyle">
@@ -72,7 +58,7 @@
                         <Setter Property="CornerRadius" Value="5" />
                         <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
                         <Setter Property="Margin" Value="20, 0, 0, 10" />
-                        <Setter Property="Padding" Value="10" />
+                        <Setter Property="Padding" Value="20" />
                     </Style>
 
                     <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
@@ -170,77 +156,61 @@
 
                     <DataTemplate x:Key="SubTaskListViewDataTemplate"
                                   x:DataType="models:UserTask">
-                        <Grid Padding="10"
-                              CornerRadius="5"
-                              BorderThickness="2"
-                              HorizontalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                        <Grid Grid.Row="0"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <StackPanel Padding="10, 5, 10, 5"
+                                        Margin="5, 0, 0, 0"
+                                        Background="Gray"
+                                        CornerRadius="5"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Id}" />
+                            </StackPanel>
+                            <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       Text="&#xE73A;"
+                                       Margin="10, 0, 10, 0"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Name}"
+                                       Grid.Row="1"
+                                       Grid.Column="2"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="WordEllipsis"
+                                       MaxLines="1"/>
+                            <StackPanel Padding="5"
+                                        Background="red"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="5"
+                                        Margin="5, 0, 0, 0"
+                                        Grid.Column="3">
+                                <TextBlock Text="{Binding PriorityData.Name}" />
+                            </StackPanel>
+                            <StackPanel Padding="5"
+                                        Background="red"
+                                        CornerRadius="5"
+                                        Margin="5, 0, 0, 0"
+                                        Grid.Column="4"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding StatusData.Name}" />
+                            </StackPanel>
 
-                            <Grid Grid.Row="0"
-                                  Grid.Column="0"
-                                  Grid.ColumnSpan="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Padding="10, 5, 10, 5"
-                                            Margin="5, 0, 0, 0"
-                                            Background="Gray"
-                                            CornerRadius="5"
-                                            Grid.Column="0"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Id}" />
-                                </StackPanel>
-                                <TextBlock FontFamily="Segoe MDL2 Assets"
-                                           Text="&#xE73A;"
-                                           Margin="10, 0, 10, 0"
-                                           Grid.Column="1"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding Name}"
-                                           Grid.Row="1"
-                                           Grid.Column="2"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="Wrap"
-                                           TextTrimming="WordEllipsis"
-                                           MaxLines="1"/>
-                                <StackPanel Padding="5"
-                                            Background="red"
-                                            VerticalAlignment="Center"
-                                            CornerRadius="5"
-                                            Margin="5, 0, 0, 0"
-                                            Grid.Column="3">
-                                    <TextBlock Text="{Binding PriorityData.Name}" />
-                                </StackPanel>
-                                <StackPanel Padding="5"
-                                            Background="red"
-                                            CornerRadius="5"
-                                            Margin="5, 0, 0, 0"
-                                            Grid.Column="4"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding StatusData.Name}" />
-                                </StackPanel>
-
-                                <customusercontrol:CustomIconButtonControl Name="OpenSubTaskButton"
-                                                                           ButtonIcon="&#xED25;"
-                                                                           ButtonContent="Open"
-                                                                           ButtonClick="OpenSubTaskButton_ButtonClick"
-                                                                           Margin="10, 0, 0, 0"
-                                                                           ButtonBackground="Transparent"
-                                                                           Grid.Column="5"/>
-                            </Grid>
-
+                            <customusercontrol:CustomIconButtonControl Name="OpenSubTaskButton"
+                                                                       ButtonIcon="&#xED25;"
+                                                                       ButtonContent="Open"
+                                                                       ButtonClick="OpenSubTaskButton_ButtonClick"
+                                                                       Margin="10, 0, 0, 0"
+                                                                       ButtonBackground="Transparent"
+                                                                       Grid.Column="5"/>
                         </Grid>
                     </DataTemplate>
 
@@ -313,10 +283,12 @@
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 
+                                <!--#region Task List Region Starts-->
+                                
                                 <Grid Name="TaskListView" 
                                       Grid.Row="0"
                                       Grid.Column="0"
-                                      Margin="20, 20, 0, 0"
+                                      Margin="0, 20, 0, 0"
                                       Visibility="Collapsed"
                                       Width="300">
 
@@ -330,10 +302,10 @@
                                                 Orientation="Horizontal">
                                         <Button Name="OpenSplitViewButton" 
                                                 Style="{StaticResource ButtonNoBackground}"
-                                                Margin="5, 0, 10, 0"
+                                                Margin="0, 0, 5, 0"
                                                 Click="OpenSplitViewButton_Click"
                                                 FontFamily="Segoe MDL2 Assets"
-                                                Content="&#xE8A0;"
+                                                Content="&#xe8a0;"
                                                 FontSize="20"/>
                                         <TextBlock Name="TaskListProjectTitleIcon"
                                                    FontFamily="Segoe MDL2 Assets"
@@ -363,6 +335,8 @@
                                               ItemContainerStyle="{StaticResource ListViewItemStyle}" />
                                 </Grid>
 
+                                <!--#endregion-->
+                                
                                 <StackPanel Name="SelectProjectMessage"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="3"
@@ -384,8 +358,9 @@
                                                FontSize="30"/>
                                 </StackPanel>
 
+                                <!--#region Task Details view Starts-->
+                                
                                 <Grid Name="TaskDetailsView"
-                                      Padding="20"
                                       Visibility="Collapsed"
                                       Grid.Column="1"
                                       Grid.ColumnSpan="3"
@@ -487,6 +462,9 @@
                                         </PivotItem>
                                     </Pivot>
                                 </Grid>
+                                
+                                <!--#endregion-->
+                                
                             </Grid>
                         </SplitView.Content>
                     </SplitView>

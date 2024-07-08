@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
+using CollaborativeWorkspaceUWP.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,9 +29,13 @@ namespace CollaborativeWorkspaceUWP.Views
     public sealed partial class HomeView : Page
     {
 
+        MainViewModel mainViewModel;
+
         public HomeView()
         {
             this.InitializeComponent();
+
+            mainViewModel = new MainViewModel();
 
             CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
@@ -38,14 +43,9 @@ namespace CollaborativeWorkspaceUWP.Views
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             Window.Current.SetTitleBar(TitleBar);
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            HomeViewFrame.Navigate(typeof(OrganizationView));
-        }
-
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            HomeViewFrame.Navigate(typeof(OrganizationView));
+            await SelectOrgDialog.ShowAsync();
         }
 
         private void ProjectViewButton_Click(object sender, RoutedEventArgs e)
@@ -63,9 +63,29 @@ namespace CollaborativeWorkspaceUWP.Views
             HomeViewFrame.Navigate(typeof(SprintView));
         }
 
-        private void ClosePopupClicked(object sender, RoutedEventArgs e)
+        private void AllOrganizationsList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (AddNewTaskPopup.IsOpen) { AddNewTaskPopup.IsOpen = false; }
+            Organization organization = (Organization)e.ClickedItem;
+            mainViewModel.SetCurrOrganization(organization);
+            SelectOrganizationCombobox.SelectedItem = organization;
+            SelectOrgDialog.Hide();
+            HomeViewFrame.Navigate(typeof(TaskView));
+        }
+
+        private void AddNewOrganizationButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            mainViewModel.SetAddOrganizationContext();
+        }
+
+        private void GoBackToAllOrganizationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainViewModel.SetSelectOrganizationContext();
+        }
+
+        private void AddOrganizationButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            mainViewModel.AddNewOrganization(OrgName.Text);
+            mainViewModel.SetSelectOrganizationContext();
         }
     }
 }

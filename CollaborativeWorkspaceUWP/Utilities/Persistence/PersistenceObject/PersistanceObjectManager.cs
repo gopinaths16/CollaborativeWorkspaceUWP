@@ -36,5 +36,9 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             return _provider.GetProjectPersistenceObject();
         }
 
+        public IOrganizationPersistence GetOrganizationPersistenceObject()
+        {
+            return _provider.GetOrganizationPersistenceObject();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
     public interface IPersistenceObjectProvider
     {
         ITaskPersistence GetTaskPersistenceObject();
-
         IProjectPersistence GetProjectPersistenceObject();
+        IOrganizationPersistence GetOrganizationPersistenceObject();
     }
 }

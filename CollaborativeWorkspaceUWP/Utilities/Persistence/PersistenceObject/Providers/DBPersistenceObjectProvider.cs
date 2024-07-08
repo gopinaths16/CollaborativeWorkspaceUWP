@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
+﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.DBPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity.Imp.DBPersistence;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         public IProjectPersistence GetProjectPersistenceObject()
         {
             return new ProjectDBPersistenceObject();
+        }
+
+        public IOrganizationPersistence GetOrganizationPersistenceObject()
+        {
+            return new OrganizationDBPersistenceObject();
         }
     }
 }

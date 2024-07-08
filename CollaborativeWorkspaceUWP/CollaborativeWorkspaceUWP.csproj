@@ -128,6 +128,7 @@
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
     <Compile Include="DAL\ProjectDataHandler.cs" />
     <Compile Include="DAL\StatusDataHandler.cs" />
@@ -153,7 +154,9 @@
     <Compile Include="Utilities\Persistence\Persistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Common\DBPersistenceObject.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Common\IPersistenceObject.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\DBPersistence\OrganizationDBPersistenceObject.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\DBPersistence\ProjectDBPersistenceObject.cs" />
+    <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\IOrganizationPersistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\EntityPersistence\IProjectPersistence.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Providers\DBPersistenceObjectProvider.cs" />
     <Compile Include="Utilities\Persistence\PersistenceObject\Providers\IPersistenceObjectProvider.cs" />
@@ -164,18 +167,12 @@
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
     <Compile Include="ViewModels\TaskListViewModel.cs" />
-    <Compile Include="Views\SubViews\AddTaskView.xaml.cs">
-      <DependentUpon>AddTaskView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SubViews\CurrentTaskView.xaml.cs">
-      <DependentUpon>CurrentTaskView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HomeView.xaml.cs">
-      <DependentUpon>HomeView.xaml</DependentUpon>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -245,15 +242,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubViews\AddTaskView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SubViews\CurrentTaskView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HomeView.xaml">
+    <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

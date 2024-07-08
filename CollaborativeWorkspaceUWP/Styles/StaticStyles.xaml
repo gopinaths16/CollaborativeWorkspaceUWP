@@ -15,10 +15,24 @@
         <Setter Property="Margin" Value="10, 0, 0, 0" />
     </Style>
 
+    <Style TargetType="ContentDialog" x:Name="ContentDialogStyle">
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
+    </Style>
+
+    <Style TargetType="StackPanel" x:Name="DialogContentStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0" />
+    </Style>
+
+    <Style TargetType="TextBox" x:Name="TextBoxCustom">
+        <Setter Property="CornerRadius" Value="2" />
+        <Setter Property="Margin" Value="0, 5, 0, 20" />
+    </Style>
+
     <AcrylicBrush x:Key="MainBackgroundAcrylicBrush"
                   BackgroundSource="HostBackdrop"
                   TintColor="#7F000000"
-                  TintOpacity="0.8"/>
+                  TintOpacity="0.9"/>
 
     <AcrylicBrush x:Key="AccentAcrylicBrush"
                   BackgroundSource="HostBackdrop"
@@ -28,7 +42,7 @@
     <AcrylicBrush x:Key="SecondaryAcrylicBrush"
                   BackgroundSource="HostBackdrop"
                   TintColor="Black"
-                  TintOpacity="0.6"/>
+                  TintOpacity="1"/>
 
     <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -57,7 +71,6 @@
 
     <Style TargetType="Button" x:Key="ButtonNoBackground">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{StaticResource SystemAccentColor}" />
 
         <Setter Property="Template">
             <Setter.Value>
