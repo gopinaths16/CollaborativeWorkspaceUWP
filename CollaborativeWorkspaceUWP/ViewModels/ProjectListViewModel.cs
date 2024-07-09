@@ -18,12 +18,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public ObservableCollection<Project> Projects
         {
             get { return projects; }
-            set { projects = value; }
+            set { 
+                projects = value; 
+                NotifyPropertyChanged(nameof(Projects));
+            }
         }
 
         public ProjectListViewModel()
         {
             projectDataHandler = new ProjectDataHandler();
+            Projects = new ObservableCollection<Project>();
             IsProjectListPaneOpen = true;
         }
 
@@ -44,7 +48,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void GetProjectsForCurrentTeamspace(long teamspaceId)
         {
-            Projects = projectDataHandler.GetProjectsForTeamspace(teamspaceId);
+            foreach (var project in projectDataHandler.GetProjectsForTeamspace(teamspaceId))
+            {
+                Projects.Add(project);
+            }
             NotifyPropertyChanged(nameof(Projects));
         }
     }
