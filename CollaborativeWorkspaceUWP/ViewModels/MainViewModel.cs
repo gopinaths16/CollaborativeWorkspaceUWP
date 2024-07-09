@@ -82,11 +82,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             NotifyPropertyChanged(nameof(CurrOrganization));
         }
 
-        public void CreateTeamspaceInCurrentOrganization(Teamspace teamspace)
+        public Teamspace CreateTeamspaceInCurrentOrganization(Teamspace teamspace)
         {
             teamspace = teamspaceDataHandler.AddTeamspace(teamspace);
             TeamspacesForCurrOrganization.Add(teamspace);
             NotifyPropertyChanged(nameof(TeamspacesForCurrOrganization));
+            return teamspace;
         }
     }
 }

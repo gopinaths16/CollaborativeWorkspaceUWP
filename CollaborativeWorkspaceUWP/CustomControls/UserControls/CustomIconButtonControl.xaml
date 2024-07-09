@@ -12,7 +12,7 @@
     <UserControl.Resources>
 
         <Style TargetType="TextBlock" x:Key="Icon">
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="15" />
         </Style>

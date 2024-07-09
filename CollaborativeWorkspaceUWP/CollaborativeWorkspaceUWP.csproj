@@ -122,6 +122,9 @@
     <Compile Include="CustomControls\UserControls\CustomIconButtonControl.xaml.cs">
       <DependentUpon>CustomIconButtonControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml.cs">
+      <DependentUpon>CustomSplitViewItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\DropDownListViewControl.xaml.cs">
       <DependentUpon>DropDownListViewControl.xaml</DependentUpon>
     </Compile>
@@ -222,6 +225,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\DropDownListViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -283,7 +290,9 @@
       <Version>1.0.118</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\SubViews\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

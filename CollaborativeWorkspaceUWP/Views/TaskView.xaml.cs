@@ -171,16 +171,14 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 this.mainViewModel = mainViewModel;
                 this.DataContext = mainViewModel;
-
-                currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
-                projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             }
         }
 
         private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
         {
             Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = 0 };
-            mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
+            currTeamspaceViewModel.CurrTeamspace = mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
+            projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             AddTeamspaceDialog.Hide();
         }
 
@@ -189,6 +187,11 @@ namespace CollaborativeWorkspaceUWP.Views
             if(mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
             {
                 await AddTeamspaceDialog.ShowAsync();
+            }
+            else
+            {
+                currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
+                projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             }
         }
     }
