@@ -58,6 +58,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { _itemAddEventHandler -= value; }
         }
 
+        public string MessageOnSourceEmpty
+        {
+            get { return (string)GetValue(MessageOnSourceEmptyProperty); }
+            set { SetValue(MessageOnSourceEmptyProperty, value); }
+        }
+
         public static readonly DependencyProperty ListViewItemTemplateProperty = DependencyProperty.Register("ListViewItemTemplate", typeof(DataTemplate), typeof(DropDownListViewControl), null);
         
         public static readonly DependencyProperty ListViewItemSourceProperty = DependencyProperty.Register("ListViewItemSource", typeof(Object), typeof(DropDownListViewControl), null);
@@ -66,6 +72,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty AllowAdditionToListViewProperty = DependencyProperty.Register("AllowAdditionToListView", typeof(bool), typeof(DropDownListViewControl), null);
 
+        public static readonly DependencyProperty MessageOnSourceEmptyProperty = DependencyProperty.Register("MessageOnSourceEmpty", typeof(string), typeof(DropDownListViewControl), null);
+
         public DropDownListViewControl()
         {
             this.InitializeComponent();
@@ -73,22 +81,22 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void OpenDropdownButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DropdownListView.Visibility == Visibility.Collapsed)
+            if (DropdownListViewContent.Visibility == Visibility.Collapsed)
             {
                 OpenDropdownButton.Content = "\uE70D";
-                DropdownListView.Visibility = Visibility.Visible;
+                DropdownListViewContent.Visibility = Visibility.Visible;
             }
             else
             {
                 OpenDropdownButton.Content = "\uE76C";
-                DropdownListView.Visibility = Visibility.Collapsed;
+                DropdownListViewContent.Visibility = Visibility.Collapsed;
             }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             OpenDropdownButton.Content = "\uE70D";
-            DropdownListView.Visibility = Visibility.Visible;
+            DropdownListViewContent.Visibility = Visibility.Visible;
         }
     }
 }

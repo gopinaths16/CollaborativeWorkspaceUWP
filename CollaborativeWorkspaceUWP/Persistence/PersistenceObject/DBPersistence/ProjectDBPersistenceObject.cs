@@ -30,6 +30,14 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
             Query = command;
         }
 
+        public void SetGetProjectsForTeamspaceContext(long teamspaceId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT * FROM CW_PROJECT_DETAILS WHERE TEAMSPACEID=@TeamspaceId";
+            command.Parameters.AddWithValue("@TeamspaceId", teamspaceId);
+            Query = command;
+        }
+
         public ObservableCollection<Project> GetAllProjects()
         {
             ObservableCollection<Project> projects = new ObservableCollection<Project>();

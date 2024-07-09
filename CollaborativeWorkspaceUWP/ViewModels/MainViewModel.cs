@@ -78,6 +78,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             CurrOrganization = organization;
             TeamspacesForCurrOrganization = teamspaceDataHandler.GetAllTeamspacesForCurrOrganization(organization.Id);
+            NotifyPropertyChanged(nameof(TeamspacesForCurrOrganization));
             NotifyPropertyChanged(nameof(CurrOrganization));
         }
 

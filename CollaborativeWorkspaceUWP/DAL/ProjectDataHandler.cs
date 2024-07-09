@@ -70,5 +70,30 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return projects;
         }
+
+        public ObservableCollection<Project> GetProjectsForTeamspace(long teamspaceId)
+        {
+            ObservableCollection<Project> projects = new ObservableCollection<Project>();
+            IProjectPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetProjectPersistenceObject();
+                persistenceObject.SetGetProjectsForTeamspaceContext(teamspaceId);
+                Persistence.Instance.Get(persistenceObject);
+                projects = persistenceObject.GetAllProjects();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return projects;
+        }
     }
 }

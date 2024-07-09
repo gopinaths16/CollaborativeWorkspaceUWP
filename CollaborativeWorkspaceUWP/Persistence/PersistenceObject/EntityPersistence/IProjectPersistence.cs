@@ -12,6 +12,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
     {
         void SetAddContext(Project project);
         void SetGetAllProjectsContext();
+        void SetGetProjectsForTeamspaceContext(long teamspaceId);
         ObservableCollection<Project> GetAllProjects();
         Project GetProject();
     }

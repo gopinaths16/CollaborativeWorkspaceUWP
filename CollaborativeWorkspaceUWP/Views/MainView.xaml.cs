@@ -89,5 +89,11 @@ namespace CollaborativeWorkspaceUWP.Views
             mainViewModel.AddNewOrganization(OrgName.Text);
             mainViewModel.SetSelectOrganizationContext();
         }
+
+        private void SelectOrganizationCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedOrgIndex = SelectOrganizationCombobox.SelectedIndex;
+            mainViewModel.SetCurrOrganization(mainViewModel.Organizations[selectedOrgIndex]);
+        }
     }
 }

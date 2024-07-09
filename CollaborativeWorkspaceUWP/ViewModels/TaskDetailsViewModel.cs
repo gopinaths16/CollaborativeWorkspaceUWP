@@ -28,9 +28,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set
             {
                 currTask = value;
-                currTask.StatusData = GetTaskStatus();
-                currTask.PriorityData = GetTaskPriority();
-                currTask.SubTasks = GetAllSubTasks();
+                if(currTask != null)
+                {
+                    currTask.StatusData = GetTaskStatus();
+                    currTask.PriorityData = GetTaskPriority();
+                    currTask.SubTasks = GetAllSubTasks();
+                }
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }

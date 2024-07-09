@@ -42,16 +42,6 @@
                         <Setter Property="Margin" Value="0, 5, 0, 20" />
                     </Style>
 
-                    <Style TargetType="TextBlock" x:Name="TaskListProjectTitleStyle">
-                        <Setter Property="Margin" Value="10, 0, 0, 0" />
-                        <Setter Property="FontSize" Value="30" />
-                    </Style>
-
-                    <Style TargetType="TextBlock" x:Name="TaskListProjectTitleIconStyle">
-                        <Setter Property="FontSize" Value="30" />
-                        <Setter Property="Margin" Value="0, 5, 0, 0" />
-                    </Style>
-
                     <Style TargetType="TextBlock" x:Name="TaskDetailsViewTitleStyle">
                         <Setter Property="FontSize" Value="50" />
                         <Setter Property="FontWeight" Value="Bold" />
@@ -63,13 +53,23 @@
                         <Setter Property="BorderThickness" Value="0.5" />
                         <Setter Property="CornerRadius" Value="5" />
                         <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
-                        <Setter Property="Margin" Value="20, 0, 0, 10" />
+                        <Setter Property="Margin" Value="10, 0, 0, 0" />
                         <Setter Property="Padding" Value="20" />
                     </Style>
 
                     <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
                         <Setter Property="Margin" Value="10, 20, 0, 0" />
                         <Setter Property="VerticalAlignment" Value="Top" />
+                    </Style>
+
+                    <Style TargetType="StackPanel" x:Key="ProjectSplitViewPaneStyle">
+                        <Setter Property="Padding" Value="10, 0, 20, 0" />
+                    </Style>
+
+                    <Style TargetType="Grid" x:Key="TaskListViewByProjectStyle">
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
+                        <Setter Property="Padding" Value="5" />
                     </Style>
 
                     <DataTemplate x:Key="ProjectListViewItemTemplate" 
@@ -102,62 +102,22 @@
 
                     <DataTemplate x:Key="TaskListViewDataTemplate"
                                   x:DataType="models:UserTask">
-                        <Grid Padding="10"
-                              Background="{StaticResource AccentAcrylicBrush}"
-                              Margin="0, 10, 0, 0"
-                              CornerRadius="5"
-                              BorderThickness="2"
-                              HorizontalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0, 0, 0, 0.5"
+                                BorderBrush="{StaticResource SystemListLowColor}">
+                            <Grid CornerRadius="5"
+                                  Margin="20, 0, 0, 20"
+                                  HorizontalAlignment="Stretch">
 
-                            <StackPanel Orientation="Horizontal"
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2">
-                                <StackPanel Padding="10, 2, 10, 2"
-                                            Background="Gray"
-                                            CornerRadius="5">
-                                    <TextBlock Text="{Binding Id}" />
-                                </StackPanel>
-                                <StackPanel Padding="5, 2, 5, 2"
-                                            Background="red"
-                                            CornerRadius="5"
-                                            Margin="5, 0, 0, 0">
-                                    <TextBlock Text="{Binding PriorityData.Name}" />
-                                </StackPanel>
-                                <StackPanel Padding="5, 2, 5, 2"
-                                            Background="red"
-                                            CornerRadius="5"
-                                            Margin="5, 0, 0, 0">
-                                    <TextBlock Text="{Binding StatusData.Name}" />
-                                </StackPanel>
-                            </StackPanel>
-                            
-                            <TextBlock FontFamily="Segoe MDL2 Assets"
-                                       Text="&#xE73A;"
-                                       Margin="0, 10, 10, 0"
-                                       Grid.Row="1"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       Grid.Column="0"/>
-                            <TextBlock Text="{Binding Name}"
-                                       Grid.Row="1"
-                                       Grid.Column="1"
-                                       Padding="0, 8, 0, 0"
-                                       VerticalAlignment="Top"
-                                       TextWrapping="Wrap"
-                                       TextTrimming="WordEllipsis"
-                                       MaxLines="1"/>
+                                <CheckBox Grid.Row="0"
+                                          Grid.Column="0"
+                                          Content="{Binding Name}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top"
+                                          Margin="5, 5, 0, 0"/>
 
-                        </Grid>
+
+                            </Grid>
+                        </Border>
                     </DataTemplate>
 
                     <DataTemplate x:Key="SubTaskListViewDataTemplate"
@@ -229,6 +189,11 @@
                                   x:DataType="models:Status">
                         <TextBlock Text="{Binding Name}" />
                     </DataTemplate>
+
+                    <DataTemplate x:Key="SelectTeamspaceComboboxTemplate"
+                                  x:DataType="models:Teamspace">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
                     
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
@@ -238,13 +203,14 @@
 
     <Grid Name="TaskViewPanel"
           Background="{StaticResource MainBackgroundAcrylicBrush}">
-
+        
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Pivot x:Name="TaskTabView"
-               Grid.Row="0"
+               Grid.Row="1"
                Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
 
 
@@ -253,7 +219,22 @@
                 </StackPanel>
             </Pivot.RightHeader>
 
-            <PivotItem Header="By Projects">
+            <PivotItem>
+                <PivotItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                   Text="&#xE70B;"
+                                   FontSize="12"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"/>
+
+                        <TextBlock Text="By Project"
+                                   FontSize="12"
+                                   Margin="5, 0, 0, 0"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </PivotItem.Header>
                 <Grid Name="ProjectTaskViewGrid"
                       Style="{StaticResource ProjectTaskView}">
                     
@@ -264,20 +245,22 @@
                                PaneBackground="{StaticResource MainBackgroundAcrylicBrush}">
 
                         <SplitView.Pane>
-                            <ScrollViewer Grid.Row="0"
+                            <StackPanel Grid.Row="0"
                                           Grid.Column="0"
-                                          Margin="0, 20, 20, 0"
-                                          HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Disabled">
+                                          Margin="0, 5, 10, 0"
+                                          Style="{StaticResource ProjectSplitViewPaneStyle}">
 
+                                
+                                
                                 <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
                                                                            ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
                                                                            ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
                                                                            AllowAdditionToListView="True"
                                                                            OnItemAddClick="AddProjectButton_ButtonClick"
-                                                                           ListViewItemClicked="ProjectListView_ItemClick"/>
+                                                                           ListViewItemClicked="ProjectListView_ItemClick"
+                                                                           MessageOnSourceEmpty="No Projects available"/>
 
-                            </ScrollViewer>
+                            </StackPanel>
                         </SplitView.Pane>
 
                         <SplitView.Content>
@@ -286,7 +269,7 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 
@@ -295,9 +278,8 @@
                                 <Grid Name="TaskListView" 
                                       Grid.Row="0"
                                       Grid.Column="0"
-                                      Margin="0, 20, 0, 0"
-                                      Visibility="Collapsed"
-                                      Width="300">
+                                      Style="{StaticResource TaskListViewByProjectStyle}"
+                                      Visibility="{x:Bind taskListViewModel.CurrentProject, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -309,18 +291,15 @@
                                                 Orientation="Horizontal">
                                         <Button Name="OpenSplitViewButton" 
                                                 Style="{StaticResource ButtonNoBackground}"
-                                                Margin="0, 0, 5, 0"
                                                 Click="OpenSplitViewButton_Click"
-                                                FontFamily="Segoe MDL2 Assets"
+                                                FontFamily="Segoe Fluent Icons"
                                                 Content="&#xe8a0;"
-                                                FontSize="20"/>
-                                        <TextBlock Name="TaskListProjectTitleIcon"
-                                                   FontFamily="Segoe MDL2 Assets"
-                                                   Text="&#xE70B;"
-                                                   Style="{StaticResource TaskListProjectTitleIconStyle}"/>
+                                                FontSize="17"/>
                                         <TextBlock Name="TaskListProjectTitle"
                                                    Text="{x:Bind taskListViewModel.CurrentProject.Name, Mode=OneWay}"
-                                                   Style="{StaticResource TaskListProjectTitleStyle}"/>
+                                                   FontSize="15"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center"/>
                                     </StackPanel>
 
                                     <customusercontrol:CustomIconButtonControl Name="OpenAddTaskWindowButton"
@@ -335,11 +314,11 @@
                                     <ListView Name="TaskListViewByProject" 
                                               ItemsSource="{x:Bind taskListViewModel.Tasks, Mode=TwoWay}"
                                               ItemTemplate="{StaticResource TaskListViewDataTemplate}"
-                                              Margin="0, 20, 0, 0"
+                                              Margin="0, 15, 0, 0"
                                               Grid.Row="2"
                                               IsItemClickEnabled="True"
                                               ItemClick="TaskListView_ItemClick"
-                                              ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                                              ItemContainerStyle="{StaticResource ListViewItemStyleAccent}" />
                                 </Grid>
 
                                 <!--#endregion-->
@@ -368,10 +347,10 @@
                                 <!--#region Task Details view Starts-->
                                 
                                 <Grid Name="TaskDetailsView"
-                                      Visibility="Collapsed"
                                       Grid.Column="1"
                                       Grid.ColumnSpan="3"
-                                      Style="{StaticResource TaskDetailsViewGridDisplay}">
+                                      Style="{StaticResource TaskDetailsViewGridDisplay}"
+                                      Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -446,8 +425,22 @@
                                            Grid.Column="0"
                                            Grid.ColumnSpan="2"
                                            Margin="5, 20, 5, 0">
-                                        <PivotItem Name="SubtTaskPivotItem"
-                                                   Header="Sub Tasks">
+                                        <PivotItem Name="SubtTaskPivotItem">
+                                            <PivotItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontFamily="Segoe Fluent Icons"
+                                                               Text="&#xE73A;"
+                                                               FontSize="12"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Bold"/>
+
+                                                    <TextBlock Text="Sub Tasks"
+                                                               FontSize="12"
+                                                               Margin="5, 0, 0, 0"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Bold"/>
+                                                </StackPanel>
+                                            </PivotItem.Header>
                                             <StackPanel Orientation="Vertical">
                                                 <customusercontrol:CustomIconButtonControl Name="OpenAddSubTaskWindowButton"
                                                                                            ButtonIcon="&#xE948;"
@@ -464,7 +457,7 @@
                                                           Margin="0, 20, 0, 0"
                                                           Grid.Row="2"
                                                           IsItemClickEnabled="False"
-                                                          ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                                                          ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
                                             </StackPanel>
                                         </PivotItem>
                                     </Pivot>
@@ -643,7 +636,7 @@
                           Grid.Row="2"
                           IsItemClickEnabled="True"
                           ItemClick="SubTaskListViewByProject_ItemClick"
-                          ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                          ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
 
             </StackPanel>
 

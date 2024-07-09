@@ -170,6 +170,7 @@
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />

@@ -9,6 +9,7 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
     <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+    <converters:ObjectToVisibilityConverterInverse x:Key="ObjectToVisibilityConverterInverse" />
 
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
@@ -50,25 +51,85 @@
                   TintColor="Black"
                   TintOpacity="1"/>
 
-    <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
+    <Style TargetType="ListViewItem" x:Key="ListViewItemStyleAccent">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Border x:Name="OuterContainer" Background="{TemplateBinding Background}">
+                    <Border x:Name="OuterContainer" 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{StaticResource SystemListLowColor}" 
+                                                        Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="Pressed"/>
-                                <VisualState x:Name="Selected"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{StaticResource SystemListAccentHighColor}" 
+                                                        Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="{StaticResource SystemListAccentLowColor}" 
+                                                        Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <ContentPresenter Content="{TemplateBinding Content}" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListViewItem" x:Key="ListViewItemStyleDormant">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border x:Name="OuterContainer" 
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="10">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="{StaticResource SystemListLowColor}" 
+                                                    Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="{StaticResource SystemListLowColor}" 
+                                                    Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Content="{TemplateBinding Content}" 
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -87,7 +148,7 @@
                         Margin="{TemplateBinding Margin}"
                         Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

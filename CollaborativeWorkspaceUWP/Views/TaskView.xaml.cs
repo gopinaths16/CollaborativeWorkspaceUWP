@@ -32,11 +32,11 @@ namespace CollaborativeWorkspaceUWP.Views
         AddTaskViewModel addTaskViewModel;
         AddSubTaskViewModel addSubTaskViewModel;
         MainViewModel mainViewModel;
+        CurrentTeamspaceViewModel currTeamspaceViewModel;
 
         public TaskView()
         {
             this.InitializeComponent();
-            
             
             projectListViewModel = new ProjectListViewModel();
             taskListViewModel = new TaskListViewModel();
@@ -44,6 +44,7 @@ namespace CollaborativeWorkspaceUWP.Views
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
             addSubTaskViewModel = new AddSubTaskViewModel();
+            currTeamspaceViewModel = new CurrentTeamspaceViewModel();
         }
 
         private void CustomIconButtonControl_ButtonClick(object sender, RoutedEventArgs e)
@@ -56,9 +57,7 @@ namespace CollaborativeWorkspaceUWP.Views
             Project currProject = (Project)e.ClickedItem;
             taskListViewModel.GetTasksForProject(currProject);
             SelectProjectMessage.Visibility = Visibility.Collapsed;
-            TaskDetailsView.Visibility = Visibility.Collapsed;
             SelectTaskMessage.Visibility = Visibility.Visible;
-            TaskListView.Visibility = Visibility.Visible;
         }
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -78,8 +77,6 @@ namespace CollaborativeWorkspaceUWP.Views
             //task.Name = taskName;
             //task.Status = (int)taskStatus;
             //task.Priority = (int)taskPriority;
-
-
         }
 
         private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -102,6 +99,7 @@ namespace CollaborativeWorkspaceUWP.Views
             project.Name = projectName;
             project.Status = projectStatus.Id;
             project.Priority = projectPriority.Id;
+            project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
 
             Project result = addProjectViewModel.AddProject(project);
             projectListViewModel.AddProjectToList(result);
@@ -127,7 +125,7 @@ namespace CollaborativeWorkspaceUWP.Views
             AddTaskDialog.Hide();
         }
 
-        private async void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
+        private void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
         {
             AddProjectDialog.Hide();
         }
@@ -173,6 +171,9 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 this.mainViewModel = mainViewModel;
                 this.DataContext = mainViewModel;
+
+                currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
+                projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             }
         }
 

@@ -24,7 +24,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public ProjectListViewModel()
         {
             projectDataHandler = new ProjectDataHandler();
-            Projects = projectDataHandler.GetAllProjects();
             IsProjectListPaneOpen = true;
         }
 
@@ -43,5 +42,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             NotifyPropertyChanged(nameof(Projects));
         }
 
+        public void GetProjectsForCurrentTeamspace(long teamspaceId)
+        {
+            Projects = projectDataHandler.GetProjectsForTeamspace(teamspaceId);
+            NotifyPropertyChanged(nameof(Projects));
+        }
     }
 }
