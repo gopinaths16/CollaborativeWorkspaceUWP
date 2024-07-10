@@ -17,7 +17,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetAddContext(UserTask task)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId, 0) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID";
+            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId, @ParentTaskId) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID";
             command.Parameters.AddWithValue("@Name", task.Name);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Status", task.Status);
@@ -25,6 +25,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
             command.Parameters.AddWithValue("@OwnerId", task.OwnerId);
             command.Parameters.AddWithValue("@AssigneeId", task.AssigneeId);
+            command.Parameters.AddWithValue("@ParentTaskId", task.ParentTaskId);
             Query = command;
         }
 

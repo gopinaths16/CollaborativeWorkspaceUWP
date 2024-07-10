@@ -56,6 +56,7 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             Project currProject = (Project)e.ClickedItem;
             taskListViewModel.GetTasksForProject(currProject);
+            taskDetailsViewModel.CurrTask = null;
             SelectProjectMessage.Visibility = Visibility.Collapsed;
             SelectTaskMessage.Visibility = Visibility.Visible;
         }
@@ -86,7 +87,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void OpenAddTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            await AddTaskDialog.ShowAsync();
+            taskListViewModel.IsAddTaskContextTriggered = true;
         }
 
         private async void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -113,16 +114,16 @@ namespace CollaborativeWorkspaceUWP.Views
 
             task.Name = AddTaskDialogTaskName.Text;
             task.Description = AddTaskDialogDescription.Text;
-            task.Status = ((Status)AddTaskDialogStatus.SelectedItem).Id;
-            task.Priority = ((Priority)AddTaskDialogPriority.SelectedItem).Id;
+            task.Status = AddTaskDialogStatus.SelectedItem != null ? ((Status)AddTaskDialogStatus.SelectedItem).Id : 0;
+            task.Priority = AddTaskDialogPriority.SelectedItem != null ? ((Priority)AddTaskDialogPriority.SelectedItem).Id : 0;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
+            task.ParentTaskId = -1;
 
             task = addTaskViewModel.AddTask(task);
             taskListViewModel.AddTaskToList(task);
 
-            AddTaskDialog.Hide();
         }
 
         private void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
@@ -132,7 +133,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void CloseTaskDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            AddTaskDialog.Hide();
+            taskListViewModel.IsAddTaskContextTriggered = false;
         }
 
         private void OpenSplitViewButton_Click(object sender, RoutedEventArgs e)
@@ -142,14 +143,11 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            addSubTaskViewModel.CurrTask = taskDetailsViewModel.CurrTask;
-            addSubTaskViewModel.LoadNonSubTasks();
-            await AddSubTaskDialog.ShowAsync();
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = true;
         }
 
         private void CloseSubTaskDialog_Click(object sender, RoutedEventArgs e)
         {
-            AddSubTaskDialog.Hide();
         }
 
         private void SubTaskListViewByProject_ItemClick(object sender, ItemClickEventArgs e)
@@ -160,7 +158,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void OpenSubTaskButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -193,6 +191,39 @@ namespace CollaborativeWorkspaceUWP.Views
                 currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
                 projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             }
+        }
+
+        private void CloseSubTaskDialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
+        }
+
+        private void AddSubTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            UserTask task = new UserTask();
+
+            task.Name = AddSubTaskDialogTaskName.Text;
+            task.Description = AddSubTaskDialogDescription.Text;
+            task.Status = AddSubTaskDialogStatus.SelectedItem != null ? ((Status)AddSubTaskDialogStatus.SelectedItem).Id : 0;
+            task.Priority = AddSubTaskDialogPriority.SelectedItem != null ? ((Priority)AddSubTaskDialogPriority.SelectedItem).Id : 0;
+            task.ProjectId = taskListViewModel.CurrentProject.Id;
+            task.OwnerId = 0;
+            task.AssigneeId = 0;
+            task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
+
+            task = addTaskViewModel.AddTask(task);
+            taskListViewModel.AddTaskToList(task);
+            taskDetailsViewModel.AddSubTaskToCurrTask(task);
+        }
+
+        private void AddSubTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AddSubTaskFromDialogButton.IsButtonEnabled = AddSubTaskDialogTaskName.Text.Length > 0 ? true : false;
+        }
+
+        private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            AddTaskFromDialogButton.IsButtonEnabled = AddTaskDialogTaskName.Text.Length > 0 ? true : false;
         }
     }
 }

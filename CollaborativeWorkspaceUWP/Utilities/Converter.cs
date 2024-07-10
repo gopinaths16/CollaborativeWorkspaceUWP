@@ -110,4 +110,36 @@ namespace CollaborativeWorkspaceUWP.Utilities.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class StringToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is int length)
+            {
+                return length == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class LongToIntConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            long result = (long) value;
+            return (int)result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            int result = (int)value;
+            return (long)result;
+        }
+    }
 }

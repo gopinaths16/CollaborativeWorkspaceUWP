@@ -10,6 +10,8 @@
     <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
     <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
     <converters:ObjectToVisibilityConverterInverse x:Key="ObjectToVisibilityConverterInverse" />
+    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters:LongToIntConverter x:Key="LongToIntConverter" />
 
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
@@ -36,10 +38,66 @@
         <Setter Property="Margin" Value="0, 5, 0, 20" />
     </Style>
 
+    <Style TargetType="TextBox" x:Name="TextBoxNoBg">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Disabled"/>
+                                <VisualState x:Name="ReadOnly"/>
+                                <VisualState x:Name="MouseOver"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
+                                                                       Storyboard.TargetName="BorderElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                    Value="Transparent"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" 
+                                                                       Storyboard.TargetName="BorderElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                    Value="Transparent"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="BorderElement" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid>
+                                <ScrollViewer x:Name="ContentElement" 
+                                              HorizontalScrollBarVisibility="Disabled" 
+                                              VerticalScrollBarVisibility="Hidden" 
+                                              IsTabStop="False"/>
+                                <TextBlock x:Name="PlaceholderTextElement" 
+                                           Text="{TemplateBinding PlaceholderText}" 
+                                           Foreground="{ThemeResource TextControlPlaceholderForeground}" 
+                                           Margin="4,0,0,0" 
+                                           IsHitTestVisible="True" 
+                                           Visibility="{Binding Text.Length, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Empty}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- #7F000000 to be changed-->
     <AcrylicBrush x:Key="MainBackgroundAcrylicBrush"
                   BackgroundSource="HostBackdrop"
                   TintColor="#7F000000"
-                  TintOpacity="0.9"/>
+                  TintOpacity="1"/>
 
     <AcrylicBrush x:Key="AccentAcrylicBrush"
                   BackgroundSource="HostBackdrop"

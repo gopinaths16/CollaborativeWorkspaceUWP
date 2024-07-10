@@ -150,7 +150,7 @@
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\TableDataTemplate.cs" />
-    <Compile Include="Utilities\Converters\VisibilityConverter.cs" />
+    <Compile Include="Utilities\Converter.cs" />
     <Compile Include="Persistence\Handlers\IPersistenceHandler.cs" />
     <Compile Include="Persistence\Managers\IPersistenceManager.cs" />
     <Compile Include="Persistence\Managers\DBPersistenceManager.cs" />

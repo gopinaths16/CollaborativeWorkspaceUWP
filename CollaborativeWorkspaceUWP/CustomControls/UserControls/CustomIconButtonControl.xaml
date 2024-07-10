@@ -30,7 +30,8 @@
                 Style="{x:Bind ButtonStyle}"
                 Background="{x:Bind Background}"
                 CornerRadius="5"
-                Click="{x:Bind ButtonClickEvent}">
+                Click="{x:Bind ButtonClickEvent}"
+                IsEnabled="{x:Bind IsButtonEnabled, Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Name="Icon"
                            Text="{x:Bind ButtonIcon}"

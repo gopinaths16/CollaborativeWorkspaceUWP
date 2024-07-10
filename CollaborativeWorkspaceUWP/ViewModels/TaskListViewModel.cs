@@ -13,6 +13,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class TaskListViewModel : BaseViewModel
     {
         ObservableCollection<UserTask> tasks;
+        bool isAddTaskContextTriggered;
         List<Priority> priorityList;
         List<Status> statusList;
 
@@ -29,6 +30,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
             tasks = new ObservableCollection<UserTask>();
+            IsAddTaskContextTriggered = false;
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -39,6 +41,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public Project CurrentProject
         {
             get; set;
+        }
+
+        public bool IsAddTaskContextTriggered
+        {
+            get { return isAddTaskContextTriggered; }
+            set { 
+                isAddTaskContextTriggered = value; 
+                NotifyPropertyChanged(nameof(IsAddTaskContextTriggered));
+            }
         }
 
         public void GetTasksForProject(Project project)

@@ -127,7 +127,8 @@
                                                                ButtonContent="Add"
                                                                ButtonStyle="{StaticResource ButtonNoBackground}"
                                                                ButtonClick="AddNewOrganizationButton_ButtonClick"
-                                                               Grid.Column="1"/>
+                                                               Grid.Column="1"
+                                                               IsButtonEnabled="True"/>
                 </Grid>
 
                 <Grid Margin="0, 0, 0, 25"
@@ -184,7 +185,8 @@
                                                                    ButtonIcon="&#xE948;"
                                                                    ButtonContent="Add Organization"
                                                                    ButtonClick="AddOrganizationButton_ButtonClick"
-                                                                   ButtonBackground="{StaticResource SystemAccentColor}"/>
+                                                                   ButtonBackground="{StaticResource SystemAccentColor}"
+                                                                   IsButtonEnabled="True"/>
                     </StackPanel>
                 </StackPanel>
 

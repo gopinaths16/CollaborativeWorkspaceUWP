@@ -87,6 +87,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(ButtonStyleProperty, value); }
         }
 
+
+
+        public bool IsButtonEnabled
+        {
+            get { return (bool)GetValue(IsButtonEnabledProperty); }
+            set { SetValue(IsButtonEnabledProperty, value); }
+        }
+
         public static readonly DependencyProperty ButtonContentProperty = DependencyProperty.Register("ButtonContent", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
 
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register("ButtonIcon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(default(string)));
@@ -98,6 +106,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register("ButtonBackground", typeof(Color), typeof(CustomIconButtonControl), null);
 
         public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register("ButtonStyle", typeof(Style), typeof(CustomIconButtonControl), null);
+
+        public static readonly DependencyProperty IsButtonEnabledProperty = DependencyProperty.Register("IsButtonEnabled", typeof(bool), typeof(CustomIconButtonControl), null);
 
         public CustomIconButtonControl()
         {
