@@ -12,8 +12,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class TaskDetailsViewModel : BaseViewModel
     {
         UserTask currTask;
-        Status status;
-        Priority priority;
         bool isAddSubTaskContextTriggered;
 
         List<Priority> priorityList;
@@ -31,13 +29,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 if(currTask != null)
                 {
+                    SubTasks = currTask.SubTasks;
                     currTask.StatusData = GetTaskStatus();
                     currTask.PriorityData = GetTaskPriority();
-                    currTask.SubTasks = GetAllSubTasks();
                     IsAddSubTaskContextTriggered = false;
                 }
                 NotifyPropertyChanged(nameof(CurrTask));
             }
+        }
+
+        public ObservableCollection<UserTask> SubTasks
+        {
+            get; set;
         }
 
         public bool IsAddSubTaskContextTriggered
@@ -70,15 +73,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return statusList.Where(status => status.Id == CurrTask.Status).ToList()[0];
         }
 
-        public ObservableCollection<UserTask> GetAllSubTasks()
-        {
-            return taskDataHandler.GetAllSubTasks(currTask.Id);
-        }
-
         public void AddSubTaskToCurrTask(UserTask task)
         {
-            currTask.SubTasks.Add(task);
+            SubTasks.Add(task);
+            NotifyPropertyChanged(nameof(SubTasks));
+        }
+
+        public void CurrTaskPropertyChanged()
+        {
             NotifyPropertyChanged(nameof(CurrTask));
+            NotifyPropertyChanged(nameof(SubTasks));
         }
     }
 }

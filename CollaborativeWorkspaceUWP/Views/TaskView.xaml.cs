@@ -98,8 +98,8 @@ namespace CollaborativeWorkspaceUWP.Views
 
             Project project = new Project();
             project.Name = projectName;
-            project.Status = projectStatus.Id;
-            project.Priority = projectPriority.Id;
+            project.Status = projectStatus != null ? projectStatus.Id : 0;
+            project.Priority = projectPriority != null ? projectPriority.Id : 0;
             project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
 
             Project result = addProjectViewModel.AddProject(project);
@@ -224,6 +224,23 @@ namespace CollaborativeWorkspaceUWP.Views
         private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
         {
             AddTaskFromDialogButton.IsButtonEnabled = AddTaskDialogTaskName.Text.Length > 0 ? true : false;
+        }
+
+        private void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            long taskId = (long)checkBox.Tag;
+            bool checkboxStatus = (bool)checkBox.IsChecked;
+            taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+            if (taskDetailsViewModel.CurrTask != null && (taskDetailsViewModel.CurrTask.Id == taskId || taskDetailsViewModel.CurrTask.Id == taskListViewModel.GetTaskForTaskId(taskId).ParentTaskId))
+            {
+                taskDetailsViewModel.CurrTaskPropertyChanged();
+            }
+        }
+
+        private void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

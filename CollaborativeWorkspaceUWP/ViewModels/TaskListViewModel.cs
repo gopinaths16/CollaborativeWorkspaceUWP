@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
-            tasks = new ObservableCollection<UserTask>();
+            Tasks = new ObservableCollection<UserTask>();
             IsAddTaskContextTriggered = false;
         }
 
@@ -38,6 +38,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             get { return tasks; }
             set { tasks = value; }
         }
+
         public Project CurrentProject
         {
             get; set;
@@ -56,6 +57,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             CurrentProject = project;
             Tasks = taskDataHandler.GetTasksForProject(project.Id);
+            foreach (UserTask task in Tasks)
+            {
+                var temp = Tasks.Where(item => item.Id == task.ParentTaskId).ToList();
+                if (temp.Count > 0 && temp[0] != null)
+                {
+                    temp[0].SubTasks.Add(task);
+                }
+            }
             NotifyPropertyChanged(nameof(CurrentProject));
             NotifyPropertyChanged(nameof(Tasks));
         }
@@ -76,6 +85,23 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public Status GetTaskStatus(long statusId)
         {
             return statusList.Where(status => status.Id == statusId).ToList()[0];
+        }
+
+        public UserTask GetTaskForTaskId(long taskId)
+        {
+            return Tasks.Where(task => task.Id == taskId).ToList()[0];
+        }
+
+        public void UpdateTaskCompletionStatus(long taskId, bool status)
+        {
+            foreach (var item in Tasks.Where(task => task.Id == taskId).ToList())
+            {
+                item.Status = status ? 1 : 2;
+                item.StatusData = GetTaskStatus(item.Status);
+                item.PriorityData = GetTaskPriority(item.Status);
+                taskDataHandler.UpdateTaskStatus(taskId, item.Status);
+            }
+            NotifyPropertyChanged(nameof(Tasks));
         }
     }
 }

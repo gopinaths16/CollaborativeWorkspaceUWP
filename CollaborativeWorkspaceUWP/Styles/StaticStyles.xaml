@@ -57,12 +57,12 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
                                                                        Storyboard.TargetName="BorderElement">
                                             <DiscreteObjectKeyFrame KeyTime="0" 
-                                                                    Value="Transparent"/>
+                                                                    Value="{TemplateBinding Background}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" 
                                                                        Storyboard.TargetName="BorderElement">
                                             <DiscreteObjectKeyFrame KeyTime="0" 
-                                                                    Value="Transparent"/>
+                                                                    Value="{TemplateBinding BorderBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -81,8 +81,7 @@
                                               IsTabStop="False"/>
                                 <TextBlock x:Name="PlaceholderTextElement" 
                                            Text="{TemplateBinding PlaceholderText}" 
-                                           Foreground="{ThemeResource TextControlPlaceholderForeground}" 
-                                           Margin="4,0,0,0" 
+                                           Foreground="{ThemeResource TextControlPlaceholderForeground}"
                                            IsHitTestVisible="True" 
                                            Visibility="{Binding Text.Length, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Empty}"/>
                             </Grid>
@@ -95,7 +94,7 @@
 
     <!-- #7F000000 to be changed-->
     <AcrylicBrush x:Key="MainBackgroundAcrylicBrush"
-                  BackgroundSource="HostBackdrop"
+                  BackgroundSource="Backdrop"
                   TintColor="#7F000000"
                   TintOpacity="1"/>
 

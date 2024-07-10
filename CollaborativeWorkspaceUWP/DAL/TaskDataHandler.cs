@@ -164,5 +164,25 @@ namespace CollaborativeWorkspaceUWP.DAL
             return tasks;
         }
 
+        public void UpdateTaskStatus(long taskId, long status)
+        {
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+        }
+
     }
 }

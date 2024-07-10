@@ -36,6 +36,8 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public Priority PriorityData { get; set; }
 
+        public bool IsCompleted { get; set; }
+
         public UserTask() {}
 
         public UserTask(long id, string name, string description, int status, int priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
@@ -49,6 +51,8 @@ namespace CollaborativeWorkspaceUWP.Models
             OwnerId = ownerId;
             AssigneeId = assigneeId;
             ParentTaskId = parentTaskId;
+            IsCompleted = status == 2;
+            SubTasks = new ObservableCollection<UserTask>();
         }
 
     }
