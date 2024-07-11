@@ -63,7 +63,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            taskDetailsViewModel.CurrTask = (UserTask)e.ClickedItem;
+            taskDetailsViewModel.CurrTask = (UserTask)((UserTask)e.ClickedItem).Clone();
             SelectTaskMessage.Visibility = Visibility.Collapsed;
             TaskDetailsView.Visibility = Visibility.Visible;
         }
@@ -122,6 +122,11 @@ namespace CollaborativeWorkspaceUWP.Views
 
             addTaskViewModel.AddTask(task);
 
+            taskListViewModel.IsAddTaskContextTriggered = false;
+            AddTaskDialogTaskName.Text = "";
+            AddTaskDialogDescription.Text = "";
+            AddTaskDialogStatus.SelectedItem = null;
+            AddTaskDialogPriority.SelectedItem = null;
         }
 
         private void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
@@ -210,6 +215,12 @@ namespace CollaborativeWorkspaceUWP.Views
             task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
 
             addTaskViewModel.AddTask(task);
+
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
+            AddSubTaskDialogTaskName.Text = "";
+            AddSubTaskDialogDescription.Text = "";
+            AddSubTaskDialogStatus.SelectedItem = null;
+            AddSubTaskDialogPriority.SelectedItem = null;
         }
 
         private void AddSubTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)

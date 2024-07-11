@@ -57,7 +57,28 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public object Clone()
         {
-            return new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
+            UserTask task = new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
+            task.SubTasks = SubTasks;
+            return task;
+        }
+
+        public void Update(UserTask task)
+        {
+            if (task != null && task.Id == Id)
+            {
+                Name = task.Name;
+                Description = task.Description;
+                Status = task.Status;
+                Priority = task.Priority;
+                ProjectId = task.ProjectId;
+                OwnerId = task.OwnerId;
+                AssigneeId = task.AssigneeId;
+                ParentTaskId = task.ParentTaskId;
+                IsCompleted = task.IsCompleted;
+                SubTasks = task.SubTasks;
+                StatusData = task.StatusData;
+                PriorityData = task.PriorityData;
+            }
         }
     }
 }

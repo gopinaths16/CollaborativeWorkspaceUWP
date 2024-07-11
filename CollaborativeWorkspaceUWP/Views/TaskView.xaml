@@ -440,7 +440,7 @@
                                     <TextBox Name="TaskDescription"
                                              Style="{StaticResource TextBoxNoBg}"
                                              Margin="15, 10, 15, 0"
-                                             BorderBrush="Gray"
+                                             BorderBrush="Transparent"
                                              Background="Transparent"
                                              BorderThickness="0.5"
                                              CornerRadius="5"
