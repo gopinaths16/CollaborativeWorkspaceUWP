@@ -51,7 +51,20 @@
                                 <VisualState x:Name="MouseOver"/>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="Unfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 
+                                                                       Storyboard.TargetName="BorderElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                    Value="{TemplateBinding Background}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" 
+                                                                       Storyboard.TargetName="BorderElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0" 
+                                                                    Value="{TemplateBinding BorderBrush}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" 

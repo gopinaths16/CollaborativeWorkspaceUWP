@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetOrganizationPersistenceObject();
                 persistenceObject.SetAddOrganizationContext(organization);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 result = persistenceObject.GetOrganization();
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetOrganizationPersistenceObject();
                 persistenceObject.SetGetAllOrganizationsContext();
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 organizations = persistenceObject.GetAllOrganizations();
             }
             catch (Exception ex)

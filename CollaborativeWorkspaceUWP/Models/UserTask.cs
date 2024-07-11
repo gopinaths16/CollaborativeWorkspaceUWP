@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class UserTask
+    public class UserTask : ICloneable
     {
 
         private long _id;
@@ -40,7 +40,7 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public UserTask() {}
 
-        public UserTask(long id, string name, string description, int status, int priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
+        public UserTask(long id, string name, string description, long status, long priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
         {
             Id = id;
             Name = name;
@@ -55,5 +55,9 @@ namespace CollaborativeWorkspaceUWP.Models
             SubTasks = new ObservableCollection<UserTask>();
         }
 
+        public object Clone()
+        {
+            return new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
+        }
     }
 }

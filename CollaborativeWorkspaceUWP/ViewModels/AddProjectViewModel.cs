@@ -1,5 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +40,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             StatusData = statusDataHandler.GetStatusData();
         }
 
-        public Project AddProject(Project project)
+        public void AddProject(Project project)
         {
-            return projectDataHandler.AddProject(project);
+            Project result = projectDataHandler.AddProject(project);
+            ViewmodelEventHandler.Instance.Publish(new AddProjectEvent() { Project = result });
         }
 
     }

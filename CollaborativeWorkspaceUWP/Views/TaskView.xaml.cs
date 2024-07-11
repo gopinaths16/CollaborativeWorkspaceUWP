@@ -102,8 +102,7 @@ namespace CollaborativeWorkspaceUWP.Views
             project.Priority = projectPriority != null ? projectPriority.Id : 0;
             project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
 
-            Project result = addProjectViewModel.AddProject(project);
-            projectListViewModel.AddProjectToList(result);
+            addProjectViewModel.AddProject(project);
 
             AddProjectDialog.Hide();
         }
@@ -114,15 +113,14 @@ namespace CollaborativeWorkspaceUWP.Views
 
             task.Name = AddTaskDialogTaskName.Text;
             task.Description = AddTaskDialogDescription.Text;
-            task.Status = AddTaskDialogStatus.SelectedItem != null ? ((Status)AddTaskDialogStatus.SelectedItem).Id : 0;
-            task.Priority = AddTaskDialogPriority.SelectedItem != null ? ((Priority)AddTaskDialogPriority.SelectedItem).Id : 0;
+            task.Status = AddTaskDialogStatus.SelectedItem != null ? ((Status)AddTaskDialogStatus.SelectedItem).Id : 1;
+            task.Priority = AddTaskDialogPriority.SelectedItem != null ? ((Priority)AddTaskDialogPriority.SelectedItem).Id : 1;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
             task.ParentTaskId = -1;
 
-            task = addTaskViewModel.AddTask(task);
-            taskListViewModel.AddTaskToList(task);
+            addTaskViewModel.AddTask(task);
 
         }
 
@@ -204,16 +202,14 @@ namespace CollaborativeWorkspaceUWP.Views
 
             task.Name = AddSubTaskDialogTaskName.Text;
             task.Description = AddSubTaskDialogDescription.Text;
-            task.Status = AddSubTaskDialogStatus.SelectedItem != null ? ((Status)AddSubTaskDialogStatus.SelectedItem).Id : 0;
-            task.Priority = AddSubTaskDialogPriority.SelectedItem != null ? ((Priority)AddSubTaskDialogPriority.SelectedItem).Id : 0;
+            task.Status = AddSubTaskDialogStatus.SelectedItem != null ? ((Status)AddSubTaskDialogStatus.SelectedItem).Id : 1;
+            task.Priority = AddSubTaskDialogPriority.SelectedItem != null ? ((Priority)AddSubTaskDialogPriority.SelectedItem).Id : 1;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
             task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
 
-            task = addTaskViewModel.AddTask(task);
-            taskListViewModel.AddTaskToList(task);
-            taskDetailsViewModel.AddSubTaskToCurrTask(task);
+            addTaskViewModel.AddTask(task);
         }
 
         private void AddSubTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)

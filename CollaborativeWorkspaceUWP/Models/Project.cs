@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Project
+    public class Project : ICloneable
     {
 
         private long _id;
@@ -37,5 +37,9 @@ namespace CollaborativeWorkspaceUWP.Models
             this._ownerId = ownerId;
         }
 
+        public object Clone()
+        {
+            return new Project(Id, Name, Status, Priority, TeamsapceId, OwnerId);
+        }
     }
 }

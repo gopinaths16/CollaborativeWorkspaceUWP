@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistenceObjectManager.GetTeamspacePersistenceObject();
                 persistenceObject.SetAddTeamspaceContext(teamspace);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 result = persistenceObject.GetTeamspace();
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistenceObjectManager.GetTeamspacePersistenceObject();
                 persistenceObject.SetGetTeamspacesForCurrentOrgContext(orgId);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 teamspaces = persistenceObject.GetTeamspaces();
             }
             catch (Exception ex)

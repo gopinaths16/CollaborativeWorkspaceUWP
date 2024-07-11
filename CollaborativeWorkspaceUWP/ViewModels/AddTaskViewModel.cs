@@ -1,5 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +40,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             StatusData = statusDataHandler.GetStatusData();
         }
 
-        public UserTask AddTask(UserTask task)
+        public void AddTask(UserTask task)
         {
-            return taskDataHandler.AddTask(task);
+            UserTask result = taskDataHandler.AddTask(task);
+            ViewmodelEventHandler.Instance.Publish(new AddTaskEvent() { Task = result });
         }
     }
 }

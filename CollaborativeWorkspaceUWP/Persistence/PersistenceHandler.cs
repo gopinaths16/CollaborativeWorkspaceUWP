@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Persistence
 {
-    public sealed class Persistence
+    public sealed class PersistenceHandler
     {
         IPersistenceManager manager;
-        private static Persistence instance;
+        private static PersistenceHandler instance;
         private static object locker = new object();
 
-        private Persistence() { }
+        private PersistenceHandler() { }
 
-        public static Persistence Instance
+        public static PersistenceHandler Instance
         {
             get
             {
@@ -27,7 +27,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence
                     {
                         if (instance == null)
                         {
-                            instance = new Persistence();
+                            instance = new PersistenceHandler();
                         }
                     }
                 }

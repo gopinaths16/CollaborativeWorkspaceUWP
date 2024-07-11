@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Models.Enums;
+using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Providers;
@@ -44,6 +45,16 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public ITeamspacePersistence GetTeamspacePersistenceObject()
         {
             return _provider.GetTeamspacePersistenceObject();
+        }
+
+        public IPriorityPersistence GetPriorityPersistenceObject()
+        {
+            return _provider.GetPriorityPersistenceObject();
+        }
+
+        public IStatusPersistence GetStatusPersistenceObject()
+        {
+            return _provider.GetStatusPersistenceObject();
         }
     }
 }

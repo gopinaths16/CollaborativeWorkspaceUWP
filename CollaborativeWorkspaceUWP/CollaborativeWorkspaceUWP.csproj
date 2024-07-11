@@ -148,6 +148,10 @@
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\PriorityDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\StatusDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\IPriorityPersistence.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\IStatusPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\TableDataTemplate.cs" />
     <Compile Include="Utilities\Converter.cs" />
@@ -155,7 +159,7 @@
     <Compile Include="Persistence\Managers\IPersistenceManager.cs" />
     <Compile Include="Persistence\Managers\DBPersistenceManager.cs" />
     <Compile Include="Persistence\Handlers\SqliteDBPersistenceHandler.cs" />
-    <Compile Include="Persistence\Persistence.cs" />
+    <Compile Include="Persistence\PersistenceHandler.cs" />
     <Compile Include="Persistence\PersistenceObject\Common\DBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\Common\IPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\OrganizationDBPersistenceObject.cs" />
@@ -169,6 +173,9 @@
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\ITaskPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
+    <Compile Include="Utilities\Events\AddProjectEvent.cs" />
+    <Compile Include="Utilities\Events\AddTaskEvent.cs" />
+    <Compile Include="Utilities\ViewmodelEventHandler.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />

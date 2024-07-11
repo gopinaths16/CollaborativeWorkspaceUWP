@@ -32,7 +32,7 @@ namespace CollaborativeWorkspaceUWP
         public App()
         {
             this.InitializeComponent();
-            Persistence.Instance.Initialize(PersistenceMode.SQLITE);
+            PersistenceHandler.Instance.Initialize(PersistenceMode.SQLITE);
             this.Suspending += OnSuspending;
         }
 

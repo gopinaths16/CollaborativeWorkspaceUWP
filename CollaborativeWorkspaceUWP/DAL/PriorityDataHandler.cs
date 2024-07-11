@@ -1,5 +1,8 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
+using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +14,23 @@ namespace CollaborativeWorkspaceUWP.DAL
 {
     public class PriorityDataHandler
     {
-        public PriorityDataHandler() { }
+        PersistenceObjectManager _persistenceObjectManager;
+
+        public PriorityDataHandler()
+        {
+            _persistenceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
+        }
 
         public List<Priority> GetPriorityData()
         {
             List<Priority> result = new List<Priority>();
+            IPriorityPersistence persistenceObject = null;
             try
             {
-                foreach (PriorityEnum priority in Enum.GetValues(typeof(PriorityEnum)).Cast<PriorityEnum>())
-                {
-                    Priority priorityData = new Priority();
-                    priorityData.Name = priority.ToString();
-                    priorityData.Id = (int)priority;
-                    result.Add(priorityData);
-                }
+                persistenceObject = _persistenceObjectManager.GetPriorityPersistenceObject();
+                persistenceObject.SetGetPrioritiesContext();
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetPriorities();
             }
             catch(Exception ex)
             {
@@ -32,7 +38,10 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             finally
             {
-
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
             }
             return result;
         }

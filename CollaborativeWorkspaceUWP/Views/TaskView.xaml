@@ -288,6 +288,8 @@
                                                  FontWeight="Bold"
                                                  BorderBrush="Transparent"
                                                  Background="Transparent"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
                                                  BorderThickness="0"
                                                  Margin="0, 0, 0, 5"
                                                  TextChanged="AddTaskDialogTaskName_TextChanged"/>
@@ -493,6 +495,8 @@
                                                              FontWeight="Bold"
                                                              BorderBrush="Transparent"
                                                              Background="Transparent"
+                                                             AcceptsReturn="True"
+                                                             TextWrapping="Wrap"
                                                              BorderThickness="0"
                                                              Margin="0, 0, 0, 15"
                                                              TextChanged="AddSubTaskDialogTaskName_TextChanged"/>

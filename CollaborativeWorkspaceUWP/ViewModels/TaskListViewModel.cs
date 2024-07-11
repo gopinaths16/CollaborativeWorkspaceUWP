@@ -1,5 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,6 +33,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             statusList = statusDataHandler.GetStatusData();
             Tasks = new ObservableCollection<UserTask>();
             IsAddTaskContextTriggered = false;
+
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -102,6 +106,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 taskDataHandler.UpdateTaskStatus(taskId, item.Status);
             }
             NotifyPropertyChanged(nameof(Tasks));
+        }
+
+        public void OnTaskAddtion(AddTaskEvent e) 
+        {
+            AddTaskToList((UserTask)e.Task.Clone());
         }
     }
 }

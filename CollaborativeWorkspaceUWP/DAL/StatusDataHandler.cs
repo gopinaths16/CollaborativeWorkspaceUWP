@@ -1,5 +1,8 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
+using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +13,23 @@ namespace CollaborativeWorkspaceUWP.DAL
 {
     public class StatusDataHandler
     {
-        public StatusDataHandler() { }
+        PersistenceObjectManager persistenceObjectManager;
+
+        public StatusDataHandler()
+        {
+            persistenceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
+        }
 
         public List<Status> GetStatusData()
         {
             List<Status> result = new List<Status>();
+            IStatusPersistence persistenceObject = null;
             try
             {
-                foreach (StatusEnum status in Enum.GetValues(typeof(StatusEnum)).Cast<StatusEnum>())
-                {
-                    Status statusData = new Status();
-                    statusData.Name = status.ToString();
-                    statusData.Id = (int)status;
-                    result.Add(statusData);
-                }
+                persistenceObject = persistenceObjectManager.GetStatusPersistenceObject();
+                persistenceObject.SetGetAllStatusContext();
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetAllStatus();
             }
             catch (Exception ex)
             {
@@ -31,7 +37,10 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             finally
             {
-
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
             }
             return result;
         }

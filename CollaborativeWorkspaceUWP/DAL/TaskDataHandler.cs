@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             try
             {
                 persistenceObject.SetAddContext(task);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 result = persistenceObject.GetTask();
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetGetAllTasksContext();
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 tasks = persistenceObject.GetAllTasks();
             } 
             catch (Exception ex)
@@ -74,7 +74,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetGetTasksForProjectContext(projectId);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 tasks = persistenceObject.GetAllTasks();
             }
             catch(Exception ex)
@@ -99,7 +99,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetGetNonSubTasksContext(taskId, projectId);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 tasks = persistenceObject.GetAllTasks();
             }
             catch (Exception ex)
@@ -123,7 +123,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetAddSubTaskContext(parentTaskId, childTaskId);
-                Persistence.Instance.Add(persistenceObject);
+                PersistenceHandler.Instance.Add(persistenceObject);
             }
             catch (Exception ex)
             {
@@ -146,7 +146,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetGetAllSubTasksContext(parentTaskId);
-                Persistence.Instance.Get(persistenceObject);
+                PersistenceHandler.Instance.Get(persistenceObject);
                 tasks = persistenceObject.GetAllTasks();
 
             }

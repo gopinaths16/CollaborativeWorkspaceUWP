@@ -132,13 +132,13 @@ namespace CollaborativeWorkspaceUWP.Utilities.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            long result = (long) value;
+            long result = (long) value - 1;
             return (int)result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            int result = (int)value;
+            int result = (int)value + 1;
             return (long)result;
         }
     }

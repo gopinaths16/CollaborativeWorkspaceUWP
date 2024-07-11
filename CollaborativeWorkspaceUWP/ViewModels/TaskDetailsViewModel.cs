@@ -1,5 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set
             {
                 currTask = value;
-                if(currTask != null)
+                if (currTask != null)
                 {
                     SubTasks = currTask.SubTasks;
                     currTask.StatusData = GetTaskStatus();
@@ -61,6 +63,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
+
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
         }
 
         public Priority GetTaskPriority()
@@ -83,6 +87,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             NotifyPropertyChanged(nameof(CurrTask));
             NotifyPropertyChanged(nameof(SubTasks));
+        }
+
+        public void OnTaskAddition(AddTaskEvent e)
+        {
+            UserTask task = e.Task;
+            if(CurrTask != null && task.ParentTaskId == CurrTask.Id)
+            {
+                CurrTask.SubTasks.Add(task);
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
         }
     }
 }

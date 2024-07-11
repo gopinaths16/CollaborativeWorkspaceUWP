@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
@@ -29,6 +31,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             projectDataHandler = new ProjectDataHandler();
             Projects = new ObservableCollection<Project>();
             IsProjectListPaneOpen = true;
+
+            ViewmodelEventHandler.Instance.Subscribe<AddProjectEvent>(OnProjectAddition);
         }
 
         public bool IsProjectListPaneOpen
@@ -54,5 +58,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
             NotifyPropertyChanged(nameof(Projects));
         }
+
+        private void OnProjectAddition(AddProjectEvent e)
+        {
+            AddProjectToList((Project)e.Project.Clone());
+        }
+
+        //private void OnTaskAddtion(AddTaskEvent e)
     }
 }

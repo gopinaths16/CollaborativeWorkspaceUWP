@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
+﻿using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         IProjectPersistence GetProjectPersistenceObject();
         IOrganizationPersistence GetOrganizationPersistenceObject();
         ITeamspacePersistence GetTeamspacePersistenceObject();
+        IPriorityPersistence GetPriorityPersistenceObject();
+        IStatusPersistence GetStatusPersistenceObject();
     }
 }
