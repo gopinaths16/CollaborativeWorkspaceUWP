@@ -463,7 +463,7 @@
                                               VerticalAlignment="Top"
                                               Margin="5, 15, 0, 0"
                                               IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
-                                              Tag="{x:Bind taskDetailsViewModel.CurrTask.Id}"
+                                              Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
                                               Checked="TaskDetailsCheckBox_Checked"
                                               Unchecked="TaskDetailsCheckBox_Checked"/>
 
@@ -623,6 +623,16 @@
                                                                FontWeight="Bold"/>
                                                 </StackPanel>
                                             </PivotItem.Header>
+                                            <StackPanel Orientation="Vertical">
+                                                <customusercontrol:CustomIconButtonControl Name="OpenAddAttachementWindowButton"
+                                                                                           ButtonIcon="&#xe723;"
+                                                                                           ButtonContent="Add Attachment"
+                                                                                           ButtonStyle="{StaticResource ButtonNoBackground}"
+                                                                                           ButtonClick="OpenAddAttachementWindowButton_ButtonClick"
+                                                                                           Margin="0, 20, 0, 0"
+                                                                                           ButtonBackground="Transparent"
+                                                                                           IsButtonEnabled="True"/>
+                                            </StackPanel>
                                         </PivotItem>
                                     </Pivot>
                                 </Grid>

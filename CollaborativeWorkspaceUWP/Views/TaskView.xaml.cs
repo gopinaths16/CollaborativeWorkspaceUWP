@@ -293,5 +293,10 @@ namespace CollaborativeWorkspaceUWP.Views
         {
 
         }
+
+        private void OpenAddAttachementWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
