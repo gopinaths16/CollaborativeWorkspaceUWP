@@ -12,7 +12,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource MainBackgroundAcrylicBrush}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
 
     <Page.DataContext>
@@ -52,7 +52,7 @@
                     <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
                         <Setter Property="BorderThickness" Value="0.5" />
                         <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
+                        <Setter Property="Background" Value="Transparent" />
                         <Setter Property="Margin" Value="10, 0, 0, 0" />
                         <Setter Property="Padding" Value="20" />
                     </Style>
@@ -64,7 +64,7 @@
 
                     <Style TargetType="Grid" x:Key="TaskListViewByProjectStyle">
                         <Setter Property="CornerRadius" Value="5"/>
-                        <Setter Property="Background" Value="{StaticResource SecondaryAcrylicBrush}" />
+                        <Setter Property="Background" Value="Transparent" />
                         <Setter Property="Padding" Value="5" />
                     </Style>
 
@@ -140,8 +140,8 @@
                                           Margin="5, 5, 0, 0"
                                           IsChecked="{Binding IsCompleted, Mode=TwoWay}"
                                           Tag="{x:Bind Id}"
-                                          Checked="TaskDetailsCheckBox_Checked"
-                                          Unchecked="TaskDetailsCheckBox_Checked"/>
+                                          Checked="SubTaskListCheckbox_Checked"
+                                          Unchecked="SubTaskListCheckbox_Checked"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -168,7 +168,7 @@
     </Page.Resources>
 
     <Grid Name="TaskViewPanel"
-          Background="{StaticResource MainBackgroundAcrylicBrush}">
+          Background="Transparent">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -208,7 +208,7 @@
                     <SplitView Name="ProjectListSplitView"
                                IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=OneWay}"
                                DisplayMode="Inline"
-                               PaneBackground="{StaticResource MainBackgroundAcrylicBrush}">
+                               PaneBackground="Transparent">
 
                         <SplitView.Pane>
                             <StackPanel Grid.Row="0"
@@ -406,31 +406,66 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel Orientation="Horizontal"
-                                                Grid.Row="0">
-                                        <ComboBox Name="Status"
-                                                  PlaceholderText="Status"
-                                                  CornerRadius="2"
-                                                  Margin="0, 0, 10, 0"
-                                                  ItemsSource="{x:Bind addTaskViewModel.StatusData}"
-                                                  SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}}"
-                                                  ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
+                                    <Grid Grid.Row="0"
+                                          HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    Grid.Row="0">
+                                            <ComboBox Name="Status"
+                                                      PlaceholderText="Status"
+                                                      CornerRadius="2"
+                                                      Margin="0, 0, 10, 0"
+                                                      ItemsSource="{x:Bind addTaskViewModel.StatusData}"
+                                                      SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectionChanged="TaskUpdateTriggered"
+                                                      ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
 
-                                        <ComboBox Name="Priority"
-                                                  PlaceholderText="Priority"
-                                                  CornerRadius="2"
-                                                  Margin="0, 0, 10, 0"
-                                                  ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                  SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}}"
-                                                  ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
-                                    </StackPanel>
+                                            <ComboBox Name="Priority"
+                                                      PlaceholderText="Priority"
+                                                      CornerRadius="2"
+                                                      Grid.Column="1"
+                                                      Margin="0, 0, 10, 0"
+                                                      ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
+                                                      SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectionChanged="TaskUpdateTriggered"
+                                                      ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Grid.Row="1">
+                                            <Button Name="AddAttachmentsButton"
+                                                    FontFamily="Segoe Fluent Icons"
+                                                    Content="&#xe723;"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="AddAttachmentsButton_Click"
+                                                    Style="{StaticResource ButtonNoBackground}"
+                                                    Grid.Column="1"/>
+                                            <Button Name="DeleteTaskButton"
+                                                    FontFamily="Segoe Fluent Icons"
+                                                    Content="&#xe74d;"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="DeleteTaskButton_Click"
+                                                    Style="{StaticResource ButtonNoBackground}"
+                                                    Grid.Column="1"/>
+                                        </StackPanel>
+                                    </Grid>
 
                                     <CheckBox Grid.Row="1"
                                               Content="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay}"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
                                               Margin="5, 15, 0, 0"
-                                              IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"/>
+                                              IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
+                                              Tag="{x:Bind taskDetailsViewModel.CurrTask.Id}"
+                                              Checked="TaskDetailsCheckBox_Checked"
+                                              Unchecked="TaskDetailsCheckBox_Checked"/>
 
                                     <customusercontrol:IconedLabelControl Grid.Row="2"
                                                                           Icon="&#xE700;"
@@ -448,7 +483,9 @@
                                              TextWrapping="Wrap"
                                              Padding="10"
                                              Grid.Row="3"
-                                             Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay}"/>
+                                             Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             LostFocus="TaskDescription_LostFocus"
+                                             TextChanged="TaskDescription_TextChanged"/>
 
 
                                     <Pivot x:Name="TaskViewPivot"
@@ -558,7 +595,34 @@
                                                           Grid.Row="2"
                                                           IsItemClickEnabled="False"
                                                           ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
+                                                <StackPanel Name="NoSubtasksMessage"
+                                                            Grid.Row="2"
+                                                            Margin="0, 20, 0, 0"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Visibility="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                                                    <TextBlock Text="No Sub tasks available"
+                                                               Foreground="Gray"
+                                                               FontSize="20"/>
+                                                </StackPanel>
                                             </StackPanel>
+                                        </PivotItem>
+                                        <PivotItem Name="AttachementsPivotItem">
+                                            <PivotItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock FontFamily="Segoe Fluent Icons"
+                                                               Text="&#xe723;"
+                                                               FontSize="12"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Bold"/>
+
+                                                    <TextBlock Text="Attachements"
+                                                               FontSize="12"
+                                                               Margin="5, 0, 0, 0"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Bold"/>
+                                                </StackPanel>
+                                            </PivotItem.Header>
                                         </PivotItem>
                                     </Pivot>
                                 </Grid>

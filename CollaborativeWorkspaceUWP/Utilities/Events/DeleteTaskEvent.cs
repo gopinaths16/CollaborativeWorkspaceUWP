@@ -1,5 +1,4 @@
-﻿using CollaborativeWorkspaceUWP.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
-    public class UpdateTaskEvent
+    public class DeleteTaskEvent
     {
-        public UserTask Task { get; set; }
+        public long TaskId {  get; set; }
     }
 }

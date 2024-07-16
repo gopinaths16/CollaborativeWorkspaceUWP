@@ -70,6 +70,30 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
+        public void SetUpdateDescriptionContext(UserTask task)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET NAME=@Name, DESCRIPTION=@Description, STATUS=@Status, PRIORITY=@Priority, PROJECTID=@ProjectId, OWNERID=@OwnerId, ASSIGNEEID=@AssigneeId, PARENT_TASK_ID=@ParentTaskId WHERE ID=@Id RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID";
+            command.Parameters.AddWithValue("@Name", task.Name);
+            command.Parameters.AddWithValue("@Description", task.Description);
+            command.Parameters.AddWithValue("@Status", task.Status);
+            command.Parameters.AddWithValue("@Priority", task.Priority);
+            command.Parameters.AddWithValue("@ProjectId", task.ProjectId);
+            command.Parameters.AddWithValue("@OwnerId", task.OwnerId);
+            command.Parameters.AddWithValue("@AssigneeId", task.AssigneeId);
+            command.Parameters.AddWithValue("@ParentTaskId", task.ParentTaskId);
+            command.Parameters.AddWithValue("@Id", task.Id);
+            Query = command;
+        }
+
+        public void SetDeleteTaskContext(long taskId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"DELETE FROM CW_TASK_DETAILS WHERE ID=@TaskId";
+            command.Parameters.AddWithValue("@TaskId", taskId);
+            Query = command;
+        }
+
         public ObservableCollection<UserTask> GetAllTasks()
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();

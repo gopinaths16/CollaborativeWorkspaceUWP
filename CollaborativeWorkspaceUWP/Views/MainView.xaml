@@ -10,7 +10,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource MainBackgroundAcrylicBrush}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
 
     <Page.DataContext>
@@ -41,7 +41,7 @@
         
     </Page.Resources>
 
-    <Grid Background="{StaticResource MainBackgroundAcrylicBrush}">
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,7 +54,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="TitleBar" 
-              Background="Transparent">
+              Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         </Grid>
 
         <StackPanel Grid.Row="0"
@@ -100,7 +100,7 @@
         <Frame Name="HomeViewFrame" 
                Grid.ColumnSpan="2"
                Grid.Row="1"
-               Background="{StaticResource MainBackgroundAcrylicBrush}"
+               Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
                Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"/>
 
         <!--#region Select Organization Content dialog starts-->

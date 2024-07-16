@@ -63,6 +63,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            taskDetailsViewModel.CurrTask = null;
             taskDetailsViewModel.CurrTask = (UserTask)((UserTask)e.ClickedItem).Clone();
             SelectTaskMessage.Visibility = Visibility.Collapsed;
             TaskDetailsView.Visibility = Visibility.Visible;
@@ -98,8 +99,8 @@ namespace CollaborativeWorkspaceUWP.Views
 
             Project project = new Project();
             project.Name = projectName;
-            project.Status = projectStatus != null ? projectStatus.Id : 0;
-            project.Priority = projectPriority != null ? projectPriority.Id : 0;
+            project.Status = projectStatus != null ? projectStatus.Id : 1;
+            project.Priority = projectPriority != null ? projectPriority.Id : 1;
             project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
 
             addProjectViewModel.AddProject(project);
@@ -246,6 +247,49 @@ namespace CollaborativeWorkspaceUWP.Views
         }
 
         private void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            if(checkBox.Tag != null)
+            {
+                long taskId = (long)checkBox.Tag;
+                bool checkboxStatus = (bool)checkBox.IsChecked;
+                taskDetailsViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+            }
+        }
+
+        private void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            if (checkBox.Tag != null)
+            {
+                long taskId = (long)checkBox.Tag;
+                bool checkboxStatus = (bool)checkBox.IsChecked;
+                taskDetailsViewModel.UpdateSubTaskCompletionStatus(taskId, !checkboxStatus);
+            }
+        }
+
+        private void TaskDescription_LostFocus(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.UpdateTask();
+        }
+
+        private void TaskDescription_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            taskDetailsViewModel.SetTaskUpdatedContext();
+        }
+
+        private void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
+        {
+            taskDetailsViewModel.UpdateTask(true);
+        }
+
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTaskMessage.Visibility = Visibility.Visible;
+            taskDetailsViewModel.DeleteTask();
+        }
+
+        private void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

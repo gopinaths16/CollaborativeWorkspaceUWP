@@ -16,6 +16,7 @@
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
         <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
 
     <Style TargetType="TextBlock" x:Name="TaskViewTitle">

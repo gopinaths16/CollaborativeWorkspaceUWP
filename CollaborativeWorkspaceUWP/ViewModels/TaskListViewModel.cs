@@ -35,6 +35,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             IsAddTaskContextTriggered = false;
 
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -100,10 +102,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             foreach (var item in Tasks.Where(task => task.Id == taskId).ToList())
             {
-                item.Status = status ? 1 : 2;
+                item.Status = status ? 2 : 3;
                 item.StatusData = GetTaskStatus(item.Status);
                 item.PriorityData = GetTaskPriority(item.Status);
-                taskDataHandler.UpdateTaskStatus(taskId, item.Status);
+                taskDataHandler.UpdateTask(item);
+                
+                ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
             }
             NotifyPropertyChanged(nameof(Tasks));
         }
@@ -111,6 +115,32 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void OnTaskAddtion(AddTaskEvent e) 
         {
             AddTaskToList((UserTask)e.Task.Clone());
+        }
+
+        public void OnTaskUpdation(UpdateTaskEvent e)
+        {
+            if(Tasks != null && e != null && e.Task != null)
+            {
+                Tasks.Where(task => e.Task.Id == task.Id).First().Update(e.Task);
+                NotifyPropertyChanged(nameof(Tasks));
+            }
+        }
+
+        public void OnTaskDeletion(DeleteTaskEvent e)
+        {
+            if (Tasks != null && e != null)
+            {
+                Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
+                foreach(var task in Tasks)
+                {
+                    if(task.SubTasks.Count > 0)
+                    {
+                        UserTask subTask = task.SubTasks.Where(sTask => e.TaskId == sTask.Id).First();
+                        task.SubTasks.Remove(subTask);
+                    }
+                }
+                NotifyPropertyChanged(nameof(Tasks));
+            }
         }
     }
 }

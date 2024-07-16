@@ -137,6 +137,7 @@
     <Compile Include="DAL\StatusDataHandler.cs" />
     <Compile Include="DAL\TaskDataHandler.cs" />
     <Compile Include="DAL\TeamspaceDataHandler.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />
     <Compile Include="Models\Enums\StatusEnum.cs" />
@@ -175,6 +176,8 @@
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
+    <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
+    <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />

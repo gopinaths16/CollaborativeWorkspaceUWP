@@ -184,5 +184,51 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
         }
 
+        public UserTask UpdateTask(UserTask task)
+        {
+            ITaskPersistence persistenceObject = null;
+            UserTask result = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetUpdateDescriptionContext(task);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetTask();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
+
+        public void DeleteTask(long taskId)
+        {
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetDeleteTaskContext(taskId);
+                PersistenceHandler.Instance.Delete(persistenceObject);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+        }
     }
 }

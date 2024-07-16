@@ -10,6 +10,9 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -44,6 +47,7 @@ namespace CollaborativeWorkspaceUWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            Window.Current.Activated += Current_Activated;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -99,6 +103,33 @@ namespace CollaborativeWorkspaceUWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void Current_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            UpdateTitleBarColors();
+        }
+
+        private void UpdateTitleBarColors()
+        {
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
+            {
+                // Dark theme colors
+                titleBar.ButtonForegroundColor = Colors.White;
+                titleBar.ButtonBackgroundColor = Colors.Black;
+                titleBar.ButtonHoverBackgroundColor = Colors.Gray;
+                titleBar.ButtonPressedBackgroundColor = Colors.DarkGray;
+            }
+            else
+            {
+                // Light theme colors
+                titleBar.ButtonForegroundColor = Colors.Black;
+                titleBar.ButtonBackgroundColor = Colors.White;
+                titleBar.ButtonHoverBackgroundColor = Colors.LightGray;
+                titleBar.ButtonPressedBackgroundColor = Colors.Gray;
+            }
         }
     }
 }

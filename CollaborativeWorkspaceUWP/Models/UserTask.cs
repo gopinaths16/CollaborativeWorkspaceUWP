@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class UserTask : ICloneable
+    public class UserTask : BaseModel, ICloneable
     {
 
         private long _id;
@@ -19,24 +19,80 @@ namespace CollaborativeWorkspaceUWP.Models
         private long _ownerId;
         private long _assigneeId;
         private long _parentTaskId;
+        private Status statusData;
+        private Priority priorityData;
+        private bool isCompleted;
 
         public long Id { get { return _id; } set { _id = value; } }
-        public string Name { get { return _name; } set { _name = value; } }
+        public string Name { 
+            get { return _name; } 
+            set { 
+                if(!value.Equals(_name))
+                {
+                    _name = value;
+                    NotifyPropertyChanged(nameof(Name));
+                }
+            } 
+        }
         public string Description { get { return _description; } set { _description = value; } } 
-        public long Status { get { return _status; } set { _status = value; } }
-        public long Priority { get { return _priority; } set { _priority = value; } }
-        public long ProjectId { get { return _projectId; } set { _projectId = value; } }
+        public long Status { 
+            get { return _status; } 
+            set { 
+                _status = value;
+                NotifyPropertyChanged(nameof(Status));
+            } 
+        }
+        public long Priority { 
+            get { return _priority; } 
+            set { 
+                _priority = value;
+                NotifyPropertyChanged(nameof(Priority));
+            } 
+        }
+        public long ProjectId { 
+            get { return _projectId; } 
+            set { _projectId = value; } 
+        }
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
         public long AssigneeId { get { return _assigneeId; } set { _assigneeId = value; } }
         public long ParentTaskId { get { return _parentTaskId; } set { _parentTaskId = value; } }
 
         public ObservableCollection<UserTask> SubTasks { get; set; }
 
-        public Status StatusData{ get; set; }
+        public Status StatusData
+        {
+            get { return statusData; }
+            set
+            {
+                statusData = value;
+                NotifyPropertyChanged(nameof(StatusData));
+            }
+        }
 
-        public Priority PriorityData { get; set; }
+        public Priority PriorityData
+        {
+            get { return priorityData; }
+            set
+            {
+                priorityData = value;
+                NotifyPropertyChanged(nameof(PriorityData));
+            }
+        }
 
-        public bool IsCompleted { get; set; }
+        public bool IsCompleted
+        {
+            get { return isCompleted; }
+            set
+            {
+                isCompleted = value;
+                NotifyPropertyChanged(nameof(IsCompleted));
+            }
+        }
+
+        public bool IsUpdated { 
+            get; 
+            set; 
+        }
 
         public UserTask() {}
 
@@ -51,8 +107,9 @@ namespace CollaborativeWorkspaceUWP.Models
             OwnerId = ownerId;
             AssigneeId = assigneeId;
             ParentTaskId = parentTaskId;
-            IsCompleted = status == 2;
+            IsCompleted = status == 3;
             SubTasks = new ObservableCollection<UserTask>();
+            IsUpdated = false;
         }
 
         public object Clone()
@@ -75,7 +132,10 @@ namespace CollaborativeWorkspaceUWP.Models
                 AssigneeId = task.AssigneeId;
                 ParentTaskId = task.ParentTaskId;
                 IsCompleted = task.IsCompleted;
-                SubTasks = task.SubTasks;
+                if(task.SubTasks.Count > 0)
+                {
+                    SubTasks = task.SubTasks;
+                }
                 StatusData = task.StatusData;
                 PriorityData = task.PriorityData;
             }
