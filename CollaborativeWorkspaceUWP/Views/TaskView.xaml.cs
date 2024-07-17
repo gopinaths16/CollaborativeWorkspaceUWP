@@ -54,6 +54,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            taskDetailsViewModel.UpdateTask();
             Project currProject = (Project)e.ClickedItem;
             taskListViewModel.GetTasksForProject(currProject);
             taskDetailsViewModel.CurrTask = null;
@@ -87,12 +88,12 @@ namespace CollaborativeWorkspaceUWP.Views
             await AddProjectDialog.ShowAsync();
         }
 
-        private async void OpenAddTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        private void OpenAddTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             taskListViewModel.IsAddTaskContextTriggered = true;
         }
 
-        private async void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
+        private void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             string projectName = AddProjectDialogProjectName.Text;
             Status projectStatus = ((Status)AddProjectDialogStatus.SelectedItem);
@@ -146,7 +147,7 @@ namespace CollaborativeWorkspaceUWP.Views
             projectListViewModel.IsProjectListPaneOpen = !projectListViewModel.IsProjectListPaneOpen;
         }
 
-        private async void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        private void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.IsAddSubTaskContextTriggered = true;
         }

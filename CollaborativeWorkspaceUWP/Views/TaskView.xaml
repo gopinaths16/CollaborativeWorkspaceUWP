@@ -200,11 +200,40 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource SecondaryBackground}" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
+                        <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0, 5, 5, 0" />
+                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1000"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="True" />
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Inline" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="Transparent" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="0" />
+                        <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0" />
+                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Pivot x:Name="TaskTabView"
                Grid.Row="1"
                Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
-
-
             <Pivot.RightHeader>
                 <StackPanel Style="{StaticResource PivotRightHeader}">
                 </StackPanel>
@@ -231,14 +260,15 @@
                     
 
                     <SplitView Name="ProjectListSplitView"
-                               IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=OneWay}"
+                               IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                DisplayMode="Inline"
                                PaneBackground="Transparent">
 
                         <SplitView.Pane>
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
-                                        Margin="0, 5, 10, 0">
+                                        Margin="0, 0, 10, 0"
+                                        Name="ProjectListSplitViewPane">
 
                                 <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
                                                                            ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
@@ -384,16 +414,31 @@
                                 <!--#endregion-->
                                 
                                 <!--#region Select Project message starts-->
-                                
-                                <StackPanel Name="SelectProjectMessage"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="3"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="Select a Project to proceed further"
-                                               Foreground="Gray"
-                                               FontSize="30"/>
-                                </StackPanel>
+
+                                <Grid HorizontalAlignment="Stretch"
+                                      Name="SelectProjectMessage"
+                                      Grid.Column="0"
+                                      Grid.ColumnSpan="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Name="OpenSplitViewButtonAlt" 
+                                            Style="{StaticResource ButtonNoBackground}"
+                                            Click="OpenSplitViewButton_Click"
+                                            FontFamily="Segoe Fluent Icons"
+                                            Content="&#xe8a0;"
+                                            FontSize="17"
+                                            Visibility="Collapsed"
+                                            Grid.Row="0"/>
+                                    <StackPanel HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Grid.Row="1">
+                                        <TextBlock Text="Select a Project to proceed further"
+                                                   Foreground="Gray"
+                                                   FontSize="30"/>
+                                    </StackPanel>
+                                </Grid>
                                 
                                 <!--#endregion-->
                                 

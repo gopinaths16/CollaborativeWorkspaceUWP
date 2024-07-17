@@ -10,6 +10,8 @@
     <converters:BoolToVisibilityConverterInverse x:Key="BoolToVisibilityConverterInverse" />
     <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
     <converters:ObjectToVisibilityConverterInverse x:Key="ObjectToVisibilityConverterInverse" />
+    <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
+    <converters:ObjectToBoolConverterInverse x:Key="ObjectToBoolConverterInverse" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters:LongToIntConverter x:Key="LongToIntConverter" />
 
