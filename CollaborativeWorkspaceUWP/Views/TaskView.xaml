@@ -12,7 +12,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource PrimaryBackground}"
     Loaded="Page_Loaded">
 
     <Page.DataContext>
@@ -175,6 +175,19 @@
                                            TextTrimming="WordEllipsis"
                                            MaxLines="1"
                                            Grid.Column="1"/>
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Grid.Column="2"
+                                            Margin="0, 0, 5, 0">
+                                    <Button FontFamily="Segoe Fluent Icons"
+                                            Content="&#xe74d;"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Click="DeleteSubTaskButton_Click"
+                                            Tag="{x:Bind Id}"
+                                            Style="{StaticResource ButtonNoBackground}"/>
+                                </StackPanel>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -417,6 +430,17 @@
                                               IsItemClickEnabled="True"
                                               ItemClick="TaskListView_ItemClick"
                                               ItemContainerStyle="{StaticResource ListViewItemStyleAccent}" />
+
+                                    <StackPanel Name="NoTasksInListMessage"
+                                                Grid.Row="2"
+                                                Margin="0, 20, 0, 0"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Visibility="{x:Bind taskListViewModel.Tasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                                        <TextBlock Text="No Tasks available"
+                                                   Foreground="Gray"
+                                                   FontSize="20"/>
+                                    </StackPanel>
                                 </Grid>
 
                                 <!--#endregion-->

@@ -191,5 +191,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             CurrTask = null;
             NotifyPropertyChanged(nameof(CurrTask));
         }
+
+        public void DeleteSubTask(long taskId)
+        {
+            UserTask task = CurrTask.SubTasks.Where(subTask => subTask.Id == taskId).FirstOrDefault();
+            if (task != null)
+            {
+                taskDataHandler.DeleteTask(task.Id);
+                CurrTask.SubTasks.Remove(task);
+                NotifyPropertyChanged(nameof(CurrTask));
+                ViewmodelEventHandler.Instance.Publish(new DeleteTaskEvent() { TaskId = task.Id });
+            }
+        }
     }
 }

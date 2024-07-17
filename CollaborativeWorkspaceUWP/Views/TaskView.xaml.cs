@@ -291,6 +291,13 @@ namespace CollaborativeWorkspaceUWP.Views
             taskDetailsViewModel.DeleteTask();
         }
 
+        public void DeleteSubTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            long taskId = (long)button.Tag;
+            taskDetailsViewModel.DeleteSubTask(taskId);
+        }
+
         private void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
 
