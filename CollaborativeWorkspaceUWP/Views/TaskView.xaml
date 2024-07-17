@@ -114,6 +114,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox Grid.Column="0"
                                           HorizontalAlignment="Left"
@@ -133,6 +134,12 @@
                                            TextTrimming="WordEllipsis"
                                            MaxLines="1"
                                            Grid.Column="1"/>
+                                <Button FontFamily="Segoe Fluent Icons"
+                                        Content="&#xe712;"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource ButtonNoBackground}"
+                                        Grid.Column="2" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -147,6 +154,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <CheckBox Grid.Column="0"
                                           Content="{Binding Name}"
