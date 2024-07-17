@@ -52,7 +52,7 @@
                     <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
                         <Setter Property="BorderThickness" Value="0.5" />
                         <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
                         <Setter Property="Margin" Value="10, 0, 0, 0" />
                         <Setter Property="Padding" Value="20" />
                     </Style>
@@ -64,7 +64,7 @@
 
                     <Style TargetType="Grid" x:Key="TaskListViewByProjectStyle">
                         <Setter Property="CornerRadius" Value="5"/>
-                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
                         <Setter Property="Padding" Value="5" />
                     </Style>
 
@@ -111,16 +111,28 @@
                             <Grid CornerRadius="5"
                                   Margin="20, 0, 0, 20"
                                   HorizontalAlignment="Stretch">
-                                <CheckBox Grid.Row="0"
-                                          Grid.Column="0"
-                                          Content="{Binding Name}"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Top"
                                           Margin="5, 5, 0, 0"
+                                          MinWidth="0"
                                           IsChecked="{Binding IsCompleted, Mode=TwoWay}"
                                           Tag="{x:Bind Id}"
+                                          Style="{StaticResource CheckboxNoContent}"
                                           Checked="TaskListCheckBox_Checked"
                                           Unchecked="TaskListCheckBox_Checked"/>
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="20"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="WordEllipsis"
+                                           MaxLines="1"
+                                           Grid.Column="1"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -132,16 +144,29 @@
                             <Grid CornerRadius="5"
                                   Margin="20, 0, 0, 20"
                                   HorizontalAlignment="Stretch">
-                                <CheckBox Grid.Row="0"
-                                          Grid.Column="0"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0"
                                           Content="{Binding Name}"
                                           HorizontalAlignment="Left"
                                           VerticalAlignment="Center"
                                           Margin="5, 5, 0, 0"
                                           IsChecked="{Binding IsCompleted, Mode=TwoWay}"
                                           Tag="{x:Bind Id}"
+                                          Style="{StaticResource CheckboxNoContent}"
+                                          MinWidth="0"
                                           Checked="SubTaskListCheckbox_Checked"
                                           Unchecked="SubTaskListCheckbox_Checked"/>
+                                <TextBlock Text="{Binding Name}"
+                                           FontSize="20"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="WordEllipsis"
+                                           MaxLines="1"
+                                           Grid.Column="1"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -457,15 +482,39 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <CheckBox Grid.Row="1"
-                                              Content="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay}"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Top"
-                                              Margin="5, 15, 0, 0"
-                                              IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
-                                              Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
-                                              Checked="TaskDetailsCheckBox_Checked"
-                                              Unchecked="TaskDetailsCheckBox_Checked"/>
+                                    <Grid Grid.Row="1"
+                                          HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Margin="5, 15, 0, 0"
+                                                  IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
+                                                  Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                                                  Style="{StaticResource CheckboxNoContent}"
+                                                  MinWidth="0"
+                                                  Grid.Column="0"
+                                                  Checked="TaskDetailsCheckBox_Checked"
+                                                  Unchecked="TaskDetailsCheckBox_Checked"/>
+                                        <TextBox Name="TaskTitle"
+                                                 Style="{StaticResource TextBoxNoBg}"
+                                                 HorizontalAlignment="Stretch"
+                                                 Margin="5, 10, 15, 0"
+                                                 BorderBrush="Transparent"
+                                                 Background="Transparent"
+                                                 BorderThickness="0.5"
+                                                 CornerRadius="5"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 Padding="10"
+                                                 FontSize="20"
+                                                 Grid.Column="1"
+                                                 Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LostFocus="TaskDescription_LostFocus"
+                                                 TextChanged="TaskDescription_TextChanged"/>
+                                    </Grid>
 
                                     <customusercontrol:IconedLabelControl Grid.Row="2"
                                                                           Icon="&#xE700;"

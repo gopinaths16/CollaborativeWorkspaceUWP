@@ -63,6 +63,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            taskDetailsViewModel.UpdateTask();
             taskDetailsViewModel.CurrTask = null;
             taskDetailsViewModel.CurrTask = (UserTask)((UserTask)e.ClickedItem).Clone();
             SelectTaskMessage.Visibility = Visibility.Collapsed;

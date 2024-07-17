@@ -14,6 +14,18 @@
                     <SolidColorBrush x:Key="ApplicationForegroundThemeBrushDark" Color="White"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="Black"/>
+                    <SolidColorBrush x:Key="SecondaryBackground" Color="#dee0df" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="White"/>
+                    <SolidColorBrush x:Key="SecondaryBackground" Color="#1e1f1e" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
