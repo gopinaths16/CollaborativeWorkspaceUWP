@@ -61,10 +61,8 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             taskDetailsViewModel.UpdateTask();
             Project currProject = (Project)e.ClickedItem;
-            taskListViewModel.GetTasksForProject(currProject);
+            taskListViewModel.GetTasksForProject((Project)currProject.Clone());
             taskDetailsViewModel.CurrTask = null;
-            SelectProjectMessage.Visibility = Visibility.Collapsed;
-            SelectTaskMessage.Visibility = Visibility.Visible;
         }
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -72,8 +70,6 @@ namespace CollaborativeWorkspaceUWP.Views
             taskDetailsViewModel.UpdateTask();
             taskDetailsViewModel.CurrTask = null;
             taskDetailsViewModel.CurrTask = (UserTask)((UserTask)e.ClickedItem).Clone();
-            SelectTaskMessage.Visibility = Visibility.Collapsed;
-            TaskDetailsView.Visibility = Visibility.Visible;
         }
 
         private void AddTaskButton_Click(object sender, RoutedEventArgs e)
@@ -280,7 +276,6 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectTaskMessage.Visibility = Visibility.Visible;
             taskDetailsViewModel.DeleteTask();
         }
 

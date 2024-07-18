@@ -270,8 +270,7 @@
                                 <Grid Name="TaskListView" 
                                       Grid.Row="0"
                                       Grid.Column="0"
-                                      Style="{StaticResource TaskListViewByProjectStyle}"
-                                      Visibility="{x:Bind taskListViewModel.CurrentProject, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                      Style="{StaticResource TaskListViewByProjectStyle}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -336,54 +335,9 @@
 
                                 <!--#endregion-->
                                 
-                                <!--#region Select Project message starts-->
-
-                                <Grid HorizontalAlignment="Stretch"
-                                      Name="SelectProjectMessage"
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="3">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Button Name="OpenSplitViewButtonAlt" 
-                                            Style="{StaticResource ButtonNoBackground}"
-                                            Click="OpenSplitViewButton_Click"
-                                            FontFamily="Segoe Fluent Icons"
-                                            Content="&#xe8a0;"
-                                            FontSize="17"
-                                            Visibility="Collapsed"
-                                            Grid.Row="0"/>
-                                    <StackPanel HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Grid.Row="1">
-                                        <TextBlock Text="Select a Project to proceed further"
-                                                   Foreground="Gray"
-                                                   FontSize="30"/>
-                                    </StackPanel>
-                                </Grid>
-                                
-                                <!--#endregion-->
-                                
-                                <!--#region Select Task Message starts-->
-
-                                <StackPanel Name="SelectTaskMessage"
-                                            Grid.Column="1"
-                                            Grid.ColumnSpan="2"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Visibility="Collapsed">
-                                    <TextBlock Text="Select a Task to proceed further"
-                                               Foreground="Gray"
-                                               FontSize="30"/>
-                                </StackPanel>
-                                
-                                <!--#endregion-->
-
                                 <!--#region Task Details view Starts-->
 
-                                <customusercontrol:TaskDetailsControl Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
-                                                                      StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
+                                <customusercontrol:TaskDetailsControl StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
                                                                       PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
                                                                       CurrTask="{x:Bind taskDetailsViewModel.CurrTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       IsAddSubTaskContextTriggered="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay}"
