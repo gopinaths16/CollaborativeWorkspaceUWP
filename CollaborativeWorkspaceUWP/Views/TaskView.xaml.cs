@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
+using CollaborativeWorkspaceUWP.CustomControls.UserControls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -114,10 +115,10 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             UserTask task = new UserTask();
 
-            task.Name = AddTaskDialogTaskName.Text;
-            task.Description = AddTaskDialogDescription.Text;
-            task.Status = AddTaskDialogStatus.SelectedItem != null ? ((Status)AddTaskDialogStatus.SelectedItem).Id : 1;
-            task.Priority = AddTaskDialogPriority.SelectedItem != null ? ((Priority)AddTaskDialogPriority.SelectedItem).Id : 1;
+            task.Name = AddTaskDialog.TaskName;
+            task.Description = AddTaskDialog.TaskDescription;
+            task.Status = AddTaskDialog.TaskStatus.Id;
+            task.Priority = AddTaskDialog.TaskPriority.Id;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
@@ -126,10 +127,8 @@ namespace CollaborativeWorkspaceUWP.Views
             addTaskViewModel.AddTask(task);
 
             taskListViewModel.IsAddTaskContextTriggered = false;
-            AddTaskDialogTaskName.Text = "";
-            AddTaskDialogDescription.Text = "";
-            AddTaskDialogStatus.SelectedItem = null;
-            AddTaskDialogPriority.SelectedItem = null;
+
+            AddTaskDialog.ClearAllFields();
         }
 
         private void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
@@ -208,10 +207,10 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             UserTask task = new UserTask();
 
-            task.Name = AddSubTaskDialogTaskName.Text;
-            task.Description = AddSubTaskDialogDescription.Text;
-            task.Status = AddSubTaskDialogStatus.SelectedItem != null ? ((Status)AddSubTaskDialogStatus.SelectedItem).Id : 1;
-            task.Priority = AddSubTaskDialogPriority.SelectedItem != null ? ((Priority)AddSubTaskDialogPriority.SelectedItem).Id : 1;
+            task.Name = TaskDetailsView.SubTaskName;
+            task.Description = TaskDetailsView.SubTaskDescription;
+            task.Status = TaskDetailsView.SubTaskStatus.Id;
+            task.Priority = TaskDetailsView.SubTaskPriority.Id;
             task.ProjectId = taskListViewModel.CurrentProject.Id;
             task.OwnerId = 0;
             task.AssigneeId = 0;
@@ -220,21 +219,11 @@ namespace CollaborativeWorkspaceUWP.Views
             addTaskViewModel.AddTask(task);
 
             taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
-            AddSubTaskDialogTaskName.Text = "";
-            AddSubTaskDialogDescription.Text = "";
-            AddSubTaskDialogStatus.SelectedItem = null;
-            AddSubTaskDialogPriority.SelectedItem = null;
+
+            TaskDetailsView.ClearAllFields();
+            TaskDetailsView.UpdateStates();
         }
 
-        private void AddSubTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AddSubTaskFromDialogButton.IsButtonEnabled = AddSubTaskDialogTaskName.Text.Length > 0 ? true : false;
-        }
-
-        private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AddTaskFromDialogButton.IsButtonEnabled = AddTaskDialogTaskName.Text.Length > 0 ? true : false;
-        }
 
         private void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -270,12 +259,12 @@ namespace CollaborativeWorkspaceUWP.Views
             }
         }
 
-        private void TaskDescription_LostFocus(object sender, RoutedEventArgs e)
+        private void TaskUpdate(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.UpdateTask();
         }
 
-        private void TaskDescription_TextChanged(object sender, TextChangedEventArgs e)
+        private void TaskDetailsChanged(object sender, TextChangedEventArgs e)
         {
             taskDetailsViewModel.SetTaskUpdatedContext();
         }

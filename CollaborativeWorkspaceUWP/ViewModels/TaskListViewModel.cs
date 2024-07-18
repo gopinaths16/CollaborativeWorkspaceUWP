@@ -133,10 +133,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
                 foreach(var task in Tasks)
                 {
-                    if(task.SubTasks.Count > 0)
+                    if (task.SubTasks.Count > 0)
                     {
-                        UserTask subTask = task.SubTasks.Where(sTask => e.TaskId == sTask.Id).First();
-                        task.SubTasks.Remove(subTask);
+                        var subTask = task.SubTasks.Where(sTask => e.TaskId == sTask.Id);
+                        if (subTask.Count() > 0)
+                        {
+                            task.SubTasks.Remove(subTask.First());
+                        }
                     }
                 }
                 NotifyPropertyChanged(nameof(Tasks));

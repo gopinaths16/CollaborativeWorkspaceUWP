@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.AddTaskControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style TargetType="StackPanel" x:Key="AddTaskDialogStyle">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="5, 25, 10, 5" />
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxNoBg}" x:Key="TextNoBackground">
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0, 0, 0, 5"/>
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <DataTemplate x:Key="ComboboxPriorityItemTemplate"
+              x:DataType="models:Priority">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="ComboboxStatusItemTemplate"
+              x:DataType="models:Status">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <StackPanel Style="{StaticResource AddTaskDialogStyle}"
+                Grid.Row="1">
+
+        <TextBox Name="Name"
+                 PlaceholderText="Task Name"
+                 Style="{StaticResource TextNoBackground}"
+                 FontWeight="Bold"
+                 TextChanged="AddTaskDialogTaskName_TextChanged"/>
+
+        <TextBox Name="Description"
+                 PlaceholderText="Description"
+                 Style="{StaticResource TextNoBackground}"/>
+
+        <StackPanel Orientation="Horizontal">
+            <ComboBox Name="Priority"
+                      PlaceholderText="Priority"
+                      CornerRadius="2"
+                      Margin="0, 0, 10, 0"
+                      ItemsSource="{x:Bind PriorityComboBoxSource}"
+                      ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
+                      SelectedIndex="0"/>
+
+            <ComboBox Name="Status"
+                      PlaceholderText="Status"
+                      CornerRadius="2"
+                      Margin="0, 0, 10, 0"
+                      ItemsSource="{x:Bind StatusComboBoxSource}"
+                      ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
+                      SelectedIndex="0"/>
+        </StackPanel>
+
+        <Border BorderThickness="0, 0, 0, 0.5"
+                BorderBrush="Gray"
+                Padding="10, 0, 0, 10"
+                Margin="0, 5, 0, 10"/>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Name="CloseTaskDialogButton"
+                    Content="Cancel"
+                    Background="Transparent"
+                    Click="{x:Bind cancelButtonClickEventHandler}"
+                    Margin="0, 0, 10, 0"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            <customusercontrol:CustomIconButtonControl x:Name="AddTaskFromDialogButton"
+                                                       ButtonIcon="&#xE948;"
+                                                       ButtonContent="Add Task"
+                                                       ButtonClick="{x:Bind addTaskButtonClickEventHandler}"
+                                                       ButtonBackground="{StaticResource SystemAccentColor}"
+                                                       IsButtonEnabled="False"/>
+        </StackPanel>
+
+
+    </StackPanel>
+</UserControl>

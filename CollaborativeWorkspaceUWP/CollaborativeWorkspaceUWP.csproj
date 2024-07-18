@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
+      <DependentUpon>AddTaskControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\CustomIconButtonControl.xaml.cs">
       <DependentUpon>CustomIconButtonControl.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,9 @@
     </Compile>
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
+      <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
@@ -231,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CustomControls\UserControls\AddTaskControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\CustomIconButtonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\TaskDetailsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
