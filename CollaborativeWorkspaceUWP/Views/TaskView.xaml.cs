@@ -16,6 +16,10 @@ using Windows.UI.Xaml.Navigation;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
 using CollaborativeWorkspaceUWP.CustomControls.UserControls;
+using Windows.UI.WindowManagement;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -295,6 +299,10 @@ namespace CollaborativeWorkspaceUWP.Views
         private void OpenAddAttachementWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

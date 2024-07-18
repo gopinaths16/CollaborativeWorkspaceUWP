@@ -28,6 +28,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private RoutedEventHandler _addSubTask;
         private RoutedEventHandler _deleteSubTask;
         private RoutedEventHandler _subTaskDetailsCheckboxChecked;
+        private RoutedEventHandler _onOpenInSeparateWindow;
 
         public string SubTaskName
         {
@@ -85,6 +86,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(IsAddSubTaskContextTriggeredProperty, value); }
         }
 
+        public bool IsSeparateWindow
+        {
+            get { return (bool)GetValue(IsSeparateWindowProperty); }
+            set { SetValue(IsSeparateWindowProperty, value); }
+        }
+
         public event SelectionChangedEventHandler SelectionChanged
         {
             add { _selectionChanged += value; }
@@ -133,6 +140,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { _subTaskDetailsCheckboxChecked -= value; }
         }
 
+        public event RoutedEventHandler OnOpenInSeparateWindow
+        {
+            add { _onOpenInSeparateWindow += value; }
+            remove { _onOpenInSeparateWindow -= value; }
+        }
+
         public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
@@ -140,6 +153,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty CurrTaskProperty = DependencyProperty.Register("CurrTask", typeof(UserTask), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty IsAddSubTaskContextTriggeredProperty = DependencyProperty.Register("IsAddSubTaskContextTriggered", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
+
+        public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public TaskDetailsControl()
         {

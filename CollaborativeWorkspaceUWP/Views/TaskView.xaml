@@ -394,6 +394,8 @@
                                                                       UpdateTask="TaskUpdate"
                                                                       AddSubTask="AddSubTaskFromDialogButton_ButtonClick"
                                                                       DeleteSubTask="DeleteSubTaskButton_Click"
+                                                                      IsSeparateWindow="False"
+                                                                      OnOpenInSeparateWindow="OpenTaskInSeparateWindow"
                                                                       Grid.Column="1"
                                                                       Grid.ColumnSpan="3"
                                                                       x:Name="TaskDetailsView" />
