@@ -8,6 +8,7 @@
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -49,14 +50,6 @@
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
 
-                    <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
-                        <Setter Property="BorderThickness" Value="0.5" />
-                        <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Property="Margin" Value="10, 0, 0, 0" />
-                        <Setter Property="Padding" Value="20" />
-                    </Style>
-
                     <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
                         <Setter Property="Margin" Value="10, 20, 0, 0" />
                         <Setter Property="VerticalAlignment" Value="Top" />
@@ -74,6 +67,11 @@
                         <Setter Property="BorderBrush" Value="Gray" />
                         <Setter Property="Padding" Value="10" />
                         <Setter Property="Margin" Value="5, 25, 10, 5" />
+                    </Style>
+
+                    <Style TargetType="Grid" x:Name="TaskDetailsViewSeparateDisplay">
+                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
+                        <Setter Property="Padding" Value="20" />
                     </Style>
 
                     <DataTemplate x:Key="ProjectListViewItemTemplate" 
@@ -174,31 +172,42 @@
         </Grid.RowDefinitions>
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="NarrowLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
-                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
-                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
-                        <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0, 5, 5, 0" />
-                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
+            <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1000"/>
+                        <AdaptiveTrigger MinWindowWidth="1200"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="True" />
                         <Setter Target="ProjectListSplitView.DisplayMode" Value="Inline" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="True" />
                         <Setter Target="ProjectListSplitViewPane.Background" Value="Transparent" />
                         <Setter Target="ProjectListSplitViewPane.Padding" Value="0" />
                         <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0" />
-                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Collapsed" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1100"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SingleWindowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="400"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="2" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -261,7 +270,7 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="500" />
                                     <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 
@@ -270,7 +279,8 @@
                                 <Grid Name="TaskListView" 
                                       Grid.Row="0"
                                       Grid.Column="0"
-                                      Style="{StaticResource TaskListViewByProjectStyle}">
+                                      Style="{StaticResource TaskListViewByProjectStyle}"
+                                      MinWidth="500">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -293,16 +303,16 @@
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
 
-                                    <customusercontrol:CustomIconButtonControl Name="OpenAddTaskWindowButton"
-                                                                               ButtonIcon="&#xE948;"
-                                                                               ButtonContent="Add Task"
-                                                                               ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                               ButtonClick="OpenAddTaskWindowButton_ButtonClick"
-                                                                               Margin="0, 20, 0, 0"
-                                                                               ButtonBackground="Transparent"
-                                                                               Grid.Row="1"
-                                                                               Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                               IsButtonEnabled="True"/>
+                                    
+                                    <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
+                                                                                   Content="Add Task"
+                                                                                   Click="OpenAddTaskWindowButton_ButtonClick"
+                                                                                   Grid.Row="1"
+                                                                                   Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                                                                                   HorizontalContentAlignment="Left"
+                                                                                   Padding="10"
+                                                                                   IsEnabled="True"
+                                                                                   Margin="0, 5, 0, 5"/>
 
                                     <customusercontrol:AddTaskControl Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                       Grid.Row="1"
@@ -337,22 +347,16 @@
                                 
                                 <!--#region Task Details view Starts-->
 
-                                <customusercontrol:TaskDetailsControl StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
-                                                                      PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                                      CurrTask="{x:Bind taskDetailsViewModel.CurrTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                      IsAddSubTaskContextTriggered="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay}"
-                                                                      SelectionChanged="TaskUpdateTriggered"
-                                                                      TaskDetailsCheckboxChecked="TaskDetailsCheckBox_Checked"
-                                                                      OnTaskDelete="DeleteTaskButton_Click"
-                                                                      OnTaskDetailsChanged="TaskDetailsChanged"
-                                                                      UpdateTask="TaskUpdate"
-                                                                      AddSubTask="AddSubTaskFromDialogButton_ButtonClick"
-                                                                      DeleteSubTask="DeleteSubTaskButton_Click"
-                                                                      IsSeparateWindow="False"
-                                                                      OnOpenInSeparateWindow="OpenTaskInSeparateWindow"
-                                                                      Grid.Column="1"
-                                                                      Grid.ColumnSpan="3"
-                                                                      x:Name="TaskDetailsView" />
+                                <Border CornerRadius="5"
+                                        Grid.Column="1"
+                                        x:Name="TaskDetailsViewContainer">
+                                    <customusercontrol:TaskDetailsControl x:Name="TaskDetailsView"
+                                                                          Margin="10, 0, 0, 0"
+                                                                          StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
+                                                                          PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
+                                                                          IsSeparateWindow="False"
+                                                                          OnOpenInSeparateWindow="OpenTaskInSeparateWindow" />
+                                </Border>
 
                                 
                                 
@@ -374,6 +378,7 @@
             <StackPanel x:Name="AddProjectDialogContent"
                         Style="{StaticResource DialogContentStyle}">
 
+                
                 <Grid Margin="0, 0, 0, 25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

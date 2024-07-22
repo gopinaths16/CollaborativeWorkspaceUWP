@@ -93,7 +93,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void OnTaskAddition(AddTaskEvent e)
         {
             UserTask task = e.Task;
-            if(CurrTask != null && task.ParentTaskId == CurrTask.Id)
+            if(CurrTask != null && task.ParentTaskId == CurrTask.Id && CurrTask.SubTasks.Where(subTask => subTask.Id == task.Id).ToList().Count <= 0)
             {
                 CurrTask.SubTasks.Add(task);
                 NotifyPropertyChanged(nameof(CurrTask));
@@ -202,6 +202,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 NotifyPropertyChanged(nameof(CurrTask));
                 ViewmodelEventHandler.Instance.Publish(new DeleteTaskEvent() { TaskId = task.Id });
             }
+        }
+
+        public override void Dispose()
+        {
+            ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddition);
+            ViewmodelEventHandler.Instance.Unsubscribe<UpdateTaskEvent>(OnTaskUpdation);
         }
     }
 }

@@ -115,7 +115,11 @@ namespace CollaborativeWorkspaceUWP.Models
         public object Clone()
         {
             UserTask task = new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
-            task.SubTasks = SubTasks;
+            task.SubTasks = new ObservableCollection<UserTask>();
+            foreach (var subTask in SubTasks)
+            {
+                task.SubTasks.Add(subTask);
+            }
             return task;
         }
 

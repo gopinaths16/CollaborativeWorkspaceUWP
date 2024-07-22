@@ -1,9 +1,11 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -20,47 +22,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class TaskDetailsControl : UserControl
     {
-        private SelectionChangedEventHandler _selectionChanged;
-        private RoutedEventHandler _taskDetailsCheckboxChecked;
-        private RoutedEventHandler _onTaskDelete;
-        private RoutedEventHandler _updateTask;
-        private TextChangedEventHandler _onTaskDetailsChange;
-        private RoutedEventHandler _addSubTask;
-        private RoutedEventHandler _deleteSubTask;
-        private RoutedEventHandler _subTaskDetailsCheckboxChecked;
+        TaskDetailsViewModel taskDetailsViewModel;
+        AddTaskViewModel addTaskViewModel;
+
         private RoutedEventHandler _onOpenInSeparateWindow;
-
-        public string SubTaskName
-        {
-            get
-            {
-                return AddSubTaskDialog.TaskName;
-            }
-        }
-
-        public string SubTaskDescription
-        {
-            get
-            {
-                return AddSubTaskDialog.TaskDescription;
-            }
-        }
-
-        public Status SubTaskStatus
-        {
-            get
-            {
-                return AddSubTaskDialog.TaskStatus;
-            }
-        }
-
-        public Priority SubTaskPriority
-        {
-            get
-            {
-                return AddSubTaskDialog.TaskPriority;
-            }
-        }
 
         public object PriorityComboBoxSource
         {
@@ -74,70 +39,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(StatusComboBoxSourceProperty, value); }
         }
 
-        public UserTask CurrTask
-        {
-            get { return (UserTask)GetValue(CurrTaskProperty); }
-            set { SetValue(CurrTaskProperty, value); }
-        }
-
-        public bool IsAddSubTaskContextTriggered
-        {
-            get { return (bool)GetValue(IsAddSubTaskContextTriggeredProperty); }
-            set { SetValue(IsAddSubTaskContextTriggeredProperty, value); }
-        }
-
         public bool IsSeparateWindow
         {
             get { return (bool)GetValue(IsSeparateWindowProperty); }
             set { SetValue(IsSeparateWindowProperty, value); }
-        }
-
-        public event SelectionChangedEventHandler SelectionChanged
-        {
-            add { _selectionChanged += value; }
-            remove {  _selectionChanged -= value; }
-        }
-
-        public event RoutedEventHandler TaskDetailsCheckboxChecked
-        {
-            add { _taskDetailsCheckboxChecked += value; }
-            remove { _taskDetailsCheckboxChecked -= value; }
-        }
-
-        public event RoutedEventHandler OnTaskDelete
-        {
-            add { _onTaskDelete += value; }
-            remove { _onTaskDelete -= value; }
-        }
-
-        public event TextChangedEventHandler OnTaskDetailsChanged
-        {
-            add { _onTaskDetailsChange += value; }
-            remove { _onTaskDetailsChange -= value; }
-        }
-
-        public event RoutedEventHandler UpdateTask
-        {
-            add { _updateTask += value; }
-            remove { _updateTask -= value; }
-        }
-
-        public event RoutedEventHandler AddSubTask
-        {
-            add { _addSubTask += value; }
-            remove { _addSubTask -= value; }
-        }
-
-        public event RoutedEventHandler DeleteSubTask
-        {
-            add { _deleteSubTask += value; }
-            remove { _deleteSubTask -= value; }
-        }
-
-        public event RoutedEventHandler SubTaskDetailsCheckBoxChecked
-        {
-            add { _subTaskDetailsCheckboxChecked += value; }
-            remove { _subTaskDetailsCheckboxChecked -= value; }
         }
 
         public event RoutedEventHandler OnOpenInSeparateWindow
@@ -150,46 +55,118 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
-        public static readonly DependencyProperty CurrTaskProperty = DependencyProperty.Register("CurrTask", typeof(UserTask), typeof(TaskDetailsControl), new PropertyMetadata(0));
-
-        public static readonly DependencyProperty IsAddSubTaskContextTriggeredProperty = DependencyProperty.Register("IsAddSubTaskContextTriggered", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
-
         public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public TaskDetailsControl()
         {
             this.InitializeComponent();
+
+            taskDetailsViewModel = new TaskDetailsViewModel();
+            addTaskViewModel = new AddTaskViewModel();
+        }
+
+        public void SetCurrentTask(UserTask task)
+        {
+            taskDetailsViewModel.CurrTask = task;
+        }
+
+        public UserTask GetCurrentTask()
+        {
+            return taskDetailsViewModel.CurrTask;
+        }
+
+        public void UpdateCurrentTask()
+        {
+            taskDetailsViewModel.UpdateTask();
         }
 
         private void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            IsAddSubTaskContextTriggered = true;
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = true;
         }
 
         private void AddSubTaskDialog_CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            IsAddSubTaskContextTriggered = false;
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
         }
 
-        private void DeleteSubTaskButton_ButtonClick(object sender, RoutedEventArgs e)
+        private void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
         {
-            _deleteSubTask?.Invoke(sender, e);
-            UpdateStates();
+            taskDetailsViewModel.UpdateTask(true);
         }
 
-        public void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
+        private void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            _subTaskDetailsCheckboxChecked?.Invoke(sender, e);
+            CheckBox checkBox = (CheckBox)sender;
+            if (checkBox.Tag != null)
+            {
+                long taskId = (long)checkBox.Tag;
+                bool checkboxStatus = (bool)checkBox.IsChecked;
+                taskDetailsViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+            }
         }
 
-        public void UpdateStates()
+        private void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            NoSubtasksMessage.Visibility = CurrTask.SubTasks.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+            CheckBox checkBox = (CheckBox)sender;
+            if (checkBox.Tag != null)
+            {
+                long taskId = (long)checkBox.Tag;
+                bool checkboxStatus = (bool)checkBox.IsChecked;
+                taskDetailsViewModel.UpdateSubTaskCompletionStatus(taskId, !checkboxStatus);
+            }
+        }
+
+        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.DeleteTask();
+        }
+
+        private void TaskDetailsChanged(object sender, TextChangedEventArgs e)
+        {
+            taskDetailsViewModel.SetTaskUpdatedContext();
+        }
+
+        private void TaskUpdate(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.UpdateTask();
+        }
+
+        private void AddSubTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            UserTask task = new UserTask();
+
+            task.Name = AddSubTaskDialog.TaskName;
+            task.Description = AddSubTaskDialog.TaskDescription;
+            task.Status = AddSubTaskDialog.TaskStatus.Id;
+            task.Priority = AddSubTaskDialog.TaskPriority.Id;
+            task.ProjectId = taskDetailsViewModel.CurrTask.ProjectId;
+            task.OwnerId = 0;
+            task.AssigneeId = 0;
+            task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
+
+            addTaskViewModel.AddTask(task);
+
+            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
+
+            ClearAllFields();
+        }
+
+        public void DeleteSubTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            long taskId = (long)button.Tag;
+            taskDetailsViewModel.DeleteSubTask(taskId);
         }
 
         public void ClearAllFields()
         {
             AddSubTaskDialog.ClearAllFields();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.Dispose();
         }
     }
 }

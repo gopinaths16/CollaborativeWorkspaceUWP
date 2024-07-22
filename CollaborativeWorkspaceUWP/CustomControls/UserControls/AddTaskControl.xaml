@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -86,12 +87,15 @@
                     CornerRadius="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
-            <customusercontrol:CustomIconButtonControl x:Name="AddTaskFromDialogButton"
-                                                       ButtonIcon="&#xE948;"
-                                                       ButtonContent="Add Task"
-                                                       ButtonClick="{x:Bind addTaskButtonClickEventHandler}"
-                                                       ButtonBackground="{StaticResource SystemAccentColor}"
-                                                       IsButtonEnabled="False"/>
+            <customtemplatecontrol:CustomIconButtonControl x:Name="AddTaskFromDialogButton" 
+                                                           Icon="&#xE948;"
+                                                           Content="Add Task"
+                                                           Click="{x:Bind addTaskButtonClickEventHandler}"
+                                                           Background="{StaticResource SystemAccentColor}"
+                                                           BorderThickness="0"
+                                                           Grid.Row="1"
+                                                           Padding="10, 0, 10, 0"
+                                                           IsEnabled="False"/>
         </StackPanel>
 
 

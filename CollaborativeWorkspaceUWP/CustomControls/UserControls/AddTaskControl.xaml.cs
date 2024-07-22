@@ -95,7 +95,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            AddTaskFromDialogButton.IsButtonEnabled = Name.Text.Length > 0 ? true : false;
+            AddTaskFromDialogButton.IsEnabled = Name.Text.Length > 0 ? true : false;
         }
 
         private void CloseTaskDialogButton_Click(object sender, RoutedEventArgs e)

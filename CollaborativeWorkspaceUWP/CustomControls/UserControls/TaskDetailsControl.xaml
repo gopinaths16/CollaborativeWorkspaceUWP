@@ -4,19 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    Unloaded="UserControl_Unloaded">
 
     <UserControl.Resources>
         <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
-            <Setter Property="BorderThickness" Value="0.5" />
-            <Setter Property="CornerRadius" Value="5" />
             <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-            <Setter Property="Margin" Value="10, 0, 0, 0" />
             <Setter Property="Padding" Value="20" />
         </Style>
 
@@ -85,7 +84,7 @@
                                 VerticalAlignment="Center"
                                 Tag="{x:Bind Id}"
                                 Style="{StaticResource ButtonNoBackground}"
-                                Click="DeleteSubTaskButton_ButtonClick"/>
+                                Click="DeleteSubTaskButton_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -93,7 +92,7 @@
     </UserControl.Resources>
 
     <Grid Style="{StaticResource TaskDetailsViewGridDisplay}">
-        <Grid Visibility="{x:Bind CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -120,8 +119,8 @@
                               CornerRadius="2"
                               Margin="0, 0, 10, 0"
                               ItemsSource="{x:Bind StatusComboBoxSource}"
-                              SelectedIndex="{x:Bind CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="{x:Bind _selectionChanged}"
+                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="TaskUpdateTriggered"
                               ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
 
                     <ComboBox Name="Priority"
@@ -130,8 +129,8 @@
                               Grid.Column="1"
                               Margin="0, 0, 10, 0"
                               ItemsSource="{x:Bind PriorityComboBoxSource}"
-                              SelectedIndex="{x:Bind CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="{x:Bind _selectionChanged}"
+                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="TaskUpdateTriggered"
                               ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
@@ -150,7 +149,7 @@
                             Content="&#xe74d;"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Click="{x:Bind _onTaskDelete}"
+                            Click="DeleteTaskButton_Click"
                             Style="{StaticResource ButtonNoBackground}"
                             Grid.Column="1"/>
                     <Button Name="OpenTaskInNewWindowButton"
@@ -174,13 +173,13 @@
                 <CheckBox HorizontalAlignment="Left"
                           VerticalAlignment="Center"
                           Margin="5, 15, 0, 0"
-                          IsChecked="{x:Bind CurrTask.IsCompleted, Mode=TwoWay}"
-                          Tag="{x:Bind CurrTask.Id, Mode=OneWay}"
+                          IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
+                          Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
                           Style="{StaticResource CheckboxNoContent}"
                           MinWidth="0"
                           Grid.Column="0"
-                          Checked="{x:Bind _taskDetailsCheckboxChecked}"
-                          Unchecked="{x:Bind _taskDetailsCheckboxChecked}"/>
+                          Checked="TaskDetailsCheckBox_Checked"
+                          Unchecked="TaskDetailsCheckBox_Checked"/>
                 <TextBox Name="TaskTitle"
                          Style="{StaticResource TextNoBackground}"
                          HorizontalAlignment="Stretch"
@@ -188,9 +187,9 @@
                          Padding="10"
                          FontSize="20"
                          Grid.Column="1"
-                         Text="{x:Bind CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         LostFocus="{x:Bind _updateTask}"
-                         TextChanged="{x:Bind _onTaskDetailsChange}"/>
+                         Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         LostFocus="TaskUpdate"
+                         TextChanged="TaskDetailsChanged"/>
             </Grid>
 
             <customusercontrol:IconedLabelControl Grid.Row="2"
@@ -203,9 +202,9 @@
                      Margin="15, 10, 15, 0"
                      Padding="10"
                      Grid.Row="3"
-                     Text="{x:Bind CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     LostFocus="{x:Bind _updateTask}"
-                     TextChanged="{x:Bind _onTaskDetailsChange}"/>
+                     Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     LostFocus="TaskUpdate"
+                     TextChanged="TaskDetailsChanged"/>
 
 
             <Pivot x:Name="TaskViewPivot"
@@ -231,27 +230,26 @@
                         </StackPanel>
                     </PivotItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <customusercontrol:CustomIconButtonControl Name="OpenAddSubTaskWindowButton"
-                                                                   ButtonIcon="&#xE948;"
-                                                                   ButtonContent="Add Sub Task"
-                                                                   ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                   ButtonClick="OpenAddSubTaskWindowButton_ButtonClick"
-                                                                   Margin="0, 20, 0, 0"
-                                                                   ButtonBackground="Transparent"
-                                                                   Grid.Row="1"
-                                                                   Visibility="{x:Bind IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                   IsButtonEnabled="True"/>
+                        <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
+                                                                       Content="Add Sub Task"
+                                                                       Click="OpenAddSubTaskWindowButton_ButtonClick"
+                                                                       Grid.Row="1"
+                                                                       Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                                                                       HorizontalContentAlignment="Left"
+                                                                       Padding="10"
+                                                                       IsEnabled="True"
+                                                                       Margin="0, 5, 0, 5"/>
 
-                        <customusercontrol:AddTaskControl Visibility="{x:Bind IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                        <customusercontrol:AddTaskControl Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           Grid.Row="1"
                                                           x:Name="AddSubTaskDialog"
                                                           PriorityComboBoxSource="{x:Bind PriorityComboBoxSource}"
                                                           StatusComboBoxSource="{x:Bind StatusComboBoxSource}"
                                                           CancelButtonClick="AddSubTaskDialog_CancelButtonClick"
-                                                          AddTaskButtonClick="{x:Bind _addSubTask}"/>
+                                                          AddTaskButtonClick="AddSubTaskFromDialogButton_ButtonClick"/>
 
                         <ListView Name="SubTaskListView" 
-                                  ItemsSource="{x:Bind CurrTask.SubTasks, Mode=TwoWay}"
+                                  ItemsSource="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource SubTaskListViewDataTemplate}"
                                   Margin="0, 20, 0, 0"
                                   Grid.Row="2"
@@ -262,7 +260,7 @@
                                     Margin="0, 20, 0, 0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Visibility="{x:Bind CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                                    Visibility="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
                             <TextBlock Text="No Sub tasks available"
                                        Foreground="Gray"
                                        FontSize="20"/>
@@ -304,7 +302,7 @@
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Visibility="{x:Bind CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
+                    Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
             <TextBlock Text="No Task Selected"
                        Foreground="Gray"
                        FontSize="20"/>

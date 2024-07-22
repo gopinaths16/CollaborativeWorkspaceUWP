@@ -18,6 +18,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         bool isAddTaskContextTriggered;
         List<Priority> priorityList;
         List<Status> statusList;
+        UserTask currTask;
 
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
@@ -48,6 +49,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public Project CurrentProject
         {
             get; set;
+        }
+
+        public UserTask CurrTask
+        {
+            get { return  currTask; }
+            set { 
+                currTask = value;
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
         }
 
         public bool IsAddTaskContextTriggered

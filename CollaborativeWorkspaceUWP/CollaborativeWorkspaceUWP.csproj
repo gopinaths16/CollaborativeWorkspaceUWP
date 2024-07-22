@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>
     </Compile>
@@ -276,6 +277,10 @@
     <Page Include="Templates\TableDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
