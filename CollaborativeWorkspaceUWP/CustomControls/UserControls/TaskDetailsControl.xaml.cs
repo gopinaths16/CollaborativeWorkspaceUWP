@@ -26,6 +26,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         AddTaskViewModel addTaskViewModel;
 
         private RoutedEventHandler _onOpenInSeparateWindow;
+        private RoutedEventHandler _onTaskClear;
 
         public object PriorityComboBoxSource
         {
@@ -45,10 +46,22 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(IsSeparateWindowProperty, value); }
         }
 
+        public bool AllowTaskClear
+        {
+            get { return (bool)GetValue(AllowTaskClearProperty); }
+            set { SetValue(AllowTaskClearProperty, value); }
+        }
+
         public event RoutedEventHandler OnOpenInSeparateWindow
         {
             add { _onOpenInSeparateWindow += value; }
             remove { _onOpenInSeparateWindow -= value; }
+        }
+
+        public event RoutedEventHandler OnTaskClear
+        {
+            add { _onTaskClear += value; }
+            remove { _onTaskClear -= value; }
         }
 
         public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
@@ -56,6 +69,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
+
+        public static readonly DependencyProperty AllowTaskClearProperty = DependencyProperty.Register("AllowTaskClear", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public TaskDetailsControl()
         {

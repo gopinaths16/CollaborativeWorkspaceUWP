@@ -19,6 +19,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         List<Priority> priorityList;
         List<Status> statusList;
         UserTask currTask;
+        bool isSingleWindowLayoutTriggered;
 
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
@@ -66,6 +67,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { 
                 isAddTaskContextTriggered = value; 
                 NotifyPropertyChanged(nameof(IsAddTaskContextTriggered));
+            }
+        }
+
+        public bool IsSingleWindowLayoutTriggered
+        {
+            get { return isSingleWindowLayoutTriggered; }
+            set
+            {
+                isSingleWindowLayoutTriggered = value;
+                NotifyPropertyChanged(nameof(IsSingleWindowLayoutTriggered));
             }
         }
 

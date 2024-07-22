@@ -22,6 +22,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Hosting;
 using System.Diagnostics;
+using System.ServiceModel.Channels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -52,17 +53,37 @@ namespace CollaborativeWorkspaceUWP.Views
             addTaskViewModel = new AddTaskViewModel();
             addSubTaskViewModel = new AddSubTaskViewModel();
             currTeamspaceViewModel = new CurrentTeamspaceViewModel();
-
-            VisualStateManager.GetVisualStateGroups(this).First().CurrentStateChanged += OnVisualStateChanged;
         }
 
         private void OnVisualStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            Debug.WriteLine($"Visual state changed from {e.OldState?.Name} to {e.NewState?.Name}");
-
-            if (e.NewState.Name == "Pressed")
+            if (e.NewState.Name == "SingleWindowLayout")
             {
+                Grid.SetColumn(TaskDetailsViewContainer, 0);
+                VisualStateManager.GoToState(this, "SingleWindowLayout", true);
+                bool isCurrentTaskSelected = taskListViewModel.CurrTask != null;
+                taskListViewModel.IsSingleWindowLayoutTriggered = true;
+                TaskListView.Visibility = isCurrentTaskSelected ? Visibility.Collapsed : Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = isCurrentTaskSelected ? Visibility.Visible : Visibility.Collapsed;
 
+            }
+            else if (e.NewState.Name == "NarrowLayout")
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+                taskListViewModel.IsSingleWindowLayoutTriggered = false;
+                Grid.SetColumn(TaskDetailsViewContainer, 1);
+                VisualStateManager.GoToState(this, "NarrowLayout", true);
+            }
+            else if (e.NewState.Name == "WideLayout")
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+                taskListViewModel.IsSingleWindowLayoutTriggered = false;
+                Grid.SetColumn(TaskDetailsViewContainer, 1);
+                VisualStateManager.GoToState(this, "WideLayout", true);
             }
         }
 
@@ -70,6 +91,11 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             TaskDetailsView.UpdateCurrentTask();
             Project currProject = (Project)e.ClickedItem;
+            if (taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+            }
             taskListViewModel.GetTasksForProject((Project)currProject.Clone());
             TaskDetailsView.SetCurrentTask(null);
             taskListViewModel.CurrTask = null;
@@ -82,6 +108,11 @@ namespace CollaborativeWorkspaceUWP.Views
                 TaskDetailsView.UpdateCurrentTask();
             }
             TaskDetailsView.SetCurrentTask(null);
+            if(taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Collapsed;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+            }
             UserTask task = (UserTask)e.ClickedItem;
             taskListViewModel.CurrTask = task;
             TaskDetailsView.SetCurrentTask((UserTask)task.Clone());
@@ -179,6 +210,7 @@ namespace CollaborativeWorkspaceUWP.Views
             taskDetailsControl.PriorityComboBoxSource = addTaskViewModel.PriorityData;
             taskDetailsControl.StatusComboBoxSource = addTaskViewModel.StatusData;
             taskDetailsControl.IsSeparateWindow = true;
+            taskDetailsControl.AllowTaskClear = false;
             newWindowLayout.Children.Add(taskDetailsControl);
             appWindow = await AppWindow.TryCreateAsync();
             ElementCompositionPreview.SetAppWindowContent(appWindow, newWindowLayout);
@@ -214,6 +246,18 @@ namespace CollaborativeWorkspaceUWP.Views
                 {
                     taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
                 }
+            }
+            var visualStates = VisualStateManager.GetVisualStateGroups(TaskViewPanel).ToList();
+            visualStates.First().CurrentStateChanging += OnVisualStateChanged;
+        }
+
+        private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)
+        {
+            taskListViewModel.CurrTask = null;
+            if(taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
             }
         }
     }

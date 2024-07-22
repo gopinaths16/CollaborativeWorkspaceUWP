@@ -59,6 +59,7 @@
                         <Setter Property="CornerRadius" Value="5"/>
                         <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
                         <Setter Property="Padding" Value="5" />
+                        <Setter Property="Margin" Value="10, 0, 0, 0" />
                     </Style>
 
                     <Style TargetType="StackPanel" x:Key="AddTaskDialogStyle">
@@ -172,7 +173,7 @@
         </Grid.RowDefinitions>
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="WindowStates">
+            <VisualStateGroup x:Name="WindowStateGroup">
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="1200"/>
@@ -249,7 +250,7 @@
                         <SplitView.Pane>
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
-                                        Margin="0, 0, 10, 0"
+                                        Margin="0, 0, 0, 0"
                                         Name="ProjectListSplitViewPane">
 
                                 <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
@@ -280,7 +281,8 @@
                                       Grid.Row="0"
                                       Grid.Column="0"
                                       Style="{StaticResource TaskListViewByProjectStyle}"
-                                      MinWidth="500">
+                                      MinWidth="500"
+                                      Visibility="{Binding IsVisible}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -349,13 +351,17 @@
 
                                 <Border CornerRadius="5"
                                         Grid.Column="1"
-                                        x:Name="TaskDetailsViewContainer">
+                                        Grid.ColumnSpan="2"
+                                        x:Name="TaskDetailsViewContainer"
+                                        Visibility="{Binding IsVisible}">
                                     <customusercontrol:TaskDetailsControl x:Name="TaskDetailsView"
                                                                           Margin="10, 0, 0, 0"
                                                                           StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
                                                                           PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
                                                                           IsSeparateWindow="False"
-                                                                          OnOpenInSeparateWindow="OpenTaskInSeparateWindow" />
+                                                                          OnOpenInSeparateWindow="OpenTaskInSeparateWindow"
+                                                                          AllowTaskClear="True"
+                                                                          OnTaskClear="TaskDetailsView_OnTaskClear"/>
                                 </Border>
 
                                 
