@@ -19,6 +19,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         List<Priority> priorityList;
         List<Status> statusList;
         UserTask currTask;
+        Project currProject;
         bool isSingleWindowLayoutTriggered;
 
         TaskDataHandler taskDataHandler;
@@ -49,7 +50,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public Project CurrentProject
         {
-            get; set;
+            get { return currProject; }
+            set
+            {
+                currProject = value;
+                NotifyPropertyChanged(nameof(CurrentProject));
+            }
         }
 
         public UserTask CurrTask
@@ -101,6 +107,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             task.StatusData = GetTaskStatus(task.Priority);
             task.PriorityData = GetTaskPriority(task.Status);
             Tasks.Add(task);
+            var temp = Tasks.Where(pTask => pTask.Id == task.ParentTaskId);
+            if (temp != null)
+            {
+                foreach(var pTask in temp)
+                {
+                    pTask.SubTasks.Add(task);
+                }
+            }
             NotifyPropertyChanged(nameof(Tasks));
         }
 

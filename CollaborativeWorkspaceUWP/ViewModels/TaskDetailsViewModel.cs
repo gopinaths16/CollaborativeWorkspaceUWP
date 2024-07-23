@@ -55,14 +55,26 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public List<Priority> PriorityData
+        {
+            get { return priorityList; }
+            set { priorityList = value; }
+        }
+
+        public List<Status> StatusData
+        {
+            get { return statusList; }
+            set { statusList = value; }
+        }
+
         public TaskDetailsViewModel()
         {
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
             taskDataHandler = new TaskDataHandler();
 
-            priorityList = priorityDataHandler.GetPriorityData();
-            statusList = statusDataHandler.GetStatusData();
+            PriorityData = priorityDataHandler.GetPriorityData();
+            StatusData = statusDataHandler.GetStatusData();
 
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
@@ -70,12 +82,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public Priority GetTaskPriority()
         {
-            return priorityList.Where(priority => priority.Id == CurrTask.Priority).ToList()[0];
+            return PriorityData.Where(priority => priority.Id == CurrTask.Priority).ToList()[0];
         }
 
         public Status GetTaskStatus()
         {
-            return statusList.Where(status => status.Id == CurrTask.Status).ToList()[0];
+            return StatusData.Where(status => status.Id == CurrTask.Status).ToList()[0];
         }
 
         public void AddSubTaskToCurrTask(UserTask task)

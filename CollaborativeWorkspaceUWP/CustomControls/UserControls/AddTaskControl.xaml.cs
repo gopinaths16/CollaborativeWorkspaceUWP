@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class AddTaskControl : UserControl
     {
+        private AddTaskViewModel addTaskViewModel;
+
         private RoutedEventHandler cancelButtonClickEventHandler;
         private RoutedEventHandler addTaskButtonClickEventHandler;
 
@@ -47,50 +50,50 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { addTaskButtonClickEventHandler -= value; }
         }
 
-        public string TaskName
+        public long CurrProjectId
         {
-            get
-            {
-                return Name.Text;
-            }
+            get { return (long)GetValue(CurrProjectProperty); }
+            set { SetValue(CurrProjectProperty, value); }
         }
 
-        public string TaskDescription
+        public long ParentTaskId
         {
-            get
-            {
-                return Description.Text;
-            }
-        }
-
-        public Status TaskStatus
-        {
-            get
-            {
-                return (Status)Status.SelectedItem;
-            }
-        }
-
-        public Priority TaskPriority
-        {
-            get
-            {
-                return (Priority)Priority.SelectedItem;
-            }
+            get { return (long)GetValue(ParentTaskIdProperty); }
+            set { SetValue(ParentTaskIdProperty, value); }
         }
 
         public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(0));
 
+        public static readonly DependencyProperty CurrProjectProperty = DependencyProperty.Register("CurrProject", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
+
+        public static readonly DependencyProperty ParentTaskIdProperty = DependencyProperty.Register("ParentTaskId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
+
         public AddTaskControl()
         {
             this.InitializeComponent();
+
+            addTaskViewModel = new AddTaskViewModel();
         }
 
         private void AddTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
+            UserTask task = new UserTask();
 
+            task.Name = Name.Text;
+            task.Description = Description.Text;
+            task.Status = ((Status)Status.SelectedItem).Id;
+            task.Priority = ((Priority)Priority.SelectedItem).Id;
+            task.ProjectId = CurrProjectId;
+            task.OwnerId = 0;
+            task.AssigneeId = 0;
+            task.ParentTaskId = ParentTaskId > 0 ? ParentTaskId : -1;
+            addTaskViewModel.AddTask(task);
+
+            addTaskButtonClickEventHandler?.Invoke(sender, e);
+
+            ClearAllFields();
         }
 
         private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
@@ -100,7 +103,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void CloseTaskDialogButton_Click(object sender, RoutedEventArgs e)
         {
-
+            cancelButtonClickEventHandler?.Invoke(sender, e);
+            ClearAllFields();
         }
 
         public void ClearAllFields()

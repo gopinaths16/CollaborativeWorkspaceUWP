@@ -47,19 +47,30 @@
         <TextBox Name="Name"
                  PlaceholderText="Task Name"
                  Style="{StaticResource TextNoBackground}"
+                 Margin="0, 5, 0, 5"
                  FontWeight="Bold"
+                 MaxLength="300"
                  TextChanged="AddTaskDialogTaskName_TextChanged"/>
 
-        <TextBox Name="Description"
-                 PlaceholderText="Description"
-                 Style="{StaticResource TextNoBackground}"/>
+        <ScrollViewer HorizontalScrollMode="Disabled" 
+                      VerticalScrollMode="Auto" 
+                      VerticalScrollBarVisibility="Visible"
+                      MaxHeight="200">
+            <TextBox Name="Description"
+                     PlaceholderText="Description"
+                     Margin="0, 0, 0, 10"
+                     Style="{StaticResource TextNoBackground}"/>
+        </ScrollViewer>
+        
+        
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"
+                    Margin="10. 10, 10, 0">
             <ComboBox Name="Priority"
                       PlaceholderText="Priority"
                       CornerRadius="2"
                       Margin="0, 0, 10, 0"
-                      ItemsSource="{x:Bind PriorityComboBoxSource}"
+                      ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
                       ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
                       SelectedIndex="0"/>
 
@@ -67,7 +78,7 @@
                       PlaceholderText="Status"
                       CornerRadius="2"
                       Margin="0, 0, 10, 0"
-                      ItemsSource="{x:Bind StatusComboBoxSource}"
+                      ItemsSource="{x:Bind addTaskViewModel.StatusData}"
                       ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
                       SelectedIndex="0"/>
         </StackPanel>
@@ -75,14 +86,15 @@
         <Border BorderThickness="0, 0, 0, 0.5"
                 BorderBrush="Gray"
                 Padding="10, 0, 0, 10"
-                Margin="0, 5, 0, 10"/>
+                Margin="10, 5, 10, 10"/>
 
         <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    Margin="10, 5, 10, 5">
             <Button Name="CloseTaskDialogButton"
                     Content="Cancel"
                     Background="Transparent"
-                    Click="{x:Bind cancelButtonClickEventHandler}"
+                    Click="CloseTaskDialogButton_Click"
                     Margin="0, 0, 10, 0"
                     CornerRadius="5"
                     HorizontalAlignment="Center"
@@ -90,7 +102,7 @@
             <customtemplatecontrol:CustomIconButtonControl x:Name="AddTaskFromDialogButton" 
                                                            Icon="&#xE948;"
                                                            Content="Add Task"
-                                                           Click="{x:Bind addTaskButtonClickEventHandler}"
+                                                           Click="AddTaskFromDialogButton_ButtonClick"
                                                            Background="{StaticResource SystemAccentColor}"
                                                            BorderThickness="0"
                                                            Grid.Row="1"

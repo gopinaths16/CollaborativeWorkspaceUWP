@@ -28,18 +28,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private RoutedEventHandler _onOpenInSeparateWindow;
         private RoutedEventHandler _onTaskClear;
 
-        public object PriorityComboBoxSource
-        {
-            get { return (object)GetValue(PriorityComboBoxSourceProperty); }
-            set { SetValue(PriorityComboBoxSourceProperty, value); }
-        }
-
-        public object StatusComboBoxSource
-        {
-            get { return (object)GetValue(StatusComboBoxSourceProperty); }
-            set { SetValue(StatusComboBoxSourceProperty, value); }
-        }
-
         public bool IsSeparateWindow
         {
             get { return (bool)GetValue(IsSeparateWindowProperty); }
@@ -63,10 +51,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             add { _onTaskClear += value; }
             remove { _onTaskClear -= value; }
         }
-
-        public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
-
-        public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
 
@@ -149,22 +133,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void AddSubTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            UserTask task = new UserTask();
-
-            task.Name = AddSubTaskDialog.TaskName;
-            task.Description = AddSubTaskDialog.TaskDescription;
-            task.Status = AddSubTaskDialog.TaskStatus.Id;
-            task.Priority = AddSubTaskDialog.TaskPriority.Id;
-            task.ProjectId = taskDetailsViewModel.CurrTask.ProjectId;
-            task.OwnerId = 0;
-            task.AssigneeId = 0;
-            task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
-
-            addTaskViewModel.AddTask(task);
-
             taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
-
-            ClearAllFields();
         }
 
         public void DeleteSubTaskButton_Click(object sender, RoutedEventArgs e)

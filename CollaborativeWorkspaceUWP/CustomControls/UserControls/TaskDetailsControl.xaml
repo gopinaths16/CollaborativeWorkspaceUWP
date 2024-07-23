@@ -126,7 +126,7 @@
                               PlaceholderText="Status"
                               CornerRadius="2"
                               Margin="10, 0, 10, 0"
-                              ItemsSource="{x:Bind StatusComboBoxSource}"
+                              ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
                               SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
                               SelectionChanged="TaskUpdateTriggered"
                               ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
@@ -136,7 +136,7 @@
                               CornerRadius="2"
                               Grid.Column="1"
                               Margin="0, 0, 10, 0"
-                              ItemsSource="{x:Bind PriorityComboBoxSource}"
+                              ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
                               SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
                               SelectionChanged="TaskUpdateTriggered"
                               ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
@@ -243,7 +243,7 @@
                                                                        Click="OpenAddSubTaskWindowButton_ButtonClick"
                                                                        Grid.Row="1"
                                                                        Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                       HorizontalContentAlignment="Left"
+                                                                       HorizontalContentAlignment="Stretch"
                                                                        Padding="10"
                                                                        IsEnabled="True"
                                                                        Margin="0, 5, 0, 5"/>
@@ -251,8 +251,8 @@
                         <customusercontrol:AddTaskControl Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           Grid.Row="1"
                                                           x:Name="AddSubTaskDialog"
-                                                          PriorityComboBoxSource="{x:Bind PriorityComboBoxSource}"
-                                                          StatusComboBoxSource="{x:Bind StatusComboBoxSource}"
+                                                          CurrProjectId="{x:Bind taskDetailsViewModel.CurrTask.ProjectId, Mode=OneWay}"
+                                                          ParentTaskId="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
                                                           CancelButtonClick="AddSubTaskDialog_CancelButtonClick"
                                                           AddTaskButtonClick="AddSubTaskFromDialogButton_ButtonClick"/>
 

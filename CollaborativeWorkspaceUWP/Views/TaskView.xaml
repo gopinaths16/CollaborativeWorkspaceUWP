@@ -197,6 +197,8 @@
                         <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
                         <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
                         <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
+                        <Setter Target="TaskListView.Margin" Value="0" />
+                        <Setter Target="TaskDetailsViewContainer.Margin" Value="10, 0, 0, 0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SingleWindowLayout">
@@ -209,6 +211,8 @@
                         <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
                         <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
                         <Setter Target="TaskListView.Grid.ColumnSpan" Value="2" />
+                        <Setter Target="TaskListView.Margin" Value="0" />
+                        <Setter Target="TaskDetailsViewContainer.Margin" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -271,8 +275,8 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="500" />
-                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="550" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 
                                 <!--#region Task List Region Starts-->
@@ -319,8 +323,7 @@
                                     <customusercontrol:AddTaskControl Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                       Grid.Row="1"
                                                                       x:Name="AddTaskDialog"
-                                                                      PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                                      StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
+                                                                      CurrProjectId="{x:Bind taskListViewModel.CurrentProject.Id, Mode=OneWay}"
                                                                       CancelButtonClick="CloseTaskDialogButton_Click"
                                                                       AddTaskButtonClick="AddTaskFromDialogButton_ButtonClick"/>
 
@@ -352,15 +355,12 @@
                                 <Border CornerRadius="5"
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
-                                        x:Name="TaskDetailsViewContainer"
-                                        Visibility="{Binding IsVisible}">
+                                        Margin="10, 0, 0, 0"
+                                        x:Name="TaskDetailsViewContainer">
                                     <customusercontrol:TaskDetailsControl x:Name="TaskDetailsView"
-                                                                          Margin="10, 0, 0, 0"
-                                                                          StatusComboBoxSource="{x:Bind addTaskViewModel.StatusData}"
-                                                                          PriorityComboBoxSource="{x:Bind addTaskViewModel.PriorityData}"
                                                                           IsSeparateWindow="False"
                                                                           OnOpenInSeparateWindow="OpenTaskInSeparateWindow"
-                                                                          AllowTaskClear="True"
+                                                                          AllowTaskClear="{x:Bind taskListViewModel.IsSingleWindowLayoutTriggered, Mode=OneWay}"
                                                                           OnTaskClear="TaskDetailsView_OnTaskClear"/>
                                 </Border>
 
