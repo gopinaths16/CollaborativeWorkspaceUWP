@@ -116,6 +116,8 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             UserTask task = new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
             task.SubTasks = new ObservableCollection<UserTask>();
+            //task.PriorityData = (Priority)PriorityData.Clone();
+            //task.StatusData = (Status)StatusData.Clone();
             foreach (var subTask in SubTasks)
             {
                 task.SubTasks.Add(subTask);
@@ -140,8 +142,8 @@ namespace CollaborativeWorkspaceUWP.Models
                 {
                     SubTasks = task.SubTasks;
                 }
-                StatusData = task.StatusData;
-                PriorityData = task.PriorityData;
+                StatusData = task.StatusData != null ? task.StatusData : StatusData;
+                PriorityData = task.PriorityData != null ? task.PriorityData : PriorityData;
             }
         }
     }

@@ -120,7 +120,7 @@ namespace CollaborativeWorkspaceUWP.Views
                 TaskDetailsViewContainer.Visibility = Visibility.Visible;
             }
             UserTask task = (UserTask)e.ClickedItem;
-            taskListViewModel.CurrTask = task;
+            taskListViewModel.CurrTask = (UserTask)task.Clone();
             TaskDetailsView.SetCurrentTask((UserTask)task.Clone());
         }
 

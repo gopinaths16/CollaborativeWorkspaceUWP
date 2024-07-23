@@ -31,9 +31,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 if (currTask != null)
                 {
-                    SubTasks = currTask.SubTasks;
-                    currTask.StatusData = GetTaskStatus();
-                    currTask.PriorityData = GetTaskPriority();
                     IsAddSubTaskContextTriggered = false;
                 }
                 NotifyPropertyChanged(nameof(CurrTask));
@@ -107,6 +104,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             UserTask task = e.Task;
             if(CurrTask != null && task.ParentTaskId == CurrTask.Id && CurrTask.SubTasks.Where(subTask => subTask.Id == task.Id).ToList().Count <= 0)
             {
+                task.StatusData = GetTaskStatus(task.Status);
+                task.PriorityData = GetTaskPriority(task.Priority);
                 CurrTask.SubTasks.Add(task);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
@@ -130,6 +129,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             if (CurrTask != null && (CurrTask.IsUpdated || forceUpdate))
             {
                 UserTask task = taskDataHandler.UpdateTask(CurrTask);
+                task.StatusData = GetTaskStatus(task.Status);
+                task.PriorityData = GetTaskPriority(task.Priority);
                 CurrTask.Update(task);
                 NotifyPropertyChanged(nameof(CurrTask));
                 ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = CurrTask });

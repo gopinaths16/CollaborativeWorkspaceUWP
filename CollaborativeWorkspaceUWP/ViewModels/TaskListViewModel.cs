@@ -139,7 +139,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 item.Status = status ? 2 : 3;
                 item.StatusData = GetTaskStatus(item.Status);
-                item.PriorityData = GetTaskPriority(item.Status);
+                item.PriorityData = GetTaskPriority(item.Priority);
                 taskDataHandler.UpdateTask(item);
                 
                 ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });

@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                 {
                     while (Reader.Read())
                     {
-                        priorityList.Add(new Priority(Reader.GetInt64(0), Reader.GetString(1)));
+                        priorityList.Add(new Priority(Reader.GetInt64(0), Reader.GetString(1), Reader.GetString(2)));
                     }
                 }
             }

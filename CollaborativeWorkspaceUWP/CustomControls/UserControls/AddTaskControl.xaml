@@ -72,6 +72,8 @@
                       Margin="0, 0, 10, 0"
                       ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
                       ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
+                      Style="{StaticResource CustomComboBox}"
+                      Background="Gray"
                       SelectedIndex="0"/>
 
             <ComboBox Name="Status"
@@ -80,6 +82,8 @@
                       Margin="0, 0, 10, 0"
                       ItemsSource="{x:Bind addTaskViewModel.StatusData}"
                       ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
+                      Style="{StaticResource CustomComboBox}"
+                      Background="Gray"
                       SelectedIndex="0"/>
         </StackPanel>
 
@@ -104,6 +108,7 @@
                                                            Content="Add Task"
                                                            Click="AddTaskFromDialogButton_ButtonClick"
                                                            Background="{StaticResource SystemAccentColor}"
+                                                           HorizontalContentAlignment="Left"
                                                            BorderThickness="0"
                                                            Grid.Row="1"
                                                            Padding="10, 0, 10, 0"

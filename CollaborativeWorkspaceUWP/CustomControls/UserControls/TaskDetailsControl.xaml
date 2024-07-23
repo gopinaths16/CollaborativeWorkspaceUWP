@@ -28,13 +28,13 @@
         </Style>
 
         <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
-            <Setter Property="Margin" Value="10, 20, 0, 0" />
+            <Setter Property="Margin" Value="10, 20, 0, 10" />
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
 
         <DataTemplate x:Key="ComboboxPriorityItemTemplate"
                       x:DataType="models:Priority">
-            <TextBlock Text="{Binding Name}" />
+            <TextBlock Text="{Binding Name}"/>
         </DataTemplate>
 
         <DataTemplate x:Key="ComboboxStatusItemTemplate"
@@ -62,6 +62,8 @@
                               IsChecked="{Binding IsCompleted, Mode=TwoWay}"
                               Tag="{x:Bind Id}"
                               Style="{StaticResource CheckboxNoContent}"
+                              Background="{Binding PriorityData.ColorCode, Mode=OneWay}"
+                              BorderBrush="{Binding PriorityData.ColorCode, Mode=OneWay}"
                               MinWidth="0"
                               Checked="SubTaskListCheckbox_Checked"
                               Unchecked="SubTaskListCheckbox_Checked"/>
@@ -128,7 +130,9 @@
                               Margin="10, 0, 10, 0"
                               ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
                               SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              Background="Gray"
                               SelectionChanged="TaskUpdateTriggered"
+                              Style="{StaticResource CustomComboBox}"
                               ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
 
                     <ComboBox Name="Priority"
@@ -138,7 +142,9 @@
                               Margin="0, 0, 10, 0"
                               ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
                               SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
                               SelectionChanged="TaskUpdateTriggered"
+                              Style="{StaticResource CustomComboBox}"
                               ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
@@ -184,6 +190,8 @@
                           IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
                           Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
                           Style="{StaticResource CheckboxNoContent}"
+                          Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
+                          BorderBrush="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
                           MinWidth="0"
                           Grid.Column="0"
                           Checked="TaskDetailsCheckBox_Checked"
@@ -196,6 +204,7 @@
                          FontSize="20"
                          Grid.Column="1"
                          Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="300"
                          LostFocus="TaskUpdate"
                          TextChanged="TaskDetailsChanged"/>
             </Grid>
@@ -205,14 +214,20 @@
                                                   ContentText="Description"
                                                   Style="{StaticResource LabelStyles}"/>
 
-            <TextBox Name="TaskDescription"
-                     Style="{StaticResource TextNoBackground}"
-                     Margin="15, 10, 15, 0"
-                     Padding="10"
-                     Grid.Row="3"
-                     Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     LostFocus="TaskUpdate"
-                     TextChanged="TaskDetailsChanged"/>
+            <ScrollViewer HorizontalScrollMode="Disabled" 
+                          VerticalScrollMode="Auto" 
+                          VerticalScrollBarVisibility="Visible"
+                          MaxHeight="200"
+                          Grid.Row="3">
+                <TextBox Name="TaskDescription"
+                         Style="{StaticResource TextNoBackground}"
+                         Margin="15, 10, 15, 0"
+                         Padding="10"
+                         Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         LostFocus="TaskUpdate"
+                         TextChanged="TaskDetailsChanged"/>
+            </ScrollViewer>
+            
 
 
             <Pivot x:Name="TaskViewPivot"

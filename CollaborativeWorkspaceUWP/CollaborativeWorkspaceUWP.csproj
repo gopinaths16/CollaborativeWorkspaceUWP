@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>

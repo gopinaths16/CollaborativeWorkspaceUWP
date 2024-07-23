@@ -14,6 +14,8 @@
     <converters:ObjectToBoolConverterInverse x:Key="ObjectToBoolConverterInverse" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters:LongToIntConverter x:Key="LongToIntConverter" />
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <converters:VisibilityToNullConverter x:Key="VisibilityToNullConverter" />
 
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
@@ -269,7 +271,7 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Background" 
                                                                        Storyboard.TargetProperty="Fill">
                                             <DiscreteObjectKeyFrame KeyTime="0" 
-                                                                    Value="{StaticResource SystemAccentColor}"/>
+                                                                    Value="{TemplateBinding Background}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckGlyph" 
                                                                        Storyboard.TargetProperty="Opacity">
@@ -296,8 +298,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="Border" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 Width="20" 
                                 Height="20" 
                                 VerticalAlignment="Center" 
@@ -306,7 +307,7 @@
                                 CornerRadius="10">
                             <Grid>
                                 <Rectangle x:Name="Background"
-                                           Opacity="1"/>
+                                           Opacity="0.5"/>
                                 <Path x:Name="CheckGlyph" 
                                       Data="M0,6 L2,8 L8,2" 
                                       Fill="{StaticResource ApplicationForegroundThemeBrush}" 
@@ -325,6 +326,54 @@
                                       VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox" x:Key="CustomComboBox">
+        <Setter Property="Width" Value="100" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border x:Name="Background"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Visibility="{Binding SelectedItem, Converter={StaticResource VisibilityToNullConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding SelectedItem}"
+                                              ContentTemplate="{TemplateBinding ItemTemplate}"
+                                              Foreground="Black"/>
+                        </Border>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="{TemplateBinding Margin}"
+                                    Padding="{TemplateBinding Padding}"
+                                    Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock Text="{TemplateBinding PlaceholderText}"
+                                       Margin="10, 0, 0, 0"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{TemplateBinding Foreground}"/>
+                        </StackPanel>
+                        <Popup x:Name="Popup"
+                               IsOpen="{TemplateBinding IsDropDownOpen}">
+                            <Border x:Name="PopupBorder"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                    BorderBrush="{TemplateBinding Background}"
+                                    BorderThickness="1"
+                                    CornerRadius="5"
+                                    Width="{TemplateBinding Width}">
+                                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Status
+    public class Status : ICloneable
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -18,5 +18,7 @@ namespace CollaborativeWorkspaceUWP.Models
             Name = name;
             Id = id;
         }
+
+        public object Clone() { return new Status(Id, Name); }
     }
 }
