@@ -15,6 +15,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     {
         UserTask currTask;
         bool isAddSubTaskContextTriggered;
+        bool isAddAttachmentContextTriggered;
 
         List<Priority> priorityList;
         List<Status> statusList;
@@ -52,6 +53,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public bool IsAddAttachmentContextTriggered
+        {
+            get { return isAddAttachmentContextTriggered; }
+            set
+            {
+                isAddAttachmentContextTriggered = value;
+                NotifyPropertyChanged(nameof(IsAddAttachmentContextTriggered));
+            }
+        }
+
         public List<Priority> PriorityData
         {
             get { return priorityList; }
@@ -75,6 +86,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
         }
 
         public Priority GetTaskPriority()
@@ -102,7 +114,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void OnTaskAddition(AddTaskEvent e)
         {
             UserTask task = e.Task;
-            if(CurrTask != null && task.ParentTaskId == CurrTask.Id && CurrTask.SubTasks.Where(subTask => subTask.Id == task.Id).ToList().Count <= 0)
+            if (CurrTask != null && task.ParentTaskId == CurrTask.Id && CurrTask.SubTasks.Where(subTask => subTask.Id == task.Id).ToList().Count <= 0)
             {
                 task.StatusData = GetTaskStatus(task.Status);
                 task.PriorityData = GetTaskPriority(task.Priority);
@@ -113,7 +125,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void SetTaskUpdatedContext()
         {
-            if(CurrTask != null)
+            if (CurrTask != null)
             {
                 CurrTask.IsUpdated = true;
             }
@@ -140,18 +152,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void OnTaskUpdation(UpdateTaskEvent e)
         {
-            if(CurrTask != null)
+            if (CurrTask != null)
             {
-                if(CurrTask.Id == e.Task.Id)
+                if (CurrTask.Id == e.Task.Id)
                 {
                     CurrTask.Update(e.Task);
                     NotifyPropertyChanged(nameof(CurrTask));
-                } 
+                }
                 else
                 {
                     foreach (UserTask task in CurrTask.SubTasks)
                     {
-                        if(task.Id == e.Task.Id)
+                        if (task.Id == e.Task.Id)
                         {
                             task.Update(e.Task);
                             NotifyPropertyChanged(nameof(CurrTask));
@@ -163,7 +175,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void UpdateTaskCompletionStatus(long taskId, bool status)
         {
-            if(CurrTask.Id == taskId)
+            if (CurrTask.Id == taskId)
             {
                 CurrTask.Status = status ? 2 : 3;
                 CurrTask.StatusData = GetTaskStatus(CurrTask.Status);
@@ -177,7 +189,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void UpdateSubTaskCompletionStatus(long taskId, bool status)
         {
             UserTask task = CurrTask.SubTasks.Where(subTask => subTask.Id == taskId).FirstOrDefault();
-            if(task != null)
+            if (task != null)
             {
                 task.Status = status ? 2 : 3;
                 task.StatusData = GetTaskStatus(task.Status);
@@ -215,6 +227,21 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 NotifyPropertyChanged(nameof(CurrTask));
                 ViewmodelEventHandler.Instance.Publish(new DeleteTaskEvent() { TaskId = task.Id });
             }
+        }
+
+        public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
+        {
+            if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id)
+            {
+                if(addAttachmentEvent.Attachments != null && addAttachmentEvent.Attachments.Count > 0)
+                {
+                    foreach (var attachment in addAttachmentEvent.Attachments)
+                    {
+                        CurrTask.Attachments.Add(attachment);
+                    }
+                }
+            }
+            NotifyPropertyChanged(nameof(CurrTask));
         }
 
         public override void Dispose()

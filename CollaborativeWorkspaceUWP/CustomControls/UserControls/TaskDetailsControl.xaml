@@ -47,7 +47,7 @@
             <Border BorderThickness="0, 0, 0, 0.5"
                     BorderBrush="{StaticResource SystemListLowColor}">
                 <Grid CornerRadius="5"
-                      Margin="20, 0, 0, 20"
+                      Margin="20, 10, 20, 10"
                       HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -90,6 +90,25 @@
                     </StackPanel>
                 </Grid>
             </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AttachmentListTemplate"
+                      x:DataType="models:Attachment">
+            <Grid CornerRadius="5"
+                  HorizontalAlignment="Stretch"
+                  Padding="10, 0, 10, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Name}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           TextTrimming="WordEllipsis"
+                           MaxLines="1"
+                           Grid.Column="1"/>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
 
@@ -221,7 +240,7 @@
                           Grid.Row="3">
                 <TextBox Name="TaskDescription"
                          Style="{StaticResource TextNoBackground}"
-                         Margin="15, 10, 15, 0"
+                         Margin="15, 0, 15, 0"
                          Padding="10"
                          Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          LostFocus="TaskUpdate"
@@ -261,7 +280,7 @@
                                                                        HorizontalContentAlignment="Stretch"
                                                                        Padding="10"
                                                                        IsEnabled="True"
-                                                                       Margin="0, 5, 0, 5"/>
+                                                                       Margin="0, 10, 0, 5"/>
 
                         <customusercontrol:AddTaskControl Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           Grid.Row="1"
@@ -308,13 +327,38 @@
                         </StackPanel>
                     </PivotItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <customusercontrol:CustomIconButtonControl Name="OpenAddAttachementWindowButton"
-                                                                   ButtonIcon="&#xe723;"
-                                                                   ButtonContent="Add Attachment"
-                                                                   ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                   Margin="0, 20, 0, 0"
-                                                                   ButtonBackground="Transparent"
-                                                                   IsButtonEnabled="True"/>
+                        <customtemplatecontrol:CustomIconButtonControl Icon="&#xe723;"
+                                                                       Content="Add Attachments"
+                                                                       Click="OpenAddAttachmentWindowButton_ButtonClick"
+                                                                       Grid.Row="1"
+                                                                       Visibility="{x:Bind taskDetailsViewModel.IsAddAttachmentContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                                                                       HorizontalContentAlignment="Stretch"
+                                                                       Padding="10"
+                                                                       IsEnabled="True"
+                                                                       Margin="0, 10, 0, 5"/>
+
+                        <customusercontrol:AddAttachmentControl x:Name="AddAttachmentDialog" 
+                                                                Visibility="{x:Bind taskDetailsViewModel.IsAddAttachmentContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                AddButtonClick="AddAttachmentDialog_AddButtonClick"
+                                                                CancelButtonClick="AddAttachmentControl_CancelButtonClickEventHandler"/>
+
+                        <ListView Name="AttachmentListView" 
+                                  ItemsSource="{x:Bind taskDetailsViewModel.CurrTask.Attachments, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource AttachmentListTemplate}"
+                                  Margin="0, 20, 0, 0"
+                                  Grid.Row="2"
+                                  IsItemClickEnabled="False"
+                                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
+                        <StackPanel Name="NoAttachmentMessage"
+                                    Grid.Row="2"
+                                    Margin="0, 20, 0, 0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Visibility="{x:Bind taskDetailsViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                            <TextBlock Text="No Attachments available"
+                                       Foreground="Gray"
+                                       FontSize="20"/>
+                        </StackPanel>
                     </StackPanel>
                 </PivotItem>
             </Pivot>

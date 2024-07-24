@@ -152,5 +152,21 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             taskDetailsViewModel.Dispose();
         }
+
+        private void OpenAddAttachmentWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddAttachmentDialog.SetCurrTask((UserTask)taskDetailsViewModel.CurrTask.Clone());
+            taskDetailsViewModel.IsAddAttachmentContextTriggered = true;
+        }
+
+        private void AddAttachmentControl_CancelButtonClickEventHandler(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.IsAddAttachmentContextTriggered = false;
+        }
+
+        private void AddAttachmentDialog_AddButtonClick(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.IsAddAttachmentContextTriggered = false;
+        }
     }
 }

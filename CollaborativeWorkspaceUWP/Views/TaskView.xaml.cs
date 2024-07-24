@@ -96,6 +96,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             TaskDetailsView.UpdateCurrentTask();
+            taskListViewModel.Dispose();
             Project currProject = (Project)e.ClickedItem;
             if (taskListViewModel.IsSingleWindowLayoutTriggered)
             {

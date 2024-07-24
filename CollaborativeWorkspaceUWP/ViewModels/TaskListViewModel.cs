@@ -36,10 +36,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             statusList = statusDataHandler.GetStatusData();
             Tasks = new ObservableCollection<UserTask>();
             IsAddTaskContextTriggered = false;
-
-            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
-            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
-            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -98,21 +94,27 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     temp[0].SubTasks.Add(task);
                 }
             }
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
             NotifyPropertyChanged(nameof(CurrentProject));
             NotifyPropertyChanged(nameof(Tasks));
         }
 
         public void AddTaskToList(UserTask task)
         {
-            task.StatusData = GetTaskStatus(task.Priority);
-            task.PriorityData = GetTaskPriority(task.Status);
+            task.StatusData = GetTaskStatus(task.Status);
+            task.PriorityData = GetTaskPriority(task.Priority);
             Tasks.Add(task);
             var temp = Tasks.Where(pTask => pTask.Id == task.ParentTaskId);
             if (temp != null)
             {
                 foreach(var pTask in temp)
                 {
-                    pTask.SubTasks.Add(task);
+                    if(pTask.SubTasks.Where(sTask => sTask.Id == pTask.ParentTaskId) == null)
+                    {
+                        pTask.SubTasks.Add(task);
+                    }
                 }
             }
             NotifyPropertyChanged(nameof(Tasks));
@@ -179,6 +181,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 }
                 NotifyPropertyChanged(nameof(Tasks));
             }
+        }
+
+        public override void Dispose()
+        {
+            ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Unsubscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Unsubscribe<DeleteTaskEvent>(OnTaskDeletion);
         }
     }
 }

@@ -16,6 +16,8 @@
     <converters:LongToIntConverter x:Key="LongToIntConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:VisibilityToNullConverter x:Key="VisibilityToNullConverter" />
+    <converters:CollectionToBoolConverter x:Key="CollectionToBoolConverter" />
+    <converters:CollectionToBoolConverterInverse x:Key="CollectionToBoolConverterInverse" />
 
     <Style TargetType="StackPanel" x:Name="TitleBar">
         <Setter Property="Padding" Value="10, 0, 0, 0"/>
@@ -174,13 +176,14 @@
 
     <Style TargetType="ListViewItem" x:Key="ListViewItemStyleDormant">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="OuterContainer" 
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="10">
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="10">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -204,7 +207,7 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <ContentPresenter Content="{TemplateBinding Content}" 
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

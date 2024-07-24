@@ -45,5 +45,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         {
             return new StatusDBPersistenceObject();
         }
+
+        public IAttachmentPersistence GetAttachmentPersistenceObject()
+        {
+            return new AttachmentDBPersistenceObject();
+        }
     }
 }

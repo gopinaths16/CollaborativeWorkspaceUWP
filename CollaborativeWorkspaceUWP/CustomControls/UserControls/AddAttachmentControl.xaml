@@ -1,0 +1,139 @@
+﻿<UserControl
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.AddAttachmentControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style TargetType="Grid" x:Key="AddAttachmentDialog">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="Padding" Value="0, 10, 0, 10" />
+            <Setter Property="Margin" Value="5, 25, 10, 5" />
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxNoBg}" x:Key="TextNoBackground">
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0, 0, 0, 5"/>
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <DataTemplate x:Key="AttachmentListTemplate"
+                      x:DataType="models:Attachment">
+            <Grid CornerRadius="5"
+                  HorizontalAlignment="Stretch"
+                  Padding="10, 0, 10, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button FontFamily="Segoe Fluent Icons"
+                        Content="&#xe74d;"
+                        Margin="0, 0, 5, 0"
+                        Style="{StaticResource ButtonNoBackground}"
+                        Click="DeleteAttachmentFromListButton_Click"
+                        Grid.Column="0"/>
+                <TextBlock Text="{Binding Name}"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           TextTrimming="WordEllipsis"
+                           MaxLines="1"
+                           Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource AddAttachmentDialog}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <ListView Name="SubTaskListView" 
+                  ItemsSource="{x:Bind addAttachmentViewModel.Attachments, Mode=TwoWay}"
+                  ItemTemplate="{StaticResource AttachmentListTemplate}"
+                  Margin="10, 10, 10, 10"
+                  Grid.Row="0"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  IsItemClickEnabled="False"
+                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
+        <StackPanel Name="NoSubtasksMessage"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0, 10, 0, 10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind addAttachmentViewModel.Attachments, Mode=TwoWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+            <TextBlock Text="No Attachments Selected"
+                       Foreground="Gray"
+                       FontSize="20"/>
+        </StackPanel>
+
+
+        <Border BorderThickness="0, 0, 0, 0.5"
+                BorderBrush="Gray"
+                Padding="10, 0, 0, 10"
+                Margin="0, 5, 0, 10"
+                Opacity="0.5"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"/>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    Margin="10, 5, 10, 5"
+                    Grid.Row="2"
+                    Grid.Column="0">
+            <Button Name="AddAttachmentButton"
+                    FontFamily="Segoe Fluent Icons"
+                    Content="&#xe723;"
+                    Style="{StaticResource ButtonNoBackground}"
+                    Click="AddAttachmentButton_Click"
+                    Margin="0, 0, 10, 0"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="10, 5, 10, 5"
+                    Grid.Row="2"
+                    Grid.Column="1">
+            <Button Name="CloseAttachmentDialogButton"
+                    Content="Cancel"
+                    Background="Transparent"
+                    Click="CloseAttachmentDialogButton_Click"
+                    Margin="0, 0, 10, 0"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            <customtemplatecontrol:CustomIconButtonControl x:Name="AddAttachmentDialog" 
+                                                           Icon="&#xE948;"
+                                                           Content="Add Task"
+                                                           Click="AddAttachmentDialog_Click"
+                                                           Background="{StaticResource SystemAccentColor}"
+                                                           HorizontalContentAlignment="Left"
+                                                           BorderThickness="0"
+                                                           Grid.Row="1"
+                                                           Padding="10, 0, 10, 0"
+                                                           IsEnabled="{x:Bind addAttachmentViewModel.Attachments, Mode=OneWay, Converter={StaticResource CollectionToBoolConverter}}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

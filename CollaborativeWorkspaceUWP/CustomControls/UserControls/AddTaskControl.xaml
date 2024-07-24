@@ -17,7 +17,7 @@
             <Setter Property="CornerRadius" Value="5" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Gray" />
-            <Setter Property="Padding" Value="10" />
+            <Setter Property="Padding" Value="0, 10, 0, 10" />
             <Setter Property="Margin" Value="5, 25, 10, 5" />
         </Style>
 
@@ -47,7 +47,7 @@
         <TextBox Name="Name"
                  PlaceholderText="Task Name"
                  Style="{StaticResource TextNoBackground}"
-                 Margin="0, 5, 0, 5"
+                 Margin="10, 5, 0, 10"
                  FontWeight="Bold"
                  MaxLength="300"
                  TextChanged="AddTaskDialogTaskName_TextChanged"/>
@@ -55,7 +55,8 @@
         <ScrollViewer HorizontalScrollMode="Disabled" 
                       VerticalScrollMode="Auto" 
                       VerticalScrollBarVisibility="Visible"
-                      MaxHeight="200">
+                      MaxHeight="200"
+                      Margin="10, 0, 10, 0">
             <TextBox Name="Description"
                      PlaceholderText="Description"
                      Margin="0, 0, 0, 10"
@@ -65,7 +66,7 @@
         
 
         <StackPanel Orientation="Horizontal"
-                    Margin="10. 10, 10, 0">
+                    Margin="15. 10, 15, 0">
             <ComboBox Name="Priority"
                       PlaceholderText="Priority"
                       CornerRadius="2"
@@ -89,8 +90,9 @@
 
         <Border BorderThickness="0, 0, 0, 0.5"
                 BorderBrush="Gray"
+                Opacity="0.5"
                 Padding="10, 0, 0, 10"
-                Margin="10, 5, 10, 10"/>
+                Margin="0, 5, 0, 10"/>
 
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"

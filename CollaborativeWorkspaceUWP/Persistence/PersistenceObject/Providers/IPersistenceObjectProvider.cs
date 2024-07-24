@@ -16,5 +16,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         ITeamspacePersistence GetTeamspacePersistenceObject();
         IPriorityPersistence GetPriorityPersistenceObject();
         IStatusPersistence GetStatusPersistenceObject();
+        IAttachmentPersistence GetAttachmentPersistenceObject();
     }
 }
