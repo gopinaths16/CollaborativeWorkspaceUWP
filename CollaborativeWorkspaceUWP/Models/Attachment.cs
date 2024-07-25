@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
@@ -42,6 +43,11 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             get { return taskId; }
             set { taskId = value; }
+        }
+
+        public StorageFile Content
+        {
+            get; set;
         }
     }
 }

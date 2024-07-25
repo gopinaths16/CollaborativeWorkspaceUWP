@@ -1,6 +1,8 @@
-﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
+﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,9 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
 {
     public interface IAttachmentPersistence : IPersistenceObject
     {
-        void SetAddAttachmentContext();
+        void SetAddAttachmentContext(Attachment attachment);
+        void SetGetAllAttachmentsForTaskContext(long TaskId);
+        ObservableCollection<Attachment> GetAllAttachments();
+        Attachment GetAttachment();
     }
 }

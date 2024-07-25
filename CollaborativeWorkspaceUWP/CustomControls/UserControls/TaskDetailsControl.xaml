@@ -347,7 +347,8 @@
                                   ItemTemplate="{StaticResource AttachmentListTemplate}"
                                   Margin="0, 20, 0, 0"
                                   Grid.Row="2"
-                                  IsItemClickEnabled="False"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="AttachmentListView_ItemClick"
                                   ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
                         <StackPanel Name="NoAttachmentMessage"
                                     Grid.Row="2"

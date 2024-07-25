@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
+using CollaborativeWorkspaceUWP.Utilities.Persistence;
 
 namespace CollaborativeWorkspaceUWP.DAL
 {
@@ -21,7 +23,54 @@ namespace CollaborativeWorkspaceUWP.DAL
 
         public ObservableCollection<Attachment> AddAttachmentsToTask(ObservableCollection<Attachment> attachments)
         {
-            ObservableCollection<Attachment> result = null;
+            ObservableCollection<Attachment> result = new ObservableCollection<Attachment>();
+            IAttachmentPersistence persistenceObject = null;
+            try
+            {
+                foreach (var attachment in attachments)
+                {
+                    persistenceObject = persistanceObjectManager.GetAttachmentPersistenceObject();
+                    persistenceObject.SetAddAttachmentContext(attachment);
+                    PersistenceHandler.Instance.Get(persistenceObject);
+                    result.Add(persistenceObject.GetAttachment());
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
+
+        public ObservableCollection<Attachment> GetAllAttachmentsForTask(long taskId)
+        {
+            ObservableCollection<Attachment> result = new ObservableCollection<Attachment> ();
+            IAttachmentPersistence persistentObject = null;
+            try
+            {
+                persistentObject = persistanceObjectManager.GetAttachmentPersistenceObject();
+                persistentObject.SetGetAllAttachmentsForTaskContext(taskId);
+                PersistenceHandler.Instance.Get(persistentObject);
+                result = persistentObject.GetAllAttachments();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistentObject != null)
+                {
+                    persistentObject.Dispose();
+                }
+            }
             return result;
         }
     }

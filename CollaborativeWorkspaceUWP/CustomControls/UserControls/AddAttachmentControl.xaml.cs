@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -47,14 +48,16 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             addAttachmentViewModel = new AddAttachmentViewModel();
         }
 
-        private void AddAttachmentDialog_Click(object sender, RoutedEventArgs e)
+        private async void AddAttachmentDialog_Click(object sender, RoutedEventArgs e)
         {
-            addAttachmentViewModel.AddAttachmentsToTask();
+            await addAttachmentViewModel.AddAttachmentsToTask();
+            addAttachmentViewModel.ClearAttachmentList();
             addButtonClickEventHandler?.Invoke(sender, e);
         }
 
         private void CloseAttachmentDialogButton_Click(object sender, RoutedEventArgs e)
         {
+            addAttachmentViewModel.ClearAttachmentList();
             cancelButtonClickEventHandler?.Invoke(sender, e);
         }
 
@@ -71,6 +74,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".jpeg");
             picker.FileTypeFilter.Add(".png");
+            picker.FileTypeFilter.Add(".pdf");
+            picker.FileTypeFilter.Add(".txt");
 
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
@@ -81,7 +86,40 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void DeleteAttachmentFromListButton_Click(object sender, RoutedEventArgs e)
         {
+            Button button = (Button)sender;
+            Attachment attachment = (Attachment)button.Tag;
+            addAttachmentViewModel.DeleteAttachmentFromList(attachment);
+        }
 
+        private async void AttachmentListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Attachment attachment = (Attachment)e.ClickedItem;
+            await DefaultLaunch(attachment);
+        }
+
+        private async Task DefaultLaunch(Attachment attachment)
+        {
+            try
+            {
+                StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
+                var file = await storageFolder.GetFileAsync(attachment.Name);
+
+                if (file != null)
+                {
+                    var success = await Windows.System.Launcher.LaunchFileAsync(file);
+
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
         }
     }
 }

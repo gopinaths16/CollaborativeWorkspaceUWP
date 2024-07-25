@@ -178,7 +178,7 @@
             <VisualStateGroup x:Name="WindowStateGroup">
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1200"/>
+                        <AdaptiveTrigger MinWindowWidth="1400"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ProjectListSplitView.DisplayMode" Value="Inline" />
@@ -191,7 +191,7 @@
                 </VisualState>
                 <VisualState x:Name="NarrowLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1100"/>
+                        <AdaptiveTrigger MinWindowWidth="1200"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />

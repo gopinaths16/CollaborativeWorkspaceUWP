@@ -23,6 +23,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
         TaskDataHandler taskDataHandler;
+        AttachmentDataHandler attachmentDataHandler;
 
         public UserTask CurrTask
         {
@@ -32,6 +33,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 if (currTask != null)
                 {
+                    currTask.Attachments = GetAttachmentsForTask(currTask.Id);
                     IsAddSubTaskContextTriggered = false;
                 }
                 NotifyPropertyChanged(nameof(CurrTask));
@@ -80,6 +82,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
             taskDataHandler = new TaskDataHandler();
+            attachmentDataHandler = new AttachmentDataHandler();
 
             PriorityData = priorityDataHandler.GetPriorityData();
             StatusData = statusDataHandler.GetStatusData();
@@ -242,6 +245,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 }
             }
             NotifyPropertyChanged(nameof(CurrTask));
+        }
+
+        public ObservableCollection<Attachment> GetAttachmentsForTask(long taskId)
+        {
+            return attachmentDataHandler.GetAllAttachmentsForTask(taskId);
         }
 
         public override void Dispose()

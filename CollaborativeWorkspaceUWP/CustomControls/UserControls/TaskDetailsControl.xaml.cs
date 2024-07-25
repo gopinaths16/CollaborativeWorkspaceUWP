@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -167,6 +169,37 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void AddAttachmentDialog_AddButtonClick(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.IsAddAttachmentContextTriggered = false;
+        }
+
+        private async void AttachmentListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Attachment attachment = (Attachment)e.ClickedItem;
+            await DefaultLaunch(attachment);
+        }
+
+        private async Task DefaultLaunch(Attachment attachment)
+        {
+            try
+            {
+                StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
+                StorageFile file = await storageFolder.GetFileAsync(attachment.Path);
+
+                if (file != null)
+                {
+                    var success = await Windows.System.Launcher.LaunchFileAsync(file);
+
+                    if (success)
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
