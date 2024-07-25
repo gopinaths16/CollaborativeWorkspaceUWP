@@ -105,7 +105,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
                     {
                         UserTask task = new UserTask(Reader.GetInt64(0), Reader.GetString(1), Reader.GetString(2), Reader.GetInt32(3), Reader.GetInt32(4), Reader.GetInt64(5), Reader.GetInt64(6), Reader.GetInt64(7), Reader.GetInt64(8));
                         task.StatusData = new Status(Reader.GetInt64(9), Reader.GetString(10));
-                        task.PriorityData = new Priority(Reader.GetInt64(11), Reader.GetString(12));
+                        task.PriorityData = new Priority(Reader.GetInt64(11), Reader.GetString(12), Reader.GetString(13));
                         tasks.Add(task);
                     }
                 }

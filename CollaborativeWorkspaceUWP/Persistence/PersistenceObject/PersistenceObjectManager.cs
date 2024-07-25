@@ -56,5 +56,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         {
             return _provider.GetStatusPersistenceObject();
         }
+
+        public IAttachmentPersistence GetAttachmentPersistenceObject()
+        {
+            return _provider.GetAttachmentPersistenceObject();
+        }
     }
 }

@@ -18,6 +18,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         bool isAddTaskContextTriggered;
         List<Priority> priorityList;
         List<Status> statusList;
+        UserTask currTask;
+        Project currProject;
+        bool isSingleWindowLayoutTriggered;
 
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
@@ -33,10 +36,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             statusList = statusDataHandler.GetStatusData();
             Tasks = new ObservableCollection<UserTask>();
             IsAddTaskContextTriggered = false;
-
-            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
-            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
-            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
         }
 
         public ObservableCollection<UserTask> Tasks
@@ -47,7 +46,21 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public Project CurrentProject
         {
-            get; set;
+            get { return currProject; }
+            set
+            {
+                currProject = value;
+                NotifyPropertyChanged(nameof(CurrentProject));
+            }
+        }
+
+        public UserTask CurrTask
+        {
+            get { return  currTask; }
+            set { 
+                currTask = value;
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
         }
 
         public bool IsAddTaskContextTriggered
@@ -56,6 +69,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { 
                 isAddTaskContextTriggered = value; 
                 NotifyPropertyChanged(nameof(IsAddTaskContextTriggered));
+            }
+        }
+
+        public bool IsSingleWindowLayoutTriggered
+        {
+            get { return isSingleWindowLayoutTriggered; }
+            set
+            {
+                isSingleWindowLayoutTriggered = value;
+                NotifyPropertyChanged(nameof(IsSingleWindowLayoutTriggered));
             }
         }
 
@@ -71,15 +94,29 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     temp[0].SubTasks.Add(task);
                 }
             }
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
             NotifyPropertyChanged(nameof(CurrentProject));
             NotifyPropertyChanged(nameof(Tasks));
         }
 
         public void AddTaskToList(UserTask task)
         {
-            task.StatusData = GetTaskStatus(task.Priority);
-            task.PriorityData = GetTaskPriority(task.Status);
+            task.StatusData = GetTaskStatus(task.Status);
+            task.PriorityData = GetTaskPriority(task.Priority);
             Tasks.Add(task);
+            var temp = Tasks.Where(pTask => pTask.Id == task.ParentTaskId);
+            if (temp != null)
+            {
+                foreach(var pTask in temp)
+                {
+                    if(pTask.SubTasks.Where(sTask => sTask.Id == pTask.ParentTaskId) == null)
+                    {
+                        pTask.SubTasks.Add(task);
+                    }
+                }
+            }
             NotifyPropertyChanged(nameof(Tasks));
         }
 
@@ -104,7 +141,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 item.Status = status ? 2 : 3;
                 item.StatusData = GetTaskStatus(item.Status);
-                item.PriorityData = GetTaskPriority(item.Status);
+                item.PriorityData = GetTaskPriority(item.Priority);
                 taskDataHandler.UpdateTask(item);
                 
                 ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
@@ -133,14 +170,24 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
                 foreach(var task in Tasks)
                 {
-                    if(task.SubTasks.Count > 0)
+                    if (task.SubTasks.Count > 0)
                     {
-                        UserTask subTask = task.SubTasks.Where(sTask => e.TaskId == sTask.Id).First();
-                        task.SubTasks.Remove(subTask);
+                        var subTask = task.SubTasks.Where(sTask => e.TaskId == sTask.Id);
+                        if (subTask.Count() > 0)
+                        {
+                            task.SubTasks.Remove(subTask.First());
+                        }
                     }
                 }
                 NotifyPropertyChanged(nameof(Tasks));
             }
+        }
+
+        public override void Dispose()
+        {
+            ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Unsubscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Unsubscribe<DeleteTaskEvent>(OnTaskDeletion);
         }
     }
 }

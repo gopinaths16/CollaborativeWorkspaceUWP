@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,6 +60,8 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public ObservableCollection<UserTask> SubTasks { get; set; }
 
+        public ObservableCollection<Attachment> Attachments { get; set; }
+
         public Status StatusData
         {
             get { return statusData; }
@@ -109,13 +112,23 @@ namespace CollaborativeWorkspaceUWP.Models
             ParentTaskId = parentTaskId;
             IsCompleted = status == 3;
             SubTasks = new ObservableCollection<UserTask>();
+            Attachments = new ObservableCollection<Attachment>();
             IsUpdated = false;
         }
 
         public object Clone()
         {
-            UserTask task = new UserTask(Id, Name, Description, Status, Priority, ProjectId, OwnerId, AssigneeId, ParentTaskId);
-            task.SubTasks = SubTasks;
+            UserTask task = new UserTask(_id, _name, _description, _status, _priority, _projectId, _ownerId, _assigneeId, _parentTaskId);
+            task.SubTasks = new ObservableCollection<UserTask>();
+             
+            foreach (var subTask in SubTasks)
+            {
+                task.SubTasks.Add(subTask);
+            }
+            foreach (var attachment in Attachments)
+            {
+                task.Attachments.Add(attachment);
+            }
             return task;
         }
 
@@ -132,12 +145,16 @@ namespace CollaborativeWorkspaceUWP.Models
                 AssigneeId = task.AssigneeId;
                 ParentTaskId = task.ParentTaskId;
                 IsCompleted = task.IsCompleted;
-                if(task.SubTasks.Count > 0)
+                if (task.SubTasks.Count > 0)
                 {
                     SubTasks = task.SubTasks;
                 }
-                StatusData = task.StatusData;
-                PriorityData = task.PriorityData;
+                if (task.Attachments.Count > 0)
+                {
+                    Attachments = task.Attachments; 
+                }
+                StatusData = task.StatusData != null ? task.StatusData : StatusData;
+                PriorityData = task.PriorityData != null ? task.PriorityData : PriorityData;
             }
         }
     }

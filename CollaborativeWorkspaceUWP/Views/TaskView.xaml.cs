@@ -15,6 +15,14 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
+using CollaborativeWorkspaceUWP.CustomControls.UserControls;
+using Windows.UI.WindowManagement;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml.Hosting;
+using System.Diagnostics;
+using System.ServiceModel.Channels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,7 +35,6 @@ namespace CollaborativeWorkspaceUWP.Views
     {
         TaskListViewModel taskListViewModel;
         ProjectListViewModel projectListViewModel;
-        TaskDetailsViewModel taskDetailsViewModel;
         AddProjectViewModel addProjectViewModel;
         AddTaskViewModel addTaskViewModel;
         AddSubTaskViewModel addSubTaskViewModel;
@@ -40,47 +47,82 @@ namespace CollaborativeWorkspaceUWP.Views
             
             projectListViewModel = new ProjectListViewModel();
             taskListViewModel = new TaskListViewModel();
-            taskDetailsViewModel = new TaskDetailsViewModel();
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
             addSubTaskViewModel = new AddSubTaskViewModel();
             currTeamspaceViewModel = new CurrentTeamspaceViewModel();
         }
 
-        private void CustomIconButtonControl_ButtonClick(object sender, RoutedEventArgs e)
+        private void OnVisualStateChanged(object sender, VisualStateChangedEventArgs e)
         {
+            if(e.NewState != null && e.NewState.Name != null)
+            {
+                GoToVisualState(e.NewState.Name, 1200);
+            }
+        }
 
+        private void GoToVisualState(string layoutName, double width)
+        {
+            if (layoutName == "SingleWindowLayout" || width <= 800)
+            {
+                Grid.SetColumn(TaskDetailsViewContainer, 0);
+                VisualStateManager.GoToState(this, "SingleWindowLayout", true);
+                bool isCurrentTaskSelected = taskListViewModel.CurrTask != null;
+                taskListViewModel.IsSingleWindowLayoutTriggered = true;
+                TaskListView.Visibility = isCurrentTaskSelected ? Visibility.Collapsed : Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = isCurrentTaskSelected ? Visibility.Visible : Visibility.Collapsed;
+
+            }
+            else if (layoutName == "NarrowLayout" || width <= 1100)
+            {
+                Grid.SetColumn(TaskDetailsViewContainer, 1);
+                VisualStateManager.GoToState(this, "NarrowLayout", true);
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+                taskListViewModel.IsSingleWindowLayoutTriggered = false;
+            }
+            else if (layoutName == "WideLayout" || width <= 1200)
+            {
+                Grid.SetColumn(TaskDetailsViewContainer, 1);
+                VisualStateManager.GoToState(this, "WideLayout", true);
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+                taskListViewModel.IsSingleWindowLayoutTriggered = false;
+            }
         }
 
         private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            taskDetailsViewModel.UpdateTask();
+            TaskDetailsView.UpdateCurrentTask();
+            taskListViewModel.Dispose();
             Project currProject = (Project)e.ClickedItem;
-            taskListViewModel.GetTasksForProject(currProject);
-            taskDetailsViewModel.CurrTask = null;
-            SelectProjectMessage.Visibility = Visibility.Collapsed;
-            SelectTaskMessage.Visibility = Visibility.Visible;
+            if (taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+            }
+            taskListViewModel.GetTasksForProject((Project)currProject.Clone());
+            TaskDetailsView.SetCurrentTask(null);
+            taskListViewModel.CurrTask = null;
         }
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            taskDetailsViewModel.UpdateTask();
-            taskDetailsViewModel.CurrTask = null;
-            taskDetailsViewModel.CurrTask = (UserTask)((UserTask)e.ClickedItem).Clone();
-            SelectTaskMessage.Visibility = Visibility.Collapsed;
-            TaskDetailsView.Visibility = Visibility.Visible;
-        }
-
-        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
-        {
-            //string taskName = TaskName.Text;
-            //StatusEnum taskStatus = GetStatus(TaskStatus.SelectedValue.ToString());
-            //PriorityEnum taskPriority = GetPriority(TaskPriority.SelectedValue.ToString());
-
-            //UserTask task = new UserTask();
-            //task.Name = taskName;
-            //task.Status = (int)taskStatus;
-            //task.Priority = (int)taskPriority;
+            if(TaskDetailsView.GetCurrentTask() != null)
+            {
+                TaskDetailsView.UpdateCurrentTask();
+            }
+            TaskDetailsView.SetCurrentTask(null);
+            if(taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Collapsed;
+                TaskDetailsViewContainer.Visibility = Visibility.Visible;
+            }
+            UserTask task = (UserTask)e.ClickedItem;
+            taskListViewModel.CurrTask = (UserTask)task.Clone();
+            TaskDetailsView.SetCurrentTask((UserTask)task.Clone());
         }
 
         private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -112,24 +154,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AddTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
-            UserTask task = new UserTask();
-
-            task.Name = AddTaskDialogTaskName.Text;
-            task.Description = AddTaskDialogDescription.Text;
-            task.Status = AddTaskDialogStatus.SelectedItem != null ? ((Status)AddTaskDialogStatus.SelectedItem).Id : 1;
-            task.Priority = AddTaskDialogPriority.SelectedItem != null ? ((Priority)AddTaskDialogPriority.SelectedItem).Id : 1;
-            task.ProjectId = taskListViewModel.CurrentProject.Id;
-            task.OwnerId = 0;
-            task.AssigneeId = 0;
-            task.ParentTaskId = -1;
-
-            addTaskViewModel.AddTask(task);
-
             taskListViewModel.IsAddTaskContextTriggered = false;
-            AddTaskDialogTaskName.Text = "";
-            AddTaskDialogDescription.Text = "";
-            AddTaskDialogStatus.SelectedItem = null;
-            AddTaskDialogPriority.SelectedItem = null;
         }
 
         private void CloseProjectDialogButton_Click(object sender, RoutedEventArgs e)
@@ -147,43 +172,54 @@ namespace CollaborativeWorkspaceUWP.Views
             projectListViewModel.IsProjectListPaneOpen = !projectListViewModel.IsProjectListPaneOpen;
         }
 
-        private void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
+        private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
         {
-            taskDetailsViewModel.IsAddSubTaskContextTriggered = true;
+            Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = 0 };
+            currTeamspaceViewModel.CurrTeamspace = mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
+            projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
+            if(projectListViewModel.Projects.Count > 0)
+            {
+                taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
+            }
+            AddTeamspaceDialog.Hide();
         }
 
-        private void CloseSubTaskDialog_Click(object sender, RoutedEventArgs e)
+        private void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            CheckBox checkBox = (CheckBox)sender;
+            long taskId = (long)checkBox.Tag;
+            bool checkboxStatus = (bool)checkBox.IsChecked;
+            taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
         }
 
-        private void SubTaskListViewByProject_ItemClick(object sender, ItemClickEventArgs e)
+        private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)
         {
-            UserTask task = (UserTask)e.ClickedItem;
-            addSubTaskViewModel.AddSubTaskForCurrTask(task);
-        }
-
-        private void OpenSubTaskButton_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            
+            AppWindow appWindow;
+            Grid newWindowLayout = new Grid();
+            newWindowLayout.Style = TaskDetailsViewSeparateDisplay;
+            TaskDetailsControl taskDetailsControl = new TaskDetailsControl();
+            taskDetailsControl.SetCurrentTask((UserTask)TaskDetailsView.GetCurrentTask().Clone());
+            taskDetailsControl.IsSeparateWindow = true;
+            taskDetailsControl.AllowTaskClear = false;
+            newWindowLayout.Children.Add(taskDetailsControl);
+            appWindow = await AppWindow.TryCreateAsync();
+            ElementCompositionPreview.SetAppWindowContent(appWindow, newWindowLayout);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindow = null;
+            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if(e.Parameter is MainViewModel mainViewModel)
+            if (e.Parameter is MainViewModel mainViewModel)
             {
                 this.mainViewModel = mainViewModel;
                 this.DataContext = mainViewModel;
             }
-        }
-
-        private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = 0 };
-            currTeamspaceViewModel.CurrTeamspace = mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
-            projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
-            AddTeamspaceDialog.Hide();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -196,109 +232,27 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
                 projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
+                if (projectListViewModel.Projects.Count > 0)
+                {
+                    taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
+                }
             }
+            var visualStates = VisualStateManager.GetVisualStateGroups(TaskViewPanel).ToList();
+            visualStates.First().CurrentStateChanging += OnVisualStateChanged;
+            var windowBounds = Window.Current.Bounds;
+            double windowWidth = windowBounds.Width;
+            GoToVisualState(string.Empty, windowWidth);
+            AddTaskDialog.ParentTaskId = -1;
         }
 
-        private void CloseSubTaskDialogButton_Click(object sender, RoutedEventArgs e)
+        private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)
         {
-            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
-        }
-
-        private void AddSubTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            UserTask task = new UserTask();
-
-            task.Name = AddSubTaskDialogTaskName.Text;
-            task.Description = AddSubTaskDialogDescription.Text;
-            task.Status = AddSubTaskDialogStatus.SelectedItem != null ? ((Status)AddSubTaskDialogStatus.SelectedItem).Id : 1;
-            task.Priority = AddSubTaskDialogPriority.SelectedItem != null ? ((Priority)AddSubTaskDialogPriority.SelectedItem).Id : 1;
-            task.ProjectId = taskListViewModel.CurrentProject.Id;
-            task.OwnerId = 0;
-            task.AssigneeId = 0;
-            task.ParentTaskId = taskDetailsViewModel.CurrTask.Id;
-
-            addTaskViewModel.AddTask(task);
-
-            taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
-            AddSubTaskDialogTaskName.Text = "";
-            AddSubTaskDialogDescription.Text = "";
-            AddSubTaskDialogStatus.SelectedItem = null;
-            AddSubTaskDialogPriority.SelectedItem = null;
-        }
-
-        private void AddSubTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AddSubTaskFromDialogButton.IsButtonEnabled = AddSubTaskDialogTaskName.Text.Length > 0 ? true : false;
-        }
-
-        private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AddTaskFromDialogButton.IsButtonEnabled = AddTaskDialogTaskName.Text.Length > 0 ? true : false;
-        }
-
-        private void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            long taskId = (long)checkBox.Tag;
-            bool checkboxStatus = (bool)checkBox.IsChecked;
-            taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
-            if (taskDetailsViewModel.CurrTask != null && (taskDetailsViewModel.CurrTask.Id == taskId || taskDetailsViewModel.CurrTask.Id == taskListViewModel.GetTaskForTaskId(taskId).ParentTaskId))
+            taskListViewModel.CurrTask = null;
+            if(taskListViewModel.IsSingleWindowLayoutTriggered)
             {
-                taskDetailsViewModel.CurrTaskPropertyChanged();
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
             }
-        }
-
-        private void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            if(checkBox.Tag != null)
-            {
-                long taskId = (long)checkBox.Tag;
-                bool checkboxStatus = (bool)checkBox.IsChecked;
-                taskDetailsViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
-            }
-        }
-
-        private void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            if (checkBox.Tag != null)
-            {
-                long taskId = (long)checkBox.Tag;
-                bool checkboxStatus = (bool)checkBox.IsChecked;
-                taskDetailsViewModel.UpdateSubTaskCompletionStatus(taskId, !checkboxStatus);
-            }
-        }
-
-        private void TaskDescription_LostFocus(object sender, RoutedEventArgs e)
-        {
-            taskDetailsViewModel.UpdateTask();
-        }
-
-        private void TaskDescription_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            taskDetailsViewModel.SetTaskUpdatedContext();
-        }
-
-        private void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
-        {
-            taskDetailsViewModel.UpdateTask(true);
-        }
-
-        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
-        {
-            SelectTaskMessage.Visibility = Visibility.Visible;
-            taskDetailsViewModel.DeleteTask();
-        }
-
-        private void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void OpenAddAttachementWindowButton_ButtonClick(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

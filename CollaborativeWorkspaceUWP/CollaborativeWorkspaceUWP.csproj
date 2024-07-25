@@ -119,6 +119,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
+    <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
+    <Compile Include="CustomControls\UserControls\AddAttachmentControl.xaml.cs">
+      <DependentUpon>AddAttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
+      <DependentUpon>AddTaskControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\CustomIconButtonControl.xaml.cs">
       <DependentUpon>CustomIconButtonControl.xaml</DependentUpon>
     </Compile>
@@ -131,16 +139,19 @@
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
+      <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\AttachmentDataHandler.cs" />
     <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
     <Compile Include="DAL\ProjectDataHandler.cs" />
     <Compile Include="DAL\StatusDataHandler.cs" />
     <Compile Include="DAL\TaskDataHandler.cs" />
     <Compile Include="DAL\TeamspaceDataHandler.cs" />
+    <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
-    <Compile Include="Models\Enums\PriorityEnum.cs" />
-    <Compile Include="Models\Enums\StatusEnum.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Priority.cs" />
@@ -149,8 +160,10 @@
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\PriorityDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\StatusDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\IAttachmentPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IPriorityPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IStatusPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -174,11 +187,13 @@
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\ITaskPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
+    <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
+    <Compile Include="ViewModels\AddAttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
@@ -231,6 +246,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CustomControls\UserControls\AddAttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\AddTaskControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\CustomIconButtonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\TaskDetailsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,6 +289,10 @@
     <Page Include="Templates\TableDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>

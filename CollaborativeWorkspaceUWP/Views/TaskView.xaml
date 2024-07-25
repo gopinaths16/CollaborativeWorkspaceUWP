@@ -8,11 +8,12 @@
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource PrimaryBackground}"
     Loaded="Page_Loaded">
 
     <Page.DataContext>
@@ -49,14 +50,6 @@
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
 
-                    <Style TargetType="Grid" x:Name="TaskDetailsViewGridDisplay">
-                        <Setter Property="BorderThickness" Value="0.5" />
-                        <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Property="Margin" Value="10, 0, 0, 0" />
-                        <Setter Property="Padding" Value="20" />
-                    </Style>
-
                     <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
                         <Setter Property="Margin" Value="10, 20, 0, 0" />
                         <Setter Property="VerticalAlignment" Value="Top" />
@@ -66,6 +59,7 @@
                         <Setter Property="CornerRadius" Value="5"/>
                         <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
                         <Setter Property="Padding" Value="5" />
+                        <Setter Property="Margin" Value="10, 0, 0, 0" />
                     </Style>
 
                     <Style TargetType="StackPanel" x:Key="AddTaskDialogStyle">
@@ -74,6 +68,11 @@
                         <Setter Property="BorderBrush" Value="Gray" />
                         <Setter Property="Padding" Value="10" />
                         <Setter Property="Margin" Value="5, 25, 10, 5" />
+                    </Style>
+
+                    <Style TargetType="Grid" x:Name="TaskDetailsViewSeparateDisplay">
+                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
+                        <Setter Property="Padding" Value="20" />
                     </Style>
 
                     <DataTemplate x:Key="ProjectListViewItemTemplate" 
@@ -109,7 +108,7 @@
                         <Border BorderThickness="0, 0, 0, 0.5"
                                 BorderBrush="{StaticResource SystemListLowColor}">
                             <Grid CornerRadius="5"
-                                  Margin="20, 0, 0, 20"
+                                  Margin="20, 10, 20, 10"
                                   HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -122,6 +121,8 @@
                                           Margin="5, 5, 0, 0"
                                           MinWidth="0"
                                           IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                                          Background="{Binding PriorityData.ColorCode, Mode=OneWay}"
+                                          BorderBrush="{Binding PriorityData.ColorCode, Mode=OneWay}"
                                           Tag="{x:Bind Id}"
                                           Style="{StaticResource CheckboxNoContent}"
                                           Checked="TaskListCheckBox_Checked"
@@ -140,41 +141,6 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource ButtonNoBackground}"
                                         Grid.Column="2" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-
-                    <DataTemplate x:Key="SubTaskListViewDataTemplate"
-                                  x:DataType="models:UserTask">
-                        <Border BorderThickness="0, 0, 0, 0.5"
-                                BorderBrush="{StaticResource SystemListLowColor}">
-                            <Grid CornerRadius="5"
-                                  Margin="20, 0, 0, 20"
-                                  HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <CheckBox Grid.Column="0"
-                                          Content="{Binding Name}"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Center"
-                                          Margin="5, 5, 0, 0"
-                                          IsChecked="{Binding IsCompleted, Mode=TwoWay}"
-                                          Tag="{x:Bind Id}"
-                                          Style="{StaticResource CheckboxNoContent}"
-                                          MinWidth="0"
-                                          Checked="SubTaskListCheckbox_Checked"
-                                          Unchecked="SubTaskListCheckbox_Checked"/>
-                                <TextBlock Text="{Binding Name}"
-                                           FontSize="20"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="Wrap"
-                                           TextTrimming="WordEllipsis"
-                                           MaxLines="1"
-                                           Grid.Column="1"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -209,31 +175,46 @@
         </Grid.RowDefinitions>
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="NarrowLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
-                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
-                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
-                        <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0, 5, 5, 0" />
-                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
+            <VisualStateGroup x:Name="WindowStateGroup">
                 <VisualState x:Name="WideLayout">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1000"/>
+                        <AdaptiveTrigger MinWindowWidth="1400"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="True" />
                         <Setter Target="ProjectListSplitView.DisplayMode" Value="Inline" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="True" />
                         <Setter Target="ProjectListSplitViewPane.Background" Value="Transparent" />
                         <Setter Target="ProjectListSplitViewPane.Padding" Value="0" />
                         <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0" />
-                        <Setter Target="OpenSplitViewButtonAlt.Visibility" Value="Collapsed" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
+                        <Setter Target="TaskListView.Margin" Value="0" />
+                        <Setter Target="TaskDetailsViewContainer.Margin" Value="10, 0, 0, 0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SingleWindowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="400"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProjectListSplitView.DisplayMode" Value="Overlay" />
+                        <Setter Target="ProjectListSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="ProjectListSplitViewPane.Background" Value="{ThemeResource PrimaryBackground}" />
+                        <Setter Target="ProjectListSplitViewPane.Padding" Value="10, 0, 10, 0" />
+                        <Setter Target="TaskListView.Grid.ColumnSpan" Value="2" />
+                        <Setter Target="TaskListView.Margin" Value="0" />
+                        <Setter Target="TaskDetailsViewContainer.Margin" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -275,7 +256,7 @@
                         <SplitView.Pane>
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
-                                        Margin="0, 0, 10, 0"
+                                        Margin="0, 0, 0, 0"
                                         Name="ProjectListSplitViewPane">
 
                                 <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
@@ -296,8 +277,8 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="550" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 
                                 <!--#region Task List Region Starts-->
@@ -306,7 +287,8 @@
                                       Grid.Row="0"
                                       Grid.Column="0"
                                       Style="{StaticResource TaskListViewByProjectStyle}"
-                                      Visibility="{x:Bind taskListViewModel.CurrentProject, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                      MinWidth="500"
+                                      Visibility="{Binding IsVisible}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -329,85 +311,22 @@
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
 
-                                    <customusercontrol:CustomIconButtonControl Name="OpenAddTaskWindowButton"
-                                                                               ButtonIcon="&#xE948;"
-                                                                               ButtonContent="Add Task"
-                                                                               ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                               ButtonClick="OpenAddTaskWindowButton_ButtonClick"
-                                                                               Margin="0, 20, 0, 0"
-                                                                               ButtonBackground="Transparent"
-                                                                               Grid.Row="1"
-                                                                               Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                               IsButtonEnabled="True"/>
+                                    
+                                    <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
+                                                                                   Content="Add Task"
+                                                                                   Click="OpenAddTaskWindowButton_ButtonClick"
+                                                                                   Grid.Row="1"
+                                                                                   Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                                                                                   Padding="10"
+                                                                                   IsEnabled="True"
+                                                                                   Margin="0, 10, 0, 5"/>
 
-                                    <StackPanel x:Name="AddTaskDialogContent"
-                                                Style="{StaticResource AddTaskDialogStyle}"
-                                                Grid.Row="1"
-                                                Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        
-                                        <TextBox Name="AddTaskDialogTaskName"
-                                                 PlaceholderText="Task Name"
-                                                 Style="{StaticResource TextBoxNoBg}"
-                                                 FontWeight="Bold"
-                                                 BorderBrush="Transparent"
-                                                 Background="Transparent"
-                                                 AcceptsReturn="True"
-                                                 TextWrapping="Wrap"
-                                                 BorderThickness="0"
-                                                 Margin="0, 0, 0, 5"
-                                                 TextChanged="AddTaskDialogTaskName_TextChanged"/>
-
-                                        <TextBox Name="AddTaskDialogDescription"
-                                                 PlaceholderText="Description"
-                                                 AcceptsReturn="True"
-                                                 BorderBrush="Transparent"
-                                                 Background="Transparent"
-                                                 BorderThickness="0"
-                                                 TextWrapping="Wrap"
-                                                 Style="{StaticResource TextBoxNoBg}"
-                                                 Margin="0, 0, 0, 5"/>
-
-                                        <StackPanel Orientation="Horizontal">
-                                            <ComboBox Name="AddTaskDialogPriority"
-                                                      PlaceholderText="Priority"
-                                                      CornerRadius="2"
-                                                      Margin="0, 0, 10, 0"
-                                                      ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                      ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
-
-                                            <ComboBox Name="AddTaskDialogStatus"
-                                                      PlaceholderText="Status"
-                                                      CornerRadius="2"
-                                                      Margin="0, 0, 10, 0"
-                                                      ItemsSource="{x:Bind addTaskViewModel.StatusData}"
-                                                      ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
-                                        </StackPanel>
-
-                                        <Border BorderThickness="0, 0, 0, 0.5"
-                                                BorderBrush="Gray"
-                                                Padding="10, 0, 0, 10"
-                                                Margin="0, 5, 0, 10"/>
-
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Right">
-                                            <Button Name="CloseTaskDialogButton"
-                                                    Content="Cancel"
-                                                    Click="CloseTaskDialogButton_Click"
-                                                    Background="Transparent"
-                                                    Margin="0, 0, 10, 0"
-                                                    CornerRadius="5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"/>
-                                            <customusercontrol:CustomIconButtonControl x:Name="AddTaskFromDialogButton"
-                                                                                       ButtonIcon="&#xE948;"
-                                                                                       ButtonContent="Add Task"
-                                                                                       ButtonClick="AddTaskFromDialogButton_ButtonClick"
-                                                                                       ButtonBackground="{StaticResource SystemAccentColor}"
-                                                                                       IsButtonEnabled="False"/>
-                                        </StackPanel>
-
-
-                                    </StackPanel>
+                                    <customusercontrol:AddTaskControl Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                      Grid.Row="1"
+                                                                      x:Name="AddTaskDialog"
+                                                                      CurrProjectId="{x:Bind taskListViewModel.CurrentProject.Id, Mode=OneWay}"
+                                                                      CancelButtonClick="CloseTaskDialogButton_Click"
+                                                                      AddTaskButtonClick="AddTaskFromDialogButton_ButtonClick"/>
 
                                     <ListView Name="TaskListViewByProject" 
                                               ItemsSource="{x:Bind taskListViewModel.Tasks, Mode=TwoWay}"
@@ -417,327 +336,36 @@
                                               IsItemClickEnabled="True"
                                               ItemClick="TaskListView_ItemClick"
                                               ItemContainerStyle="{StaticResource ListViewItemStyleAccent}" />
-                                </Grid>
 
-                                <!--#endregion-->
-                                
-                                <!--#region Select Project message starts-->
-
-                                <Grid HorizontalAlignment="Stretch"
-                                      Name="SelectProjectMessage"
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="3">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <Button Name="OpenSplitViewButtonAlt" 
-                                            Style="{StaticResource ButtonNoBackground}"
-                                            Click="OpenSplitViewButton_Click"
-                                            FontFamily="Segoe Fluent Icons"
-                                            Content="&#xe8a0;"
-                                            FontSize="17"
-                                            Visibility="Collapsed"
-                                            Grid.Row="0"/>
-                                    <StackPanel HorizontalAlignment="Center"
+                                    <StackPanel Name="NoTasksInListMessage"
+                                                Grid.Row="2"
+                                                Margin="0, 20, 0, 0"
+                                                HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
-                                                Grid.Row="1">
-                                        <TextBlock Text="Select a Project to proceed further"
+                                                Visibility="{x:Bind taskListViewModel.Tasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                                        <TextBlock Text="No Tasks available"
                                                    Foreground="Gray"
-                                                   FontSize="30"/>
+                                                   FontSize="20"/>
                                     </StackPanel>
                                 </Grid>
-                                
+
                                 <!--#endregion-->
                                 
-                                <!--#region Select Task Message starts-->
-
-                                <StackPanel Name="SelectTaskMessage"
-                                            Grid.Column="1"
-                                            Grid.ColumnSpan="2"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Visibility="Collapsed">
-                                    <TextBlock Text="Select a Task to proceed further"
-                                               Foreground="Gray"
-                                               FontSize="30"/>
-                                </StackPanel>
-                                
-                                <!--#endregion-->
-
                                 <!--#region Task Details view Starts-->
+
+                                <Border CornerRadius="5"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        Margin="10, 0, 0, 0"
+                                        x:Name="TaskDetailsViewContainer">
+                                    <customusercontrol:TaskDetailsControl x:Name="TaskDetailsView"
+                                                                          IsSeparateWindow="False"
+                                                                          OnOpenInSeparateWindow="OpenTaskInSeparateWindow"
+                                                                          AllowTaskClear="{x:Bind taskListViewModel.IsSingleWindowLayoutTriggered, Mode=OneWay}"
+                                                                          OnTaskClear="TaskDetailsView_OnTaskClear"/>
+                                </Border>
+
                                 
-                                <Grid Name="TaskDetailsView"
-                                      Grid.Column="1"
-                                      Grid.ColumnSpan="3"
-                                      Style="{StaticResource TaskDetailsViewGridDisplay}"
-                                      Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <Grid Grid.Row="0"
-                                          HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Left"
-                                                    Grid.Row="0">
-                                            <ComboBox Name="Status"
-                                                      PlaceholderText="Status"
-                                                      CornerRadius="2"
-                                                      Margin="0, 0, 10, 0"
-                                                      ItemsSource="{x:Bind addTaskViewModel.StatusData}"
-                                                      SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectionChanged="TaskUpdateTriggered"
-                                                      ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
-
-                                            <ComboBox Name="Priority"
-                                                      PlaceholderText="Priority"
-                                                      CornerRadius="2"
-                                                      Grid.Column="1"
-                                                      Margin="0, 0, 10, 0"
-                                                      ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                      SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
-                                                      SelectionChanged="TaskUpdateTriggered"
-                                                      ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    Grid.Row="1">
-                                            <Button Name="AddAttachmentsButton"
-                                                    FontFamily="Segoe Fluent Icons"
-                                                    Content="&#xe723;"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Click="AddAttachmentsButton_Click"
-                                                    Style="{StaticResource ButtonNoBackground}"
-                                                    Grid.Column="1"/>
-                                            <Button Name="DeleteTaskButton"
-                                                    FontFamily="Segoe Fluent Icons"
-                                                    Content="&#xe74d;"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Click="DeleteTaskButton_Click"
-                                                    Style="{StaticResource ButtonNoBackground}"
-                                                    Grid.Column="1"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="1"
-                                          HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <CheckBox HorizontalAlignment="Left"
-                                                  VerticalAlignment="Center"
-                                                  Margin="5, 15, 0, 0"
-                                                  IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
-                                                  Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
-                                                  Style="{StaticResource CheckboxNoContent}"
-                                                  MinWidth="0"
-                                                  Grid.Column="0"
-                                                  Checked="TaskDetailsCheckBox_Checked"
-                                                  Unchecked="TaskDetailsCheckBox_Checked"/>
-                                        <TextBox Name="TaskTitle"
-                                                 Style="{StaticResource TextBoxNoBg}"
-                                                 HorizontalAlignment="Stretch"
-                                                 Margin="5, 10, 15, 0"
-                                                 BorderBrush="Transparent"
-                                                 Background="Transparent"
-                                                 BorderThickness="0.5"
-                                                 CornerRadius="5"
-                                                 AcceptsReturn="True"
-                                                 TextWrapping="Wrap"
-                                                 Padding="10"
-                                                 FontSize="20"
-                                                 Grid.Column="1"
-                                                 Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LostFocus="TaskDescription_LostFocus"
-                                                 TextChanged="TaskDescription_TextChanged"/>
-                                    </Grid>
-
-                                    <customusercontrol:IconedLabelControl Grid.Row="2"
-                                                                          Icon="&#xE700;"
-                                                                          ContentText="Description"
-                                                                          Style="{StaticResource LabelStyles}"/>
-
-                                    <TextBox Name="TaskDescription"
-                                             Style="{StaticResource TextBoxNoBg}"
-                                             Margin="15, 10, 15, 0"
-                                             BorderBrush="Transparent"
-                                             Background="Transparent"
-                                             BorderThickness="0.5"
-                                             CornerRadius="5"
-                                             AcceptsReturn="True"
-                                             TextWrapping="Wrap"
-                                             Padding="10"
-                                             Grid.Row="3"
-                                             Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             LostFocus="TaskDescription_LostFocus"
-                                             TextChanged="TaskDescription_TextChanged"/>
-
-
-                                    <Pivot x:Name="TaskViewPivot"
-                                           Grid.Row="20"
-                                           Grid.Column="0"
-                                           Grid.ColumnSpan="2"
-                                           Margin="5, 20, 5, 0">
-                                        <PivotItem Name="SubtTaskPivotItem">
-                                            <PivotItem.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontFamily="Segoe Fluent Icons"
-                                                               Text="&#xE73A;"
-                                                               FontSize="12"
-                                                               VerticalAlignment="Center"
-                                                               FontWeight="Bold"/>
-
-                                                    <TextBlock Text="Sub Tasks"
-                                                               FontSize="12"
-                                                               Margin="5, 0, 0, 0"
-                                                               VerticalAlignment="Center"
-                                                               FontWeight="Bold"/>
-                                                </StackPanel>
-                                            </PivotItem.Header>
-                                            <StackPanel Orientation="Vertical">
-                                                <customusercontrol:CustomIconButtonControl Name="OpenAddSubTaskWindowButton"
-                                                                                           ButtonIcon="&#xE948;"
-                                                                                           ButtonContent="Add Sub Task"
-                                                                                           ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                                           ButtonClick="OpenAddSubTaskWindowButton_ButtonClick"
-                                                                                           Margin="0, 20, 0, 0"
-                                                                                           ButtonBackground="Transparent"
-                                                                                           Grid.Row="1"
-                                                                                           Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                                           IsButtonEnabled="True"/>
-
-                                                <StackPanel x:Name="AddSubTaskDialogContent"
-                                                            Style="{StaticResource AddTaskDialogStyle}"
-                                                            Grid.Row="1"
-                                                            Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-
-                                                    <TextBox Name="AddSubTaskDialogTaskName"
-                                                             PlaceholderText="Task Name"
-                                                             Style="{StaticResource TextBoxNoBg}"
-                                                             FontWeight="Bold"
-                                                             BorderBrush="Transparent"
-                                                             Background="Transparent"
-                                                             AcceptsReturn="True"
-                                                             TextWrapping="Wrap"
-                                                             BorderThickness="0"
-                                                             Margin="0, 0, 0, 15"
-                                                             TextChanged="AddSubTaskDialogTaskName_TextChanged"/>
-
-                                                    <TextBox Name="AddSubTaskDialogDescription"
-                                                             PlaceholderText="Description"
-                                                             BorderBrush="Transparent"
-                                                             Background="Transparent"
-                                                             BorderThickness="0"
-                                                             AcceptsReturn="True"
-                                                             TextWrapping="Wrap"
-                                                             Style="{StaticResource TextBoxNoBg}"
-                                                             Margin="0, 0, 0, 15"/>
-
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <ComboBox Name="AddSubTaskDialogPriority"
-                                                                  PlaceholderText="Priority"
-                                                                  CornerRadius="2"
-                                                                  Margin="0, 0, 10, 0"
-                                                                  ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
-                                                                  ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
-
-                                                        <ComboBox Name="AddSubTaskDialogStatus"
-                                                                  PlaceholderText="Status"
-                                                                  CornerRadius="2"
-                                                                  Margin="0, 0, 10, 0"
-                                                                  ItemsSource="{x:Bind addTaskViewModel.StatusData}"
-                                                                  ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
-                                                    </StackPanel>
-
-                                                    <Border BorderThickness="0, 0, 0, 0.5"
-                                                            BorderBrush="Gray"
-                                                            Padding="10, 0, 0, 10"
-                                                            Margin="0, 10, 0, 15"/>
-
-                                                    <StackPanel Orientation="Horizontal"
-                                                                HorizontalAlignment="Right">
-                                                        <Button Name="CloseSubTaskDialogButton"
-                                                                Content="Cancel"
-                                                                Click="CloseSubTaskDialogButton_Click"
-                                                                Background="Transparent"
-                                                                Margin="0, 0, 10, 0"
-                                                                CornerRadius="5"
-                                                                HorizontalAlignment="Center"
-                                                                VerticalAlignment="Center"/>
-                                                        <customusercontrol:CustomIconButtonControl x:Name="AddSubTaskFromDialogButton"
-                                                                                                   ButtonIcon="&#xE948;"
-                                                                                                   ButtonContent="Add Sub Task"
-                                                                                                   ButtonClick="AddSubTaskFromDialogButton_ButtonClick"
-                                                                                                   ButtonBackground="{StaticResource SystemAccentColor}"
-                                                                                                   IsButtonEnabled="False"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-
-                                                <ListView Name="SubTaskListView" 
-                                                          ItemsSource="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=TwoWay}"
-                                                          ItemTemplate="{StaticResource SubTaskListViewDataTemplate}"
-                                                          Margin="0, 20, 0, 0"
-                                                          Grid.Row="2"
-                                                          IsItemClickEnabled="False"
-                                                          ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
-                                                <StackPanel Name="NoSubtasksMessage"
-                                                            Grid.Row="2"
-                                                            Margin="0, 20, 0, 0"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center"
-                                                            Visibility="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
-                                                    <TextBlock Text="No Sub tasks available"
-                                                               Foreground="Gray"
-                                                               FontSize="20"/>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </PivotItem>
-                                        <PivotItem Name="AttachementsPivotItem">
-                                            <PivotItem.Header>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock FontFamily="Segoe Fluent Icons"
-                                                               Text="&#xe723;"
-                                                               FontSize="12"
-                                                               VerticalAlignment="Center"
-                                                               FontWeight="Bold"/>
-
-                                                    <TextBlock Text="Attachements"
-                                                               FontSize="12"
-                                                               Margin="5, 0, 0, 0"
-                                                               VerticalAlignment="Center"
-                                                               FontWeight="Bold"/>
-                                                </StackPanel>
-                                            </PivotItem.Header>
-                                            <StackPanel Orientation="Vertical">
-                                                <customusercontrol:CustomIconButtonControl Name="OpenAddAttachementWindowButton"
-                                                                                           ButtonIcon="&#xe723;"
-                                                                                           ButtonContent="Add Attachment"
-                                                                                           ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                                                           ButtonClick="OpenAddAttachementWindowButton_ButtonClick"
-                                                                                           Margin="0, 20, 0, 0"
-                                                                                           ButtonBackground="Transparent"
-                                                                                           IsButtonEnabled="True"/>
-                                            </StackPanel>
-                                        </PivotItem>
-                                    </Pivot>
-                                </Grid>
                                 
                                 <!--#endregion-->
                                 
@@ -757,6 +385,7 @@
             <StackPanel x:Name="AddProjectDialogContent"
                         Style="{StaticResource DialogContentStyle}">
 
+                
                 <Grid Margin="0, 0, 0, 25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
