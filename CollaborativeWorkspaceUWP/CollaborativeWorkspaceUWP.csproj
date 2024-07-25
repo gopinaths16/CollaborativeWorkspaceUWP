@@ -121,8 +121,11 @@
     </Compile>
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
-    <Compile Include="CustomControls\UserControls\AddAttachmentControl.xaml.cs">
-      <DependentUpon>AddAttachmentControl.xaml</DependentUpon>
+    <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
+      <DependentUpon>AttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\CommentControl.xaml.cs">
+      <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>
@@ -193,7 +196,7 @@
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
-    <Compile Include="ViewModels\AddAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
@@ -246,7 +249,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CustomControls\UserControls\AddAttachmentControl.xaml">
+    <Page Include="CustomControls\UserControls\AttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\CommentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

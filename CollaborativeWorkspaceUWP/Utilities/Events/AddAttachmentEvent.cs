@@ -11,6 +11,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Events
     public class AddAttachmentEvent
     {
         public UserTask Task { get; set; }
-        public ObservableCollection<Attachment> Attachments { get; set; }
+        public Attachment Attachment { get; set; }
     }
 }

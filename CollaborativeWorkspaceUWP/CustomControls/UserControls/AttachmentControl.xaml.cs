@@ -22,12 +22,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class AddAttachmentControl : UserControl
+    public sealed partial class AttachmentCotrol : UserControl
     {
         private RoutedEventHandler cancelButtonClickEventHandler;
         private RoutedEventHandler addButtonClickEventHandler;
 
-        private AddAttachmentViewModel addAttachmentViewModel;
+        private AttachmentViewModel attachmentViewModel;
 
         public event RoutedEventHandler CancelButtonClick
         {
@@ -41,32 +41,32 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { addButtonClickEventHandler -= value; }
         }
 
-        public AddAttachmentControl()
+        public static readonly DependencyProperty CurrTaskProperty = DependencyProperty.Register("CurrTask", typeof(UserTask), typeof(AttachmentCotrol), new PropertyMetadata(null));
+
+        public AttachmentCotrol()
         {
             this.InitializeComponent();
 
-            addAttachmentViewModel = new AddAttachmentViewModel();
-        }
-
-        private async void AddAttachmentDialog_Click(object sender, RoutedEventArgs e)
-        {
-            await addAttachmentViewModel.AddAttachmentsToTask();
-            addAttachmentViewModel.ClearAttachmentList();
-            addButtonClickEventHandler?.Invoke(sender, e);
+            attachmentViewModel = new AttachmentViewModel();
         }
 
         private void CloseAttachmentDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            addAttachmentViewModel.ClearAttachmentList();
+            attachmentViewModel.ClearAttachmentList();
             cancelButtonClickEventHandler?.Invoke(sender, e);
         }
 
         public void SetCurrTask(UserTask task)
         {
-            addAttachmentViewModel.SetCurrTask(task);
+            attachmentViewModel.SetCurrTask(task);
         }
 
         private async void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            await PickAndAddAttachment();
+        }
+
+        public async Task PickAndAddAttachment()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
@@ -80,7 +80,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                addAttachmentViewModel.AddAttachmentToList(file);
+                attachmentViewModel.AddAttachmentToTask(file);
             }
         }
 
@@ -88,7 +88,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Button button = (Button)sender;
             Attachment attachment = (Attachment)button.Tag;
-            addAttachmentViewModel.DeleteAttachmentFromList(attachment);
+            attachmentViewModel.DeleteAttachmentFromList(attachment);
         }
 
         private async void AttachmentListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -102,7 +102,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             try
             {
                 StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
-                var file = await storageFolder.GetFileAsync(attachment.Name);
+                var file = await storageFolder.GetFileAsync(attachment.Path);
 
                 if (file != null)
                 {

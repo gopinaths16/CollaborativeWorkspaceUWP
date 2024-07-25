@@ -14,8 +14,9 @@ using Windows.Storage;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
-    public class AddAttachmentViewModel : BaseViewModel
+    public class AttachmentViewModel : BaseViewModel
     {
+        private UserTask currTask;
         private ObservableCollection<Attachment> attachments;
         private AttachmentDataHandler attachmentDataHandler;
 
@@ -25,9 +26,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { attachments = value; }
         }
 
-        public UserTask CurrTask { get; set; }
+        public UserTask CurrTask
+        {
+            get { return currTask; }
+            set
+            {
+                currTask = value;
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
+        }
 
-        public AddAttachmentViewModel()
+        public AttachmentViewModel()
         {
             Attachments = new ObservableCollection<Attachment>();
             attachmentDataHandler = new AttachmentDataHandler();
@@ -41,7 +50,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void AddAttachmentToList(StorageFile file)
+        public async void AddAttachmentToTask(StorageFile file)
         {
             Attachment attachment = new Attachment();
             attachment.Name = file.Name;
@@ -50,17 +59,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachment.TaskId = CurrTask.Id;
             attachment.Content = file;
             Attachments.Add(attachment);
-            NotifyPropertyChanged(nameof(Attachments));
+            await AddAttachmentToLocalFolder(attachment);
+            attachment = attachmentDataHandler.AddAttachmentsToTask(attachment);
+            CurrTask.Attachments.Add(attachment);
+            NotifyPropertyChanged(nameof(CurrTask));
+            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
         }
 
-        public async Task AddAttachmentsToTask()
-        {
-            await AddAttachmentToLocalFolder();
-            attachmentDataHandler.AddAttachmentsToTask(Attachments);
-            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachments = Attachments });
-        }
-
-        public async Task AddAttachmentToLocalFolder()
+        public async Task AddAttachmentToLocalFolder(Attachment attachment)
         {
             StorageFolder folder = null;
             try
@@ -78,12 +84,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 {
                     folder = await storageFolder.CreateFolderAsync("Attachments");
                 }
-                foreach (var attachment in Attachments)
-                {
-                    StorageFile file = await folder.CreateFileAsync(attachment.Path);
-                    var content = await FileIO.ReadBufferAsync(attachment.Content);
-                    await FileIO.WriteBufferAsync(file, content);
-                }
+                StorageFile file = await folder.CreateFileAsync(attachment.Path);
+                var content = await FileIO.ReadBufferAsync(attachment.Content);
+                await FileIO.WriteBufferAsync(file, content);
             }
             catch (Exception ex)
             {

@@ -21,19 +21,16 @@ namespace CollaborativeWorkspaceUWP.DAL
             persistanceObjectManager = new PersistenceObjectManager(PersistenceMode.SQLITE);
         }
 
-        public ObservableCollection<Attachment> AddAttachmentsToTask(ObservableCollection<Attachment> attachments)
+        public Attachment AddAttachmentsToTask(Attachment attachment)
         {
-            ObservableCollection<Attachment> result = new ObservableCollection<Attachment>();
+            Attachment result = null;
             IAttachmentPersistence persistenceObject = null;
             try
             {
-                foreach (var attachment in attachments)
-                {
-                    persistenceObject = persistanceObjectManager.GetAttachmentPersistenceObject();
-                    persistenceObject.SetAddAttachmentContext(attachment);
-                    PersistenceHandler.Instance.Get(persistenceObject);
-                    result.Add(persistenceObject.GetAttachment());
-                }
+                persistenceObject = persistanceObjectManager.GetAttachmentPersistenceObject();
+                persistenceObject.SetAddAttachmentContext(attachment);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetAttachment();
             }
             catch (Exception ex)
             {

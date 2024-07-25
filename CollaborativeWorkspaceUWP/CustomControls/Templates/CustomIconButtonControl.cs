@@ -21,8 +21,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.Templates
             set { SetValue(IconProperty, value); }
         }
 
+        public string IconFontFamily
+        {
+            get { return (string)GetValue(IconFontFamilyProperty); }
+            set { SetValue(IconFontFamilyProperty, value); }
+        }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty IconFontFamilyProperty = DependencyProperty.Register("IconFontFamily", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(null));
 
         public CustomIconButtonControl()
         {
