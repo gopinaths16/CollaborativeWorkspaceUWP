@@ -190,8 +190,10 @@
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
+    <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
+    <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />

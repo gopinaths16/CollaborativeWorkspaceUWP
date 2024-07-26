@@ -7,13 +7,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <UserControl.DataContext>
         <models:Attachment />
     </UserControl.DataContext>
-    
+
     <Grid CornerRadius="3"
       HorizontalAlignment="Stretch"
       Padding="10, 15, 10, 15"
@@ -47,14 +48,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <FontIcon x:Name="IconElement"
-                  Glyph="&#xe922;"
                   FontFamily="{StaticResource IcoMoonCustomFontFree}"
                   FontSize="40"
                   Margin="0,0,5,0"
                   Grid.Row="0"
                   Grid.RowSpan="2"
                   Grid.Column="0"
-                  Foreground="#4593fb"/>
+                  Visibility="Collapsed"/>
+        <Image x:Name="PreviewImage"
+               Height="40"
+               Width="40"
+               Grid.Row="0"
+               Grid.RowSpan="2"
+               Grid.Column="0"
+               Margin="0,0,5,0"
+               Visibility="Collapsed" />
         <TextBlock Text="{Binding Name, Mode=OneWay}"
                    FontSize="12"
                    TextWrapping="Wrap"
@@ -71,7 +79,7 @@
                     Grid.Column="2"
                     Grid.ColumnSpan="3"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Stretch"
                     Name="AttachmentOptions"
                     Background="{ThemeResource PrimaryBackground}"
                     Visibility="Collapsed">
