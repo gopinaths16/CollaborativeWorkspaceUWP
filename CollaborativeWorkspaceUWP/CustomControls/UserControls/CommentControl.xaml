@@ -8,18 +8,53 @@
     mc:Ignorable="d"
     Background="{ThemeResource SecondaryBackground}">
 
-    <StackPanel Background="Transparent">
-        <Border BorderThickness="2"
+    <StackPanel Background="Transparent"
+                PointerEntered="StackPanel_PointerEntered"
+                PointerExited="StackPanel_PointerExited"
+                GotFocus="StackPanel_GotFocus">
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                    <VisualState.Setters>
+                        <Setter Target="CommentBox.BorderBrush" Value="Transparent"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PointerOver">
+                    <VisualState.Setters>
+                        <Setter Target="CommentBox.BorderBrush" Value="Gray"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Focused">
+                    <VisualState.Setters>
+                        <Setter Target="CommentBox.BorderBrush" Value="{StaticResource SystemAccentColor}"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        <Border x:Name="CommentBox" 
+                BorderThickness="1"
                 CornerRadius="15"
                 Margin="0, 20, 0, 20"
                 Background="{ThemeResource PrimaryBackground}"
                 Style="{StaticResource ReactiveBorder}">
+            
+
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <ScrollViewer Grid.Column="0"
+                <local:AttachmentCotrol x:Name="CommentAttachments" 
+                                        AllowAdditionFromUi="False"
+                                        Margin="10, 0, 10, 0"/>
+                <ScrollViewer Grid.Row="1" 
+                              Grid.Column="0"
                               MaxHeight="80"
                               Margin="5, 10, 15, 5">
                     <TextBox Name="CommentTextBox"
@@ -30,6 +65,7 @@
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Bottom"
+                            Grid.Row="1"
                             Grid.Column="1"
                             Margin="10">
                     <Button Name="AddAttachmentButton"
@@ -37,6 +73,7 @@
                             Content="&#xe723;"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            Click="AddAttachmentButton_Click"
                             Style="{StaticResource ButtonNoBackground}"
                             Grid.Column="1"/>
                     <Button Name="AddCommentButton"

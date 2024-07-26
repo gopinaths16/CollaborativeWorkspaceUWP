@@ -50,7 +50,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public async void AddAttachmentToTask(StorageFile file)
+        public async void AddAttachmentToTask(StorageFile file, bool isAddedFromUI)
         {
             Attachment attachment = new Attachment();
             attachment.Name = file.Name;
@@ -59,11 +59,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachment.TaskId = CurrTask.Id;
             attachment.Content = file;
             Attachments.Add(attachment);
-            await AddAttachmentToLocalFolder(attachment);
-            attachment = attachmentDataHandler.AddAttachmentsToTask(attachment);
+            if(isAddedFromUI)
+            {
+                await AddAttachmentToLocalFolder(attachment);
+                attachment = attachmentDataHandler.AddAttachmentsToTask(attachment);
+                ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
+            }
             CurrTask.Attachments.Add(attachment);
             NotifyPropertyChanged(nameof(CurrTask));
-            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
         }
 
         public async Task AddAttachmentToLocalFolder(Attachment attachment)

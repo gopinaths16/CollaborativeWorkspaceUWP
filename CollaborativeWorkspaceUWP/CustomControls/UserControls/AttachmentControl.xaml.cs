@@ -41,7 +41,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { addButtonClickEventHandler -= value; }
         }
 
-        public static readonly DependencyProperty CurrTaskProperty = DependencyProperty.Register("CurrTask", typeof(UserTask), typeof(AttachmentCotrol), new PropertyMetadata(null));
+        public bool AllowAdditionFromUi
+        {
+            get { return (bool)GetValue(AllowAdditionFromUiProperty); }
+            set { SetValue(AllowAdditionFromUiProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowAdditionFromUiProperty = DependencyProperty.Register("AllowAdditionFromUi", typeof(bool), typeof(AttachmentCotrol), new PropertyMetadata(true));
 
         public AttachmentCotrol()
         {
@@ -59,6 +65,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void SetCurrTask(UserTask task)
         {
             attachmentViewModel.SetCurrTask(task);
+        }
+
+        public void SetAddAttachmentContext()
+        {
+            attachmentViewModel.SetCurrTask(new UserTask());
         }
 
         private async void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
@@ -80,7 +91,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                attachmentViewModel.AddAttachmentToTask(file);
+                attachmentViewModel.AddAttachmentToTask(file, AllowAdditionFromUi);
             }
         }
 

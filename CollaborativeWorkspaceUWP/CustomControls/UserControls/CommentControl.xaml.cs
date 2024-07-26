@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,33 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
     /// </summary>
     public sealed partial class CommentControl : Page
     {
+        CommentViewModel commentViewModel;
+
         public CommentControl()
         {
             this.InitializeComponent();
+            commentViewModel = new CommentViewModel();
+            CommentAttachments.SetAddAttachmentContext();
+        }
+
+        private void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommentAttachments.PickAndAddAttachment();
+        }
+
+        private void StackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "PointerOver", true);
+        }
+
+        private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Normal", true);
+        }
+
+        private void StackPanel_GotFocus(object sender, RoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Focused", true);
         }
     }
 }

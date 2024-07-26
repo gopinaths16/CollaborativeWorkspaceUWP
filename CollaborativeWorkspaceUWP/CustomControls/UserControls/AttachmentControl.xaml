@@ -56,7 +56,8 @@
                                                        HorizontalContentAlignment="Stretch"
                                                        Click="AddAttachmentButton_Click"
                                                        IsEnabled="True"
-                                                       Margin="0, 0, 0, 5"/>
+                                                       Margin="0, 0, 0, 5"
+                                                       Visibility="{x:Bind AllowAdditionFromUi, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <GridView Name="AttachmentGridView" 
                   ItemsSource="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=TwoWay}"
@@ -65,17 +66,18 @@
                   Grid.Row="1"
                   IsItemClickEnabled="True"
                   ItemContainerStyle="{StaticResource AttachmentGridViewItemStyle}"
-                  ItemClick="AttachmentListView_ItemClick">
-        </GridView>
+                  Visibility="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"
+                  ItemClick="AttachmentListView_ItemClick"/>
         <StackPanel Name="NoAttachmentMessage"
                     Grid.Row="2"
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Visibility="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                    Visibility="{x:Bind AllowAdditionFromUi, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}">
             <TextBlock Text="No Attachments available"
                        Foreground="Gray"
-                       FontSize="20"/>
+                       FontSize="20"
+                       Visibility="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}"/>
         </StackPanel>
 
     </Grid>

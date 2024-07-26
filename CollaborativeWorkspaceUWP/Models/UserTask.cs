@@ -97,7 +97,11 @@ namespace CollaborativeWorkspaceUWP.Models
             set; 
         }
 
-        public UserTask() {}
+        public UserTask()
+        {
+            SubTasks = new ObservableCollection<UserTask>();
+            Attachments = new ObservableCollection<Attachment>();
+        }
 
         public UserTask(long id, string name, string description, long status, long priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
         {
