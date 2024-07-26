@@ -271,7 +271,6 @@
                                                                        Grid.Row="1"
                                                                        Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
                                                                        HorizontalContentAlignment="Stretch"
-                                                                       Padding="10"
                                                                        IsEnabled="True"
                                                                        Margin="0, 10, 0, 5"/>
 
@@ -340,12 +339,11 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <StackPanel Orientation="Vertical">
+                    <Grid HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch">
                         <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
                                                             Margin="0, 10, 0, 0"/>
-
-                        
-                    </StackPanel>
+                    </Grid>
                 </PivotItem>
             </Pivot>
         </Grid>

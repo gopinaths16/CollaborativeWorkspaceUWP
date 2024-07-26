@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,11 +18,22 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class CustomSplitViewItemControl : UserControl
+    public sealed partial class AttachmentItemControl : UserControl
     {
-        public CustomSplitViewItemControl()
+        public AttachmentItemControl()
         {
             this.InitializeComponent();
+        }
+
+        private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "PointerOver", true);
+        }
+
+        private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Normal", true);
+
         }
     }
 }

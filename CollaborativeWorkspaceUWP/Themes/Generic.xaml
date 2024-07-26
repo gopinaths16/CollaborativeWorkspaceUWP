@@ -5,6 +5,7 @@
     xmlns:local2="using:CollaborativeWorkspaceUWP.CustomControls.Templates">
 
     <Style TargetType="local2:CustomIconButtonControl">
+        <Setter Property="Padding" Value="10" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local2:CustomIconButtonControl">

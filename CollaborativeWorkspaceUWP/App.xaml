@@ -6,6 +6,8 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <FontFamily x:Key="IcoMoonCustomFontFree">/Assets/icomoon.ttf#icomoon</FontFamily>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/StaticStyles.xaml" />
                 <ResourceDictionary Source="/Styles/ThemedStyles.xaml" />

@@ -124,17 +124,14 @@
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
       <DependentUpon>AttachmentControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\AttachmentItemControl.xaml.cs">
+      <DependentUpon>AttachmentItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\UserControls\CustomIconButtonControl.xaml.cs">
-      <DependentUpon>CustomIconButtonControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml.cs">
-      <DependentUpon>CustomSplitViewItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\DropDownListViewControl.xaml.cs">
       <DependentUpon>DropDownListViewControl.xaml</DependentUpon>
@@ -253,19 +250,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\UserControls\AttachmentItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\CommentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\AddTaskControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\UserControls\CustomIconButtonControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -334,12 +327,20 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.8.6</Version>
+    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\SubViews\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\icomoon.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -9,6 +9,7 @@
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:XamlControlResources="using:Microsoft.UI.Xaml.Controls"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -168,12 +169,11 @@
 
     <Grid Name="TaskViewPanel"
           Background="Transparent">
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStateGroup">
                 <VisualState x:Name="WideLayout">
@@ -317,7 +317,6 @@
                                                                                    Click="OpenAddTaskWindowButton_ButtonClick"
                                                                                    Grid.Row="1"
                                                                                    Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                                   Padding="10"
                                                                                    IsEnabled="True"
                                                                                    Margin="0, 10, 0, 5"/>
 
@@ -425,12 +424,12 @@
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                    <customusercontrol:CustomIconButtonControl Name="AddProjectFromDialogButton"
-                                                               ButtonIcon="&#xE948;"
-                                                               ButtonContent="Add Project"
-                                                               ButtonClick="AddProjectFromDialogButton_ButtonClick"
-                                                               ButtonBackground="{StaticResource SystemAccentColor}"
-                                                               IsButtonEnabled="True"/>
+                    <customtemplatecontrol:CustomIconButtonControl Name="AddProjectFromDialogButton"
+                                                                   Icon="&#xE948;"
+                                                                   Content="Add Project"
+                                                                   Click="AddProjectFromDialogButton_ButtonClick"
+                                                                   Background="{StaticResource SystemAccentColor}"
+                                                                   IsEnabled="True"/>
                 </StackPanel>
 
 
@@ -472,12 +471,12 @@
 
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                        <customusercontrol:CustomIconButtonControl Name="AddTeamspaceButton"
-                                                                   ButtonIcon="&#xE948;"
-                                                                   ButtonContent="Add Teamspace"
-                                                                   ButtonClick="AddTeamspace_ButtonClick"
-                                                                   ButtonBackground="{StaticResource SystemAccentColor}"
-                                                                   IsButtonEnabled="True"/>
+                        <customtemplatecontrol:CustomIconButtonControl Name="AddTeamspaceButton"
+                                                                       Icon="&#xE948;"
+                                                                       Content="Add Teamspace"
+                                                                       Click="AddTeamspace_ButtonClick"
+                                                                       Background="{StaticResource SystemAccentColor}"
+                                                                       IsEnabled="True"/>
                     </StackPanel>
                 </StackPanel>
 
