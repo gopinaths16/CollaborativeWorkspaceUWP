@@ -67,6 +67,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             attachmentViewModel.SetCurrTask(task);
         }
 
+        public void SetCurrTaskId(long taskId)
+        {
+            attachmentViewModel.CurrTask.Id = taskId;
+        }
+
         public void SetAddAttachmentContext()
         {
             attachmentViewModel.SetCurrTask(new UserTask());
@@ -131,6 +136,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
 
             }
+        }
+
+        public void AddAttachmentsForComment(long commentId)
+        {
+            attachmentViewModel.AddAttachmentForComment(commentId);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

@@ -62,19 +62,26 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachment.Path = GetRandomFileName(Path.GetExtension(file.Path));
             attachment.Type = file.ContentType;
             attachment.TaskId = CurrTask.Id;
+            attachment.CommentId = -1;
             attachment.Content = file;
             Attachments.Add(attachment);
             if(AdditionAllowedFromUI)
             {
-                await AddAttachmentToLocalFolder(attachment);
-                attachment = attachmentDataHandler.AddAttachmentsToTask(attachment);
-                ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
+                await AddAttachment(attachment);
             }
             else
             {
                 CurrTask.Attachments.Add(attachment);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
+        }
+
+        private async Task<Attachment> AddAttachment(Attachment attachment)
+        {
+            await AddAttachmentToLocalFolder(attachment);
+            Attachment temp = attachmentDataHandler.AddAttachmentsToTask(attachment);
+            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
+            return temp;
         }
 
         public async Task AddAttachmentToLocalFolder(Attachment attachment)
@@ -133,6 +140,19 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             Attachments.Clear();
             NotifyPropertyChanged(nameof(Attachments));
+        }
+
+        public async Task<ObservableCollection<Attachment>> AddAttachmentForComment(long commentId)
+        {
+            ObservableCollection<Attachment> attachments = new ObservableCollection<Attachment>();
+            foreach (var attachment in Attachments)
+            {
+                attachment.CommentId = commentId;
+                Attachment temp = await AddAttachment(attachment);
+                attachments.Add(temp);
+            }
+            ClearAttachmentList();
+            return attachments;
         }
 
         public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)

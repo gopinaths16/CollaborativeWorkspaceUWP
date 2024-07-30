@@ -133,6 +133,9 @@
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\CommentItemControl.xaml.cs">
+      <DependentUpon>CommentItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\DropDownListViewControl.xaml.cs">
       <DependentUpon>DropDownListViewControl.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,7 @@
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\AttachmentDataHandler.cs" />
+    <Compile Include="DAL\CommentDataHandler.cs" />
     <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
     <Compile Include="DAL\ProjectDataHandler.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="DAL\TeamspaceDataHandler.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Organization.cs" />
@@ -161,9 +166,11 @@
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\CommentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\PriorityDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\StatusDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IAttachmentPersistence.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\ICommentPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IPriorityPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IStatusPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,6 +195,7 @@
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\AddCommentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
     <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
@@ -200,6 +208,7 @@
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CommentItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -262,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\AddTaskControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\CommentItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

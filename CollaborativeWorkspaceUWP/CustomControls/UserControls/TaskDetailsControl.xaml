@@ -319,7 +319,7 @@
                         </StackPanel>
                     </PivotItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <customusercontrol:CommentControl />
+                        <customusercontrol:CommentControl x:Name="CommentDialog" />
                     </StackPanel>
                 </PivotItem>
                 

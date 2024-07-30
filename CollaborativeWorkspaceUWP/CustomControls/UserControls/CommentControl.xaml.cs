@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.ViewModels;
+﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,6 +33,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             CommentAttachments.SetAddAttachmentContext();
         }
 
+        public void SetCurrTask(UserTask currTask)
+        {
+            commentViewModel.SetCurrTask(currTask);
+            if(currTask != null)
+            {
+                CommentAttachments.SetCurrTaskId(currTask.Id);
+            }
+        }
+
         private void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
             CommentAttachments.PickAndAddAttachment();
@@ -50,6 +60,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void StackPanel_GotFocus(object sender, RoutedEventArgs e)
         {
             VisualStateManager.GoToState(this, "Focused", true);
+        }
+
+        private void AddCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            Comment comment = commentViewModel.AddCommentToCurrTask();
+            CommentAttachments.AddAttachmentsForComment(comment.Id);
         }
     }
 }

@@ -70,5 +70,30 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return result;
         }
+
+        public ObservableCollection<Attachment> GetAllAttachmentsForComment(long commentId)
+        {
+            ObservableCollection<Attachment> result = new ObservableCollection<Attachment>();
+            IAttachmentPersistence persistentObject = null;
+            try
+            {
+                persistentObject = persistanceObjectManager.GetAttachmentPersistenceObject();
+                persistentObject.SetGetAllAttachmentsForTaskContext(commentId);
+                PersistenceHandler.Instance.Get(persistentObject);
+                result = persistentObject.GetAllAttachments();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistentObject != null)
+                {
+                    persistentObject.Dispose();
+                }
+            }
+            return result;
+        }
     }
 }

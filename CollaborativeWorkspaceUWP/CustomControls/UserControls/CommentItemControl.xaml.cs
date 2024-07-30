@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +21,26 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class CommentItemControl : UserControl
     {
+        CommentItemViewModel commentItemViewModel;
+
+        public Comment Comment
+        {
+            get { return (Comment)GetValue(CommentProperty); }
+            set { SetValue(CommentProperty, value); }
+        }
+
+        public static readonly DependencyProperty CommentProperty = DependencyProperty.Register("Comment", typeof(Comment), typeof(CommentItemControl), new PropertyMetadata(null));
+
         public CommentItemControl()
         {
             this.InitializeComponent();
+
+            commentItemViewModel = new CommentItemViewModel();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            commentItemViewModel.SetComment(Comment);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace CollaborativeWorkspaceUWP.Models
         private string path;
         private string type;
         private long taskId;
+        private long commentId;
 
         public long Id
         {
@@ -43,6 +44,12 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             get { return taskId; }
             set { taskId = value; }
+        }
+
+        public long CommentId
+        {
+            get { return commentId; }
+            set { commentId = value; }
         }
 
         public StorageFile Content

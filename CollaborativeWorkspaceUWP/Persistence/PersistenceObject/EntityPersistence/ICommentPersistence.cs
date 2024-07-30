@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence
 {
-    public interface IAttachmentPersistence : IPersistenceObject
+    public interface ICommentPersistence : IPersistenceObject
     {
-        void SetAddAttachmentContext(Attachment attachment);
-        void SetGetAllAttachmentsForTaskContext(long taskId);
-        void SetGetAllAttachmentsForCommentContext(long commentId);
-        ObservableCollection<Attachment> GetAllAttachments();
-        Attachment GetAttachment();
+        void SetAddCommentContext(Comment comment);
+        void SetGetAllCommentsForCurrentTaskContext(long taskId);
+        Comment GetComment();
+        ObservableCollection<Comment> GetComments();
     }
 }

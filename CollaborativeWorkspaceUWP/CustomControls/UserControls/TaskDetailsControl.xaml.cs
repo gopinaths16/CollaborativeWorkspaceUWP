@@ -70,6 +70,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             taskDetailsViewModel.CurrTask = task;
             AttachmentDialog.SetCurrTask(task);
+            CommentDialog.SetCurrTask(task);
+            TaskViewPivot.SelectedIndex = 0;
         }
 
         public UserTask GetCurrentTask()

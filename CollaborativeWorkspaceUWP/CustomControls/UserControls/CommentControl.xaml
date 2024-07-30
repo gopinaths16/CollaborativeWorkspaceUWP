@@ -3,10 +3,19 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource SecondaryBackground}">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="CommentItemTemplate"
+                      x:DataType="models:Comment">
+            <local:CommentItemControl Comment="{Binding}"
+                                      Margin="0, 0, 0, 20"/>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <StackPanel Background="Transparent"
                 PointerEntered="StackPanel_PointerEntered"
@@ -32,14 +41,14 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
         <Border x:Name="CommentBox" 
                 BorderThickness="1"
                 CornerRadius="15"
                 Margin="0, 20, 0, 20"
                 Background="{ThemeResource PrimaryBackground}"
                 Style="{StaticResource ReactiveBorder}">
-            
+
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -59,9 +68,10 @@
                               Margin="5, 10, 15, 5">
                     <TextBox Name="CommentTextBox"
                              Style="{StaticResource TextNoBackground}"
+                             Text="{x:Bind commentViewModel.Comm.Message, Mode=TwoWay}"
                              HorizontalAlignment="Stretch"
                              PlaceholderText="Comment"
-                             FontSize="12" />
+                             FontSize="12"/>
                 </ScrollViewer>
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Bottom"
@@ -81,10 +91,25 @@
                             Content="&#xe724;"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            Click="AddCommentButton_Click"
                             Style="{StaticResource ButtonNoBackground}"
                             Grid.Column="1"/>
                 </StackPanel>
             </Grid>
         </Border>
+
+        <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
+                      ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
+                      Margin="10, 10, 0, 0"/>
+
+        <StackPanel Name="NoAttachmentMessage"
+                    Margin="0, 20, 0, 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind commentViewModel.CommentsForCurrTask, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+            <TextBlock Text="No Comments available"
+                       Foreground="Gray"
+                       FontSize="20"/>
+        </StackPanel>
     </StackPanel>
 </Page>

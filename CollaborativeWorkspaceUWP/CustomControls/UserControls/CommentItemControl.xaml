@@ -6,10 +6,43 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
+        <PersonPicture Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.RowSpan="2"
+                       Height="50"
+                       Width="50"/>
+
+        <TextBlock x:Name="UserName"
+                   Text="User"
+                   FontSize="10"
+                   FontWeight="Bold"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   VerticalAlignment="Bottom"
+                   Padding="20, 0, 0, 5"/>
+
+        <TextBlock x:Name="Message"
+                   Text="{x:Bind commentItemViewModel.Comment.Message, Mode=OneWay}"
+                   FontSize="15"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   VerticalAlignment="Top"
+                   Padding="20, 0, 0, 0"/>
+        
+        
     </Grid>
 </UserControl>

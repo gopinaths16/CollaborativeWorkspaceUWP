@@ -50,5 +50,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         {
             return new AttachmentDBPersistenceObject();
         }
+
+        public ICommentPersistence GetCommentPersistenceObject()
+        {
+            return new CommentDBPersistenceObject();
+        }
     }
 }
