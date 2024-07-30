@@ -36,10 +36,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public bool AdditionAllowedFromUI;
+
         public AttachmentViewModel()
         {
             Attachments = new ObservableCollection<Attachment>();
             attachmentDataHandler = new AttachmentDataHandler();
+
+            ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
+            ViewmodelEventHandler.Instance.Subscribe<DeleteAttachmentEvent>(OnAttachmentDeletion);
         }
 
         public void SetCurrTask(UserTask task)
@@ -50,7 +55,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public async void AddAttachmentToTask(StorageFile file, bool isAddedFromUI)
+        public async void AddAttachmentToTask(StorageFile file)
         {
             Attachment attachment = new Attachment();
             attachment.Name = file.Name;
@@ -59,14 +64,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachment.TaskId = CurrTask.Id;
             attachment.Content = file;
             Attachments.Add(attachment);
-            if(isAddedFromUI)
+            if(AdditionAllowedFromUI)
             {
                 await AddAttachmentToLocalFolder(attachment);
                 attachment = attachmentDataHandler.AddAttachmentsToTask(attachment);
                 ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
             }
-            CurrTask.Attachments.Add(attachment);
-            NotifyPropertyChanged(nameof(CurrTask));
+            else
+            {
+                CurrTask.Attachments.Add(attachment);
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
         }
 
         public async Task AddAttachmentToLocalFolder(Attachment attachment)
@@ -125,6 +133,27 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             Attachments.Clear();
             NotifyPropertyChanged(nameof(Attachments));
+        }
+
+        public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
+        {
+            if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id)
+            {
+                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0)
+                {
+                    CurrTask.Attachments.Add(addAttachmentEvent.Attachment);
+                }
+            }
+            NotifyPropertyChanged(nameof(CurrTask));
+        }
+
+        public void OnAttachmentDeletion(DeleteAttachmentEvent delAttachmentEvent)
+        {
+            if(!AdditionAllowedFromUI)
+            {
+                CurrTask.Attachments.Remove(delAttachmentEvent.Attachment);
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
     public class DeleteAttachmentEvent
     {
+        public Attachment Attachment { get; set; }
     }
 }

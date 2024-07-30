@@ -91,7 +91,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                attachmentViewModel.AddAttachmentToTask(file, AllowAdditionFromUi);
+                attachmentViewModel.AddAttachmentToTask(file);
             }
         }
 
@@ -131,6 +131,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
 
             }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
         }
     }
 }

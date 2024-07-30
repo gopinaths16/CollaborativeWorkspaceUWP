@@ -9,6 +9,7 @@
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:XamlControlResources="using:Microsoft.UI.Xaml.Controls"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

@@ -1,5 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,6 +78,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
                 }
             }
+        }
+
+        private void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = attachment });
         }
     }
 }

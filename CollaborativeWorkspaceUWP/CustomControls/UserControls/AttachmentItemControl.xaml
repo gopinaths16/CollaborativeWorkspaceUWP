@@ -89,7 +89,9 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{StaticResource ButtonNoBackground}"
+                    Tag="{Binding}"
                     Foreground="Gray"
+                    Click="DeleteAttachmentButton_Click"
                     Grid.Column="1"/>
         </StackPanel>
     </Grid>
