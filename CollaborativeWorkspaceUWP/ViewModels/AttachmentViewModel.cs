@@ -40,7 +40,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public AttachmentViewModel()
         {
-            Attachments = new ObservableCollection<Attachment>();
             attachmentDataHandler = new AttachmentDataHandler();
 
             ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
@@ -65,7 +64,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachment.TaskId = CurrTask.Id;
             attachment.CommentId = -1;
             attachment.Content = file;
-            Attachments.Add(attachment);
             if(AdditionAllowedFromUI)
             {
                 await AddAttachment(attachment);
@@ -133,20 +131,20 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void DeleteAttachmentFromList(Attachment attachment)
         {
-            Attachments.Remove(attachment);
-            NotifyPropertyChanged(nameof(Attachments));
+            CurrTask.Attachments.Remove(attachment);
+            NotifyPropertyChanged(nameof(CurrTask));
         }
 
         public void ClearAttachmentList()
         {
-            Attachments.Clear();
-            NotifyPropertyChanged(nameof(Attachments));
+            CurrTask.Attachments.Clear();
+            NotifyPropertyChanged(nameof(CurrTask));
         }
 
         public async Task<ObservableCollection<Attachment>> AddAttachmentForComment(long commentId)
         {
             ObservableCollection<Attachment> attachments = new ObservableCollection<Attachment>();
-            foreach (var attachment in Attachments)
+            foreach (var attachment in CurrTask.Attachments)
             {
                 attachment.CommentId = commentId;
                 Attachment temp = await AddAttachment(attachment);
@@ -156,9 +154,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return attachments;
         }
 
+        public void SetAttachments(ObservableCollection<Attachment> attachments)
+        {
+            if(CurrTask != null)
+            {
+                CurrTask.Attachments = attachments;
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
+        }
+
         public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
         {
-            if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id)
+            if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && AdditionAllowedFromUI)
             {
                 if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0)
                 {

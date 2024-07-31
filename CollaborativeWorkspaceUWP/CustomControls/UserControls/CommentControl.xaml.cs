@@ -3,6 +3,7 @@ using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -66,6 +67,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Comment comment = commentViewModel.AddCommentToCurrTask();
             CommentAttachments.AddAttachmentsForComment(comment.Id);
+            CommentAttachments.SetAttachments(new ObservableCollection<Attachment>());
         }
     }
 }

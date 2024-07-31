@@ -19,7 +19,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachmentDataHandler = new AttachmentDataHandler();
         }
 
-        public void SetComment(Comment comment)
+        public Comment SetComment(Comment comment)
         {
             Comment = comment;
             if(comment != null)
@@ -27,6 +27,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 comment.Attachments = attachmentDataHandler.GetAllAttachmentsForComment(comment.Id);
             }
             NotifyPropertyChanged(nameof(Comment));
+            return Comment;
         }
     }
 }

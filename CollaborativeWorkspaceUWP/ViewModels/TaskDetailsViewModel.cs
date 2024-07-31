@@ -33,6 +33,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 if (currTask != null)
                 {
+                    currTask.Attachments = null;
                     currTask.Attachments = GetAttachmentsForTask(currTask.Id);
                     IsAddSubTaskContextTriggered = false;
                 }

@@ -24,7 +24,8 @@
                        Grid.Column="0"
                        Grid.RowSpan="2"
                        Height="50"
-                       Width="50"/>
+                       Width="50"
+                       VerticalAlignment="Top"/>
 
         <TextBlock x:Name="UserName"
                    Text="User"
@@ -36,12 +37,15 @@
                    Padding="20, 0, 0, 5"/>
 
         <StackPanel Grid.Row="1"
-                    Grid.Column="1">
+                    Grid.Column="1"
+                    Padding="20, 0, 0, 0">
             <TextBlock x:Name="Message"
                        Text="{x:Bind commentItemViewModel.Comment.Message, Mode=OneWay}"
                        FontSize="15"
-                       VerticalAlignment="Top"
-                       Padding="20, 0, 0, 0"/>
+                       VerticalAlignment="Top" />
+            <local:AttachmentCotrol AllowAdditionFromUi="False"
+                                    x:Name="CommentAttachmentDialog"
+                                    Visibility="{x:Bind commentItemViewModel.Comment.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
 
         </StackPanel>
     </Grid>

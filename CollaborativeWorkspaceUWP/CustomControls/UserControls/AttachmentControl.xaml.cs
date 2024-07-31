@@ -144,6 +144,16 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             attachmentViewModel.AddAttachmentForComment(commentId);
         }
 
+        public void SetAttachments(ObservableCollection<Attachment> attachments)
+        {
+            attachmentViewModel.SetAttachments(attachments);
+        }
+
+        public void ClearAttachments()
+        {
+            attachmentViewModel.ClearAttachmentList();
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;

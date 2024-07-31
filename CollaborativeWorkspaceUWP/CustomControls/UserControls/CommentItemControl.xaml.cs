@@ -40,7 +40,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            commentItemViewModel.SetComment(Comment);
+            Comment comment = commentItemViewModel.SetComment(Comment);
+            CommentAttachmentDialog.SetCurrTask(new UserTask());
+            CommentAttachmentDialog.SetAttachments(comment.Attachments);
         }
     }
 }

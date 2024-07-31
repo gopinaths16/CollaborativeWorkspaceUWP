@@ -38,7 +38,7 @@
 
         <DataTemplate x:Key="AttachmentListTemplate"
                       x:DataType="models:Attachment">
-            <local:AttachmentItemControl DataContext="{Binding}" />
+            <local:AttachmentItemControl Attachment="{Binding}" />
         </DataTemplate>
     </UserControl.Resources>
 

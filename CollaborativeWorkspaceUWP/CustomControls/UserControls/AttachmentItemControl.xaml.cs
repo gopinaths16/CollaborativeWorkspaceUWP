@@ -26,7 +26,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class AttachmentItemControl : UserControl
     {
-        private Attachment attachment;
+
+        public Attachment Attachment
+        {
+            get { return (Attachment)GetValue(AttachmentProperty); }
+            set { SetValue(AttachmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty AttachmentProperty = DependencyProperty.Register("Attachment", typeof(Attachment), typeof(AttachmentItemControl), new PropertyMetadata(null));
 
         public AttachmentItemControl()
         {
@@ -45,15 +52,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            attachment = this.DataContext as Attachment;
             await SetPreviewItem();
         }
 
         private async Task SetPreviewItem()
         {
-            if(attachment != null)
+            if(Attachment != null)
             {
-                switch(attachment.Type)
+                switch(Attachment.Type)
                 {
                     case "text/plain":
                         IconElement.Visibility = Visibility.Visible;
@@ -72,7 +78,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     case "image/jpg":
                         PreviewImage.Visibility = Visibility.Visible;
                         BitmapImage bitmapImage = new BitmapImage();
-                        bitmapImage.UriSource = new Uri(ApplicationData.Current.LocalFolder.Path + Path.DirectorySeparatorChar + "Attachments" + Path.DirectorySeparatorChar + attachment.Path);
+                        bitmapImage.UriSource = new Uri(ApplicationData.Current.LocalFolder.Path + Path.DirectorySeparatorChar + "Attachments" + Path.DirectorySeparatorChar + Attachment.Path);
                         PreviewImage.Source = bitmapImage;
                         break;
 
@@ -82,7 +88,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = attachment });
+            ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
         }
     }
 }

@@ -64,7 +64,7 @@
             <StackPanel Name="NoSourceAvailableMessage"
                         HorizontalAlignment="Center"
                         Margin="30"
-                        Visibility="{x:Bind ListViewItemSource, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                        Visibility="Collapsed">
                 <TextBlock Text="{x:Bind MessageOnSourceEmpty}"
                            Foreground="Gray"/>
             </StackPanel>
