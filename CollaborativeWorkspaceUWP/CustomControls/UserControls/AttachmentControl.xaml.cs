@@ -139,9 +139,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             }
         }
 
-        public void AddAttachmentsForComment(long commentId)
+        public async Task<ObservableCollection<Attachment>> AddAttachmentsForComment(long commentId)
         {
-            attachmentViewModel.AddAttachmentForComment(commentId);
+            return await attachmentViewModel.AddAttachmentForComment(commentId);
         }
 
         public void SetAttachments(ObservableCollection<Attachment> attachments)

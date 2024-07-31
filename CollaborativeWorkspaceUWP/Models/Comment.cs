@@ -39,5 +39,10 @@ namespace CollaborativeWorkspaceUWP.Models
         }
 
         public ObservableCollection<Attachment> Attachments { get; set; }
+
+        public Comment()
+        {
+            Attachments = new ObservableCollection<Attachment>();
+        }
     }
 }

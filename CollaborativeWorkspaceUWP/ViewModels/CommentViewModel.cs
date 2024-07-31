@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
@@ -38,10 +39,20 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             Comm.TaskId = CurrTask.Id;
             Comment comment = commentDataHandler.AddComment(Comm);
-            ViewmodelEventHandler.Instance.Publish(new AddCommentEvent() { Comment = Comm });
+            comment.Attachments = Comm.Attachments;
             Comm = new Comment();
             NotifyPropertyChanged(nameof(Comm));
             return comment;
+        }
+
+        public void NotifyCommentAddition(Comment comment)
+        {
+            ViewmodelEventHandler.Instance.Publish(new AddCommentEvent() { Comment = comment });
+        }
+
+        public void AddAttachmentsToComment(ObservableCollection<Attachment> attachments)
+        {
+            Comm.Attachments = attachments;
         }
 
         public void OnCommentAddition(AddCommentEvent addCommentEvent)

@@ -63,10 +63,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             VisualStateManager.GoToState(this, "Focused", true);
         }
 
-        private void AddCommentButton_Click(object sender, RoutedEventArgs e)
+        private async void AddCommentButton_Click(object sender, RoutedEventArgs e)
         {
             Comment comment = commentViewModel.AddCommentToCurrTask();
-            CommentAttachments.AddAttachmentsForComment(comment.Id);
+            comment.Attachments = await CommentAttachments.AddAttachmentsForComment(comment.Id);
+            commentViewModel.NotifyCommentAddition(comment);
             CommentAttachments.SetAttachments(new ObservableCollection<Attachment>());
         }
     }
