@@ -56,7 +56,15 @@ namespace CollaborativeWorkspaceUWP.Views
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await SelectOrgDialog.ShowAsync();
+            if(mainViewModel.Organizations.Count > 0)
+            {
+                mainViewModel.SetCurrOrganization(mainViewModel.Organizations[0]);
+                HomeViewFrame.Navigate(typeof(TaskView), this.DataContext);
+            }
+            else
+            {
+                await SelectOrgDialog.ShowAsync();
+            }
         }
 
         private void ProjectViewButton_Click(object sender, RoutedEventArgs e)

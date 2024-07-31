@@ -40,7 +40,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             Comment comment = commentDataHandler.AddComment(Comm);
             ViewmodelEventHandler.Instance.Publish(new AddCommentEvent() { Comment = Comm });
             Comm = new Comment();
-            NotifyPropertyChanged(nameof(CommentsForCurrTask));
+            NotifyPropertyChanged(nameof(Comm));
             return comment;
         }
 

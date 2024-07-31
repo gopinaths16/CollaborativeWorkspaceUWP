@@ -105,21 +105,9 @@
     </UserControl.Resources>
 
     <Grid Style="{StaticResource TaskDetailsViewGridDisplay}">
-        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <StackPanel Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0"
-                  HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -190,8 +178,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1"
-                  HorizontalAlignment="Stretch">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -346,7 +333,7 @@
                     </Grid>
                 </PivotItem>
             </Pivot>
-        </Grid>
+        </StackPanel>
 
         <StackPanel Name="NoTaskSelectedMessage"
                     Grid.Row="2"

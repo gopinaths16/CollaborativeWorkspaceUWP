@@ -40,7 +40,7 @@
                     FontFamily="Segoe MDL2 Assets"
                     Style="{StaticResource ButtonNoBackground}"
                     Content="&#xE710;"
-                    Click="{x:Bind _itemAddEventHandler}"
+                    Click="AddItemButton_Click"
                     Visibility="{x:Bind AllowAdditionToListView, Converter={StaticResource BoolToVisibilityConverter}}"
                     Grid.Column="1"/>
             <Button Name="OpenDropdownButton"
@@ -59,12 +59,12 @@
                       ItemClick="{x:Bind _itemClickEventHandler}"
                       ItemsSource="{x:Bind ListViewItemSource}" 
                       ItemTemplate="{x:Bind ListViewItemTemplate}"
-                      ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"/>
+                      ItemContainerStyle="{StaticResource ListViewItemStyleAccent}"/>
 
             <StackPanel Name="NoSourceAvailableMessage"
                         HorizontalAlignment="Center"
                         Margin="30"
-                        Visibility="Collapsed">
+                        Visibility="{x:Bind ListViewItemSource, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
                 <TextBlock Text="{x:Bind MessageOnSourceEmpty}"
                            Foreground="Gray"/>
             </StackPanel>

@@ -52,6 +52,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             if (task != null)
             {
                 CurrTask = task;
+                NotifyPropertyChanged(nameof(CurrTask));
             }
         }
 

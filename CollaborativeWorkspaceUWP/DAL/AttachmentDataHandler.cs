@@ -78,7 +78,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             try
             {
                 persistentObject = persistanceObjectManager.GetAttachmentPersistenceObject();
-                persistentObject.SetGetAllAttachmentsForTaskContext(commentId);
+                persistentObject.SetGetAllAttachmentsForCommentContext(commentId);
                 PersistenceHandler.Instance.Get(persistentObject);
                 result = persistentObject.GetAllAttachments();
             }

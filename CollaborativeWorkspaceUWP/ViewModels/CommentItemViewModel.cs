@@ -26,6 +26,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 comment.Attachments = attachmentDataHandler.GetAllAttachmentsForComment(comment.Id);
             }
+            NotifyPropertyChanged(nameof(Comment));
         }
     }
 }
