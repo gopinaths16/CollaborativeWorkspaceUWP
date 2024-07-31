@@ -33,6 +33,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 currTask = value;
                 if (currTask != null)
                 {
+                    currTask.Attachments = null;
                     currTask.Attachments = GetAttachmentsForTask(currTask.Id);
                     IsAddSubTaskContextTriggered = false;
                 }
@@ -236,12 +237,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id)
             {
-                if(addAttachmentEvent.Attachments != null && addAttachmentEvent.Attachments.Count > 0)
+                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0)
                 {
-                    foreach (var attachment in addAttachmentEvent.Attachments)
-                    {
-                        CurrTask.Attachments.Add(attachment);
-                    }
+                    CurrTask.Attachments.Add(addAttachmentEvent.Attachment);
                 }
             }
             NotifyPropertyChanged(nameof(CurrTask));
@@ -256,6 +254,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Unsubscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Unsubscribe<AddAttachmentEvent>(OnAttachmentAddition);
         }
     }
 }

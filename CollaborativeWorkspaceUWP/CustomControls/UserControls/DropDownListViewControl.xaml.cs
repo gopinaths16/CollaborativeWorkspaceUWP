@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -97,6 +98,16 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             OpenDropdownButton.Content = "\uE70D";
             DropdownListViewContent.Visibility = Visibility.Visible;
+        }
+
+        private void AddItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            _itemAddEventHandler?.Invoke(sender, e);
+            ICollection collection = ListViewItemSource as ICollection;
+            if(collection.Count > 0)
+            {
+                NoSourceAvailableMessage.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

@@ -21,8 +21,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.Templates
             set { SetValue(IconProperty, value); }
         }
 
+        public FontFamily IconFontFamily
+        {
+            get { return (FontFamily)GetValue(IconFontFamilyProperty); }
+            set { SetValue(IconFontFamilyProperty, value); }
+        }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(CustomIconButtonControl), new PropertyMetadata(""));
+
+        public static readonly DependencyProperty IconFontFamilyProperty = DependencyProperty.Register("IconFontFamily", typeof(FontFamily), typeof(CustomIconButtonControl), new PropertyMetadata(new Windows.UI.Xaml.Media.FontFamily("Segoe Fluent Icons")));
 
         public CustomIconButtonControl()
         {

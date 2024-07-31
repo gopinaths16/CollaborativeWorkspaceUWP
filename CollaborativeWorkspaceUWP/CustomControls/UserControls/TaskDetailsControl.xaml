@@ -18,15 +18,7 @@
             <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
             <Setter Property="Padding" Value="20" />
         </Style>
-
-        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxNoBg}" x:Key="TextNoBackground">
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="AcceptsReturn" Value="True" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-        </Style>
-
+        
         <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
             <Setter Property="Margin" Value="10, 20, 0, 10" />
             <Setter Property="VerticalAlignment" Value="Top" />
@@ -113,28 +105,16 @@
     </UserControl.Resources>
 
     <Grid Style="{StaticResource TaskDetailsViewGridDisplay}">
-        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <StackPanel Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0"
-                  HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Left"
-                            Grid.Row="0">
+                            Grid.Column="0">
                     <Button Name="ClearTaskButton"
                             FontFamily="Segoe Fluent Icons"
                             Content="&#xe830;"
@@ -169,12 +149,13 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Grid.Row="1">
+                            Grid.Column="1">
                     <Button Name="AddAttachmentsButton"
                             FontFamily="Segoe Fluent Icons"
                             Content="&#xe723;"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            Click="AddAttachmentsButton_Click"
                             Style="{StaticResource ButtonNoBackground}"
                             Grid.Column="1"/>
                     <Button Name="DeleteTaskButton"
@@ -197,8 +178,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1"
-                  HorizontalAlignment="Stretch">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -278,7 +258,6 @@
                                                                        Grid.Row="1"
                                                                        Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
                                                                        HorizontalContentAlignment="Stretch"
-                                                                       Padding="10"
                                                                        IsEnabled="True"
                                                                        Margin="0, 10, 0, 5"/>
 
@@ -310,6 +289,27 @@
                     </StackPanel>
                 </PivotItem>
 
+                <PivotItem Name="CommentsPivotItem">
+                    <PivotItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe Fluent Icons"
+                                       Text="&#xe90a;"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"/>
+
+                            <TextBlock Text="Comments"
+                                       FontSize="12"
+                                       Margin="5, 0, 0, 0"
+                                       VerticalAlignment="Center"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </PivotItem.Header>
+                    <StackPanel Orientation="Vertical">
+                        <customusercontrol:CommentControl x:Name="CommentDialog" />
+                    </StackPanel>
+                </PivotItem>
+                
                 <PivotItem Name="AttachementsPivotItem">
                     <PivotItem.Header>
                         <StackPanel Orientation="Horizontal">
@@ -326,44 +326,14 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <customtemplatecontrol:CustomIconButtonControl Icon="&#xe723;"
-                                                                       Content="Add Attachments"
-                                                                       Click="OpenAddAttachmentWindowButton_ButtonClick"
-                                                                       Grid.Row="1"
-                                                                       Visibility="{x:Bind taskDetailsViewModel.IsAddAttachmentContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                                       HorizontalContentAlignment="Stretch"
-                                                                       Padding="10"
-                                                                       IsEnabled="True"
-                                                                       Margin="0, 10, 0, 5"/>
-
-                        <customusercontrol:AddAttachmentControl x:Name="AddAttachmentDialog" 
-                                                                Visibility="{x:Bind taskDetailsViewModel.IsAddAttachmentContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                                AddButtonClick="AddAttachmentDialog_AddButtonClick"
-                                                                CancelButtonClick="AddAttachmentControl_CancelButtonClickEventHandler"/>
-
-                        <ListView Name="AttachmentListView" 
-                                  ItemsSource="{x:Bind taskDetailsViewModel.CurrTask.Attachments, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource AttachmentListTemplate}"
-                                  Margin="0, 20, 0, 0"
-                                  Grid.Row="2"
-                                  IsItemClickEnabled="True"
-                                  ItemClick="AttachmentListView_ItemClick"
-                                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
-                        <StackPanel Name="NoAttachmentMessage"
-                                    Grid.Row="2"
-                                    Margin="0, 20, 0, 0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Visibility="{x:Bind taskDetailsViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
-                            <TextBlock Text="No Attachments available"
-                                       Foreground="Gray"
-                                       FontSize="20"/>
-                        </StackPanel>
-                    </StackPanel>
+                    <Grid HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch">
+                        <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
+                                                            Margin="0, 10, 0, 0"/>
+                    </Grid>
                 </PivotItem>
             </Pivot>
-        </Grid>
+        </StackPanel>
 
         <StackPanel Name="NoTaskSelectedMessage"
                     Grid.Row="2"

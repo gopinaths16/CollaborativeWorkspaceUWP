@@ -17,19 +17,28 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
         public void SetAddAttachmentContext(Attachment attachment)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_ATTACHMENT_DETAILS (NAME, PATH, TYPE, TASK_ID) VALUES (@Name, @Path, @Type, @TaskId) RETURNING ID, NAME, PATH, TYPE, TASK_ID";
+            command.CommandText = @"INSERT INTO CW_ATTACHMENT_DETAILS (NAME, PATH, TYPE, TASK_ID, COMMENT_ID) VALUES (@Name, @Path, @Type, @TaskId, @CommentId) RETURNING ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID";
             command.Parameters.AddWithValue("@Name", attachment.Name);
             command.Parameters.AddWithValue("@Path", attachment.Path);
             command.Parameters.AddWithValue("@Type", attachment.Type);
             command.Parameters.AddWithValue("@TaskId", attachment.TaskId);
+            command.Parameters.AddWithValue("@CommentId", attachment.CommentId);
             Query = command;
         }
 
         public void SetGetAllAttachmentsForTaskContext(long taskId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID FROM CW_ATTACHMENT_DETAILS WHERE TASK_ID=@TaskId";
+            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID FROM CW_ATTACHMENT_DETAILS WHERE TASK_ID=@TaskId";
             command.Parameters.AddWithValue("@TaskId", taskId);
+            Query = command;
+        }
+
+        public void SetGetAllAttachmentsForCommentContext(long commentId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID FROM CW_ATTACHMENT_DETAILS WHERE COMMENT_ID=@CommentId";
+            command.Parameters.AddWithValue("@CommentId", commentId);
             Query = command;
         }
 
@@ -48,6 +57,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                         attachment.Path = Reader.GetString(2);
                         attachment.Type = Reader.GetString(3);
                         attachment.TaskId = Reader.GetInt64(4);
+                        attachment.CommentId = Reader.GetInt64(5);
                         result.Add(attachment);
                     }
                 }
@@ -78,6 +88,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                         attachment.Path = Reader.GetString(2);
                         attachment.Type = Reader.GetString(3);
                         attachment.TaskId = Reader.GetInt64(4);
+                        attachment.CommentId = Reader.GetInt64(5);
                     }
                 }
             }

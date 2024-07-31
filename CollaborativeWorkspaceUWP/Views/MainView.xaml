@@ -6,6 +6,7 @@
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -120,15 +121,15 @@
                     <TextBlock Text="Organizations"
                                FontSize="25"
                                Grid.Column="0"/>
-                    <customusercontrol:CustomIconButtonControl Name="AddNewOrganizationButton"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               ButtonIcon="&#xE948;"
-                                                               ButtonContent="Add"
-                                                               ButtonStyle="{StaticResource ButtonNoBackground}"
-                                                               ButtonClick="AddNewOrganizationButton_ButtonClick"
-                                                               Grid.Column="1"
-                                                               IsButtonEnabled="True"/>
+                    <customtemplatecontrol:CustomIconButtonControl Name="AddNewOrganizationButton"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Icon="&#xE948;"
+                                                                   Content="Add"
+                                                                   Style="{StaticResource ButtonNoBackground}"
+                                                                   Click="AddNewOrganizationButton_ButtonClick"
+                                                                   Grid.Column="1"
+                                                                   IsEnabled="True"/>
                 </Grid>
 
                 <Grid Margin="0, 0, 0, 25"
@@ -181,12 +182,12 @@
 
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                        <customusercontrol:CustomIconButtonControl Name="AddOrganizationButton"
-                                                                   ButtonIcon="&#xE948;"
-                                                                   ButtonContent="Add Organization"
-                                                                   ButtonClick="AddOrganizationButton_ButtonClick"
-                                                                   ButtonBackground="{StaticResource SystemAccentColor}"
-                                                                   IsButtonEnabled="True"/>
+                        <customtemplatecontrol:CustomIconButtonControl Name="AddOrganizationButton"
+                                                                       Icon="&#xE948;"
+                                                                       Content="Add Organization"
+                                                                       Click="AddOrganizationButton_ButtonClick"
+                                                                       Background="{StaticResource SystemAccentColor}"
+                                                                       IsEnabled="True"/>
                     </StackPanel>
                 </StackPanel>
 

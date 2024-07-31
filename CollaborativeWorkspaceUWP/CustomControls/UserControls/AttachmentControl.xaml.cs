@@ -2,6 +2,7 @@
 using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,12 +23,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class AddAttachmentControl : UserControl
+    public sealed partial class AttachmentCotrol : UserControl
     {
         private RoutedEventHandler cancelButtonClickEventHandler;
         private RoutedEventHandler addButtonClickEventHandler;
 
-        private AddAttachmentViewModel addAttachmentViewModel;
+        private AttachmentViewModel attachmentViewModel;
 
         public event RoutedEventHandler CancelButtonClick
         {
@@ -41,32 +42,48 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { addButtonClickEventHandler -= value; }
         }
 
-        public AddAttachmentControl()
+        public bool AllowAdditionFromUi
+        {
+            get { return (bool)GetValue(AllowAdditionFromUiProperty); }
+            set { SetValue(AllowAdditionFromUiProperty, value); }
+        }
+
+        public static readonly DependencyProperty AllowAdditionFromUiProperty = DependencyProperty.Register("AllowAdditionFromUi", typeof(bool), typeof(AttachmentCotrol), new PropertyMetadata(true));
+
+        public AttachmentCotrol()
         {
             this.InitializeComponent();
 
-            addAttachmentViewModel = new AddAttachmentViewModel();
-        }
-
-        private async void AddAttachmentDialog_Click(object sender, RoutedEventArgs e)
-        {
-            await addAttachmentViewModel.AddAttachmentsToTask();
-            addAttachmentViewModel.ClearAttachmentList();
-            addButtonClickEventHandler?.Invoke(sender, e);
+            attachmentViewModel = new AttachmentViewModel();
         }
 
         private void CloseAttachmentDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            addAttachmentViewModel.ClearAttachmentList();
+            attachmentViewModel.ClearAttachmentList();
             cancelButtonClickEventHandler?.Invoke(sender, e);
         }
 
         public void SetCurrTask(UserTask task)
         {
-            addAttachmentViewModel.SetCurrTask(task);
+            attachmentViewModel.SetCurrTask(task);
+        }
+
+        public void SetCurrTaskId(long taskId)
+        {
+            attachmentViewModel.CurrTask.Id = taskId;
+        }
+
+        public void SetAddAttachmentContext()
+        {
+            attachmentViewModel.SetCurrTask(new UserTask());
         }
 
         private async void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
+        {
+            await PickAndAddAttachment();
+        }
+
+        public async Task PickAndAddAttachment()
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
@@ -80,7 +97,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                addAttachmentViewModel.AddAttachmentToList(file);
+                attachmentViewModel.AddAttachmentToTask(file);
             }
         }
 
@@ -88,7 +105,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Button button = (Button)sender;
             Attachment attachment = (Attachment)button.Tag;
-            addAttachmentViewModel.DeleteAttachmentFromList(attachment);
+            attachmentViewModel.DeleteAttachmentFromList(attachment);
         }
 
         private async void AttachmentListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -102,7 +119,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             try
             {
                 StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
-                var file = await storageFolder.GetFileAsync(attachment.Name);
+                var file = await storageFolder.GetFileAsync(attachment.Path);
 
                 if (file != null)
                 {
@@ -120,6 +137,26 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
 
             }
+        }
+
+        public async Task<ObservableCollection<Attachment>> AddAttachmentsForComment(long commentId)
+        {
+            return await attachmentViewModel.AddAttachmentForComment(commentId);
+        }
+
+        public void SetAttachments(ObservableCollection<Attachment> attachments)
+        {
+            attachmentViewModel.SetAttachments(attachments);
+        }
+
+        public void ClearAttachments()
+        {
+            attachmentViewModel.ClearAttachmentList();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
         }
     }
 }

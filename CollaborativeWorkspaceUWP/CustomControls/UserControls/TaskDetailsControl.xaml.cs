@@ -69,6 +69,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void SetCurrentTask(UserTask task)
         {
             taskDetailsViewModel.CurrTask = task;
+            AttachmentDialog.SetCurrTask(task);
+            CommentDialog.SetCurrTask(task);
+            TaskViewPivot.SelectedIndex = 0;
         }
 
         public UserTask GetCurrentTask()
@@ -155,12 +158,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             taskDetailsViewModel.Dispose();
         }
 
-        private void OpenAddAttachmentWindowButton_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            AddAttachmentDialog.SetCurrTask((UserTask)taskDetailsViewModel.CurrTask.Clone());
-            taskDetailsViewModel.IsAddAttachmentContextTriggered = true;
-        }
-
         private void AddAttachmentControl_CancelButtonClickEventHandler(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.IsAddAttachmentContextTriggered = false;
@@ -171,35 +168,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             taskDetailsViewModel.IsAddAttachmentContextTriggered = false;
         }
 
-        private async void AttachmentListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
-            Attachment attachment = (Attachment)e.ClickedItem;
-            await DefaultLaunch(attachment);
-        }
-
-        private async Task DefaultLaunch(Attachment attachment)
-        {
-            try
-            {
-                StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
-                StorageFile file = await storageFolder.GetFileAsync(attachment.Path);
-
-                if (file != null)
-                {
-                    var success = await Windows.System.Launcher.LaunchFileAsync(file);
-
-                    if (success)
-                    {
-                    }
-                    else
-                    {
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
+            await AttachmentDialog.PickAndAddAttachment();
+            TaskViewPivot.SelectedIndex = 2;
         }
     }
 }

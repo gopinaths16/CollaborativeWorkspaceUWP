@@ -121,17 +121,20 @@
     </Compile>
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
-    <Compile Include="CustomControls\UserControls\AddAttachmentControl.xaml.cs">
-      <DependentUpon>AddAttachmentControl.xaml</DependentUpon>
+    <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
+      <DependentUpon>AttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\AttachmentItemControl.xaml.cs">
+      <DependentUpon>AttachmentItemControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\CommentControl.xaml.cs">
+      <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\AddTaskControl.xaml.cs">
       <DependentUpon>AddTaskControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\UserControls\CustomIconButtonControl.xaml.cs">
-      <DependentUpon>CustomIconButtonControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml.cs">
-      <DependentUpon>CustomSplitViewItemControl.xaml</DependentUpon>
+    <Compile Include="CustomControls\UserControls\CommentItemControl.xaml.cs">
+      <DependentUpon>CommentItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\DropDownListViewControl.xaml.cs">
       <DependentUpon>DropDownListViewControl.xaml</DependentUpon>
@@ -143,6 +146,7 @@
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\AttachmentDataHandler.cs" />
+    <Compile Include="DAL\CommentDataHandler.cs" />
     <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
     <Compile Include="DAL\ProjectDataHandler.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="DAL\TeamspaceDataHandler.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Organization.cs" />
@@ -161,9 +166,11 @@
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\CommentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\PriorityDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\StatusDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IAttachmentPersistence.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\ICommentPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IPriorityPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IStatusPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,16 +195,21 @@
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\AddCommentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
+    <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
+    <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
-    <Compile Include="ViewModels\AddAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CommentItemViewModel.cs" />
+    <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
@@ -246,7 +258,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="CustomControls\UserControls\AddAttachmentControl.xaml">
+    <Page Include="CustomControls\UserControls\AttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\AttachmentItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\CommentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,11 +274,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\UserControls\CustomIconButtonControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\UserControls\CustomSplitViewItemControl.xaml">
+    <Page Include="CustomControls\UserControls\CommentItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,12 +343,20 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.8.6</Version>
+    </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.118</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\SubViews\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\icomoon.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -65,6 +65,8 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             if (layoutName == "SingleWindowLayout" || width <= 800)
             {
+                TaskViewByProject.ColumnDefinitions.Clear();
+                TaskViewByProject.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 Grid.SetColumn(TaskDetailsViewContainer, 0);
                 VisualStateManager.GoToState(this, "SingleWindowLayout", true);
                 bool isCurrentTaskSelected = taskListViewModel.CurrTask != null;
@@ -75,6 +77,9 @@ namespace CollaborativeWorkspaceUWP.Views
             }
             else if (layoutName == "NarrowLayout" || width <= 1100)
             {
+                TaskViewByProject.ColumnDefinitions.Clear();
+                TaskViewByProject.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(550) });
+                TaskViewByProject.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 Grid.SetColumn(TaskDetailsViewContainer, 1);
                 VisualStateManager.GoToState(this, "NarrowLayout", true);
                 TaskListView.Visibility = Visibility.Visible;
@@ -84,6 +89,9 @@ namespace CollaborativeWorkspaceUWP.Views
             }
             else if (layoutName == "WideLayout" || width <= 1200)
             {
+                TaskViewByProject.ColumnDefinitions.Clear();
+                TaskViewByProject.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(550) });
+                TaskViewByProject.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 Grid.SetColumn(TaskDetailsViewContainer, 1);
                 VisualStateManager.GoToState(this, "WideLayout", true);
                 TaskListView.Visibility = Visibility.Visible;

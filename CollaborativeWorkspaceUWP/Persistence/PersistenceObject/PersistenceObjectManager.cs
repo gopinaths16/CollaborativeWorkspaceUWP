@@ -61,5 +61,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         {
             return _provider.GetAttachmentPersistenceObject();
         }
+
+        public ICommentPersistence GetCommentPersistenceObject()
+        {
+            return _provider.GetCommentPersistenceObject();
+        }
     }
 }

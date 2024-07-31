@@ -1,16 +1,14 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
-    public class AddAttachmentEvent
+    public class DeleteAttachmentEvent
     {
-        public UserTask Task { get; set; }
         public Attachment Attachment { get; set; }
     }
 }
