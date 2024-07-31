@@ -79,7 +79,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             await AddAttachmentToLocalFolder(attachment);
             Attachment temp = attachmentDataHandler.AddAttachmentsToTask(attachment);
-            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = attachment });
+            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = temp });
             return temp;
         }
 
