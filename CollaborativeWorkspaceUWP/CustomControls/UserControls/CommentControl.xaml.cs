@@ -67,7 +67,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Comment comment = commentViewModel.AddCommentToCurrTask();
             comment.Attachments = await CommentAttachments.AddAttachmentsForComment(comment.Id);
-            commentViewModel.NotifyCommentAddition(comment);
+            await commentViewModel.NotifyCommentAddition(comment);
             CommentAttachments.SetAttachments(new ObservableCollection<Attachment>());
         }
     }

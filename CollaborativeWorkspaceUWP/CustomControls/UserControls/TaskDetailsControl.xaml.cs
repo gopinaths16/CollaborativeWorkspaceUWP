@@ -82,9 +82,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             return taskDetailsViewModel.CurrTask;
         }
 
-        public void UpdateCurrentTask()
+        public async Task UpdateCurrentTask()
         {
-            taskDetailsViewModel.UpdateTask();
+            await taskDetailsViewModel.UpdateTask();
         }
 
         private void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -97,36 +97,36 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
         }
 
-        private void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
+        private async void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
         {
             taskDetailsViewModel.UpdateTask(true);
         }
 
-        private void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
+        private async void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             if (checkBox.Tag != null)
             {
                 long taskId = (long)checkBox.Tag;
                 bool checkboxStatus = (bool)checkBox.IsChecked;
-                taskDetailsViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+                await taskDetailsViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
             }
         }
 
-        private void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
+        private async void SubTaskListCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             if (checkBox.Tag != null)
             {
                 long taskId = (long)checkBox.Tag;
                 bool checkboxStatus = (bool)checkBox.IsChecked;
-                taskDetailsViewModel.UpdateSubTaskCompletionStatus(taskId, !checkboxStatus);
+                await taskDetailsViewModel.UpdateSubTaskCompletionStatus(taskId, !checkboxStatus);
             }
         }
 
-        private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            taskDetailsViewModel.DeleteTask();
+            await taskDetailsViewModel.DeleteTask();
         }
 
         private void TaskDetailsChanged(object sender, TextChangedEventArgs e)
@@ -134,9 +134,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             taskDetailsViewModel.SetTaskUpdatedContext();
         }
 
-        private void TaskUpdate(object sender, RoutedEventArgs e)
+        private async void TaskUpdate(object sender, RoutedEventArgs e)
         {
-            taskDetailsViewModel.UpdateTask();
+            await taskDetailsViewModel.UpdateTask();
         }
 
         private void AddSubTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -144,11 +144,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             taskDetailsViewModel.IsAddSubTaskContextTriggered = false;
         }
 
-        public void DeleteSubTaskButton_Click(object sender, RoutedEventArgs e)
+        public async void DeleteSubTaskButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             long taskId = (long)button.Tag;
-            taskDetailsViewModel.DeleteSubTask(taskId);
+            await taskDetailsViewModel.DeleteSubTask(taskId);
         }
 
         public void ClearAllFields()

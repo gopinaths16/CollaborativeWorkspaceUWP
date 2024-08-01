@@ -59,7 +59,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             NotifyPropertyChanged(nameof(Projects));
         }
 
-        private void OnProjectAddition(AddProjectEvent e)
+        private async Task OnProjectAddition(AddProjectEvent e)
         {
             AddProjectToList((Project)e.Project.Clone());
         }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
@@ -86,7 +87,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             await AddAttachmentToLocalFolder(attachment);
             Attachment temp = attachmentDataHandler.AddAttachmentsToTask(attachment);
-            ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = temp });
+            await ViewmodelEventHandler.Instance.Publish(new AddAttachmentEvent() { Task = CurrTask, Attachment = temp });
             return temp;
         }
 
@@ -170,7 +171,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
+        public async Task OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
         {
             if (CurrTask != null && addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && AdditionAllowedFromUI)
             {
@@ -182,16 +183,20 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             NotifyPropertyChanged(nameof(CurrTask));
         }
 
-        public void OnAttachmentDeletion(DeleteAttachmentEvent delAttachmentEvent)
+        public async Task OnAttachmentDeletion(DeleteAttachmentEvent delAttachmentEvent)
         {
             if(CurrTask != null && CurrTask.Id == delAttachmentEvent.Attachment.TaskId)
             {
+                attachmentDataHandler.DeleteAttachment(delAttachmentEvent.Attachment.Id);
+                StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
+                StorageFile file = await storageFolder.GetFileAsync(delAttachmentEvent.Attachment.Path);
+                await file.DeleteAsync();
                 CurrTask.Attachments.Remove(delAttachmentEvent.Attachment);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
 
-        public void OnAttachmentRemoval(RemoveAttachmentEvent remAttachmentEvent)
+        public async Task OnAttachmentRemoval(RemoveAttachmentEvent remAttachmentEvent)
         {
             if(CurrTask != null && !AdditionAllowedFromUI && IsOnlyForAddition && remAttachmentEvent.Attachment.TaskId == CurrTask.Id)
             {

@@ -71,5 +71,27 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return result;
         }
+
+        public void DeleteComment(long commentId)
+        {
+            ICommentPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetCommentPersistenceObject();
+                persistenceObject.SetDeleteCommentContext(commentId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+        }
     }
 }

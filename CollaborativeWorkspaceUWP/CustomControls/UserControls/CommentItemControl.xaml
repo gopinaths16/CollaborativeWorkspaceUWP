@@ -41,6 +41,7 @@
                     Padding="20, 0, 0, 0">
             <TextBlock x:Name="Message"
                        Text="{x:Bind commentItemViewModel.Comment.Message, Mode=OneWay}"
+                       TextWrapping="Wrap"
                        FontSize="15"
                        VerticalAlignment="Top" />
             <local:AttachmentCotrol AllowAdditionFromUi="False"

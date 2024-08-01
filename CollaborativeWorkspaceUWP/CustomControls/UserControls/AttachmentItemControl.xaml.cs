@@ -94,9 +94,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             }
         }
 
-        private void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
+            await ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
         }
     }
 }

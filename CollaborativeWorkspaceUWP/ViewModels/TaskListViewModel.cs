@@ -135,7 +135,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return Tasks.Where(task => task.Id == taskId).ToList()[0];
         }
 
-        public void UpdateTaskCompletionStatus(long taskId, bool status)
+        public async Task UpdateTaskCompletionStatus(long taskId, bool status)
         {
             foreach (var item in Tasks.Where(task => task.Id == taskId).ToList())
             {
@@ -144,17 +144,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 item.PriorityData = GetTaskPriority(item.Priority);
                 taskDataHandler.UpdateTask(item);
                 
-                ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
+                await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
             }
             NotifyPropertyChanged(nameof(Tasks));
         }
 
-        public void OnTaskAddtion(AddTaskEvent e) 
+        public async Task OnTaskAddtion(AddTaskEvent e) 
         {
             AddTaskToList((UserTask)e.Task.Clone());
         }
 
-        public void OnTaskUpdation(UpdateTaskEvent e)
+        public async Task OnTaskUpdation(UpdateTaskEvent e)
         {
             if(Tasks != null && e != null && e.Task != null)
             {
@@ -163,7 +163,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void OnTaskDeletion(DeleteTaskEvent e)
+        public async Task OnTaskDeletion(DeleteTaskEvent e)
         {
             if (Tasks != null && e != null)
             {

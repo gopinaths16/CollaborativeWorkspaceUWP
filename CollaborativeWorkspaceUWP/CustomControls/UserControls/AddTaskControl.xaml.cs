@@ -77,7 +77,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             addTaskViewModel = new AddTaskViewModel();
         }
 
-        private void AddTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
+        private async void AddTaskFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             UserTask task = new UserTask();
 
@@ -89,7 +89,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             task.OwnerId = 0;
             task.AssigneeId = 0;
             task.ParentTaskId = ParentTaskId > 0 ? ParentTaskId : -1;
-            addTaskViewModel.AddTask(task);
+            await addTaskViewModel.AddTask(task);
 
             addTaskButtonClickEventHandler?.Invoke(sender, e);
 

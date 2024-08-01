@@ -4,6 +4,7 @@ using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,22 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
             SQLiteCommand command = new SQLiteCommand();
             command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID FROM CW_ATTACHMENT_DETAILS WHERE COMMENT_ID=@CommentId";
             command.Parameters.AddWithValue("@CommentId", commentId);
+            Query = command;
+        }
+
+        public void SetDeleteAttachmentForCommentContext(long commentId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"DELETE FROM CW_ATTACHMENT_DETAILS WHERE COMMENT_ID=@CommentId";
+            command.Parameters.AddWithValue("@CommentId", commentId);
+            Query = command;
+        }
+
+        public void SetDeleteAttachmentContext(long id)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"DELETE FROM CW_ATTACHMENT_DETAILS WHERE ID=@Id";
+            command.Parameters.AddWithValue("@Id", id);
             Query = command;
         }
 

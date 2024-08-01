@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CollaborativeWorkspaceUWP.Utilities
 {
@@ -16,7 +17,7 @@ namespace CollaborativeWorkspaceUWP.Utilities
 
         private ViewmodelEventHandler() { }
 
-        public void Subscribe<T>(Action<T> action)
+        public void Subscribe<T>(Func<T, Task> action)
         {
             if (!_subscribers.ContainsKey(typeof(T)))
             {
@@ -25,7 +26,7 @@ namespace CollaborativeWorkspaceUWP.Utilities
             _subscribers[typeof(T)].Add(action);
         }
 
-        public void Unsubscribe<T>(Action<T> action)
+        public void Unsubscribe<T>(Func<T, Task> action)
         {
             if (_subscribers.ContainsKey(typeof(T)))
             {
@@ -33,16 +34,17 @@ namespace CollaborativeWorkspaceUWP.Utilities
             }
         }
 
-        public void Publish<T>(T eventToPublish)
+        public async Task Publish<T>(T eventToPublish)
         {
             if (_subscribers.ContainsKey(eventToPublish.GetType()))
             {
-                foreach (var subscriber in _subscribers[eventToPublish.GetType()])
+                var handlers = _subscribers[eventToPublish.GetType()];
+                foreach (var subscriber in handlers)
                 {
-                    ((Action<T>)subscriber)(eventToPublish);
+                    var asyncAction = (Func<T, Task>)subscriber;
+                    await asyncAction(eventToPublish); 
                 }
             }
         }
-
     }
 }
