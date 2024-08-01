@@ -1,9 +1,8 @@
 ﻿<UserControl
-    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.AttachmentItemControl"
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.SecondaryAttachmentItemControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
-    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,10 +10,14 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid CornerRadius="3"
+    <Grid CornerRadius="10"
           HorizontalAlignment="Stretch"
+          Height="100"
+          Width="100"
           Padding="10, 15, 10, 15"
           Background="{ThemeResource PrimaryBackground}"
+          BorderThickness="0.5"
+          BorderBrush="Gray"
           PointerEntered="Grid_PointerEntered"
           PointerExited="Grid_PointerExited">
 
@@ -40,8 +43,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <FontIcon x:Name="IconElement"
                   FontFamily="{StaticResource IcoMoonCustomFontFree}"
@@ -50,6 +51,7 @@
                   Grid.Row="0"
                   Grid.RowSpan="2"
                   Grid.Column="0"
+                  Grid.ColumnSpan="2"
                   Visibility="Collapsed"/>
         <Image x:Name="PreviewImage"
                Height="40"
@@ -57,31 +59,21 @@
                Grid.Row="0"
                Grid.RowSpan="2"
                Grid.Column="0"
+               Grid.ColumnSpan="2"
                Margin="0,0,5,0"
                Visibility="Collapsed" />
-        <TextBlock Text="{x:Bind Attachment.Name, Mode=OneWay}"
-                   FontSize="12"
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Top"
-                   TextTrimming="CharacterEllipsis"
-                   Margin="5, 0, 5, 0"
-                   MaxLines="1"
-                   Grid.Row="0"
-                   Grid.Column="1"
-                   Grid.ColumnSpan="4"/>
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="3"
+                    Grid.Column="1"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Stretch"
+                    VerticalAlignment="Top"
                     Name="AttachmentOptions"
                     Background="{ThemeResource PrimaryBackground}"
                     Visibility="Collapsed">
             <Button Name="DeleteAttachmentButton"
                     FontFamily="Segoe Fluent Icons"
-                    Content="&#xe74d;"
+                    FontSize="10"
+                    Content="&#xe8bb;"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Style="{StaticResource ButtonNoBackground}"

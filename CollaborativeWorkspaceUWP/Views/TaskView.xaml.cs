@@ -41,6 +41,9 @@ namespace CollaborativeWorkspaceUWP.Views
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
 
+        private bool isDragging = false;
+        private double initialPosition;
+
         public TaskView()
         {
             this.InitializeComponent();

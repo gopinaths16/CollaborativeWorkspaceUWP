@@ -144,6 +144,9 @@
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml.cs">
+      <DependentUpon>SecondaryAttachmentItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
     </Compile>
@@ -202,7 +205,9 @@
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
     <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
+    <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
+    <Compile Include="Utilities\DataTemplateSelectors\AttachmentTemplateSelector.cs" />
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
@@ -285,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -39,6 +39,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         }
 
         public bool AdditionAllowedFromUI;
+        public bool IsOnlyForAddition;
 
         public AttachmentViewModel()
         {
@@ -46,6 +47,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
             ViewmodelEventHandler.Instance.Subscribe<DeleteAttachmentEvent>(OnAttachmentDeletion);
+            ViewmodelEventHandler.Instance.Subscribe<RemoveAttachmentEvent>(OnAttachmentRemoval);
         }
 
         public void SetCurrTask(UserTask task)
@@ -73,6 +75,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
             else
             {
+                attachment.IsOnlyForAddition = true;
+                attachment.OriginalPath = file.Path;
                 CurrTask.Attachments.Add(attachment);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
@@ -180,9 +184,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void OnAttachmentDeletion(DeleteAttachmentEvent delAttachmentEvent)
         {
-            if(!AdditionAllowedFromUI)
+            if(CurrTask != null && CurrTask.Id == delAttachmentEvent.Attachment.TaskId)
             {
                 CurrTask.Attachments.Remove(delAttachmentEvent.Attachment);
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
+        }
+
+        public void OnAttachmentRemoval(RemoveAttachmentEvent remAttachmentEvent)
+        {
+            if(CurrTask != null && !AdditionAllowedFromUI && IsOnlyForAddition && remAttachmentEvent.Attachment.TaskId == CurrTask.Id)
+            {
+                CurrTask.Attachments.Remove(remAttachmentEvent.Attachment);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
