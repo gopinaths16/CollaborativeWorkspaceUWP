@@ -69,7 +69,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void SetCurrentTask(UserTask task)
         {
             taskDetailsViewModel.CurrTask = task;
-            AttachmentDialog.SetCurrTask(task);
+            if(task != null)
+            {
+                task.Attachments = taskDetailsViewModel.CurrTask.Attachments;
+            }
             CommentDialog.SetCurrTask(task);
             TaskViewPivot.SelectedIndex = 0;
         }
@@ -172,6 +175,27 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             await AttachmentDialog.PickAndAddAttachment();
             TaskViewPivot.SelectedIndex = 2;
+        }
+
+        private void TaskViewPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var pivot = sender as Pivot;
+            if (pivot == null) return;
+
+            foreach (var item in pivot.Items)
+            {
+                var pivotItem = item as PivotItem;
+                if (pivotItem == null) continue;
+
+                if(pivot.SelectedItem == pivotItem)
+                {
+                    if(pivotItem.Name == "AttachementsPivotItem")
+                    {
+                        AttachmentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
+                        AttachmentDialog.Visibility = Visibility.Visible;
+                    }
+                }
+            }
         }
     }
 }

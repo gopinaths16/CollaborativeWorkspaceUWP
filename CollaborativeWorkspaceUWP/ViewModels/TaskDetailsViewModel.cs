@@ -30,12 +30,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             get { return currTask; }
             set
             {
-                currTask = value;
-                if (currTask != null)
+                
+                if (value != null)
                 {
+                    currTask = (UserTask)value.Clone();
                     currTask.Attachments = null;
                     currTask.Attachments = GetAttachmentsForTask(currTask.Id);
                     IsAddSubTaskContextTriggered = false;
+                }
+                else
+                {
+                    currTask = null;
                 }
                 NotifyPropertyChanged(nameof(CurrTask));
             }
@@ -145,6 +150,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             if (CurrTask != null && (CurrTask.IsUpdated || forceUpdate))
             {
                 UserTask task = taskDataHandler.UpdateTask(CurrTask);
+                task.Attachments = CurrTask.Attachments;
+                task.SubTasks = CurrTask.SubTasks;
                 task.StatusData = GetTaskStatus(task.Status);
                 task.PriorityData = GetTaskPriority(task.Priority);
                 CurrTask.Update(task);

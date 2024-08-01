@@ -129,8 +129,8 @@ namespace CollaborativeWorkspaceUWP.Views
                 TaskDetailsViewContainer.Visibility = Visibility.Visible;
             }
             UserTask task = (UserTask)e.ClickedItem;
-            taskListViewModel.CurrTask = (UserTask)task.Clone();
-            TaskDetailsView.SetCurrentTask((UserTask)task.Clone());
+            taskListViewModel.CurrTask = task;
+            TaskDetailsView.SetCurrentTask(task);
         }
 
         private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)

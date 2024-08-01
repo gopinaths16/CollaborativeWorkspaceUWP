@@ -30,7 +30,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void SetCurrTask(UserTask currTask)
         {
-            CurrTask = currTask;
+            CurrTask = currTask != null ? (UserTask)currTask.Clone() : null;
             CommentsForCurrTask = CurrTask != null ? commentDataHandler.GetAllCommentsForCurrentTask(CurrTask.Id) : new ObservableCollection<Comment>();
             NotifyPropertyChanged(nameof(CommentsForCurrTask));
         }

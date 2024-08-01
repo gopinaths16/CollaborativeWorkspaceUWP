@@ -233,7 +233,9 @@
                    Grid.Row="20"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Margin="5, 20, 5, 0">
+                   Margin="5, 20, 5, 0"
+                   SelectedIndex="0"
+                   SelectionChanged="TaskViewPivot_SelectionChanged">
 
                 <PivotItem Name="SubtTaskPivotItem">
                     <PivotItem.Header>
@@ -329,7 +331,8 @@
                     <Grid HorizontalAlignment="Stretch" 
                           VerticalAlignment="Stretch">
                         <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
-                                                            Margin="0, 10, 0, 0"/>
+                                                            Margin="0, 10, 0, 0"
+                                                            Visibility="Collapsed"/>
                     </Grid>
                 </PivotItem>
             </Pivot>

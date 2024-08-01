@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Auth\Handlers\UserSessionHandler.cs" />
+    <Compile Include="Auth\Providers\IAuthProvider.cs" />
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">

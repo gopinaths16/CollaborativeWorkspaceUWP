@@ -20,6 +20,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private ObservableCollection<Attachment> attachments;
         private AttachmentDataHandler attachmentDataHandler;
 
+        private bool isLoaded;
+
         public ObservableCollection<Attachment> Attachments
         {
             get { return attachments; }
@@ -48,9 +50,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void SetCurrTask(UserTask task)
         {
-            if (task != null)
+            if (task != null && !isLoaded)
             {
-                CurrTask = task;
+                isLoaded = true;
+                CurrTask = (UserTask)task.Clone();
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
