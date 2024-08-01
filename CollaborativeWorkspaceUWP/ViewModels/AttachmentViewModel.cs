@@ -39,6 +39,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public long CommentId {  get; set; }
+
         public bool AdditionAllowedFromUI;
         public bool IsOnlyForAddition;
 
@@ -57,6 +59,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 isLoaded = true;
                 CurrTask = (UserTask)task.Clone();
+                NotifyPropertyChanged(nameof(CurrTask));
+            }
+            else if (task == null)
+            {
+                isLoaded = false;
+                CurrTask = null;
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
@@ -173,9 +181,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
         {
-            if (CurrTask != null && addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && AdditionAllowedFromUI)
+            if (CurrTask != null && addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && !IsOnlyForAddition)
             {
-                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0)
+                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0 && (addAttachmentEvent.Attachment.CommentId <= 0 || addAttachmentEvent.Attachment.CommentId == CommentId || AdditionAllowedFromUI))
                 {
                     CurrTask.Attachments.Add(addAttachmentEvent.Attachment);
                 }
@@ -187,13 +195,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if(CurrTask != null && CurrTask.Id == delAttachmentEvent.Attachment.TaskId)
             {
-                attachmentDataHandler.DeleteAttachment(delAttachmentEvent.Attachment.Id);
-                StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
-                StorageFile file = await storageFolder.GetFileAsync(delAttachmentEvent.Attachment.Path);
-                await file.DeleteAsync();
-                CurrTask.Attachments.Remove(delAttachmentEvent.Attachment);
-                NotifyPropertyChanged(nameof(CurrTask));
+                var attachment = CurrTask.Attachments.Where(att => att.Id == delAttachmentEvent.Attachment.Id);
+                if(attachment.Count() > 0)
+                {
+                    CurrTask.Attachments.Remove(attachment.First());
+                }
             }
+            NotifyPropertyChanged(nameof(CurrTask));
         }
 
         public async Task OnAttachmentRemoval(RemoveAttachmentEvent remAttachmentEvent)

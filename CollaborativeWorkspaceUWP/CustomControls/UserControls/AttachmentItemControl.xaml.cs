@@ -1,6 +1,8 @@
-﻿using CollaborativeWorkspaceUWP.Models;
+﻿using CollaborativeWorkspaceUWP.DAL;
+using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
+using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +28,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class AttachmentItemControl : UserControl
     {
+        AttachmentItemViewModel attachmentItemViewModel;
 
         public Attachment Attachment
         {
@@ -46,6 +49,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public AttachmentItemControl()
         {
             this.InitializeComponent();
+            attachmentItemViewModel = new AttachmentItemViewModel();
         }
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -60,6 +64,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            attachmentItemViewModel.Attachment = Attachment;
             await SetPreviewItem();
         }
 
@@ -96,6 +101,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
+            await attachmentItemViewModel.DeleteAttachment();
             await ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
         }
     }

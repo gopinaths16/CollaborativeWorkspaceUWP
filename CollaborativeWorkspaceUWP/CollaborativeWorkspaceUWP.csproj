@@ -210,6 +210,7 @@
     <Compile Include="Utilities\DataTemplateSelectors\AttachmentTemplateSelector.cs" />
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
+    <Compile Include="ViewModels\AttachmentItemViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />

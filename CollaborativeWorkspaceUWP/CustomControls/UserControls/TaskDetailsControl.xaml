@@ -332,7 +332,8 @@
                           VerticalAlignment="Stretch">
                         <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
                                                             Margin="0, 10, 0, 0"
-                                                            Visibility="Collapsed"/>
+                                                            AllowAdditionFromUi="True"
+                                                            IsOnlyForAddition="False"/>
                     </Grid>
                 </PivotItem>
             </Pivot>

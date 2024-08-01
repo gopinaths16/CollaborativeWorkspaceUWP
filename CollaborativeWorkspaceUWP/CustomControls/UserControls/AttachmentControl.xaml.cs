@@ -105,6 +105,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
+                attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
+                attachmentViewModel.IsOnlyForAddition = IsOnlyForAddition;
                 attachmentViewModel.AddAttachmentToTask(file);
             }
         }
@@ -160,6 +162,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void ClearAttachments()
         {
             attachmentViewModel.ClearAttachmentList();
+        }
+
+        public void SetCommentId(long commentId)
+        {
+            attachmentViewModel.CommentId = commentId;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

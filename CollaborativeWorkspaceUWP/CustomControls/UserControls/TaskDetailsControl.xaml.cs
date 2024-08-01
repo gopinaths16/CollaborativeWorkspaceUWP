@@ -73,6 +73,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
                 task.Attachments = taskDetailsViewModel.CurrTask.Attachments;
             }
+            AttachmentDialog.SetCurrTask(null);
             CommentDialog.SetCurrTask(task);
             TaskViewPivot.SelectedIndex = 0;
         }
