@@ -40,10 +40,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             StatusData = statusDataHandler.GetStatusData();
         }
 
-        public void AddTask(UserTask task)
+        public async Task AddTask(UserTask task)
         {
             UserTask result = taskDataHandler.AddTask(task);
-            ViewmodelEventHandler.Instance.Publish(new AddTaskEvent() { Task = result });
+            await ViewmodelEventHandler.Instance.Publish(new AddTaskEvent() { Task = result });
         }
     }
 }

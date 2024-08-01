@@ -41,6 +41,9 @@ namespace CollaborativeWorkspaceUWP.Views
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
 
+        private bool isDragging = false;
+        private double initialPosition;
+
         public TaskView()
         {
             this.InitializeComponent();
@@ -101,9 +104,9 @@ namespace CollaborativeWorkspaceUWP.Views
             }
         }
 
-        private void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            TaskDetailsView.UpdateCurrentTask();
+            await TaskDetailsView.UpdateCurrentTask();
             taskListViewModel.Dispose();
             Project currProject = (Project)e.ClickedItem;
             if (taskListViewModel.IsSingleWindowLayoutTriggered)
@@ -129,8 +132,8 @@ namespace CollaborativeWorkspaceUWP.Views
                 TaskDetailsViewContainer.Visibility = Visibility.Visible;
             }
             UserTask task = (UserTask)e.ClickedItem;
-            taskListViewModel.CurrTask = (UserTask)task.Clone();
-            TaskDetailsView.SetCurrentTask((UserTask)task.Clone());
+            taskListViewModel.CurrTask = task;
+            TaskDetailsView.SetCurrentTask(task);
         }
 
         private async void AddProjectButton_ButtonClick(object sender, RoutedEventArgs e)
@@ -143,7 +146,7 @@ namespace CollaborativeWorkspaceUWP.Views
             taskListViewModel.IsAddTaskContextTriggered = true;
         }
 
-        private void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
+        private async void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             string projectName = AddProjectDialogProjectName.Text;
             Status projectStatus = ((Status)AddProjectDialogStatus.SelectedItem);
@@ -155,7 +158,7 @@ namespace CollaborativeWorkspaceUWP.Views
             project.Priority = projectPriority != null ? projectPriority.Id : 1;
             project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
 
-            addProjectViewModel.AddProject(project);
+            await addProjectViewModel.AddProject(project);
 
             AddProjectDialog.Hide();
         }
@@ -192,12 +195,12 @@ namespace CollaborativeWorkspaceUWP.Views
             AddTeamspaceDialog.Hide();
         }
 
-        private void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
+        private async void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             long taskId = (long)checkBox.Tag;
             bool checkboxStatus = (bool)checkBox.IsChecked;
-            taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+            await taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
         }
 
         private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)

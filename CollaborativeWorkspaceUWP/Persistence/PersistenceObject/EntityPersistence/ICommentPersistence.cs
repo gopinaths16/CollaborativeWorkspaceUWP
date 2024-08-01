@@ -13,6 +13,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
     {
         void SetAddCommentContext(Comment comment);
         void SetGetAllCommentsForCurrentTaskContext(long taskId);
+        void SetDeleteCommentContext(long id);
         Comment GetComment();
         ObservableCollection<Comment> GetComments();
     }

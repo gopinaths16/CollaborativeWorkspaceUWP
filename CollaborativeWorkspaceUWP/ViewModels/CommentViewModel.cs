@@ -30,7 +30,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void SetCurrTask(UserTask currTask)
         {
-            CurrTask = currTask;
+            CurrTask = currTask != null ? (UserTask)currTask.Clone() : null;
             CommentsForCurrTask = CurrTask != null ? commentDataHandler.GetAllCommentsForCurrentTask(CurrTask.Id) : new ObservableCollection<Comment>();
             NotifyPropertyChanged(nameof(CommentsForCurrTask));
         }
@@ -45,9 +45,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return comment;
         }
 
-        public void NotifyCommentAddition(Comment comment)
+        public async Task NotifyCommentAddition(Comment comment)
         {
-            ViewmodelEventHandler.Instance.Publish(new AddCommentEvent() { Comment = comment });
+            await ViewmodelEventHandler.Instance.Publish(new AddCommentEvent() { Comment = comment });
         }
 
         public void AddAttachmentsToComment(ObservableCollection<Attachment> attachments)
@@ -55,7 +55,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             Comm.Attachments = attachments;
         }
 
-        public void OnCommentAddition(AddCommentEvent addCommentEvent)
+        public async Task OnCommentAddition(AddCommentEvent addCommentEvent)
         {
             CommentsForCurrTask.Add(addCommentEvent.Comment);
             NotifyPropertyChanged(nameof(CommentsForCurrTask));

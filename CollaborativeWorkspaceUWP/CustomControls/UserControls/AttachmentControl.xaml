@@ -5,6 +5,7 @@
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    xmlns:util="using:CollaborativeWorkspaceUWP.Utilities"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -38,8 +39,23 @@
 
         <DataTemplate x:Key="AttachmentListTemplate"
                       x:DataType="models:Attachment">
-            <local:AttachmentItemControl Attachment="{Binding}" />
+            <local:AttachmentItemControl Attachment="{Binding}"
+                                         IsOnlyForAddition="{Binding IsOnlyForAddition}"/>
         </DataTemplate>
+
+        <DataTemplate x:Key="SecondaryAttachmentListTemplate"
+                      x:DataType="models:Attachment">
+            <Border BorderBrush="Gray"
+                    BorderThickness="0.5"
+                    CornerRadius="10">
+                <local:SecondaryAttachmentItemControl Attachment="{Binding}"
+                                      IsOnlyForAddition="{Binding IsOnlyForAddition}"/>
+            </Border>
+        </DataTemplate>
+
+        <util:AttachmentTemplateSelector x:Key="AttachmentTemplateSelector"
+                                         PrimaryAttachmentTemplate="{StaticResource AttachmentListTemplate}"
+                                         SecondaryAttachmentTemplate="{StaticResource SecondaryAttachmentListTemplate}" />
     </UserControl.Resources>
 
     <Grid>
@@ -57,13 +73,13 @@
                                                        HorizontalContentAlignment="Stretch"
                                                        Click="AddAttachmentButton_Click"
                                                        IsEnabled="True"
-                                                       Margin="0, 0, 0, 5"
+                                                       Margin="0, 0, 0, 15"
                                                        Visibility="{x:Bind AllowAdditionFromUi, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
         <GridView Name="AttachmentGridView" 
                   ItemsSource="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=OneWay}"
-                  ItemTemplate="{StaticResource AttachmentListTemplate}"
-                  Margin="0, 20, 0, 0"
+                  ItemTemplateSelector="{StaticResource AttachmentTemplateSelector}"
+                  Margin="0, 10, 0, 0"
                   Grid.Row="1"
                   IsItemClickEnabled="True"
                   ItemContainerStyle="{StaticResource AttachmentGridViewItemStyle}"

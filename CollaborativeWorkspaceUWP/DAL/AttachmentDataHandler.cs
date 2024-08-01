@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence;
+using System.ComponentModel.Design;
 
 namespace CollaborativeWorkspaceUWP.DAL
 {
@@ -94,6 +95,28 @@ namespace CollaborativeWorkspaceUWP.DAL
                 }
             }
             return result;
+        }
+
+        public void DeleteAttachment(long attachmentId)
+        {
+            IAttachmentPersistence persistentObject = null;
+            try
+            {
+                persistentObject = persistanceObjectManager.GetAttachmentPersistenceObject();
+                persistentObject.SetDeleteAttachmentContext(attachmentId);
+                PersistenceHandler.Instance.Delete(persistentObject);
+            }
+            catch( Exception ex )
+            {
+
+            }
+            finally
+            {
+                if( persistentObject != null )
+                {
+                    persistentObject.Dispose();
+                }
+            }
         }
     }
 }

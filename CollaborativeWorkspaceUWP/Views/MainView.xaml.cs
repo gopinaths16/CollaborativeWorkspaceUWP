@@ -59,6 +59,7 @@ namespace CollaborativeWorkspaceUWP.Views
             if(mainViewModel.Organizations.Count > 0)
             {
                 mainViewModel.SetCurrOrganization(mainViewModel.Organizations[0]);
+                SelectOrganizationCombobox.SelectedItem = mainViewModel.Organizations[0];
                 HomeViewFrame.Navigate(typeof(TaskView), this.DataContext);
             }
             else

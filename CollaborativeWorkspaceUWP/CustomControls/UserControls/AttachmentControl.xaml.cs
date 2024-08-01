@@ -48,7 +48,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(AllowAdditionFromUiProperty, value); }
         }
 
+        public bool IsOnlyForAddition
+        {
+            get { return (bool)GetValue(IsOnlyForAdditionProperty); }
+            set { SetValue(IsOnlyForAdditionProperty, value); }
+        }
+
         public static readonly DependencyProperty AllowAdditionFromUiProperty = DependencyProperty.Register("AllowAdditionFromUi", typeof(bool), typeof(AttachmentCotrol), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty IsOnlyForAdditionProperty = DependencyProperty.Register("IsOnlyForAddition", typeof(bool), typeof(AttachmentCotrol), new PropertyMetadata(false));
 
         public AttachmentCotrol()
         {
@@ -97,6 +105,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
+                attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
+                attachmentViewModel.IsOnlyForAddition = IsOnlyForAddition;
                 attachmentViewModel.AddAttachmentToTask(file);
             }
         }
@@ -154,9 +164,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             attachmentViewModel.ClearAttachmentList();
         }
 
+        public void SetCommentId(long commentId)
+        {
+            attachmentViewModel.CommentId = commentId;
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
+            attachmentViewModel.IsOnlyForAddition = IsOnlyForAddition;
         }
     }
 }

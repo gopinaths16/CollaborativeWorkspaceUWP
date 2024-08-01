@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
+using CollaborativeWorkspaceUWP.Utilities.Events;
+using CollaborativeWorkspaceUWP.Utilities;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -67,8 +70,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Comment comment = commentViewModel.AddCommentToCurrTask();
             comment.Attachments = await CommentAttachments.AddAttachmentsForComment(comment.Id);
-            commentViewModel.NotifyCommentAddition(comment);
+            await commentViewModel.NotifyCommentAddition(comment);
             CommentAttachments.SetAttachments(new ObservableCollection<Attachment>());
+            CommentAttachments.SetCommentId(comment.Id);
         }
     }
 }

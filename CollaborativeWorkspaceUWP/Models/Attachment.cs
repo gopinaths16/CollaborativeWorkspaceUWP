@@ -56,5 +56,9 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             get; set;
         }
+
+        public bool IsOnlyForAddition { get; set; }
+
+        public string OriginalPath { get; set; }
     }
 }

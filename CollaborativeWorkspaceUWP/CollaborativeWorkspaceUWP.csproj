@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Auth\Handlers\UserSessionHandler.cs" />
+    <Compile Include="Auth\Providers\IAuthProvider.cs" />
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
@@ -141,6 +143,9 @@
     </Compile>
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml.cs">
+      <DependentUpon>SecondaryAttachmentItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
@@ -200,9 +205,12 @@
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
     <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
+    <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
+    <Compile Include="Utilities\DataTemplateSelectors\AttachmentTemplateSelector.cs" />
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
+    <Compile Include="ViewModels\AttachmentItemViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
@@ -283,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

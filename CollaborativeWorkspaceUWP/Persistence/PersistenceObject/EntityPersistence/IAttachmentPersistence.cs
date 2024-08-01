@@ -14,6 +14,8 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
         void SetAddAttachmentContext(Attachment attachment);
         void SetGetAllAttachmentsForTaskContext(long taskId);
         void SetGetAllAttachmentsForCommentContext(long commentId);
+        void SetDeleteAttachmentForCommentContext(long commentId);
+        void SetDeleteAttachmentContext(long id);
         ObservableCollection<Attachment> GetAllAttachments();
         Attachment GetAttachment();
     }

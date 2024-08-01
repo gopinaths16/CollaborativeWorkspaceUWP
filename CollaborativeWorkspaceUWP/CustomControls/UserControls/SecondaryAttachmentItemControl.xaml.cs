@@ -1,8 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.DAL;
-using CollaborativeWorkspaceUWP.Models;
+﻿using CollaborativeWorkspaceUWP.Utilities.Events;
 using CollaborativeWorkspaceUWP.Utilities;
-using CollaborativeWorkspaceUWP.Utilities.Events;
-using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +9,6 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,15 +17,14 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using CollaborativeWorkspaceUWP.Models;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class AttachmentItemControl : UserControl
+    public sealed partial class SecondaryAttachmentItemControl : UserControl
     {
-        AttachmentItemViewModel attachmentItemViewModel;
-
         public Attachment Attachment
         {
             get { return (Attachment)GetValue(AttachmentProperty); }
@@ -42,14 +37,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(IsOnlyForAdditionProperty, value); }
         }
 
-        public static readonly DependencyProperty AttachmentProperty = DependencyProperty.Register("Attachment", typeof(Attachment), typeof(AttachmentItemControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty AttachmentProperty = DependencyProperty.Register("Attachment", typeof(Attachment), typeof(SecondaryAttachmentItemControl), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty IsOnlyForAdditionProperty = DependencyProperty.Register("IsOnlyForAddition", typeof(bool), typeof(AttachmentItemControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsOnlyForAdditionProperty = DependencyProperty.Register("IsOnlyForAddition", typeof(bool), typeof(SecondaryAttachmentItemControl), new PropertyMetadata(false));
 
-        public AttachmentItemControl()
+        public SecondaryAttachmentItemControl()
         {
             this.InitializeComponent();
-            attachmentItemViewModel = new AttachmentItemViewModel();
         }
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -64,15 +58,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            attachmentItemViewModel.Attachment = Attachment;
             await SetPreviewItem();
         }
 
         private async Task SetPreviewItem()
         {
-            if(Attachment != null)
+            if (Attachment != null)
             {
-                switch(Attachment.Type)
+                switch (Attachment.Type)
                 {
                     case "text/plain":
                         IconElement.Visibility = Visibility.Visible;
@@ -91,7 +84,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     case "image/jpg":
                         PreviewImage.Visibility = Visibility.Visible;
                         BitmapImage bitmapImage = new BitmapImage();
-                        bitmapImage.UriSource = new Uri(ApplicationData.Current.LocalFolder.Path + Path.DirectorySeparatorChar + "Attachments" + Path.DirectorySeparatorChar + Attachment.Path);
+                        bitmapImage.UriSource = new Uri(Attachment.OriginalPath);
                         PreviewImage.Source = bitmapImage;
                         break;
 
@@ -101,8 +94,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            await attachmentItemViewModel.DeleteAttachment();
-            await ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
+            await ViewmodelEventHandler.Instance.Publish(new RemoveAttachmentEvent() { Attachment = Attachment });
         }
     }
 }

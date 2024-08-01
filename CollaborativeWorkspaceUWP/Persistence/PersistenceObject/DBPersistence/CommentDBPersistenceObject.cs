@@ -31,6 +31,14 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
             Query = command;
         }
 
+        public void SetDeleteCommentContext(long id)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"DELETE FROM CW_COMMENT_DETAILS WHERE ID=@Id";
+            command.Parameters.AddWithValue("@Id", id);
+            Query = command;
+        }
+
         public Comment GetComment()
         {
             Comment result = null;

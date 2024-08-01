@@ -28,7 +28,7 @@ namespace CollaborativeWorkspaceUWP.Models
         public string Name { 
             get { return _name; } 
             set { 
-                if(!value.Equals(_name))
+                if(value != _name)
                 {
                     _name = value;
                     NotifyPropertyChanged(nameof(Name));
