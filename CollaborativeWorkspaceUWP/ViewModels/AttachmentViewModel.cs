@@ -172,7 +172,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
         {
-            if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && AdditionAllowedFromUI)
+            if (CurrTask != null && addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && AdditionAllowedFromUI)
             {
                 if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0)
                 {
