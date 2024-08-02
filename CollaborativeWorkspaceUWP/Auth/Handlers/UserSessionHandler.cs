@@ -1,6 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Auth.Managers;
 using CollaborativeWorkspaceUWP.Utilities;
-using CollaborativeWorkspaceUWP.Models.Enums
+using CollaborativeWorkspaceUWP.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
