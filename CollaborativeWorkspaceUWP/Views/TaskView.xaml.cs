@@ -114,6 +114,7 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 TaskListView.Visibility = Visibility.Visible;
                 TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+                projectListViewModel.IsProjectListPaneOpen = false;
             }
             taskListViewModel.GetTasksForProject((Project)currProject.Clone());
             TaskDetailsView.SetCurrentTask(null);
