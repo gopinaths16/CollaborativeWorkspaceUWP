@@ -40,7 +40,8 @@
         <DataTemplate x:Key="AttachmentListTemplate"
                       x:DataType="models:Attachment">
             <local:AttachmentItemControl Attachment="{Binding}"
-                                         IsOnlyForAddition="{Binding IsOnlyForAddition}"/>
+                                         IsOnlyForAddition="{Binding IsOnlyForAddition}"
+                                         Width="250"/>
         </DataTemplate>
 
         <DataTemplate x:Key="SecondaryAttachmentListTemplate"

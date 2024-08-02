@@ -46,24 +46,38 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             }
         }
 
-        private void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
+        private async void AddAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentAttachments.PickAndAddAttachment();
+            await CommentAttachments.PickAndAddAttachment();
+            CommentTextBox.Focus(FocusState.Programmatic);
+            VisualStateManager.GoToState(this, "Focused", true);
         }
 
         private void StackPanel_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            VisualStateManager.GoToState(this, "PointerOver", true);
+            if(CommentTextBox.FocusState == FocusState.Unfocused)
+            {
+                VisualStateManager.GoToState(this, "PointerOver", true);
+            }
         }
 
         private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            VisualStateManager.GoToState(this, "Normal", true);
+            if(CommentTextBox.FocusState == FocusState.Unfocused)
+            {
+                VisualStateManager.GoToState(this, "Normal", true);
+            }
         }
 
         private void StackPanel_GotFocus(object sender, RoutedEventArgs e)
         {
+            CommentTextBox.Focus(FocusState.Programmatic);
             VisualStateManager.GoToState(this, "Focused", true);
+        }
+
+        private void CommentBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Normal", true);
         }
 
         private async void AddCommentButton_Click(object sender, RoutedEventArgs e)

@@ -10,6 +10,7 @@ using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -69,6 +70,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void SetCurrentTask(UserTask task)
         {
             taskDetailsViewModel.CurrTask = task;
+            taskDetailsViewModel.ClearPrevState();
             if(task != null)
             {
                 task.Attachments = taskDetailsViewModel.CurrTask.Attachments;
@@ -174,6 +176,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
+            AttachmentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
+            AttachmentDialog.Visibility = Visibility.Visible;
             await AttachmentDialog.PickAndAddAttachment();
             TaskViewPivot.SelectedIndex = 2;
         }
@@ -197,6 +201,34 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     }
                 }
             }
+        }
+
+        private void SubTaskListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            taskDetailsViewModel.SetSubTaskToCurrTask((UserTask)e.ClickedItem);
+            AttachmentDialog.SetCurrTask(null);
+            CommentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
+            TaskViewPivot.SelectedIndex = 0;
+        }
+
+        private void GoToPrevTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.ReturnToPrevTask();
+            AttachmentDialog.SetCurrTask(null);
+            CommentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
+            TaskViewPivot.SelectedIndex = 0;
+        }
+
+        private void PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            Control control = (Control)sender;
+            control.BorderBrush = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            Control control = (Control)sender;
+            control.BorderBrush = new SolidColorBrush(Colors.Transparent);
         }
     }
 }
