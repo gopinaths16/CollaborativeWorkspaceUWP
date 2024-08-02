@@ -44,7 +44,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
@@ -106,10 +106,13 @@
             </Grid>
         </Border>
 
-        <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
-                      ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
-                      Grid.Row="1"
-                      Margin="10, 10, 0, 0"/>
+        <ScrollViewer Background="{StaticResource SecondaryBackground}"
+                      VerticalAlignment="Stretch"
+                      Grid.Row="1">
+            <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
+                          ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
+                          Margin="10, 10, 0, 0"/>
+        </ScrollViewer>
 
         <StackPanel Name="NoAttachmentMessage"
                     Margin="0, 20, 0, 0"

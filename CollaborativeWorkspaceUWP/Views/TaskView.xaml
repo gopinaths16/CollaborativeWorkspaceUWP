@@ -232,13 +232,13 @@
             <PivotItem>
                 <PivotItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets"
-                                   Text="&#xE70B;"
-                                   FontSize="12"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Bold"/>
+                        <FontIcon FontFamily="Segoe Fluent Icons"
+                                  Glyph="&#xe8fd;"
+                                  FontSize="12"
+                                  VerticalAlignment="Center"
+                                  FontWeight="Bold"/>
 
-                        <TextBlock Text="By Project"
+                        <TextBlock Text="List View"
                                    FontSize="12"
                                    Margin="5, 0, 0, 0"
                                    VerticalAlignment="Center"
@@ -376,6 +376,24 @@
                 </Grid>
             </PivotItem>
 
+            <PivotItem>
+                <PivotItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe Fluent Icons"
+                                  Glyph="&#xf0e3;"
+                                  FontSize="12"
+                                  VerticalAlignment="Center"
+                                  FontWeight="Bold"/>
+
+                        <TextBlock Text="Board View"
+                                   FontSize="12"
+                                   Margin="5, 0, 0, 0"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </PivotItem.Header>
+            </PivotItem>
+
         </Pivot>
 
         <!--#region Add Project Content Dialog Starts -->
@@ -414,14 +432,16 @@
                           PlaceholderText="Priority"
                           Style="{StaticResource ComboBoxCustom}"
                           ItemsSource="{x:Bind addProjectViewModel.PriorityData}"
-                          ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
+                          ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
+                          SelectedIndex="0"/>
 
                 <TextBlock Text="Status" />
                 <ComboBox Name="AddProjectDialogStatus"
                           PlaceholderText="Status"
                           Style="{StaticResource ComboBoxCustom}"
                           ItemsSource="{x:Bind addProjectViewModel.StatusData}"
-                          ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
+                          ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
+                          SelectedIndex="0"/>
 
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">

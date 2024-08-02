@@ -123,6 +123,14 @@
                             Visibility="{x:Bind AllowTaskClear, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                             Click="{x:Bind _onTaskClear}"
                             Style="{StaticResource ButtonNoBackground}"/>
+                    <customtemplatecontrol:CustomIconButtonControl Name="GoToPrevTaskButton"
+                                                                   Icon="&#xe830;"
+                                                                   FontSize="10"
+                                                                   Content="{x:Bind taskDetailsViewModel.PrevTask.Name, Mode=OneWay}"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{x:Bind taskDetailsViewModel.PrevTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                                                   Click="GoToPrevTaskButton_Click"/>
                     <ComboBox Name="Status"
                               PlaceholderText="Status"
                               CornerRadius="2"
@@ -276,7 +284,8 @@
                                   ItemTemplate="{StaticResource SubTaskListViewDataTemplate}"
                                   Margin="0, 20, 0, 0"
                                   Grid.Row="2"
-                                  IsItemClickEnabled="False"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="SubTaskListView_ItemClick"
                                   ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
                         <StackPanel Name="NoSubtasksMessage"
                                     Grid.Row="2"
@@ -307,7 +316,9 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <customusercontrol:CommentControl x:Name="CommentDialog" />
+                    <StackPanel Orientation="Vertical">
+                        <customusercontrol:CommentControl x:Name="CommentDialog" />
+                    </StackPanel>
                 </PivotItem>
                 
                 <PivotItem Name="AttachementsPivotItem">

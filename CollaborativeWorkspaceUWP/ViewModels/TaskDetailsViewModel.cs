@@ -46,6 +46,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public Dictionary<long, UserTask> Task_SubTask_Mapper  { get; set; }
+
+        public UserTask PrevTask { get; set; }
+
         public ObservableCollection<UserTask> SubTasks
         {
             get; set;
@@ -89,6 +93,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             statusDataHandler = new StatusDataHandler();
             taskDataHandler = new TaskDataHandler();
             attachmentDataHandler = new AttachmentDataHandler();
+
+            Task_SubTask_Mapper = new Dictionary<long, UserTask>();
 
             PriorityData = priorityDataHandler.GetPriorityData();
             StatusData = statusDataHandler.GetStatusData();
@@ -240,6 +246,26 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public void SetSubTaskToCurrTask(UserTask task)
+        {
+            UserTask prevTask = (UserTask)CurrTask.Clone();
+            Task_SubTask_Mapper.Add(task.Id, prevTask);
+            CurrTask = task;
+            PrevTask = prevTask;
+            NotifyPropertyChanged(nameof(CurrTask));
+            NotifyPropertyChanged(nameof(PrevTask));
+        }
+
+        public void ReturnToPrevTask()
+        {
+            UserTask prevTask = Task_SubTask_Mapper.GetValueOrDefault(PrevTask.Id);
+            Task_SubTask_Mapper.Remove(CurrTask.Id);
+            CurrTask = (UserTask)PrevTask.Clone();
+            PrevTask = prevTask != null ? (UserTask)prevTask.Clone() : null;
+            NotifyPropertyChanged(nameof(CurrTask));
+            NotifyPropertyChanged(nameof(PrevTask));
+        }
+
         public async Task OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
         {
             if (addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id)
@@ -255,6 +281,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public ObservableCollection<Attachment> GetAttachmentsForTask(long taskId)
         {
             return attachmentDataHandler.GetAllAttachmentsForTask(taskId);
+        }
+
+        public void ClearPrevState()
+        {
+            Task_SubTask_Mapper = new Dictionary<long, UserTask>();
+            PrevTask = null;
+            NotifyPropertyChanged(nameof(PrevTask));
         }
 
         public override void Dispose()
