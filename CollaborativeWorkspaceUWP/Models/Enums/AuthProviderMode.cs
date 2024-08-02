@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CollaborativeWorkspaceUWP.Auth.Providers
+namespace CollaborativeWorkspaceUWP.Models.Enums
 {
-    public class AuthProviderManager
+    public enum AuthProviderMode
     {
+        LOCAL
     }
 }

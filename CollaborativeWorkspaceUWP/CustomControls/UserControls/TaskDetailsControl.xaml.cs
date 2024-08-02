@@ -10,6 +10,7 @@ using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -216,6 +217,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             AttachmentDialog.SetCurrTask(null);
             CommentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
             TaskViewPivot.SelectedIndex = 0;
+        }
+
+        private void PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            Control control = (Control)sender;
+            control.BorderBrush = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            Control control = (Control)sender;
+            control.BorderBrush = new SolidColorBrush(Colors.Transparent);
         }
     }
 }
