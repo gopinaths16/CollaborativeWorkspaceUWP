@@ -23,6 +23,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Hosting;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -113,6 +114,7 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 TaskListView.Visibility = Visibility.Visible;
                 TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+                projectListViewModel.IsProjectListPaneOpen = false;
             }
             taskListViewModel.GetTasksForProject((Project)currProject.Clone());
             TaskDetailsView.SetCurrentTask(null);
@@ -246,6 +248,11 @@ namespace CollaborativeWorkspaceUWP.Views
                 if (projectListViewModel.Projects.Count > 0)
                 {
                     taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
+                }
+                if(taskListViewModel.Tasks.Count > 0)
+                {
+                    taskListViewModel.CurrTask = taskListViewModel.Tasks[0];
+                    TaskDetailsView.SetCurrentTask(taskListViewModel.Tasks[0]);
                 }
             }
             var visualStates = VisualStateManager.GetVisualStateGroups(TaskViewPanel).ToList();

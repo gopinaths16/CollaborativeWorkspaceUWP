@@ -134,7 +134,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            TextWrapping="Wrap"
-                                           TextTrimming="WordEllipsis"
+                                           TextTrimming="CharacterEllipsis"
                                            MaxLines="1"
                                            Grid.Column="1"/>
                                 <Button FontFamily="Segoe Fluent Icons"

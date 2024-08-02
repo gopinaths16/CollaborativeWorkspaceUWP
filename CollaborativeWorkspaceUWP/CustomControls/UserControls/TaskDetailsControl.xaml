@@ -64,7 +64,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                TextWrapping="Wrap"
-                               TextTrimming="WordEllipsis"
+                               TextTrimming="CharacterEllipsis"
                                MaxLines="1"
                                Grid.Column="1"/>
                     <StackPanel Orientation="Horizontal"
@@ -117,19 +117,22 @@
                             Grid.Column="0">
                     <Button Name="ClearTaskButton"
                             FontFamily="Segoe Fluent Icons"
-                            Content="&#xe830;"
+                            Content="&#xe8fd;"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Visibility="{x:Bind AllowTaskClear, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                            ToolTipService.ToolTip="Back"
+                            ToolTipService.Placement="Bottom"
                             Click="{x:Bind _onTaskClear}"
                             Style="{StaticResource ButtonNoBackground}"/>
                     <customtemplatecontrol:CustomIconButtonControl Name="GoToPrevTaskButton"
                                                                    Icon="&#xe830;"
                                                                    FontSize="10"
-                                                                   Content="{x:Bind taskDetailsViewModel.PrevTask.Name, Mode=OneWay}"
                                                                    HorizontalAlignment="Center"
                                                                    VerticalAlignment="Center"
                                                                    Visibility="{x:Bind taskDetailsViewModel.PrevTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                                                   ToolTipService.ToolTip="{x:Bind taskDetailsViewModel.PrevTask.Name, Mode=OneWay}"
+                                                                   ToolTipService.Placement="Bottom"
                                                                    Click="GoToPrevTaskButton_Click"/>
                     <ComboBox Name="Status"
                               PlaceholderText="Status"
