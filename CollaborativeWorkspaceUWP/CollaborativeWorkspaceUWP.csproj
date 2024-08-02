@@ -120,7 +120,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Auth\Handlers\UserSessionHandler.cs" />
+    <Compile Include="Auth\Managers\IAuthManager.cs" />
+    <Compile Include="Auth\Managers\WindowsAuthManager.cs" />
+    <Compile Include="Auth\Providers\AuthProviderManager.cs" />
     <Compile Include="Auth\Providers\IAuthProvider.cs" />
+    <Compile Include="Auth\Providers\LocalAuthProvider.cs" />
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">

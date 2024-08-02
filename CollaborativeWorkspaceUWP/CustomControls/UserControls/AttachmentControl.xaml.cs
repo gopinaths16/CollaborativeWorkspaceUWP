@@ -107,7 +107,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
                 attachmentViewModel.AdditionAllowedFromUI = AllowAdditionFromUi;
                 attachmentViewModel.IsOnlyForAddition = IsOnlyForAddition;
-                attachmentViewModel.AddAttachmentToTask(file);
+                await attachmentViewModel.AddAttachmentToTask(file);
             }
         }
 

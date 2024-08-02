@@ -11,7 +11,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 {
     public class AttachmentItemViewModel : BaseViewModel
     {
-        public Attachment Attachment { get; set; }
 
         private AttachmentDataHandler attachmentDataHandler;
 
@@ -20,17 +19,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             attachmentDataHandler = new AttachmentDataHandler();
         }
 
-        public void SetAttachment(Attachment attachment)
+        public async Task DeleteAttachment(Attachment attachment)
         {
-            Attachment = attachment;
-            NotifyPropertyChanged(nameof(Attachment));
-        }
-
-        public async Task DeleteAttachment()
-        {
-            attachmentDataHandler.DeleteAttachment(Attachment.Id);
+            attachmentDataHandler.DeleteAttachment(attachment.Id);
             StorageFolder storageFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync("Attachments");
-            StorageFile file = await storageFolder.GetFileAsync(Attachment.Path);
+            StorageFile file = await storageFolder.GetFileAsync(attachment.Path);
             if (file != null)
             {
                 await file.DeleteAsync();

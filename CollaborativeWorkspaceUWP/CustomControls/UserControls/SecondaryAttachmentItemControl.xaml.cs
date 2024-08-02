@@ -84,7 +84,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     case "image/jpg":
                         PreviewImage.Visibility = Visibility.Visible;
                         BitmapImage bitmapImage = new BitmapImage();
-                        bitmapImage.UriSource = new Uri(Attachment.OriginalPath);
+                        bitmapImage.UriSource = new Uri(ApplicationData.Current.LocalFolder.Path + Path.DirectorySeparatorChar + "Attachments" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + Attachment.Path);
                         PreviewImage.Source = bitmapImage;
                         break;
 

@@ -64,7 +64,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            attachmentItemViewModel.Attachment = Attachment;
             await SetPreviewItem();
         }
 
@@ -101,7 +100,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void DeleteAttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            await attachmentItemViewModel.DeleteAttachment();
+            await attachmentItemViewModel.DeleteAttachment(Attachment);
             await ViewmodelEventHandler.Instance.Publish(new DeleteAttachmentEvent() { Attachment = Attachment });
         }
     }

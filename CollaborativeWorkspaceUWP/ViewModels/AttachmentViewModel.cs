@@ -69,7 +69,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public async void AddAttachmentToTask(StorageFile file)
+        public async Task AddAttachmentToTask(StorageFile file)
         {
             Attachment attachment = new Attachment();
             attachment.Name = file.Name;
@@ -87,6 +87,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 attachment.IsOnlyForAddition = true;
                 attachment.OriginalPath = file.Path;
                 CurrTask.Attachments.Add(attachment);
+                await AddAttachmentToLocalFolder(attachment, true);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
@@ -101,21 +102,37 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task AddAttachmentToLocalFolder(Attachment attachment)
         {
+            await AddAttachmentToLocalFolder(attachment, false);
+        }
+
+        public async Task AddAttachmentToLocalFolder(Attachment attachment, bool isTempItem)
+        {
             StorageFolder folder = null;
+            StorageFolder tempFolder = null;
             try
             {
                 StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
                 try
                 {
                     folder = await storageFolder.GetFolderAsync("Attachments");
+                    if(isTempItem)
+                    {
+                        tempFolder = await folder.GetFolderAsync("Temp");
+                        folder = tempFolder;
+                    }
                 }
                 catch(Exception ex)
                 {
 
                 }
-                if (folder == null)
+                if (folder == null && !isTempItem)
                 {
                     folder = await storageFolder.CreateFolderAsync("Attachments");
+                }
+                else if(tempFolder == null && isTempItem)
+                {
+                    tempFolder = await folder.CreateFolderAsync("Temp");
+                    folder = tempFolder;
                 }
                 StorageFile file = await folder.CreateFileAsync(attachment.Path);
                 var content = await FileIO.ReadBufferAsync(attachment.Content);
@@ -164,6 +181,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 attachment.CommentId = commentId;
                 Attachment temp = await AddAttachment(attachment);
+                StorageFolder folder = ApplicationData.Current.LocalFolder;
+                folder = await folder.GetFolderAsync("Attachments");
+                folder = await folder.GetFolderAsync("Temp");
+                StorageFile tempFile = await folder.GetFileAsync(attachment.Path);
+                if(tempFile != null)
+                {
+                    await tempFile.DeleteAsync();
+                }
                 attachments.Add(temp);
             }
             ClearAttachmentList();
@@ -209,6 +234,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             if(CurrTask != null && !AdditionAllowedFromUI && IsOnlyForAddition && remAttachmentEvent.Attachment.TaskId == CurrTask.Id)
             {
                 CurrTask.Attachments.Remove(remAttachmentEvent.Attachment);
+                StorageFolder folder = ApplicationData.Current.LocalFolder;
+                folder = await folder.GetFolderAsync("Attachments");
+                folder = await folder.GetFolderAsync("Temp");
+                StorageFile file = await folder.GetFileAsync(remAttachmentEvent.Attachment.Path);
+                if(file != null)
+                {
+                    await file.DeleteAsync();
+                }
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
