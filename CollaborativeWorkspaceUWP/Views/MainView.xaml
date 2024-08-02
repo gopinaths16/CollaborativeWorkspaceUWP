@@ -68,6 +68,7 @@
                       ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
                       ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
                       SelectionChanged="SelectOrganizationCombobox_SelectionChanged"
+                      Width="100"
                       CornerRadius="2"/>
 
             <Button Name="ProjectViewBtn" 
