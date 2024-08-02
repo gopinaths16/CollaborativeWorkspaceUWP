@@ -17,7 +17,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <StackPanel Background="Transparent"
+    <Grid Background="Transparent"
                 PointerEntered="StackPanel_PointerEntered"
                 PointerExited="StackPanel_PointerExited"
                 GotFocus="StackPanel_GotFocus">
@@ -42,9 +42,16 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <Border x:Name="CommentBox" 
                 BorderThickness="1"
                 CornerRadius="15"
+                Grid.Row="0"
                 Margin="0, 20, 0, 20"
                 Background="{ThemeResource PrimaryBackground}"
                 Style="{StaticResource ReactiveBorder}">
@@ -66,7 +73,7 @@
                 <ScrollViewer Grid.Row="1" 
                               Grid.Column="0"
                               MaxHeight="80"
-                              Margin="5, 10, 15, 5">
+                              Margin="5, 10, 0, 5">
                     <TextBox Name="CommentTextBox"
                              Style="{StaticResource TextNoBackground}"
                              Text="{x:Bind commentViewModel.Comm.Message, Mode=TwoWay}"
@@ -101,16 +108,18 @@
 
         <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
                       ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
+                      Grid.Row="1"
                       Margin="10, 10, 0, 0"/>
 
         <StackPanel Name="NoAttachmentMessage"
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    Grid.Row="3"
                     Visibility="{x:Bind commentViewModel.CommentsForCurrTask, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
             <TextBlock Text="No Comments available"
                        Foreground="Gray"
                        FontSize="20"/>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Page>

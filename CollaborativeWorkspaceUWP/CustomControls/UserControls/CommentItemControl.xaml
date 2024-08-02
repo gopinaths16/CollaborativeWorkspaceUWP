@@ -45,6 +45,7 @@
                        FontSize="15"
                        VerticalAlignment="Top" />
             <local:AttachmentCotrol AllowAdditionFromUi="False"
+                                    IsOnlyForAddition="False"
                                     x:Name="CommentAttachmentDialog"
                                     Visibility="{x:Bind commentItemViewModel.Comment.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
 

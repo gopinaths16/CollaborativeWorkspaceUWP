@@ -174,6 +174,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
+            AttachmentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
+            AttachmentDialog.Visibility = Visibility.Visible;
             await AttachmentDialog.PickAndAddAttachment();
             TaskViewPivot.SelectedIndex = 2;
         }

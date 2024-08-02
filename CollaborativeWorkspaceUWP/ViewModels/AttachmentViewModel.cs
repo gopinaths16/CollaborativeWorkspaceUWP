@@ -208,7 +208,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if (CurrTask != null && addAttachmentEvent != null && addAttachmentEvent.Task.Id == CurrTask.Id && !IsOnlyForAddition)
             {
-                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0 && (addAttachmentEvent.Attachment.CommentId <= 0 || addAttachmentEvent.Attachment.CommentId == CommentId || AdditionAllowedFromUI))
+                if (addAttachmentEvent.Attachment != null && CurrTask.Attachments.Where(att => att.Id == addAttachmentEvent.Attachment.Id).Count() <= 0 && (addAttachmentEvent.Attachment.CommentId == CommentId || AdditionAllowedFromUI))
                 {
                     CurrTask.Attachments.Add(addAttachmentEvent.Attachment);
                 }

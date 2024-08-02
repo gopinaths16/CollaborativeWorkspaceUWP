@@ -307,9 +307,7 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <customusercontrol:CommentControl x:Name="CommentDialog" />
-                    </StackPanel>
+                    <customusercontrol:CommentControl x:Name="CommentDialog" />
                 </PivotItem>
                 
                 <PivotItem Name="AttachementsPivotItem">
