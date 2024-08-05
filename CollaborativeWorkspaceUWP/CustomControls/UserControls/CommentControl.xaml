@@ -22,7 +22,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <VisualStateManager.VisualStateGroups>
@@ -102,9 +101,7 @@
             </StackPanel>
         </Grid>
 
-        <ScrollViewer Background="{StaticResource SecondaryBackground}"
-                      VerticalAlignment="Stretch"
-                      Grid.Row="1">
+        <ScrollViewer Grid.Row="1">
             <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
                           ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
                           Margin="10, 10, 0, 0"/>
@@ -114,7 +111,7 @@
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Grid.Row="3"
+                    Grid.Row="1"
                     Visibility="{x:Bind commentViewModel.CommentsForCurrTask, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
             <TextBlock Text="No Comments available"
                        Foreground="Gray"
