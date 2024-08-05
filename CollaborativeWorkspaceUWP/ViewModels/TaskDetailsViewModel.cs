@@ -137,12 +137,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 NotifyPropertyChanged(nameof(CurrTask));
             }
 
-            var temp = PrevTask.SubTasks.Where(item => item.Id == task.ParentTaskId);
-            if(temp.Count() > 0)
+            if (PrevTask != null)
             {
-                foreach(UserTask t in temp)
+                var temp = PrevTask.SubTasks.Where(item => item.Id == task.ParentTaskId);
+                if (temp.Count() > 0)
                 {
-                    t.SubTasks.Add(task);
+                    foreach (UserTask t in temp)
+                    {
+                        t.SubTasks.Add(task);
+                    }
                 }
             }
         }
