@@ -232,30 +232,29 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid Name="ProjectTaskViewGrid"
-       Grid.Row="1"
-              
-                      Style="{StaticResource ProjectTaskView}">
+              Grid.Row="1"
+              Style="{StaticResource ProjectTaskView}">
 
 
             <SplitView Name="ProjectListSplitView"
-                               IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               DisplayMode="Inline"
-                               PaneBackground="Transparent">
+                       IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       DisplayMode="Inline"
+                       PaneBackground="Transparent">
 
                 <SplitView.Pane>
                     <StackPanel Grid.Row="0"
-                                        Grid.Column="0"
-                                        Margin="20, 0, 0, 0"
-                                        Name="ProjectListSplitViewPane">
+                                Grid.Column="0"
+                                Margin="20, 0, 0, 0"
+                                Name="ProjectListSplitViewPane">
 
                         <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
-                                                                           ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
-                                                                           ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
-                                                                           AllowAdditionToListView="True"
-                                                                           Margin="0, 30, 0, 0"
-                                                                           OnItemAddClick="AddProjectButton_ButtonClick"
-                                                                           ListViewItemClicked="ProjectListView_ItemClick"
-                                                                           MessageOnSourceEmpty="No Projects available"/>
+                                                                   ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
+                                                                   ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                                                   AllowAdditionToListView="True"
+                                                                   Margin="0, 30, 0, 0"
+                                                                   OnItemAddClick="AddProjectButton_ButtonClick"
+                                                                   ListViewItemClicked="ProjectListView_ItemClick"
+                                                                   MessageOnSourceEmpty="No Projects available"/>
 
                     </StackPanel>
                 </SplitView.Pane>
@@ -263,7 +262,7 @@
                 <SplitView.Content>
                     <Pivot x:Name="TaskTabView"
                            Margin="10, 0, 0, 0"
-       Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
+                           Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
                         <Pivot.RightHeader>
                             <StackPanel Style="{StaticResource PivotRightHeader}">
                             </StackPanel>
@@ -273,16 +272,16 @@
                             <PivotItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon FontFamily="Segoe Fluent Icons"
-                          Glyph="&#xe8fd;"
-                          FontSize="12"
-                          VerticalAlignment="Center"
-                          FontWeight="Bold"/>
+                                              Glyph="&#xe8fd;"
+                                              FontSize="12"
+                                              VerticalAlignment="Center"
+                                              FontWeight="Bold"/>
 
                                     <TextBlock Text="List View"
-                           FontSize="12"
-                           Margin="5, 0, 0, 0"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"/>
+                                               FontSize="12"
+                                               Margin="5, 0, 0, 0"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
                                 </StackPanel>
                             </PivotItem.Header>
                             <Grid x:Name="TaskViewByProject">
@@ -377,28 +376,25 @@
                                                                           OnTaskClear="TaskDetailsView_OnTaskClear"/>
                                 </Border>
 
-
-
                                 <!--#endregion-->
 
                             </Grid>
-
                         </PivotItem>
 
                         <PivotItem>
                             <PivotItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon FontFamily="Segoe Fluent Icons"
-                          Glyph="&#xf0e3;"
-                          FontSize="12"
-                          VerticalAlignment="Center"
-                          FontWeight="Bold"/>
+                                              Glyph="&#xf0e3;"
+                                              FontSize="12"
+                                              VerticalAlignment="Center"
+                                              FontWeight="Bold"/>
 
                                     <TextBlock Text="Board View"
-                           FontSize="12"
-                           Margin="5, 0, 0, 0"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"/>
+                                               FontSize="12"
+                                               Margin="5, 0, 0, 0"
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
                                 </StackPanel>
                             </PivotItem.Header>
                         </PivotItem>
