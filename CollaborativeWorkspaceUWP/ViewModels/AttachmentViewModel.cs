@@ -125,7 +125,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 {
 
                 }
-                if (folder == null && !isTempItem)
+                if (folder == null)
                 {
                     folder = await storageFolder.CreateFolderAsync("Attachments");
                 }

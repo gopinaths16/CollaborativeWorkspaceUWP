@@ -54,11 +54,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
+            Grid.SetColumnSpan(AttachmentName, 2);
             VisualStateManager.GoToState(this, "PointerOver", true);
         }
 
         private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
         {
+            Grid.SetColumnSpan(AttachmentName, 4);
             VisualStateManager.GoToState(this, "Normal", true);
         }
 

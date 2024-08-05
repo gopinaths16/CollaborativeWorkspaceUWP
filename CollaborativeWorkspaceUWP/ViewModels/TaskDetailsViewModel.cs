@@ -136,6 +136,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 CurrTask.SubTasks.Add(task);
                 NotifyPropertyChanged(nameof(CurrTask));
             }
+
+            if (PrevTask != null)
+            {
+                var temp = PrevTask.SubTasks.Where(item => item.Id == task.ParentTaskId);
+                if (temp.Count() > 0)
+                {
+                    foreach (UserTask t in temp)
+                    {
+                        t.SubTasks.Add(task);
+                    }
+                }
+            }
         }
 
         public void SetTaskUpdatedContext()

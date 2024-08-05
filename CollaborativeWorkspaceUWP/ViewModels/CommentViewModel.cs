@@ -18,7 +18,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public UserTask CurrTask { get; set; }
         public Comment Comm { get; set; }
-        public ObservableCollection<Comment> CommentsForCurrTask { get; set; }
+        public ObservableCollection<Comment> CommentsForCurrTask { 
+            get; 
+            set; 
+        }
 
         public CommentViewModel()
         {

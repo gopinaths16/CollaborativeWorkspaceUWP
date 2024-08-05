@@ -105,9 +105,18 @@
     </UserControl.Resources>
 
     <Grid Style="{StaticResource TaskDetailsViewGridDisplay}">
-        <StackPanel Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
 
-            <Grid HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Grid HorizontalAlignment="Stretch"
+                  Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -189,7 +198,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid>
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -269,21 +278,25 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
                                                                        Content="Add Sub Task"
                                                                        Click="OpenAddSubTaskWindowButton_ButtonClick"
-                                                                       Grid.Row="1"
+                                                                       Grid.Row="0"
                                                                        Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
                                                                        HorizontalContentAlignment="Stretch"
                                                                        IsEnabled="True"
                                                                        Margin="0, 10, 0, 5"/>
 
                         <customusercontrol:AddTaskControl Visibility="{x:Bind taskDetailsViewModel.IsAddSubTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                          Grid.Row="1"
                                                           x:Name="AddSubTaskDialog"
                                                           CurrProjectId="{x:Bind taskDetailsViewModel.CurrTask.ProjectId, Mode=OneWay}"
                                                           ParentTaskId="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                                                          Grid.Row="0"
                                                           CancelButtonClick="AddSubTaskDialog_CancelButtonClick"
                                                           AddTaskButtonClick="AddSubTaskFromDialogButton_ButtonClick"/>
 
@@ -291,21 +304,21 @@
                                   ItemsSource="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource SubTaskListViewDataTemplate}"
                                   Margin="0, 20, 0, 0"
-                                  Grid.Row="2"
                                   IsItemClickEnabled="True"
                                   ItemClick="SubTaskListView_ItemClick"
-                                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}" />
+                                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
+                                  Grid.Row="1"/>
                         <StackPanel Name="NoSubtasksMessage"
-                                    Grid.Row="2"
                                     Margin="0, 20, 0, 0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Visibility="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                                    Visibility="{x:Bind taskDetailsViewModel.CurrTask.SubTasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}"
+                                    Grid.Row="1">
                             <TextBlock Text="No Sub tasks available"
                                        Foreground="Gray"
                                        FontSize="20"/>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </PivotItem>
 
                 <PivotItem Name="CommentsPivotItem">
@@ -324,9 +337,7 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <customusercontrol:CommentControl x:Name="CommentDialog" />
-                    </StackPanel>
+                    <customusercontrol:CommentControl x:Name="CommentDialog" />
                 </PivotItem>
                 
                 <PivotItem Name="AttachementsPivotItem">
@@ -345,19 +356,16 @@
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </PivotItem.Header>
-                    <Grid HorizontalAlignment="Stretch" 
-                          VerticalAlignment="Stretch">
-                        <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
-                                                            Margin="0, 10, 0, 0"
-                                                            AllowAdditionFromUi="True"
-                                                            IsOnlyForAddition="False"/>
-                    </Grid>
+                    <customusercontrol:AttachmentCotrol x:Name="AttachmentDialog"
+                                                        Margin="0, 10, 0, 0"
+                                                        AllowAdditionFromUi="True"
+                                                        IsOnlyForAddition="False"/>
                 </PivotItem>
             </Pivot>
-        </StackPanel>
+        </Grid>
 
         <StackPanel Name="NoTaskSelectedMessage"
-                    Grid.Row="2"
+                    Grid.Row="0"
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"

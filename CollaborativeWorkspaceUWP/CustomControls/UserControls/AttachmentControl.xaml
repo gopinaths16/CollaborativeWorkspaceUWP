@@ -62,8 +62,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
@@ -87,7 +86,7 @@
                   Visibility="{x:Bind attachmentViewModel.CurrTask.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"
                   ItemClick="AttachmentListView_ItemClick"/>
         <StackPanel Name="NoAttachmentMessage"
-                    Grid.Row="2"
+                    Grid.Row="1"
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
