@@ -26,12 +26,12 @@ namespace CollaborativeWorkspaceUWP.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HomeView : Page
+    public sealed partial class MainView : Page
     {
 
         MainViewModel mainViewModel;
 
-        public HomeView()
+        public MainView()
         {
             this.InitializeComponent();
 

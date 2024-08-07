@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Auth.Providers;
+using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,21 @@ namespace CollaborativeWorkspaceUWP.Auth.Managers
         {
             authProviderFactory = new AuthProviderFactory();
             authProvider = authProviderFactory.GetAuthProvider(mode);
+        }
+
+        public User Login(User user)
+        {
+            return authProvider.Login(user);
+        }
+
+        public User Signup(User user)
+        {
+            return authProvider.Signup(user);
+        }
+
+        public bool DoesUserExist(string username)
+        {
+            return authProvider.DoesUserExist(username);
         }
     }
 }

@@ -155,6 +155,9 @@
     <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\UserOnboardControl.xaml.cs">
+      <DependentUpon>UserOnboardControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DAL\AttachmentDataHandler.cs" />
     <Compile Include="DAL\CommentDataHandler.cs" />
     <Compile Include="DAL\OrganizationDataHandler.cs" />
@@ -177,6 +180,7 @@
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Teamspace.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\CommentDBPersistenceObject.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
     <Compile Include="ViewModels\TaskListViewModel.cs" />
+    <Compile Include="ViewModels\UserOnboardViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -253,6 +258,9 @@
     </Compile>
     <Compile Include="Views\TeamspaceView.xaml.cs">
       <DependentUpon>TeamspaceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserOnboardView.xaml.cs">
+      <DependentUpon>UserOnboardView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +320,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\UserControls\UserOnboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\TableStyleDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -357,6 +369,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TeamspaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserOnboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
