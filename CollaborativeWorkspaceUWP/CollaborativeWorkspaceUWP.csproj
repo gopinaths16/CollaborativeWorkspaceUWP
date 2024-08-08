@@ -128,6 +128,9 @@
     <Compile Include="Auth\Providers\LocalAuthProvider.cs" />
     <Compile Include="CustomControls\Templates\ColorCodedCheckBox.cs" />
     <Compile Include="CustomControls\Templates\CustomIconButtonControl.cs" />
+    <Compile Include="CustomControls\UserControls\AccountDetailsControl.xaml.cs">
+      <DependentUpon>AccountDetailsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
       <DependentUpon>AttachmentControl.xaml</DependentUpon>
     </Compile>
@@ -283,6 +286,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CustomControls\UserControls\AccountDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\AttachmentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
