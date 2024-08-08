@@ -1,0 +1,177 @@
+﻿<UserControl
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.UserOnboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Style TargetType="RadioButton" x:Name="CustomRadioButton">
+            <Setter Property="Margin" Value="5, 5, 0, 0" />
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="4,4,4,4"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="FocusVisualPrimaryBrush" Value="Transparent" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Unchecked" />
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Radiobackground"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0.5"
+                                                             Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="Radiobackground"
+                                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                                            To="{StaticResource SystemAccentColor}" 
+                                                            Duration="0:0:0.2" />
+                                            <ColorAnimation Storyboard.TargetName="RadioContent"
+                                                            Storyboard.TargetProperty="(Panel.Foreground).(SolidColorBrush.Color)"
+                                                            To="AliceBlue" 
+                                                            Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border Background="{TemplateBinding Background}"
+                                    Name="Radiobackground"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Margin="{TemplateBinding Margin}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  Name="RadioContent"
+                                                  ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  Width="{TemplateBinding Width}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="{ThemeResource SecondaryBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <RadioButton Name="LoginCheckBox"
+                     Content="Login"
+                     Style="{StaticResource CustomRadioButton}"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     IsChecked="True"
+                     Checked="LoginCheckBox_Checked"/>
+        <RadioButton Name="SignupCheckBox"
+                     Content="Signup"
+                     Style="{StaticResource CustomRadioButton}"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     IsChecked="False"
+                     Checked="SignupCheckBox_Checked"/>
+        <controls:InfoBar Name="ErrorMessage" 
+                          IsOpen="False"
+                          Severity="Error"
+                          Title="Error"
+                          Message="User Already Exists"
+                          Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="6"
+                          Margin="10, 10, 10, 0"/>
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="6"
+                    Margin="20, 0, 20, 0"
+                    VerticalAlignment="Center">
+            <TextBox Name="UserName"
+                     PlaceholderText="Username"
+                     Grid.Row="1"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="6"
+                     Margin="0, 20, 0, 20"
+                     TextChanged="UserName_TextChanged"/>
+            <PasswordBox Name="Password"
+                         PlaceholderText="Password"
+                         Grid.Row="2"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="6"
+                         Margin="0, 20, 0, 20"
+                         PasswordChanged="Password_PasswordChanged"/>
+            <PasswordBox Name="ConfirmPassword"
+                         Visibility="{x:Bind userOnboardViewModel.IsLoginContext, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                         PlaceholderText="Confirm Password"
+                         Grid.Row="3"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="6"
+                         Margin="0, 20, 0, 20"
+                         PasswordChanged="Password_PasswordChanged"/>
+            <TextBox Name="DisplayName"
+                     Visibility="{x:Bind userOnboardViewModel.IsLoginContext, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                     PlaceholderText="Display name"
+                     Grid.Row="4"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="6"
+                     Margin="0, 20, 0, 20"
+                     TextChanged="UserName_TextChanged"/>
+        </StackPanel>
+        <Button Name="ResetButton"
+                Content="Reset"
+                FontSize="18"
+                Grid.Row="3"
+                Grid.Column="4"
+                Margin="0, 0, 5, 5"
+                Click="ResetButton_Click"
+                Style="{StaticResource ButtonNoBackground}"/>
+        <Button Name="LoginButton"
+                Content="Login"
+                FontSize="18"
+                Grid.Row="3"
+                Grid.Column="5"
+                Visibility="{x:Bind userOnboardViewModel.IsLoginContext, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                Margin="0, 0, 10, 10"
+                Click="LoginButton_Click"
+                Background="{StaticResource SystemAccentColor}"
+                IsEnabled="False"/>
+        <Button Name="SignupButton"
+                Content="Singup"
+                FontSize="18"
+                Grid.Row="3"
+                Grid.Column="5"
+                Visibility="{x:Bind userOnboardViewModel.IsLoginContext, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                Margin="0, 0, 10, 10"
+                Click="SignupButton_Click"
+                Background="{StaticResource SystemAccentColor}"
+                IsEnabled="False"/>
+    </Grid>
+</UserControl>

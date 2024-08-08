@@ -38,6 +38,12 @@ namespace CollaborativeWorkspaceUWP.Models
             set { ownerId = value; }
         }
 
+        public User Owner
+        {
+            get;
+            set;
+        }
+
         public ObservableCollection<Attachment> Attachments { get; set; }
 
         public Comment()

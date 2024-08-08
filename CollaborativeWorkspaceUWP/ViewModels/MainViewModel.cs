@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.DAL;
+﻿using CollaborativeWorkspaceUWP.Auth.Handlers;
+using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void AddNewOrganization(string orgName)
         {
-            Organization organization = new Organization() { Name = orgName, OwnerId = 0 };
+            Organization organization = new Organization() { Name = orgName, OwnerId = UserSessionHandler.Instance.CurrUser.Id };
             organization = organizationDataHandler.AddOrganization(organization);
             Organizations.Add(organization);
             NotifyPropertyChanged(nameof(Organizations));

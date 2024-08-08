@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Models;
+﻿using CollaborativeWorkspaceUWP.Auth.Handlers;
+using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             task.Status = ((Status)Status.SelectedItem).Id;
             task.Priority = ((Priority)Priority.SelectedItem).Id;
             task.ProjectId = CurrProjectId;
-            task.OwnerId = 0;
+            task.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
             task.AssigneeId = 0;
             task.ParentTaskId = ParentTaskId > 0 ? ParentTaskId : -1;
             await addTaskViewModel.AddTask(task);

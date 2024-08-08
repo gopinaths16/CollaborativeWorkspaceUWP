@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
+﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,9 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
 {
     public interface IUserPersistence : IPersistenceObject
     {
+        void SetAddUserContext(User user);
+        void SetGetUserContext(string username, string password);
+        void SetGetUserContext(string username);
+        User GetUser();
     }
 }
