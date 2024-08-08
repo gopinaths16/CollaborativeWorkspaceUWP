@@ -50,54 +50,54 @@
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Style="{StaticResource TitleBar}"
-                    Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <ComboBox Name="SelectOrganizationCombobox"
+                  Margin="10"
+                  ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
+                  ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
+                  SelectionChanged="SelectOrganizationCombobox_SelectionChanged"
+                  Width="100"
+                  Style="{StaticResource CustomComboBox}"
+                  Background="{StaticResource SystemAccentColor}"
+                  CornerRadius="2"
+                  Grid.Row="0"
+                  Grid.Column="0"/>
 
-            <ComboBox Name="SelectOrganizationCombobox"
-                      Margin="0, 10, 10, 10"
-                      ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
-                      ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
-                      SelectionChanged="SelectOrganizationCombobox_SelectionChanged"
-                      Width="100"
-                      Style="{StaticResource CustomComboBox}"
-                      Background="{StaticResource SystemAccentColor}"
-                      CornerRadius="2"/>
-
-            <Button Name="ProjectViewBtn" 
-                    Style="{StaticResource NavigationButtonStyle}"
-                    FontFamily="Segoe Fluent Icons"
-                    Content="&#xE70B;"
-                    Click="ProjectViewButton_Click"
-                    Visibility="Collapsed"/>
-            
-            <Button Name="TaskViewBtn" 
-                    Style="{StaticResource NavigationButtonStyle}"
-                    FontFamily="Segoe Fluent Icons"
-                    Content="&#xE73A;"
-                    Click="TaskViewButton_Click"
-                    Visibility="Collapsed"/>
-            
-            <Button Name="SprintViewBtn" 
-                    Style="{StaticResource NavigationButtonStyle}"
-                    FontFamily="Segoe Fluent Icons"
-                    Content="&#xE804;"
-                    Click="SprintViewButton_Click"
-                    Visibility="Collapsed"/>
-
-            <TextBlock x:Name="AppTitleTextBlock"
-                       Text="CWP" 
-                       Style="{StaticResource CaptionTextBlockStyle}" 
-                       Grid.Column="1"
-                       VerticalAlignment="Center"/>
-        </StackPanel>
+        <NavigationView x:Name="NavigationBar" 
+                        PaneDisplayMode="Top"
+                        SelectionFollowsFocus="Enabled" 
+                        IsBackButtonVisible="Collapsed"
+                        AlwaysShowHeader="False"
+                        IsSettingsVisible="False"
+                        ItemInvoked="NavigationBar_ItemInvoked"
+                        Grid.Row="0"
+                        Grid.Column="1">
+            <NavigationView.MenuItems>
+                <NavigationViewItem  Content="Tasks"
+                                     Name="TaskViewNavigationItem" />
+                <NavigationViewItem  Content="Sprints"
+                                     Name="SprintViewNavigationItem" />
+            </NavigationView.MenuItems>
+            <NavigationView.PaneFooter>
+                <PersonPicture Name="AccountDetailsNavigationItem"
+                               DisplayName="{Binding CurrUser.DisplayName}"
+                               Height="30"
+                               Margin="0, 2, 10, 0"
+                               Tapped="AccountDetailsNavigationItem_Tapped"/>
+            </NavigationView.PaneFooter>
+        </NavigationView>
 
         <Frame Name="HomeViewFrame" 
                Grid.Row="1"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
                Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
                Visibility="{x:Bind mainViewModel.CurrOrganization, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"/>
 
@@ -192,6 +192,11 @@
         </ContentDialog>
 
         <!--#endregion-->
+
+        <Popup Name="AccountDetailsPopup"
+               IsLightDismissEnabled="True">
+            <customusercontrol:AccountDetailsControl />
+        </Popup>
         
     </Grid>
 </Page>

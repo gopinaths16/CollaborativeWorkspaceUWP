@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using CollaborativeWorkspaceUWP.Models;
+using static System.Net.WebRequestMethods;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,7 +48,8 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 mainViewModel.SetCurrOrganization(mainViewModel.Organizations[0]);
                 SelectOrganizationCombobox.SelectedItem = mainViewModel.Organizations[0];
-                HomeViewFrame.Navigate(typeof(TaskView), this.DataContext);
+                NavigationBar.SelectedItem = TaskViewNavigationItem;
+                HomeViewFrame.Navigate(typeof(TaskView), this.DataContext, new SuppressNavigationTransitionInfo());
             }
             else
             {
@@ -98,6 +101,25 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             int selectedOrgIndex = SelectOrganizationCombobox.SelectedIndex;
             mainViewModel.SetCurrOrganization(mainViewModel.Organizations[selectedOrgIndex]);
+        }
+
+        private void NavigationBar_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (NavigationBar.SelectedItem == TaskViewNavigationItem)
+            {
+                HomeViewFrame.Navigate(typeof(TaskView), this.DataContext, new SuppressNavigationTransitionInfo());
+            }
+            else if(NavigationBar.SelectedItem == SprintViewNavigationItem)
+            {
+                HomeViewFrame.Navigate(typeof(SprintView), this.DataContext, new SuppressNavigationTransitionInfo());
+            }
+        }
+
+        private void AccountDetailsNavigationItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AccountDetailsPopup.HorizontalOffset = ((PersonPicture)sender).TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0)).X - ((PersonPicture)sender).ActualWidth;
+            AccountDetailsPopup.VerticalOffset = ((PersonPicture)sender).TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0)).Y + ((PersonPicture)sender).ActualHeight;
+            AccountDetailsPopup.IsOpen = true;
         }
     }
 }

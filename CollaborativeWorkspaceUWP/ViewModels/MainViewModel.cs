@@ -47,6 +47,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { currOrganization = value; }
         }
 
+        public User CurrUser
+        {
+            get { return UserSessionHandler.Instance.CurrUser; }
+        }
+
         public MainViewModel()
         {
             organizationDataHandler = new OrganizationDataHandler();
