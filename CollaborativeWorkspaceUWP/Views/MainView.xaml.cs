@@ -36,23 +36,9 @@ namespace CollaborativeWorkspaceUWP.Views
             this.InitializeComponent();
 
             mainViewModel = new MainViewModel();
-
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = false;
             this.DataContext = mainViewModel;
-
-            CoreApplicationViewTitleBar coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationView.GetForCurrentView().TitleBar.BackgroundColor = Colors.Transparent;
-            ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = Colors.Transparent;
-            titleBar.ForegroundColor = ((SolidColorBrush)Application.Current.Resources["ApplicationForegroundThemeBrush"]).Color;
-            titleBar.InactiveBackgroundColor = Colors.Transparent;
-            titleBar.InactiveForegroundColor = ((SolidColorBrush)Application.Current.Resources["ApplicationForegroundThemeBrush"]).Color;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonForegroundColor = ((SolidColorBrush)Application.Current.Resources["ApplicationForegroundThemeBrush"]).Color;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveForegroundColor = ((SolidColorBrush)Application.Current.Resources["ApplicationForegroundThemeBrush"]).Color;
-            Window.Current.SetTitleBar(TitleBar);
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {

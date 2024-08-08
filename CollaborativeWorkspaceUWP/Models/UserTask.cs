@@ -82,6 +82,8 @@ namespace CollaborativeWorkspaceUWP.Models
             }
         }
 
+        public User Owner { get; set; }
+
         public bool IsCompleted
         {
             get { return isCompleted; }

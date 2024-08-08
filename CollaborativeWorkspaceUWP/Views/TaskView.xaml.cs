@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Hosting;
 using System.Diagnostics;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using CollaborativeWorkspaceUWP.Auth.Handlers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -38,7 +39,6 @@ namespace CollaborativeWorkspaceUWP.Views
         ProjectListViewModel projectListViewModel;
         AddProjectViewModel addProjectViewModel;
         AddTaskViewModel addTaskViewModel;
-        AddSubTaskViewModel addSubTaskViewModel;
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
 
@@ -53,7 +53,6 @@ namespace CollaborativeWorkspaceUWP.Views
             taskListViewModel = new TaskListViewModel();
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
-            addSubTaskViewModel = new AddSubTaskViewModel();
             currTeamspaceViewModel = new CurrentTeamspaceViewModel();
         }
 
@@ -159,6 +158,7 @@ namespace CollaborativeWorkspaceUWP.Views
             project.Status = projectStatus != null ? projectStatus.Id : 1;
             project.Priority = projectPriority != null ? projectPriority.Id : 1;
             project.TeamsapceId = currTeamspaceViewModel.CurrTeamspace.Id;
+            project.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
 
             await addProjectViewModel.AddProject(project);
 
@@ -187,7 +187,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
         {
-            Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = 0 };
+            Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = UserSessionHandler.Instance.CurrUser.Id };
             currTeamspaceViewModel.CurrTeamspace = mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
             projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
             if(projectListViewModel.Projects.Count > 0)

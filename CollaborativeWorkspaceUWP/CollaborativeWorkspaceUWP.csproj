@@ -227,7 +227,6 @@
     <Compile Include="ViewModels\AttachmentItemViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
-    <Compile Include="ViewModels\AddSubTaskViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CommentItemViewModel.cs" />

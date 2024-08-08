@@ -26,7 +26,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
         public void SetGetAllCommentsForCurrentTaskContext(long taskId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT ID, MESSAGE, TASK_ID, OWNER_ID FROM CW_COMMENT_DETAILS WHERE TASK_ID=@TaskId";
+            command.CommandText = @"SELECT * FROM CW_COMMENT_DETAILS AS CCD JOIN CW_USER_DETAILS AS CUD ON CCD.OWNER_ID=CUD.ID WHERE CCD.TASK_ID=@TaskId";
             command.Parameters.AddWithValue("@TaskId", taskId);
             Query = command;
         }
@@ -77,6 +77,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                         comment.Message = Reader.GetString(1);
                         comment.TaskId = Reader.GetInt64(2);
                         comment.OwnerId = Reader.GetInt64(3);
+                        comment.Owner = new User() { Id = Reader.GetInt64(4), Username = Reader.GetString(5), DisplayName = Reader.GetString(7) };
                         result.Add(comment);
                     }
                 }

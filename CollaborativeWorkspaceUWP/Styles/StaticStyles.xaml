@@ -19,12 +19,6 @@
     <converters:CollectionToBoolConverter x:Key="CollectionToBoolConverter" />
     <converters:CollectionToBoolConverterInverse x:Key="CollectionToBoolConverterInverse" />
 
-    <Style TargetType="StackPanel" x:Name="TitleBar">
-        <Setter Property="Padding" Value="10, 0, 0, 0"/>
-        <Setter Property="Orientation" Value="Horizontal" />
-        <Setter Property="Background" Value="Transparent" />
-    </Style>
-
     <Style TargetType="TextBlock" x:Name="TaskViewTitle">
         <Setter Property="Text" Value="Task view"/>
         <Setter Property="FontSize" Value="30" />

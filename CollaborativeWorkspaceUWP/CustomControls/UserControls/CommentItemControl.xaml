@@ -25,10 +25,11 @@
                        Grid.RowSpan="2"
                        Height="50"
                        Width="50"
+                       DisplayName="{x:Bind commentItemViewModel.Comment.Owner.DisplayName, Mode=OneWay}"
                        VerticalAlignment="Top"/>
 
         <TextBlock x:Name="UserName"
-                   Text="User"
+                   Text="{x:Bind commentItemViewModel.Comment.Owner.DisplayName, Mode=OneWay}"
                    FontSize="10"
                    FontWeight="Bold"
                    Grid.Row="0"

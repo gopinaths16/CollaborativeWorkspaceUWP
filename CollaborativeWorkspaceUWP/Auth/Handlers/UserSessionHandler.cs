@@ -13,7 +13,6 @@ namespace CollaborativeWorkspaceUWP.Auth.Handlers
     public class UserSessionHandler
     {
         private static readonly Lazy<UserSessionHandler> _instance = new Lazy<UserSessionHandler>(() => new UserSessionHandler());
-        private static User user;
         private IAuthManager authManager;
 
         private AuthManagerFactory authManagerFactory;
@@ -26,31 +25,30 @@ namespace CollaborativeWorkspaceUWP.Auth.Handlers
             authManager = authManagerFactory.GetAuthManager(AuthManagerMode.WINDOWS, AuthProviderMode.LOCAL);
         }
 
-        public bool IsAuthenticated => user != null;
+        public bool IsAuthenticated
+        {
+            get { return authManager.IsAuthenticated(); }
+        }
+
+        public User CurrUser
+        {
+            get { return authManager.GetAuthenticatedUser(); }
+        }
 
         public bool Login(User args)
         {
-            User temp = authManager.Login(args);
-            if(temp != null)
-            {
-                user = temp;
-                return true;
-            }
-            return false;
+            authManager.Login(args);
+            return IsAuthenticated;
         }
 
         public bool Signup(User args)
         {
-            if (!authManager.DoesUserExist(args.Username))
+            if(authManager.DoesUserExist(args))
             {
-                User temp = authManager.Signup(args);
-                if (temp != null)
-                {
-                    user = temp;
-                    return true;
-                }
+                return false;
             }
-            return false;
+            authManager.Signup(args);
+            return IsAuthenticated;
         }
     }
 }

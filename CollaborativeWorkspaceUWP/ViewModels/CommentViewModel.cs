@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.DAL;
+﻿using CollaborativeWorkspaceUWP.Auth.Handlers;
+using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
@@ -41,6 +42,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public Comment AddCommentToCurrTask()
         {
             Comm.TaskId = CurrTask.Id;
+            Comm.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
             Comment comment = commentDataHandler.AddComment(Comm);
             comment.Attachments = Comm.Attachments;
             Comm = new Comment();
