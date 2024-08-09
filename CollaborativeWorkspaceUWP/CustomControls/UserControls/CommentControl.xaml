@@ -72,9 +72,11 @@
                 <TextBox Name="CommentTextBox"
                          Style="{StaticResource TextNoBackground}"
                          Text="{x:Bind commentViewModel.Comm.Message, Mode=TwoWay}"
+                         PlaceholderForeground="Gray"
                          HorizontalAlignment="Stretch"
                          PlaceholderText="Comment"
                          GotFocus="StackPanel_GotFocus"
+                         TextChanged="CommentTextBox_TextChanged"
                          FontSize="12"/>
             </ScrollViewer>
             <StackPanel Orientation="Horizontal"
@@ -96,6 +98,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Click="AddCommentButton_Click"
+                        IsEnabled="False"
                         Style="{StaticResource ButtonNoBackground}"
                         Grid.Column="1"/>
             </StackPanel>

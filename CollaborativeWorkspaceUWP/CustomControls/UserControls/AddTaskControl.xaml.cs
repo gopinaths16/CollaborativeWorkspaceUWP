@@ -108,6 +108,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             ClearAllFields();
         }
 
+        public void Focus()
+        {
+            Name.Focus(FocusState.Programmatic);
+        }
+
         public void ClearAllFields()
         {
             Name.Text = string.Empty;

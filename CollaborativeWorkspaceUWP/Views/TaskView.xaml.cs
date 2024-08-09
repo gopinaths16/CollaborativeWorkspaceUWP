@@ -145,6 +145,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private void OpenAddTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             taskListViewModel.IsAddTaskContextTriggered = true;
+            AddTaskDialog.Focus();
         }
 
         private async void AddProjectFromDialogButton_ButtonClick(object sender, RoutedEventArgs e)

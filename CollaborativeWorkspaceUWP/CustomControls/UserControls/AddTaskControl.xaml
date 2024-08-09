@@ -50,6 +50,7 @@
                  Margin="10, 5, 0, 10"
                  FontWeight="Bold"
                  MaxLength="300"
+                 PlaceholderForeground="Gray"
                  TextChanged="AddTaskDialogTaskName_TextChanged"/>
 
         <ScrollViewer HorizontalScrollMode="Disabled" 
@@ -60,6 +61,7 @@
             <TextBox Name="Description"
                      PlaceholderText="Description"
                      Margin="0, 0, 0, 10"
+                     PlaceholderForeground="Gray"
                      Style="{StaticResource TextNoBackground}"/>
         </ScrollViewer>
         

@@ -20,6 +20,7 @@ using Windows.UI.Core;
 using CollaborativeWorkspaceUWP.Models;
 using static System.Net.WebRequestMethods;
 using Windows.UI.Xaml.Media.Animation;
+using System.Xml.Linq;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -117,8 +118,12 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AccountDetailsNavigationItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            AccountDetailsPopup.HorizontalOffset = ((PersonPicture)sender).TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0)).X - ((PersonPicture)sender).ActualWidth;
-            AccountDetailsPopup.VerticalOffset = ((PersonPicture)sender).TransformToVisual(Window.Current.Content).TransformPoint(new Point(0, 0)).Y + ((PersonPicture)sender).ActualHeight;
+            UIElement element = sender as UIElement;
+            GeneralTransform transform = element.TransformToVisual(Window.Current.Content);
+            Point point = transform.TransformPoint(new Point(0, 0));
+
+            AccountDetailsPopup.HorizontalOffset = point.X + element.RenderSize.Width;
+            AccountDetailsPopup.VerticalOffset = point.Y;
             AccountDetailsPopup.IsOpen = true;
         }
     }

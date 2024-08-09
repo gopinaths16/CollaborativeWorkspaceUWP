@@ -9,7 +9,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        <TextBlock Text="Account Details User Control" />
+    <Grid Background="{ThemeResource SecondaryBackground}"
+          BorderThickness="0.5">
+        <TextBlock Text="Account Details User Control"
+                   TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

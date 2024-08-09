@@ -39,9 +39,10 @@
 
         <DataTemplate x:Key="AttachmentListTemplate"
                       x:DataType="models:Attachment">
-            <local:AttachmentItemControl Attachment="{Binding}"
-                                         IsOnlyForAddition="{Binding IsOnlyForAddition}"
-                                         Width="250"/>
+            <Border CornerRadius="5">
+                <local:AttachmentItemControl Attachment="{Binding}"
+                                             Width="250"/>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="SecondaryAttachmentListTemplate"
@@ -49,8 +50,7 @@
             <Border BorderBrush="Gray"
                     BorderThickness="0.5"
                     CornerRadius="10">
-                <local:SecondaryAttachmentItemControl Attachment="{Binding}"
-                                      IsOnlyForAddition="{Binding IsOnlyForAddition}"/>
+                <local:SecondaryAttachmentItemControl Attachment="{Binding}"/>
             </Border>
         </DataTemplate>
 

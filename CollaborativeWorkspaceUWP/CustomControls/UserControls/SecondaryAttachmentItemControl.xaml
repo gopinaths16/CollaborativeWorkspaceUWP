@@ -14,7 +14,6 @@
           HorizontalAlignment="Stretch"
           Height="100"
           Width="100"
-          Padding="10, 15, 10, 15"
           Background="{ThemeResource PrimaryBackground}"
           BorderThickness="0.5"
           BorderBrush="Gray"
@@ -54,17 +53,16 @@
                   Grid.ColumnSpan="2"
                   Visibility="Collapsed"/>
         <Image x:Name="PreviewImage"
-               Height="40"
-               Width="40"
                Grid.Row="0"
+               Stretch="UniformToFill"
                Grid.RowSpan="2"
                Grid.Column="0"
                Grid.ColumnSpan="2"
-               Margin="0,0,5,0"
                Visibility="Collapsed" />
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0"
                     Grid.Column="1"
+                    Margin="0, 5, 3, 0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Name="AttachmentOptions"
@@ -76,11 +74,13 @@
                     Content="&#xe8bb;"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Style="{StaticResource ButtonNoBackground}"
+                    Style="{StaticResource ButtonNoBackgroundDormant}"
                     Tag="{x:Bind Attachment}"
                     Foreground="Gray"
                     Click="DeleteAttachmentButton_Click"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    Background="Transparent"
+                    Padding="5"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -93,6 +93,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void OpenAddSubTaskWindowButton_ButtonClick(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.IsAddSubTaskContextTriggered = true;
+            AddSubTaskDialog.Focus();
         }
 
         private void AddSubTaskDialog_CancelButtonClick(object sender, RoutedEventArgs e)

@@ -195,7 +195,12 @@
 
         <Popup Name="AccountDetailsPopup"
                IsLightDismissEnabled="True">
-            <customusercontrol:AccountDetailsControl />
+            <Border BorderThickness="0.5"
+                    BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
+                    Height="200"
+                    Width="100">
+                <customusercontrol:AccountDetailsControl />
+            </Border>
         </Popup>
         
     </Grid>

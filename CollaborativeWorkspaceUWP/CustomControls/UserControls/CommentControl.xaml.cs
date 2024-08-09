@@ -88,5 +88,17 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             CommentAttachments.SetAttachments(new ObservableCollection<Attachment>());
             CommentAttachments.SetCommentId(comment.Id);
         }
+
+        private void CommentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(CommentTextBox.Text != string.Empty)
+            {
+                AddCommentButton.IsEnabled = true;
+            }
+            else
+            {
+                AddCommentButton.IsEnabled = false;
+            }
+        }
     }
 }

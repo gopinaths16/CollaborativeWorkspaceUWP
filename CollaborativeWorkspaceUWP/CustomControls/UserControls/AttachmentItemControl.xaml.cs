@@ -36,15 +36,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(AttachmentProperty, value); }
         }
 
-        public bool IsOnlyForAddition
-        {
-            get { return (bool)GetValue(IsOnlyForAdditionProperty); }
-            set { SetValue(IsOnlyForAdditionProperty, value); }
-        }
-
         public static readonly DependencyProperty AttachmentProperty = DependencyProperty.Register("Attachment", typeof(Attachment), typeof(AttachmentItemControl), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty IsOnlyForAdditionProperty = DependencyProperty.Register("IsOnlyForAddition", typeof(bool), typeof(AttachmentItemControl), new PropertyMetadata(false));
 
         public AttachmentItemControl()
         {
