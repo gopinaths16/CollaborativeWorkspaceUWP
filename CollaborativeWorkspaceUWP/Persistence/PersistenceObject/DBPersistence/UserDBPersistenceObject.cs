@@ -39,6 +39,14 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
             Query = command;
         }
 
+        public void SetGetUserContext(long userId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT ID, USERNAME, DISPLAYNAME FROM CW_USER_DETAILS WHERE ID=@UserId";
+            command.Parameters.AddWithValue("@UserId", userId);
+            Query = command;
+        }
+
         public User GetUser()
         {
             User user = null;

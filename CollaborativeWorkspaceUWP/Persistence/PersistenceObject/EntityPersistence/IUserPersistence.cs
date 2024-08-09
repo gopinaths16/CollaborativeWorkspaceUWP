@@ -13,6 +13,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
         void SetAddUserContext(User user);
         void SetGetUserContext(string username, string password);
         void SetGetUserContext(string username);
+        void SetGetUserContext(long userId);
         User GetUser();
     }
 }

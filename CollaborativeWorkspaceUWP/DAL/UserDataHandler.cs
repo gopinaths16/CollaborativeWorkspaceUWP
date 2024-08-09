@@ -76,5 +76,30 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return result;
         }
+
+        public User GetUser(long userId)
+        {
+            User result = null;
+            IUserPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetUserPersistenceObject();
+                persistenceObject.SetGetUserContext(userId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetUser();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
     }
 }

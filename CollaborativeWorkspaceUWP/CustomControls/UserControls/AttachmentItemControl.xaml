@@ -52,8 +52,8 @@
                   Grid.Column="0"
                   Visibility="Collapsed"/>
         <Image x:Name="PreviewImage"
-               Height="70"
-               Width="70"
+               Height="60"
+               Width="60"
                Grid.Row="0"
                Grid.RowSpan="2"
                Grid.Column="0"
