@@ -43,6 +43,15 @@ namespace CollaborativeWorkspaceUWP.Auth.Managers
             }
         }
 
+        public void Logout()
+        {
+            if(user != null)
+            {
+                RemoveCredentials();
+                user = null;
+            }
+        }
+
         public bool DoesUserExist(User user)
         {
             return authProvider.DoesUserExist(user.Username);
@@ -82,10 +91,12 @@ namespace CollaborativeWorkspaceUWP.Auth.Managers
             return credential;
         }
 
-        public void RemoveCredentials(User user)
+        public void RemoveCredentials()
         {
             var vault = new PasswordVault();
-            vault.Remove(new PasswordCredential(resourceName, user.Username, user.Password));
+            PasswordCredential credential = GetCredentials();
+            credential.RetrievePassword();
+            vault.Remove(new PasswordCredential(resourceName, credential.UserName, credential.Password));
         }
 
         public bool IsAuthenticated()

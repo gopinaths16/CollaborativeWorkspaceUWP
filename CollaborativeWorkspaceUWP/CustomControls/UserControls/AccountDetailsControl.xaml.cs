@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
+using CollaborativeWorkspaceUWP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +22,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class AccountDetailsControl : UserControl
     {
+        AccountDetailsViewModel accountDetailsViewModel;
+
         public AccountDetailsControl()
         {
             this.InitializeComponent();
+            accountDetailsViewModel = new AccountDetailsViewModel();
+            this.DataContext = accountDetailsViewModel;
+        }
+
+        private async void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewmodelEventHandler.Instance.Publish(new LogoutEvent());
         }
     }
 }

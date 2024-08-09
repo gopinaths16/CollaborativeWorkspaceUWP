@@ -7,6 +7,8 @@
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -48,7 +50,6 @@
     </Page.Resources>
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -196,12 +197,13 @@
         <Popup Name="AccountDetailsPopup"
                IsLightDismissEnabled="True">
             <Border BorderThickness="0.5"
-                    BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
-                    Height="200"
-                    Width="100">
+                    CornerRadius="5"
+                    BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}"
+                    Height="300"
+                    Width="300">
                 <customusercontrol:AccountDetailsControl />
             </Border>
         </Popup>
-        
+
     </Grid>
 </Page>

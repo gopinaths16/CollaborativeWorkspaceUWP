@@ -83,7 +83,7 @@ namespace CollaborativeWorkspaceUWP
                     {
                         rootFrame.Navigate(typeof(UserOnboardView), e.Arguments);
                     }
-            }
+                }
                 // Ensure the current window is active
                 Window.Current.Activate();
             }

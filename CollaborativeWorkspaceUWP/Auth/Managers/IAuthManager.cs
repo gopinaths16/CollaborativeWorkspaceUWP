@@ -13,10 +13,11 @@ namespace CollaborativeWorkspaceUWP.Auth.Managers
     {
         void Login(User user);
         void Signup(User user);
+        void Logout();
         bool DoesUserExist(User user);
         PasswordCredential GetCredentials();
         void AddCredentials(User user);
-        void RemoveCredentials(User user);
+        void RemoveCredentials();
         bool IsAuthenticated();
         User GetAuthenticatedUser();
     }

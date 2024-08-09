@@ -50,5 +50,11 @@ namespace CollaborativeWorkspaceUWP.Auth.Handlers
             authManager.Signup(args);
             return IsAuthenticated;
         }
+
+        public bool Logout()
+        {
+            authManager.Logout();
+            return !IsAuthenticated;
+        }
     }
 }

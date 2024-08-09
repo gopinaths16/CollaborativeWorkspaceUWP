@@ -21,6 +21,10 @@ using CollaborativeWorkspaceUWP.Models;
 using static System.Net.WebRequestMethods;
 using Windows.UI.Xaml.Media.Animation;
 using System.Xml.Linq;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
+using System.Threading.Tasks;
+using CollaborativeWorkspaceUWP.Auth.Handlers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,6 +46,8 @@ namespace CollaborativeWorkspaceUWP.Views
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = false;
             this.DataContext = mainViewModel;
+
+            ViewmodelEventHandler.Instance.Subscribe<LogoutEvent>(OnLogoutTriggered);
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -122,9 +128,21 @@ namespace CollaborativeWorkspaceUWP.Views
             GeneralTransform transform = element.TransformToVisual(Window.Current.Content);
             Point point = transform.TransformPoint(new Point(0, 0));
 
-            AccountDetailsPopup.HorizontalOffset = point.X + element.RenderSize.Width;
-            AccountDetailsPopup.VerticalOffset = point.Y;
+            AccountDetailsPopup.HorizontalOffset = point.X - 263;
+            AccountDetailsPopup.VerticalOffset = point.Y + 35;
             AccountDetailsPopup.IsOpen = true;
+        }
+
+        public async Task OnLogoutTriggered(LogoutEvent logoutEvent)
+        {
+            if(logoutEvent != null && UserSessionHandler.Instance.Logout())
+            {
+                Frame rootFrame = Window.Current.Content as Frame;
+                if (rootFrame.Content != null)
+                {
+                    rootFrame.Navigate(typeof(UserOnboardView), null);
+                }
+            }
         }
     }
 }
