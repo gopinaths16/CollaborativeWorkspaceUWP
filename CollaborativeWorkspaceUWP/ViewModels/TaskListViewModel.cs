@@ -26,6 +26,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
 
+        public bool IsLoaded { get; set; }
+
         public TaskListViewModel()
         {
             taskDataHandler = new TaskDataHandler();
@@ -142,8 +144,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 item.Status = status ? 2 : 3;
                 item.StatusData = GetTaskStatus(item.Status);
                 item.PriorityData = GetTaskPriority(item.Priority);
-                taskDataHandler.UpdateTask(item);
-                
+                UserTask temp = taskDataHandler.UpdateTask(item);
+                item.Update(temp);
                 await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
             }
             NotifyPropertyChanged(nameof(Tasks));
@@ -165,7 +167,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task OnTaskDeletion(DeleteTaskEvent e)
         {
-            if (Tasks != null && e != null)
+            if (Tasks != null && e != null && IsLoaded)
             {
                 Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
                 foreach(var task in Tasks)

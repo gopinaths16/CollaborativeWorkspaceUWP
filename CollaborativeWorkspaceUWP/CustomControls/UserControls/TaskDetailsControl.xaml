@@ -11,6 +11,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
+    Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded">
 
     <UserControl.Resources>
@@ -148,7 +149,7 @@
                               CornerRadius="2"
                               Margin="10, 0, 10, 0"
                               ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
-                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
                               Background="Gray"
                               SelectionChanged="TaskUpdateTriggered"
                               Style="{StaticResource CustomComboBox}"
@@ -160,7 +161,7 @@
                               Grid.Column="1"
                               Margin="0, 0, 10, 0"
                               ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
-                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=TwoWay, Converter={StaticResource LongToIntConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
                               Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
                               SelectionChanged="TaskUpdateTriggered"
                               Style="{StaticResource CustomComboBox}"
@@ -205,6 +206,7 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox HorizontalAlignment="Left"
                           VerticalAlignment="Center"
+                          Name="TaskCompletionCheckBox"
                           Margin="5, 15, 0, 0"
                           IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
                           Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
@@ -222,7 +224,7 @@
                          Padding="10"
                          FontSize="20"
                          Grid.Column="1"
-                         Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=OneWay}"
                          MaxLength="300"
                          LostFocus="TaskUpdate"
                          TextChanged="TaskDetailsChanged"/>
@@ -247,12 +249,10 @@
                          Style="{StaticResource TextNoBackground}"
                          CornerRadius="5"
                          Padding="10"
-                         Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{x:Bind taskDetailsViewModel.CurrTask.Description, Mode=OneWay}"
                          LostFocus="TaskUpdate"
                          TextChanged="TaskDetailsChanged"/>
             </ScrollViewer>
-            
-
 
             <Pivot x:Name="TaskViewPivot"
                    Grid.Row="20"

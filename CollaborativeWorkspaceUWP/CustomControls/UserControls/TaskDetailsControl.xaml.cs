@@ -103,7 +103,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void TaskUpdateTriggered(object sender, SelectionChangedEventArgs e)
         {
-            taskDetailsViewModel.UpdateTask(true);
+            Status status = (Status)Status.SelectedItem;
+            Priority priority = (Priority)Priority.SelectedItem;
+
+            if(status != null && priority != null)
+            {
+                if(status.Id != taskDetailsViewModel.CurrTask.Status || priority.Id != taskDetailsViewModel.CurrTask.Priority || TaskCompletionCheckBox.IsChecked != taskDetailsViewModel.CurrTask.IsCompleted)
+                {
+                    taskDetailsViewModel.CurrTask.Status = status.Id;
+                    taskDetailsViewModel.CurrTask.Priority = priority.Id;
+                    await taskDetailsViewModel.UpdateTask(true);
+                }
+            }
         }
 
         private async void TaskDetailsCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -135,7 +146,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void TaskDetailsChanged(object sender, TextChangedEventArgs e)
         {
-            taskDetailsViewModel.SetTaskUpdatedContext();
+            if(TaskTitle.Text != taskDetailsViewModel.CurrTask.Name || TaskDescription.Text != taskDetailsViewModel.CurrTask.Description)
+            {
+                taskDetailsViewModel.CurrTask.Name = TaskTitle.Text;
+                taskDetailsViewModel.CurrTask.Description = TaskDescription.Text;
+                taskDetailsViewModel.SetTaskUpdatedContext();
+            }
         }
 
         private async void TaskUpdate(object sender, RoutedEventArgs e)
@@ -230,6 +246,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             Control control = (Control)sender;
             control.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            taskDetailsViewModel.IsLoaeded = true;
         }
     }
 }

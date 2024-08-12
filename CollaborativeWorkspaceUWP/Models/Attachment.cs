@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,7 +73,7 @@ namespace CollaborativeWorkspaceUWP.Models
                 if(size != null)
                 {
                     long s = (long)Convert.ToDouble(size);
-                    return ConvertBytesToReadableSize(s);
+                    return Util.ConvertBytesToReadableSize(s);
                 }
                 return size;
             }
@@ -98,19 +99,6 @@ namespace CollaborativeWorkspaceUWP.Models
         public void SetAddedTime(DateTime addedTime)
         {
             AddedTime = addedTime.ToString("D");
-        }
-
-        public static string ConvertBytesToReadableSize(long bytes)
-        {
-            string[] sizes = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
-            double len = bytes;
-            int order = 0;
-            while (len >= 1024 && order < sizes.Length - 1)
-            {
-                order++;
-                len = len / 1024;
-            }
-            return $"{len:0.##} {sizes[order]}";
         }
 
         public bool IsOnlyForAddition { get; set; }

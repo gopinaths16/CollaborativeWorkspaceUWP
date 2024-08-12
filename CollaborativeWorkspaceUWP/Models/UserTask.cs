@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace CollaborativeWorkspaceUWP.Models
         private Status statusData;
         private Priority priorityData;
         private bool isCompleted;
+        public DateTime modifiedTime;
+        public string mTime;
 
         public long Id { get { return _id; } set { _id = value; } }
         public string Name { 
@@ -57,6 +60,18 @@ namespace CollaborativeWorkspaceUWP.Models
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
         public long AssigneeId { get { return _assigneeId; } set { _assigneeId = value; } }
         public long ParentTaskId { get { return _parentTaskId; } set { _parentTaskId = value; } }
+
+        public string ModifiedTime
+        {
+            get
+            {
+                if(modifiedTime != DateTime.MinValue)
+                {
+                    return modifiedTime.ToString("F");
+                }
+                return "Nil";
+            }
+        }
 
         public ObservableCollection<UserTask> SubTasks { get; set; }
 
@@ -126,7 +141,15 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             UserTask task = new UserTask(_id, _name, _description, _status, _priority, _projectId, _ownerId, _assigneeId, _parentTaskId);
             task.SubTasks = new ObservableCollection<UserTask>();
-             
+            if(PriorityData != null)
+            {
+                task.PriorityData = (Priority)PriorityData.Clone();
+            }
+            if(StatusData != null)
+            {
+                task.StatusData = (Status)StatusData.Clone();
+            }
+
             foreach (var subTask in SubTasks)
             {
                 task.SubTasks.Add(subTask);
@@ -161,6 +184,19 @@ namespace CollaborativeWorkspaceUWP.Models
                 }
                 StatusData = task.StatusData != null ? task.StatusData : StatusData;
                 PriorityData = task.PriorityData != null ? task.PriorityData : PriorityData;
+                if(task.modifiedTime != DateTime.MinValue)
+                {
+                    modifiedTime = task.modifiedTime;
+                    NotifyPropertyChanged(nameof(ModifiedTime));
+                }
+            }
+        }
+
+        public void SetModifiedTime(DateTime date)
+        {
+            if(date != null)
+            {
+                modifiedTime = date;
             }
         }
     }

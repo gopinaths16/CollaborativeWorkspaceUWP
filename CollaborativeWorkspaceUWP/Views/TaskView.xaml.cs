@@ -262,6 +262,7 @@ namespace CollaborativeWorkspaceUWP.Views
             double windowWidth = windowBounds.Width;
             GoToVisualState(string.Empty, windowWidth);
             AddTaskDialog.ParentTaskId = -1;
+            taskListViewModel.IsLoaded = true;
         }
 
         private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)

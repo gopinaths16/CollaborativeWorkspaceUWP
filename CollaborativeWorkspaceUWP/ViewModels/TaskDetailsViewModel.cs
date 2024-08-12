@@ -17,6 +17,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         bool isAddSubTaskContextTriggered;
         bool isAddAttachmentContextTriggered;
 
+        public bool IsLoaeded { get; set; }
+
         List<Priority> priorityList;
         List<Status> statusList;
 
@@ -152,7 +154,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void SetTaskUpdatedContext()
         {
-            if (CurrTask != null)
+            if (CurrTask != null && IsLoaeded)
             {
                 CurrTask.IsUpdated = true;
             }
@@ -165,7 +167,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task UpdateTask(bool forceUpdate)
         {
-            if (CurrTask != null && (CurrTask.IsUpdated || forceUpdate))
+            if (CurrTask != null && (CurrTask.IsUpdated || forceUpdate) && IsLoaeded)
             {
                 UserTask task = taskDataHandler.UpdateTask(CurrTask);
                 task.Attachments = CurrTask.Attachments;
@@ -181,7 +183,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task OnTaskUpdation(UpdateTaskEvent e)
         {
-            if (CurrTask != null)
+            if (CurrTask != null && IsLoaeded)
             {
                 if (CurrTask.Id == e.Task.Id)
                 {
