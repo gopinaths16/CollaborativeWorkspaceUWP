@@ -65,7 +65,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             if(Attachment != null)
             {
-                switch(Attachment.Type)
+                await Attachment.SetSize();
+                switch (Attachment.Type)
                 {
                     case "text/plain":
                         IconElement.Visibility = Visibility.Visible;

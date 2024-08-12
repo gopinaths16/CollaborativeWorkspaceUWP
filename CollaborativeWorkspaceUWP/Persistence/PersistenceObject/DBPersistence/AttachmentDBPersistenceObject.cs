@@ -18,7 +18,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
         public void SetAddAttachmentContext(Attachment attachment)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_ATTACHMENT_DETAILS (NAME, PATH, TYPE, TASK_ID, COMMENT_ID) VALUES (@Name, @Path, @Type, @TaskId, @CommentId) RETURNING ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID";
+            command.CommandText = @"INSERT INTO CW_ATTACHMENT_DETAILS (NAME, PATH, TYPE, TASK_ID, COMMENT_ID) VALUES (@Name, @Path, @Type, @TaskId, @CommentId) RETURNING ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID, ADDED_TIME";
             command.Parameters.AddWithValue("@Name", attachment.Name);
             command.Parameters.AddWithValue("@Path", attachment.Path);
             command.Parameters.AddWithValue("@Type", attachment.Type);
@@ -30,7 +30,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
         public void SetGetAllAttachmentsForTaskContext(long taskId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID FROM CW_ATTACHMENT_DETAILS WHERE TASK_ID=@TaskId";
+            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID, ADDED_TIME FROM CW_ATTACHMENT_DETAILS WHERE TASK_ID=@TaskId";
             command.Parameters.AddWithValue("@TaskId", taskId);
             Query = command;
         }
@@ -38,7 +38,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
         public void SetGetAllAttachmentsForCommentContext(long commentId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID FROM CW_ATTACHMENT_DETAILS WHERE COMMENT_ID=@CommentId";
+            command.CommandText = @"SELECT ID, NAME, PATH, TYPE, TASK_ID, COMMENT_ID, ADDED_TIME FROM CW_ATTACHMENT_DETAILS WHERE COMMENT_ID=@CommentId";
             command.Parameters.AddWithValue("@CommentId", commentId);
             Query = command;
         }
@@ -75,6 +75,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                         attachment.Type = Reader.GetString(3);
                         attachment.TaskId = Reader.GetInt64(4);
                         attachment.CommentId = Reader.GetInt64(5);
+                        attachment.SetAddedTime(Reader.GetDateTime(6));
                         result.Add(attachment);
                     }
                 }
@@ -106,6 +107,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                         attachment.Type = Reader.GetString(3);
                         attachment.TaskId = Reader.GetInt64(4);
                         attachment.CommentId = Reader.GetInt64(5);
+                        attachment.SetAddedTime(Reader.GetDateTime(6));
                     }
                 }
             }

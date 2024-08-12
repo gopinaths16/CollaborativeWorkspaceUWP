@@ -8,6 +8,8 @@
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:win2="using:Microsoft.UI.Xaml.Controls"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -81,17 +83,41 @@
                         Grid.Row="0"
                         Grid.Column="1">
             <NavigationView.MenuItems>
-                <NavigationViewItem  Content="Tasks"
-                                     Name="TaskViewNavigationItem" />
-                <NavigationViewItem  Content="Sprints"
-                                     Name="SprintViewNavigationItem" />
+                <NavigationViewItem Name="TaskViewNavigationItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource IcoMoonCustomFontFree}"
+                                  Glyph="&#xea52;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Name="SprintViewNavigationItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource IcoMoonCustomFontFree}"
+                                  Glyph="&#xe9b8;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
-                <PersonPicture Name="AccountDetailsNavigationItem"
-                               DisplayName="{Binding CurrUser.DisplayName}"
-                               Height="30"
-                               Margin="0, 2, 10, 0"
-                               Tapped="AccountDetailsNavigationItem_Tapped"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <NavigationViewItem Name="SettingsNavigationItem">
+                        <NavigationViewItem.Icon>
+                            <win2:AnimatedIcon x:Name='AnimatedIcon'>
+                                <win2:AnimatedIcon.Source>
+                                    <animatedvisuals:AnimatedSettingsVisualSource/>
+                                </win2:AnimatedIcon.Source>
+                                <win2:AnimatedIcon.FallbackIconSource>
+                                    <win2:FontIconSource FontFamily="{StaticResource IcoMoonCustomFontFree}"
+                                     Glyph="&#xe9b8;"/>
+                                </win2:AnimatedIcon.FallbackIconSource>
+                            </win2:AnimatedIcon>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <PersonPicture Name="AccountDetailsNavigationItem"
+                                   DisplayName="{Binding CurrUser.DisplayName}"
+                                   Height="30"
+                                   Margin="0, 2, 10, 0"
+                                   Tapped="AccountDetailsNavigationItem_Tapped"/>
+                </StackPanel>
             </NavigationView.PaneFooter>
         </NavigationView>
 

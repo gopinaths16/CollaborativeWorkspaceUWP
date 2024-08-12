@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.UI.StartScreen;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
@@ -15,6 +17,7 @@ namespace CollaborativeWorkspaceUWP.Models
         private string type;
         private long taskId;
         private long commentId;
+        private string size;
 
         public long Id
         {
@@ -55,6 +58,59 @@ namespace CollaborativeWorkspaceUWP.Models
         public StorageFile Content
         {
             get; set;
+        }
+
+        public string AddedTime
+        {
+            get; set;
+        }
+
+        public string Size
+        {
+            get
+            {
+                if(size != null)
+                {
+                    long s = (long)Convert.ToDouble(size);
+                    return ConvertBytesToReadableSize(s);
+                }
+                return size;
+            }
+            private set
+            {
+                size = value;
+                NotifyPropertyChanged(nameof(Size));
+            }
+        }
+
+        public async Task SetSize()
+        {
+            if(Size == null || Size == "")
+            {
+                StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                storageFolder = await storageFolder.GetFolderAsync("Attachments");
+                StorageFile file = await storageFolder.GetFileAsync(Path);
+                BasicProperties basicProperties = await file.GetBasicPropertiesAsync();
+                Size = string.Format("{0:n0}", basicProperties.Size);
+            }
+        }
+
+        public void SetAddedTime(DateTime addedTime)
+        {
+            AddedTime = addedTime.ToString("D");
+        }
+
+        public static string ConvertBytesToReadableSize(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+            double len = bytes;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len = len / 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
         }
 
         public bool IsOnlyForAddition { get; set; }

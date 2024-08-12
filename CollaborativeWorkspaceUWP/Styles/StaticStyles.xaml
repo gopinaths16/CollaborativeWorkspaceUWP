@@ -95,7 +95,7 @@
                                               IsTabStop="False"/>
                                 <TextBlock x:Name="PlaceholderTextElement" 
                                            Text="{TemplateBinding PlaceholderText}" 
-                                           Foreground="{TemplateBinding PlaceholderForeground}"
+                                           Foreground="{ThemeResource TextControlPlaceholderForeground}"
                                            IsHitTestVisible="True" 
                                            Visibility="{Binding Text.Length, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Empty}"/>
                             </Grid>
