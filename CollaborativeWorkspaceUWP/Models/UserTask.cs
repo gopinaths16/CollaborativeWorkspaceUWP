@@ -77,6 +77,8 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public ObservableCollection<Attachment> Attachments { get; set; }
 
+        public ObservableCollection<Comment> Comments { get; set; }
+
         public Status StatusData
         {
             get { return statusData; }
@@ -118,6 +120,7 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             SubTasks = new ObservableCollection<UserTask>();
             Attachments = new ObservableCollection<Attachment>();
+            Comments = new ObservableCollection<Comment>();
         }
 
         public UserTask(long id, string name, string description, long status, long priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
@@ -134,6 +137,7 @@ namespace CollaborativeWorkspaceUWP.Models
             IsCompleted = status == 3;
             SubTasks = new ObservableCollection<UserTask>();
             Attachments = new ObservableCollection<Attachment>();
+            Comments = new ObservableCollection<Comment>();
             IsUpdated = false;
         }
 
@@ -157,6 +161,10 @@ namespace CollaborativeWorkspaceUWP.Models
             foreach (var attachment in Attachments)
             {
                 task.Attachments.Add(attachment);
+            }
+            foreach(var comment in Comments)
+            {
+                task.Comments.Add(comment); 
             }
             return task;
         }
@@ -182,6 +190,10 @@ namespace CollaborativeWorkspaceUWP.Models
                 {
                     Attachments = task.Attachments; 
                 }
+                if(task.Comments.Count > 0) 
+                { 
+                    Comments = task.Comments; 
+                }
                 StatusData = task.StatusData != null ? task.StatusData : StatusData;
                 PriorityData = task.PriorityData != null ? task.PriorityData : PriorityData;
                 if(task.modifiedTime != DateTime.MinValue)
@@ -198,6 +210,12 @@ namespace CollaborativeWorkspaceUWP.Models
             {
                 modifiedTime = date;
             }
+        }
+
+        public void NotifyChangesToUI()
+        {
+            NotifyPropertyChanged(nameof(Attachments));
+            NotifyPropertyChanged(nameof(Comments));
         }
     }
 }

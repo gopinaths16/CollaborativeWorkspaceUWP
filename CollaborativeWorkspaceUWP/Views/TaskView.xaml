@@ -111,6 +111,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -146,11 +147,48 @@
                                                Foreground="Gray"
                                                FontWeight="Light"/>
                                     <TextBlock Name="LastModifiedInfo"
-                                               Text="{x:Bind ModifiedTime, Mode=OneWay}"
+                                               Text="{Binding ModifiedTime, Mode=OneWay}"
                                                Margin="2, 0, 0, 0"
                                                FontSize="12"
                                                Foreground="Gray"
                                                FontWeight="Light"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="0, 3, 0, 0">
+                                    <TextBlock Text="General"
+                                               FontSize="12"
+                                               Foreground="Gray"
+                                               FontWeight="Light"/>
+                                    <TextBlock FontFamily="Segoe FLuent Icons"
+                                               FontSize="10"
+                                               Text="&#xe90a;"
+                                               Margin="10, 2, 0, 0"
+                                               VerticalAlignment="Center"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{Binding Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+                                    <TextBlock FontSize="12"
+                                               Margin="2, 0, 0, 0"
+                                               Text="{Binding Comments.Count, Mode=OneWay}"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{Binding Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+                                    <TextBlock FontFamily="Segoe FLuent Icons"
+                                               FontSize="10"
+                                               Text="&#xe723;"
+                                               Margin="10, 2, 0, 0"
+                                               VerticalAlignment="Center"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{Binding Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+                                    <TextBlock FontSize="12"
+                                               Margin="2, 0, 0, 0"
+                                               Text="{Binding Attachments.Count, Mode=OneWay}"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{Binding Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2"
                                             HorizontalAlignment="Center"

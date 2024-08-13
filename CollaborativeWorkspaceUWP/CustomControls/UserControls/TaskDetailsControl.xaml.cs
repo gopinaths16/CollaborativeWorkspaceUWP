@@ -69,6 +69,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public void SetCurrentTask(UserTask task)
         {
+            Status.SelectionChanged -= TaskUpdateTriggered;
+            Priority.SelectionChanged -= TaskUpdateTriggered;
+
             taskDetailsViewModel.CurrTask = task;
             taskDetailsViewModel.ClearPrevState();
             if(task != null)
@@ -78,6 +81,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             AttachmentDialog.SetCurrTask(null);
             CommentDialog.SetCurrTask(task);
             TaskViewPivot.SelectedIndex = 0;
+
+            Status.SelectionChanged += TaskUpdateTriggered;
+            Priority.SelectionChanged += TaskUpdateTriggered;
         }
 
         public UserTask GetCurrentTask()
@@ -108,7 +114,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
             if(status != null && priority != null)
             {
-                if(status.Id != taskDetailsViewModel.CurrTask.Status || priority.Id != taskDetailsViewModel.CurrTask.Priority || TaskCompletionCheckBox.IsChecked != taskDetailsViewModel.CurrTask.IsCompleted)
+                long taskId = (long)TaskCompletionCheckBox.Tag;
+                if (taskId == taskDetailsViewModel.CurrTask.Id && (status.Id != taskDetailsViewModel.CurrTask.Status || priority.Id != taskDetailsViewModel.CurrTask.Priority || TaskCompletionCheckBox.IsChecked != taskDetailsViewModel.CurrTask.IsCompleted))
                 {
                     taskDetailsViewModel.CurrTask.Status = status.Id;
                     taskDetailsViewModel.CurrTask.Priority = priority.Id;

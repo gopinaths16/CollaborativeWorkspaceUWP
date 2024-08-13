@@ -120,11 +120,11 @@ namespace CollaborativeWorkspaceUWP.Views
             taskListViewModel.CurrTask = null;
         }
 
-        private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             if(TaskDetailsView.GetCurrentTask() != null)
             {
-                TaskDetailsView.UpdateCurrentTask();
+                await TaskDetailsView.UpdateCurrentTask();
             }
             TaskDetailsView.SetCurrentTask(null);
             if(taskListViewModel.IsSingleWindowLayoutTriggered)

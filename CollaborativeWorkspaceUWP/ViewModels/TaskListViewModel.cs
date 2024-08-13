@@ -25,6 +25,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
+        CommentDataHandler commentDataHandler;
+        AttachmentDataHandler attachmentDataHandler;
 
         public bool IsLoaded { get; set; }
 
@@ -33,6 +35,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             taskDataHandler = new TaskDataHandler();
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
+            attachmentDataHandler = new AttachmentDataHandler();
+            commentDataHandler = new CommentDataHandler();
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
@@ -90,6 +94,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             Tasks = taskDataHandler.GetTasksForProject(project.Id);
             foreach (UserTask task in Tasks)
             {
+                task.Attachments = attachmentDataHandler.GetAllAttachmentsForTask(task.Id);
+                task.Comments = commentDataHandler.GetAllCommentsForCurrentTask(task.Id);
                 var temp = Tasks.Where(item => item.Id == task.ParentTaskId).ToList();
                 if (temp.Count > 0 && temp[0] != null)
                 {
@@ -99,6 +105,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
             ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
             ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
+            ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
+            ViewmodelEventHandler.Instance.Subscribe<AddCommentEvent>(OnCommentAddition);
             NotifyPropertyChanged(nameof(CurrentProject));
             NotifyPropertyChanged(nameof(Tasks));
         }
@@ -182,6 +190,30 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     }
                 }
                 NotifyPropertyChanged(nameof(Tasks));
+            }
+        }
+
+        public async Task OnAttachmentAddition(AddAttachmentEvent addAttachmentEvent)
+        {
+            var tasks = Tasks.Where(item => item.Id == addAttachmentEvent.Task.Id);
+            if(tasks.Count() > 0)
+            {
+                UserTask task = tasks.First();
+                task.NotifyChangesToUI();
+            }
+        }
+
+        public async Task OnCommentAddition(AddCommentEvent e)
+        {
+            var tasks = Tasks.Where(item => item.Id == e.Comment.TaskId);
+            if (tasks.Count() > 0)
+            {
+                UserTask task = tasks.First();
+                if(task.Comments.Where(item => item.Id == e.Comment.Id).Count() <= 0)
+                {
+                    task.Comments.Add(e.Comment);
+                }
+                task.NotifyChangesToUI();
             }
         }
 
