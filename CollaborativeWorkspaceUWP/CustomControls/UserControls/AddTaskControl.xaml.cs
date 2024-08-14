@@ -53,8 +53,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public long CurrProjectId
         {
-            get { return (long)GetValue(CurrProjectProperty); }
-            set { SetValue(CurrProjectProperty, value); }
+            get { return (long)GetValue(CurrProjectIdProperty); }
+            set { 
+                SetValue(CurrProjectIdProperty, value);
+                if(addTaskViewModel != null)
+                {
+                    addTaskViewModel.ProjectId = (long)GetValue(CurrProjectIdProperty);
+                }
+            }
         }
 
         public long ParentTaskId
@@ -67,7 +73,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(0));
 
-        public static readonly DependencyProperty CurrProjectProperty = DependencyProperty.Register("CurrProject", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty CurrProjectIdProperty = DependencyProperty.Register("CurrProjectId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
 
         public static readonly DependencyProperty ParentTaskIdProperty = DependencyProperty.Register("ParentTaskId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
 
@@ -119,6 +125,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             Description.Text = string.Empty;
             Priority.SelectedIndex = 0;
             Status.SelectedIndex = 0;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            addTaskViewModel.Dispose();
         }
     }
 }

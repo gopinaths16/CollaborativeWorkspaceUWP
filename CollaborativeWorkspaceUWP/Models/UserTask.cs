@@ -116,6 +116,8 @@ namespace CollaborativeWorkspaceUWP.Models
             set; 
         }
 
+        public int Order { get; set; }
+
         public UserTask()
         {
             SubTasks = new ObservableCollection<UserTask>();

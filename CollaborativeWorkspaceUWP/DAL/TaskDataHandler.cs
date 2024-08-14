@@ -230,5 +230,27 @@ namespace CollaborativeWorkspaceUWP.DAL
                 }
             }
         }
+
+        public void UpdateOrderForTask(UserTask task)
+        {
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetUpdateOrderContext(task);
+                PersistenceHandler.Instance.Update(persistenceObject);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+        }
     }
 }

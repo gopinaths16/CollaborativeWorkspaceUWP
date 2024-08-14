@@ -25,6 +25,8 @@ using System.Diagnostics;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Auth.Handlers;
+using System.Collections.ObjectModel;
+using CollaborativeWorkspaceUWP.Utilities;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -200,10 +202,22 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = (CheckBox)sender;
-            long taskId = (long)checkBox.Tag;
-            bool checkboxStatus = (bool)checkBox.IsChecked;
-            await taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+            if(!isDragging)
+            {
+                CheckBox checkBox = (CheckBox)sender;
+                long taskId = (long)checkBox.Tag;
+                bool checkboxStatus = (bool)checkBox.IsChecked;
+                var tasks = taskListViewModel.Tasks.Where(item => item.Id == taskId);
+                if (tasks.Count() > 0)
+                {
+                    UserTask task = tasks.First();
+                    if (task.IsCompleted != checkboxStatus)
+                    {
+                        task.IsCompleted = checkboxStatus;
+                        await taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
+                    }
+                }
+            }
         }
 
         private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)
@@ -272,6 +286,38 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 TaskListView.Visibility = Visibility.Visible;
                 TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void TaskListViewByProject_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        {
+            UserTask draggedTask = e.Items.First() as UserTask;
+            isDragging = true;
+            if (draggedTask != null)
+            {
+                ListViewItem draggedItem = TaskListViewByProject.ContainerFromItem(draggedTask) as ListViewItem;
+                CheckBox completionCheckBox = Util.FindChild<CheckBox>(draggedItem, "TaskCompletionCheckBox");
+
+                completionCheckBox.Checked -= TaskListCheckBox_Checked;
+                completionCheckBox.Unchecked -= TaskListCheckBox_Checked;
+            }
+        }
+
+        private async void TaskListViewByProject_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
+        {
+            UserTask draggedTask = args.Items.First() as UserTask;
+            isDragging = false;
+            if (draggedTask != null)
+            {
+                ListViewItem draggedItem = TaskListViewByProject.ContainerFromItem(draggedTask) as ListViewItem;
+                CheckBox completionCheckBox = Util.FindChild<CheckBox>(draggedItem, "TaskCompletionCheckBox");
+
+                completionCheckBox.Checked += TaskListCheckBox_Checked;
+                completionCheckBox.Unchecked += TaskListCheckBox_Checked;
+                if (taskListViewModel.Tasks.Count() > 0 && taskListViewModel.Tasks.Contains(draggedTask))
+                {
+                    await taskListViewModel.ReOrderTasks();
+                }
             }
         }
     }

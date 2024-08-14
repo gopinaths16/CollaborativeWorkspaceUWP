@@ -124,11 +124,12 @@
                                           VerticalAlignment="Top"
                                           Margin="5, 5, 0, 0"
                                           MinWidth="0"
-                                          IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                                          IsChecked="{Binding IsCompleted, Mode=OneWay}"
                                           Background="{Binding PriorityData.ColorCode, Mode=OneWay}"
                                           BorderBrush="{Binding PriorityData.ColorCode, Mode=OneWay}"
                                           Tag="{x:Bind Id}"
                                           Style="{StaticResource CheckboxNoContent}"
+                                          x:Name="TaskCompletionCheckBox"
                                           Checked="TaskListCheckBox_Checked"
                                           Unchecked="TaskListCheckBox_Checked"/>
                                 <TextBlock Text="{Binding Name}"
@@ -145,8 +146,14 @@
                                     <TextBlock Text="Last Modified -"
                                                FontSize="12"
                                                Foreground="Gray"
-                                               FontWeight="Light"/>
-                                    <TextBlock Name="LastModifiedInfo"
+                                               FontWeight="Light"
+                                               Visibility="{Binding IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"/>
+                                    <TextBlock Text="Completed by -"
+                                               FontSize="12"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{Binding IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <TextBlock Name="CompletionInfo"
                                                Text="{Binding ModifiedTime, Mode=OneWay}"
                                                Margin="2, 0, 0, 0"
                                                FontSize="12"
@@ -398,7 +405,12 @@
                                               Grid.Row="2"
                                               IsItemClickEnabled="True"
                                               ItemClick="TaskListView_ItemClick"
-                                              ItemContainerStyle="{StaticResource ListViewItemStyleAccent}" />
+                                              ItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
+                                              CanDragItems="True"
+                                              CanReorderItems="True"
+                                              AllowDrop="True"
+                                              DragItemsStarting="TaskListViewByProject_DragItemsStarting"
+                                              DragItemsCompleted="TaskListViewByProject_DragItemsCompleted"/>
 
                                     <StackPanel Name="NoTasksInListMessage"
                                                 Grid.Row="2"

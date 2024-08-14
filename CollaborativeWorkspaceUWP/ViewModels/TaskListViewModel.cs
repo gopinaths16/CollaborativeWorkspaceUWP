@@ -217,6 +217,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public async Task ReOrderTasks()
+        {
+            int order = 0;
+            foreach (var task in Tasks)
+            {
+                order++;
+                task.Order = order;
+                taskDataHandler.UpdateOrderForTask(task);
+            }
+            await ViewmodelEventHandler.Instance.Publish(new UpdateOrderEvent());
+        }
+
         public override void Dispose()
         {
             ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddtion);

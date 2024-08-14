@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
 namespace CollaborativeWorkspaceUWP.Utilities
@@ -47,5 +48,27 @@ namespace CollaborativeWorkspaceUWP.Utilities
             return $"{len:0.##} {sizes[order]}";
         }
 
+        public static T FindChild<T>(DependencyObject parent, string childName) where T : FrameworkElement
+        {
+            if (parent == null) return null;
+
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                T childElement = child as T;
+                if (childElement != null && childElement.Name == childName)
+                {
+                    return childElement;
+                }
+
+                var foundChild = FindChild<T>(child, childName);
+                if (foundChild != null) return foundChild;
+            }
+
+            return null;
+        }
     }
 }

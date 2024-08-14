@@ -4,6 +4,7 @@ using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private List<Priority> priorityData;
         private List<Status> statusData;
 
+        private long projectId;
+
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
+
+        private ObservableCollection<UserTask> TasksForCurrProject {  get; set; }
 
         public List<Priority> PriorityData
         {
@@ -31,6 +36,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { statusData = value; }
         }
 
+        public long ProjectId
+        {
+            get { return projectId; }
+            set
+            {
+                projectId = value;
+                TasksForCurrProject = taskDataHandler.GetTasksForProject(projectId);
+            }
+        }
+
         public AddTaskViewModel()
         {
             priorityDataHandler = new PriorityDataHandler();
@@ -38,12 +53,40 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             taskDataHandler = new TaskDataHandler();
             PriorityData = priorityDataHandler.GetPriorityData();
             StatusData = statusDataHandler.GetStatusData();
+
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateOrderEvent>(OnTaskOrderUpdation);
         }
 
         public async Task AddTask(UserTask task)
         {
+            task.Order = 1;
+            if(TasksForCurrProject.Count() > 0)
+            {
+                task.Order += TasksForCurrProject.Last().Order;
+            }
             UserTask result = taskDataHandler.AddTask(task);
             await ViewmodelEventHandler.Instance.Publish(new AddTaskEvent() { Task = result });
+        }
+
+        public async Task OnTaskAddition(AddTaskEvent addTaskEvent)
+        {
+            var task = TasksForCurrProject.Where(item => item.Id == addTaskEvent.Task.Id);
+            if(task.Count() <= 0)
+            {
+                TasksForCurrProject.Add(addTaskEvent.Task);
+            }
+        }
+
+        public async Task OnTaskOrderUpdation(UpdateOrderEvent updateOrderEvent)
+        {
+            TasksForCurrProject = taskDataHandler.GetTasksForProject(ProjectId);
+        }
+
+        public void Dispose()
+        {
+            ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddition);
+            ViewmodelEventHandler.Instance.Unsubscribe<UpdateOrderEvent>(OnTaskOrderUpdation);
         }
     }
 }

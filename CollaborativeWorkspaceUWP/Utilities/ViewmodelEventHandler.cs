@@ -41,8 +41,15 @@ namespace CollaborativeWorkspaceUWP.Utilities
                 var handlers = _subscribers[eventToPublish.GetType()];
                 foreach (var subscriber in handlers)
                 {
-                    var asyncAction = (Func<T, Task>)subscriber;
-                    await asyncAction(eventToPublish); 
+                    try
+                    {
+                        var asyncAction = (Func<T, Task>)subscriber;
+                        await asyncAction(eventToPublish);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
             }
         }
