@@ -14,6 +14,7 @@
     xmlns:converters="using:CollaborativeWorkspaceUWP.Utilities.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
@@ -42,6 +43,11 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Width" Value="400" />
             <Setter Property="Height" Value="400" />
+        </Style>
+
+        <Style TargetType="Grid" x:Name="SettingsControlStyle">
+            <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
+            <Setter Property="Padding" Value="20" />
         </Style>
 
         <DataTemplate x:Key="AllOrganizationsListViewItemTemplate"
@@ -98,20 +104,16 @@
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <NavigationViewItem Name="SettingsNavigationItem">
-                        <NavigationViewItem.Icon>
-                            <win2:AnimatedIcon x:Name='AnimatedIcon'>
-                                <win2:AnimatedIcon.Source>
-                                    <animatedvisuals:AnimatedSettingsVisualSource/>
-                                </win2:AnimatedIcon.Source>
-                                <win2:AnimatedIcon.FallbackIconSource>
-                                    <win2:FontIconSource FontFamily="{StaticResource IcoMoonCustomFontFree}"
-                                     Glyph="&#xe9b8;"/>
-                                </win2:AnimatedIcon.FallbackIconSource>
-                            </win2:AnimatedIcon>
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <customtemplatecontrol:CustomIconButtonControl Name="SettingsButton"
+                                                                   FontFamily="Segoe Fluent Icons"
+                                                                   Content="&#xe713;"
+                                                                   Click="SettingsButton_Click"
+                                                                   Style="{StaticResource ButtonNoBackgroundDormantAlt}"
+                                                                   Margin="0, 0, 5, 0"
+                                                                   Height="30"
+                                                                   Padding="10, 5, 10, 5" />
                     <PersonPicture Name="AccountDetailsNavigationItem"
                                    DisplayName="{Binding CurrUser.DisplayName}"
                                    Height="30"

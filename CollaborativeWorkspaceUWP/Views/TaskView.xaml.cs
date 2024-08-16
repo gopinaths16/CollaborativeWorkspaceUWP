@@ -45,7 +45,6 @@ namespace CollaborativeWorkspaceUWP.Views
         CurrentTeamspaceViewModel currTeamspaceViewModel;
 
         private bool isDragging = false;
-        private double initialPosition;
 
         public TaskView()
         {
@@ -200,26 +199,6 @@ namespace CollaborativeWorkspaceUWP.Views
             AddTeamspaceDialog.Hide();
         }
 
-        private async void TaskListCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if(!isDragging)
-            {
-                CheckBox checkBox = (CheckBox)sender;
-                long taskId = (long)checkBox.Tag;
-                bool checkboxStatus = (bool)checkBox.IsChecked;
-                var tasks = taskListViewModel.Tasks.Where(item => item.Id == taskId);
-                if (tasks.Count() > 0)
-                {
-                    UserTask task = tasks.First();
-                    if (task.IsCompleted != checkboxStatus)
-                    {
-                        task.IsCompleted = checkboxStatus;
-                        await taskListViewModel.UpdateTaskCompletionStatus(taskId, !checkboxStatus);
-                    }
-                }
-            }
-        }
-
         private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)
         {
             AppWindow appWindow;
@@ -292,33 +271,26 @@ namespace CollaborativeWorkspaceUWP.Views
         private void TaskListViewByProject_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
             UserTask draggedTask = e.Items.First() as UserTask;
-            isDragging = true;
             if (draggedTask != null)
             {
                 ListViewItem draggedItem = TaskListViewByProject.ContainerFromItem(draggedTask) as ListViewItem;
-                CheckBox completionCheckBox = Util.FindChild<CheckBox>(draggedItem, "TaskCompletionCheckBox");
-
-                completionCheckBox.Checked -= TaskListCheckBox_Checked;
-                completionCheckBox.Unchecked -= TaskListCheckBox_Checked;
+                TaskListItemControl completionCheckBox = Util.FindChild<TaskListItemControl>(draggedItem, draggedTask.Id.ToString());
+                completionCheckBox.DisableControl();
             }
+            isDragging = true;
         }
 
         private async void TaskListViewByProject_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
         {
             UserTask draggedTask = args.Items.First() as UserTask;
-            isDragging = false;
+            await taskListViewModel.ReOrderTasks();
             if (draggedTask != null)
             {
                 ListViewItem draggedItem = TaskListViewByProject.ContainerFromItem(draggedTask) as ListViewItem;
-                CheckBox completionCheckBox = Util.FindChild<CheckBox>(draggedItem, "TaskCompletionCheckBox");
-
-                completionCheckBox.Checked += TaskListCheckBox_Checked;
-                completionCheckBox.Unchecked += TaskListCheckBox_Checked;
-                if (taskListViewModel.Tasks.Count() > 0 && taskListViewModel.Tasks.Contains(draggedTask))
-                {
-                    await taskListViewModel.ReOrderTasks();
-                }
+                TaskListItemControl completionCheckBox = Util.FindChild<TaskListItemControl>(draggedItem, draggedTask.Id.ToString());
+                completionCheckBox.EnableControl();
             }
+            isDragging = false;
         }
     }
 }

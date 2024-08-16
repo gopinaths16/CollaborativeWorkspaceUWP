@@ -105,112 +105,8 @@
                                   x:DataType="models:UserTask">
                         <Border BorderThickness="0, 0, 0, 0.5"
                                 BorderBrush="{StaticResource SystemListLowColor}">
-                            <Grid CornerRadius="5"
-                                  Margin="20, 10, 20, 10"
-                                  HorizontalAlignment="Stretch">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <CheckBox Grid.Column="0"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top"
-                                          Margin="5, 5, 0, 0"
-                                          MinWidth="0"
-                                          IsChecked="{Binding IsCompleted, Mode=OneWay}"
-                                          Background="{Binding PriorityData.ColorCode, Mode=OneWay}"
-                                          BorderBrush="{Binding PriorityData.ColorCode, Mode=OneWay}"
-                                          Tag="{x:Bind Id}"
-                                          Style="{StaticResource CheckboxNoContent}"
-                                          x:Name="TaskCompletionCheckBox"
-                                          Checked="TaskListCheckBox_Checked"
-                                          Unchecked="TaskListCheckBox_Checked"/>
-                                <TextBlock Text="{Binding Name}"
-                                           FontSize="20"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="Wrap"
-                                           TextTrimming="CharacterEllipsis"
-                                           MaxLines="1"
-                                           Grid.Column="1"/>
-                                <StackPanel Orientation="Horizontal"
-                                            Grid.Row="1"
-                                            Grid.Column="1">
-                                    <TextBlock Text="Last Modified -"
-                                               FontSize="12"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"/>
-                                    <TextBlock Text="Completed by -"
-                                               FontSize="12"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                    <TextBlock Name="CompletionInfo"
-                                               Text="{Binding ModifiedTime, Mode=OneWay}"
-                                               Margin="2, 0, 0, 0"
-                                               FontSize="12"
-                                               Foreground="Gray"
-                                               FontWeight="Light"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal"
-                                            Grid.Row="2"
-                                            Grid.Column="1"
-                                            Margin="0, 3, 0, 0">
-                                    <TextBlock Text="General"
-                                               FontSize="12"
-                                               Foreground="Gray"
-                                               FontWeight="Light"/>
-                                    <TextBlock FontFamily="Segoe FLuent Icons"
-                                               FontSize="10"
-                                               Text="&#xe90a;"
-                                               Margin="10, 2, 0, 0"
-                                               VerticalAlignment="Center"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
-                                    <TextBlock FontSize="12"
-                                               Margin="2, 0, 0, 0"
-                                               Text="{Binding Comments.Count, Mode=OneWay}"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
-                                    <TextBlock FontFamily="Segoe FLuent Icons"
-                                               FontSize="10"
-                                               Text="&#xe723;"
-                                               Margin="10, 2, 0, 0"
-                                               VerticalAlignment="Center"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
-                                    <TextBlock FontSize="12"
-                                               Margin="2, 0, 0, 0"
-                                               Text="{Binding Attachments.Count, Mode=OneWay}"
-                                               Foreground="Gray"
-                                               FontWeight="Light"
-                                               Visibility="{Binding Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="0, 3, 0, 0">
-                                    <Button FontFamily="Segoe Fluent Icons"
-                                            Content="&#xe70f;"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource ButtonNoBackgroundDormant}"/>
-                                </StackPanel>
-                                <PersonPicture DisplayName="{Binding Owner.DisplayName}"
-                                               Height="28"
-                                               Grid.Column="3"/>
-                            </Grid>
+                            <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
+                                                                   Name="{x:Bind Id}"/>
                         </Border>
                     </DataTemplate>
 
@@ -370,6 +266,7 @@
                                                 Orientation="Horizontal">
                                         <Button Name="OpenSplitViewButton" 
                                                 Style="{StaticResource ButtonNoBackground}"
+                                                Visibility="{x:Bind taskListViewModel.IsSingleWindowLayoutTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Click="OpenSplitViewButton_Click"
                                                 FontFamily="Segoe Fluent Icons"
                                                 Content="&#xe8a0;"
@@ -377,6 +274,7 @@
                                         <TextBlock Name="TaskListProjectTitle"
                                                    Text="{x:Bind taskListViewModel.CurrentProject.Name, Mode=OneWay}"
                                                    FontSize="15"
+                                                   Margin="5, 0, 0, 0"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
@@ -410,7 +308,13 @@
                                               CanReorderItems="True"
                                               AllowDrop="True"
                                               DragItemsStarting="TaskListViewByProject_DragItemsStarting"
-                                              DragItemsCompleted="TaskListViewByProject_DragItemsCompleted"/>
+                                              DragItemsCompleted="TaskListViewByProject_DragItemsCompleted">
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel />
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+                                    </ListView>
 
                                     <StackPanel Name="NoTasksInListMessage"
                                                 Grid.Row="2"

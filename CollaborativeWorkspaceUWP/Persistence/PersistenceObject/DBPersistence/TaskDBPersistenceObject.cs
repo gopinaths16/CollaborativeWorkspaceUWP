@@ -17,7 +17,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetAddContext(UserTask task)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, TASK_ORDER) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId, @ParentTaskId, @TaskOrder) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, MODIFIED_TIME, TASK_ORDER";
+            command.CommandText = @"INSERT INTO CW_TASK_DETAILS(NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, TASK_ORDER, DUE_DATE) VALUES(@Name, @Description, @Status, @Priority, @ProjectId, @OwnerId, @AssigneeId, @ParentTaskId, @TaskOrder, @DueDate) RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, MODIFIED_TIME, TASK_ORDER";
             command.Parameters.AddWithValue("@Name", task.Name);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Status", task.Status);
@@ -27,20 +27,21 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             command.Parameters.AddWithValue("@AssigneeId", task.AssigneeId);
             command.Parameters.AddWithValue("@ParentTaskId", task.ParentTaskId);
             command.Parameters.AddWithValue("@TaskOrder", task.Order);
+            command.Parameters.AddWithValue("@DueDate", task.DueDate);
             Query = command;
         }
 
         public void SetGetAllTasksContext()
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID ORDER BY CWT.TASK_ORDER ASC";
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID ORDER BY CWT.TASK_ORDER ASC";
             Query = command;
         }
 
         public void SetGetTasksForProjectContext(long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PROJECTID=@ProjectId ORDER BY CWT.TASK_ORDER ASC";
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PROJECTID=@ProjectId ORDER BY CWT.TASK_ORDER ASC";
             command.Parameters.AddWithValue("@ProjectId", projectId);
             Query = command;
         }
@@ -48,7 +49,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetGetNonSubTasksContext(long taskId, long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PROJECTID=@ProjectId AND CWT.PARENT_TASK_ID=0 AND CWT.ID != @Id ORDER BY CWT.TASK_ORDER ASC";
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PROJECTID=@ProjectId AND CWT.PARENT_TASK_ID=0 AND CWT.ID != @Id ORDER BY CWT.TASK_ORDER ASC";
             command.Parameters.AddWithValue("@ProjectId", projectId);
             command.Parameters.AddWithValue("@Id", taskId);
             Query = command;
@@ -66,7 +67,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetGetAllSubTasksContext(long parentTaskId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PARENT_TASK_ID=@ParentTaskId ORDER BY CWT.TASK_ORDER ASC";
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PARENT_TASK_ID=@ParentTaskId ORDER BY CWT.TASK_ORDER ASC";
             command.Parameters.AddWithValue("@ParentTaskId", parentTaskId);
             Query = command;
         }
@@ -74,7 +75,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         public void SetUpdateDescriptionContext(UserTask task)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"UPDATE CW_TASK_DETAILS SET NAME=@Name, DESCRIPTION=@Description, STATUS=@Status, PRIORITY=@Priority, PROJECTID=@ProjectId, OWNERID=@OwnerId, ASSIGNEEID=@AssigneeId, PARENT_TASK_ID=@ParentTaskId, MODIFIED_TIME=@ModifiedTime WHERE ID=@Id RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, MODIFIED_TIME";
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET NAME=@Name, DESCRIPTION=@Description, STATUS=@Status, PRIORITY=@Priority, PROJECTID=@ProjectId, OWNERID=@OwnerId, ASSIGNEEID=@AssigneeId, PARENT_TASK_ID=@ParentTaskId, MODIFIED_TIME=@ModifiedTime, DUE_DATE=@DueDate WHERE ID=@Id RETURNING ID, NAME, DESCRIPTION, STATUS, PRIORITY, PROJECTID, OWNERID, ASSIGNEEID, PARENT_TASK_ID, MODIFIED_TIME, TASK_ORDER, DUE_DATE";
             command.Parameters.AddWithValue("@Name", task.Name);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Status", task.Status);
@@ -85,6 +86,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             command.Parameters.AddWithValue("@ParentTaskId", task.ParentTaskId);
             command.Parameters.AddWithValue("@Id", task.Id);
             command.Parameters.AddWithValue("@ModifiedTime", DateTime.Now);
+            command.Parameters.AddWithValue("@DueDate", task.DueDate);
             Query = command;
         }
 
@@ -123,6 +125,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
                         task.PriorityData = new Priority(Reader.GetInt64(12), Reader.GetString(13), Reader.GetString(14));
                         task.Owner = new User() { Id = Reader.GetInt64(15), Username = Reader.GetString(16), DisplayName = Reader.GetString(17) };
                         task.Order = Reader.GetInt32(18);
+                        if(!Reader.IsDBNull(19))
+                        {
+                            task.DueDate = Reader.GetDateTime(19);
+                        }
                         tasks.Add(task);
                     }
                 }
@@ -151,6 +157,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
                         task.SetModifiedTime(Reader.GetDateTime(9));
                     }
                     task.Order = Reader.GetInt32(10);
+                    if(!Reader.IsDBNull(11))
+                    {
+                        task.DueDate = Reader.GetDateTime(11);
+                    }
                 }
             }
             catch (Exception ex)

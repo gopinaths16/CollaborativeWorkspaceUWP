@@ -24,8 +24,10 @@ namespace CollaborativeWorkspaceUWP.Models
         private Status statusData;
         private Priority priorityData;
         private bool isCompleted;
-        public DateTime modifiedTime;
-        public string mTime;
+        private DateTime? dueDate;
+        private DateTime modifiedTime;
+        private string mTime;
+        private User owner;
 
         public long Id { get { return _id; } set { _id = value; } }
         public string Name { 
@@ -99,7 +101,15 @@ namespace CollaborativeWorkspaceUWP.Models
             }
         }
 
-        public User Owner { get; set; }
+        public User Owner
+        {
+            get { return owner; }
+            set
+            {
+                owner = value;
+                NotifyPropertyChanged(nameof(Owner));
+            }
+        }
 
         public bool IsCompleted
         {
@@ -118,11 +128,30 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public int Order { get; set; }
 
+        public UserTask Self
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        public DateTime? DueDate
+        {
+            get { return dueDate; }
+            set
+            {
+                dueDate = value ?? null;
+                NotifyPropertyChanged(nameof(DueDate));
+            }
+        }
+
         public UserTask()
         {
             SubTasks = new ObservableCollection<UserTask>();
             Attachments = new ObservableCollection<Attachment>();
             Comments = new ObservableCollection<Comment>();
+            DueDate = null;
         }
 
         public UserTask(long id, string name, string description, long status, long priority, long projectId, long ownerId, long assigneeId, long parentTaskId)
@@ -141,12 +170,14 @@ namespace CollaborativeWorkspaceUWP.Models
             Attachments = new ObservableCollection<Attachment>();
             Comments = new ObservableCollection<Comment>();
             IsUpdated = false;
+            DueDate = null;
         }
 
         public object Clone()
         {
             UserTask task = new UserTask(_id, _name, _description, _status, _priority, _projectId, _ownerId, _assigneeId, _parentTaskId);
             task.SubTasks = new ObservableCollection<UserTask>();
+            task.DueDate = DueDate;
             if(PriorityData != null)
             {
                 task.PriorityData = (Priority)PriorityData.Clone();

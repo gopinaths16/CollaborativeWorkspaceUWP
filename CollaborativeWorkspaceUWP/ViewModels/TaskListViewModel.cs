@@ -145,20 +145,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             return Tasks.Where(task => task.Id == taskId).ToList()[0];
         }
 
-        public async Task UpdateTaskCompletionStatus(long taskId, bool status)
-        {
-            foreach (var item in Tasks.Where(task => task.Id == taskId).ToList())
-            {
-                item.Status = status ? 2 : 3;
-                item.StatusData = GetTaskStatus(item.Status);
-                item.PriorityData = GetTaskPriority(item.Priority);
-                UserTask temp = taskDataHandler.UpdateTask(item);
-                item.Update(temp);
-                await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = item });
-            }
-            NotifyPropertyChanged(nameof(Tasks));
-        }
-
         public async Task OnTaskAddtion(AddTaskEvent e) 
         {
             AddTaskToList((UserTask)e.Task.Clone());

@@ -155,8 +155,14 @@
     <Compile Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml.cs">
       <DependentUpon>SecondaryAttachmentItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\TaskDetailsControl.xaml.cs">
       <DependentUpon>TaskDetailsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\UserControls\TaskListItemControl.xaml.cs">
+      <DependentUpon>TaskListItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\UserOnboardControl.xaml.cs">
       <DependentUpon>UserOnboardControl.xaml</DependentUpon>
@@ -241,6 +247,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
+    <Compile Include="ViewModels\TaskListItemViewModel.cs" />
     <Compile Include="ViewModels\TaskListViewModel.cs" />
     <Compile Include="ViewModels\UserOnboardViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
@@ -325,7 +332,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\UserControls\SettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\UserControls\TaskDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\TaskListItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,176 @@
+﻿<UserControl
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.TaskListItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="UserControl_Loaded"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.DataContext>
+        <vm:TaskListItemViewModel />
+    </UserControl.DataContext>
+    
+    <Grid CornerRadius="5"
+          Margin="20, 10, 20, 10"
+          PointerEntered="Grid_PointerEntered"
+          PointerExited="Grid_PointerExited"
+          HorizontalAlignment="Stretch">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal">
+                    <VisualState.Setters>
+                        <Setter Target="Options.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PointerOver">
+                    <VisualState.Setters>
+                        <Setter Target="Options.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <CheckBox Grid.Column="0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Margin="5, 5, 0, 0"
+                  MinWidth="0"
+                  IsChecked="{x:Bind Task.IsCompleted, Mode=OneWay}"
+                  Background="{x:Bind Task.PriorityData.ColorCode, Mode=OneWay}"
+                  BorderBrush="{x:Bind Task.PriorityData.ColorCode, Mode=OneWay}"
+                  Tag="{x:Bind Task.Id}"
+                  Style="{StaticResource CheckboxNoContent}"
+                  x:Name="TaskCompletionCheckBox"
+                  Checked="TaskListCheckBox_Checked"
+                  Unchecked="TaskListCheckBox_Checked"/>
+        <TextBlock Text="{x:Bind Task.Name, Mode=OneWay}"
+                   FontSize="20"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"
+                   TextTrimming="CharacterEllipsis"
+                   MaxLines="1"
+                   Grid.Column="1"/>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Grid.Column="1">
+            <TextBlock Text="Last Modified -"
+                       FontSize="12"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       VerticalAlignment="Center"
+                       Visibility="{x:Bind Task.IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"/>
+            <TextBlock Text="Completed by -"
+                       FontSize="12"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       VerticalAlignment="Center"
+                       Visibility="{x:Bind Task.IsCompleted, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Name="CompletionInfo"
+                       Text="{x:Bind Task.ModifiedTime, Mode=OneWay}"
+                       Margin="2, 0, 0, 0"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="Gray"
+                       FontWeight="Light"/>
+            <FontIcon FontFamily="Segoe Fluent Icons"
+                      Glyph="&#xf83f;"
+                      Grid.Row="1"
+                      Grid.Column="2"
+                      FontSize="5"
+                      VerticalAlignment="Top"
+                      Margin="3, 6, 6, 0"
+                      Foreground="Gray"/>
+            <TextBlock Text="General"
+                       FontSize="12"
+                       Foreground="Gray"
+                       FontWeight="Light"/>
+            <TextBlock FontFamily="Segoe FLuent Icons"
+                       FontSize="10"
+                       Text="&#xe90a;"
+                       Margin="8, 2, 0, 0"
+                       VerticalAlignment="Center"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       Visibility="{x:Bind Task.Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+            <TextBlock FontSize="12"
+                       Margin="2, 0, 0, 0"
+                       Text="{x:Bind Task.Comments.Count, Mode=OneWay}"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       Visibility="{x:Bind Task.Comments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+            <TextBlock FontFamily="Segoe FLuent Icons"
+                       FontSize="10"
+                       Text="&#xe723;"
+                       Margin="8, 2, 0, 0"
+                       VerticalAlignment="Center"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       Visibility="{x:Bind Task.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+            <TextBlock FontSize="12"
+                       Margin="2, 0, 0, 0"
+                       Text="{x:Bind Task.Attachments.Count, Mode=OneWay}"
+                       Foreground="Gray"
+                       FontWeight="Light"
+                       Visibility="{x:Bind Task.Attachments, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0, 10, 0, 5"
+                    Grid.Row="3"
+                    Grid.Column="1">
+            <TextBlock Text="{x:Bind taskItemViewModel.Task.StatusData.Name, Mode=OneWay}"
+                       FontSize="10"
+                       VerticalAlignment="Center"
+                       FontWeight="Light"
+                       Foreground="Gray"
+                       Margin="0, 0, 10, 0"/>
+            <Border BorderBrush="Gray"
+                    BorderThickness="0.5"
+                    CornerRadius="5"
+                    Visibility="{x:Bind Task.DueDate, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+                <CalendarDatePicker Name="DueDate"
+                                    MinDate="{x:Static sys:DateTimeOffset.Now}"
+                                    Background="Transparent"
+                                    FontSize="10"
+                                    Height="20"
+                                    FontWeight="Light"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0"
+                                    Date="{x:Bind Task.DueDate, Mode=OneWay}"/>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0, 3, 0, 0"
+                    x:Name="Options"
+                    Visibility="Collapsed">
+            <Button FontFamily="Segoe Fluent Icons"
+                    Content="&#xe70f;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ButtonNoBackgroundDormant}"/>
+        </StackPanel>
+        <PersonPicture DisplayName="{x:Bind Task.Owner.DisplayName, Mode=OneWay}"
+                       Height="28"
+                       Grid.Column="3"/>
+    </Grid>
+</UserControl>

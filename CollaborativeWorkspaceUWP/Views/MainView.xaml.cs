@@ -25,6 +25,9 @@ using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Auth.Handlers;
+using CollaborativeWorkspaceUWP.CustomControls.UserControls;
+using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Hosting;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -143,6 +146,22 @@ namespace CollaborativeWorkspaceUWP.Views
                     rootFrame.Navigate(typeof(UserOnboardView), null);
                 }
             }
+        }
+
+        private async void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppWindow appWindow;
+            Grid newWindowLayout = new Grid();
+            newWindowLayout.Style = SettingsControlStyle;
+            SettingsControl settingsControl = new SettingsControl();
+            newWindowLayout.Children.Add(settingsControl);
+            appWindow = await AppWindow.TryCreateAsync();
+            ElementCompositionPreview.SetAppWindowContent(appWindow, newWindowLayout);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindow = null;
+            };
         }
     }
 }

@@ -96,6 +96,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             task.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
             task.AssigneeId = 0;
             task.ParentTaskId = ParentTaskId > 0 ? ParentTaskId : -1;
+            if(DueDatePicker.Date != null)
+            {
+                task.DueDate = DueDatePicker.Date.Value.DateTime;
+            }
             await addTaskViewModel.AddTask(task);
 
             addTaskButtonClickEventHandler?.Invoke(sender, e);
@@ -125,6 +129,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             Description.Text = string.Empty;
             Priority.SelectedIndex = 0;
             Status.SelectedIndex = 0;
+            DueDatePicker.Date = null;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

@@ -166,6 +166,10 @@
                               SelectionChanged="TaskUpdateTriggered"
                               Style="{StaticResource CustomComboBox}"
                               ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
+
+                    <CalendarDatePicker Name="DueDatePicker"
+                                        PlaceholderText="Due Date"
+                                        Date="{x:Bind taskDetailsViewModel.CurrTask.DueDate, Mode=OneWay}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"

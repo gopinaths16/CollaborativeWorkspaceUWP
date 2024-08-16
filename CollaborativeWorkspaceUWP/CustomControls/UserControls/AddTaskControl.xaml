@@ -89,6 +89,9 @@
                       Style="{StaticResource CustomComboBox}"
                       Background="Gray"
                       SelectedIndex="0"/>
+            <CalendarDatePicker x:Name="DueDatePicker" 
+                                PlaceholderText="Due Date"
+                                Margin="0, 0, 10, 0"/>
         </StackPanel>
 
         <Border BorderThickness="0, 0, 0, 0.5"
