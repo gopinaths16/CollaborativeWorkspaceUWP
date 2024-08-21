@@ -9,8 +9,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
     Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded">
 
@@ -27,12 +25,40 @@
 
         <DataTemplate x:Key="ComboboxPriorityItemTemplate"
                       x:DataType="models:Priority">
-            <TextBlock Text="{Binding Name}"/>
+            <StackPanel Orientation="Horizontal">
+                <FontIcon x:Name="Ellipse"
+                          Margin="0, 0, 8, 0"
+                          FontFamily="Segoe Fluent Icons"
+                          FontSize="12"
+                          Glyph="&#xe8c9;"
+                          Foreground="{x:Bind ColorCode, Mode=OneWay}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"
+                           Margin="0, 0, 8, 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="ComboboxStatusItemTemplate"
                       x:DataType="models:Status">
-            <TextBlock Text="{Binding Name}" />
+            <StackPanel Orientation="Horizontal">
+                <Ellipse x:Name="Ellipse"
+                         Margin="0, 0, 8, 0"
+                         Width="10"
+                         Height="10"
+                         Stroke="{x:Bind ColorCode, Mode=OneWay}"
+                         StrokeThickness="2"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"
+                           Margin="0, 0, 8, 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="SubTaskListViewDataTemplate"
@@ -106,135 +132,212 @@
     </UserControl.Resources>
 
     <Grid Style="{StaticResource TaskDetailsViewGridDisplay}">
-        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStateGroup">
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MoreOptionsButton.Visibility" Value="Collapsed" />
+                        <Setter Target="DeleteTaskButton.Visibility" Value="Visible" />
+                        <Setter Target="AddAttachmentsButton.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SingleWindowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="400"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MoreOptionsButton.Visibility" Value="Visible" />
+                        <Setter Target="DeleteTaskButton.Visibility" Value="Collapsed" />
+                        <Setter Target="AddAttachmentsButton.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
+        <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <Grid HorizontalAlignment="Stretch"
-                  Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Left"
-                            Grid.Column="0">
-                    <Button Name="ClearTaskButton"
-                            FontFamily="Segoe Fluent Icons"
-                            Content="&#xe8fd;"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind AllowTaskClear, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                            ToolTipService.ToolTip="Back"
-                            ToolTipService.Placement="Bottom"
-                            Click="{x:Bind _onTaskClear}"
-                            Style="{StaticResource ButtonNoBackground}"/>
-                    <customtemplatecontrol:CustomIconButtonControl Name="GoToPrevTaskButton"
-                                                                   Icon="&#xe830;"
-                                                                   FontSize="10"
-                                                                   HorizontalAlignment="Center"
-                                                                   VerticalAlignment="Center"
-                                                                   Visibility="{x:Bind taskDetailsViewModel.PrevTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
-                                                                   ToolTipService.ToolTip="{x:Bind taskDetailsViewModel.PrevTask.Name, Mode=OneWay}"
-                                                                   ToolTipService.Placement="Bottom"
-                                                                   Click="GoToPrevTaskButton_Click"/>
-                    <ComboBox Name="Status"
-                              PlaceholderText="Status"
-                              CornerRadius="2"
-                              Margin="10, 0, 10, 0"
-                              ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
-                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
-                              Background="{x:Bind taskDetailsViewModel.CurrTask.StatusData.ColorCode, Mode=OneWay}"
-                              SelectionChanged="TaskUpdateTriggered"
-                              Style="{StaticResource CustomComboBox}"
-                              ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-                    <ComboBox Name="Priority"
-                              PlaceholderText="Priority"
-                              CornerRadius="2"
-                              Grid.Column="1"
-                              Margin="0, 0, 10, 0"
-                              ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
-                              SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
-                              Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
-                              SelectionChanged="TaskUpdateTriggered"
-                              Style="{StaticResource CustomComboBox}"
-                              ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"/>
-
-                    <CalendarDatePicker Name="DueDatePicker"
-                                        PlaceholderText="Due Date"
-                                        Date="{x:Bind taskDetailsViewModel.CurrTask.DueDate, Mode=OneWay}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Grid.Column="1">
-                    <Button Name="AddAttachmentsButton"
-                            FontFamily="Segoe Fluent Icons"
-                            Content="&#xe723;"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="AddAttachmentsButton_Click"
-                            Style="{StaticResource ButtonNoBackground}"
-                            Grid.Column="1"/>
-                    <Button Name="DeleteTaskButton"
-                            FontFamily="Segoe Fluent Icons"
-                            Content="&#xe74d;"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="DeleteTaskButton_Click"
-                            Style="{StaticResource ButtonNoBackground}"
-                            Grid.Column="1"/>
-                    <Button Name="OpenTaskInNewWindowButton"
-                            FontFamily="Segoe Fluent Icons"
-                            Content="&#xe8a7;"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="{x:Bind _onOpenInSeparateWindow}"
-                            Visibility="{x:Bind IsSeparateWindow, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                            Style="{StaticResource ButtonNoBackground}"
-                            Grid.Column="1"/>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <CheckBox HorizontalAlignment="Left"
-                          VerticalAlignment="Center"
-                          Name="TaskCompletionCheckBox"
-                          Margin="5, 15, 0, 0"
-                          IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
+            <StackPanel Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="7"
+                        Orientation="Horizontal">
+                <Button Name="ClearTaskButton"
+                        FontFamily="Segoe Fluent Icons"
+                        Content="&#xe8fd;"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind AllowTaskClear, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                        ToolTipService.ToolTip="Back"
+                        ToolTipService.Placement="Bottom"
+                        Click="{x:Bind _onTaskClear}"
+                        Style="{StaticResource ButtonNoBackground}"
+                        Grid.Row="0"
+                        Grid.Column="0"/>
+                <customtemplatecontrol:CustomIconButtonControl Name="GoToPrevTaskButton"
+                                                               Icon="&#xe830;"
+                                                               FontSize="10"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               Visibility="{x:Bind taskDetailsViewModel.PrevTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                                               ToolTipService.ToolTip="{x:Bind taskDetailsViewModel.PrevTask.Name, Mode=OneWay}"
+                                                               ToolTipService.Placement="Bottom"
+                                                               Click="GoToPrevTaskButton_Click"
+                                                               Grid.Row="0"
+                                                               Grid.Column="1"/>
+                <ComboBox Name="Status"
+                          PlaceholderText="Status"
+                          CornerRadius="2"
+                          Margin="10, 0, 10, 0"
+                          ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
+                          SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
+                          SelectionChanged="TaskUpdateTriggered"
                           Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
-                          Style="{StaticResource CheckboxNoContent}"
-                          Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
-                          BorderBrush="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
-                          MinWidth="0"
-                          Grid.Column="0"
-                          Checked="TaskDetailsCheckBox_Checked"
-                          Unchecked="TaskDetailsCheckBox_Checked"/>
-                <TextBox Name="TaskTitle"
-                         Style="{StaticResource TextNoBackground}"
-                         HorizontalAlignment="Stretch"
-                         Margin="5, 10, 15, 0"
-                         Padding="10"
-                         FontSize="20"
-                         Grid.Column="1"
-                         Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=OneWay}"
-                         MaxLength="300"
-                         LostFocus="TaskUpdate"
-                         TextChanged="TaskDetailsChanged"/>
-            </Grid>
+                          Style="{StaticResource CustomComboBox}"
+                          ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
+                          FontSize="12"
+                          Height="35"
+                          Grid.Row="0"
+                          Grid.Column="2"/>
+                <CalendarDatePicker Name="DueDatePicker"
+                                    PlaceholderText="Due Date"
+                                    Date="{x:Bind taskDetailsViewModel.CurrTask.DueDate, Mode=OneWay}"
+                                    FontSize="12"
+                                    Grid.Row="0"
+                                    Grid.Column="4"/>
+            </StackPanel>
+            <Button Name="AddAttachmentsButton"
+                    FontFamily="Segoe Fluent Icons"
+                    Content="&#xe723;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="AddAttachmentsButton_Click"
+                    Style="{StaticResource ButtonNoBackground}"
+                    Grid.Row="0"
+                    Grid.Column="6"/>
+            <Button Name="DeleteTaskButton"
+                    FontFamily="Segoe Fluent Icons"
+                    Content="&#xe74d;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="DeleteTaskButton_Click"
+                    Style="{StaticResource ButtonNoBackground}"
+                    Grid.Row="0"
+                    Grid.Column="7"/>
+            <Button Name="OpenTaskInNewWindowButton"
+                    FontFamily="Segoe Fluent Icons"
+                    Content="&#xe8a7;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="{x:Bind _onOpenInSeparateWindow}"
+                    Visibility="{x:Bind IsSeparateWindow, Mode=OneTime, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                    Style="{StaticResource ButtonNoBackground}"
+                    Grid.Row="0"
+                    Grid.Column="8"/>
+            <Button Name="MoreOptionsButton"
+                    FontFamily="Segoe Fluent Icons"
+                    Content="&#xe712;"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="Collapsed"
+                    Style="{StaticResource ButtonNoBackground}"
+                    Grid.Row="0"
+                    Grid.Column="9">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Add Attachment"
+                                        FontSize="12"
+                                        Click="AddAttachmentsButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xe723;"
+                                          FontFamily="Segoe Fluent Icons"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="Delete Task"
+                                        FontSize="12"
+                                        Click="DeleteTaskButton_Click">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Glyph="&#xe74d;" 
+                                          FontFamily="Segoe Fluent Icons"/>
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
 
-            <customusercontrol:IconedLabelControl Grid.Row="2"
+            <CheckBox HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Name="TaskCompletionCheckBox"
+                      Margin="5, 15, 0, 0"
+                      IsChecked="{x:Bind taskDetailsViewModel.CurrTask.IsCompleted, Mode=TwoWay}"
+                      Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                      Style="{StaticResource CheckboxNoContent}"
+                      Background="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
+                      BorderBrush="{x:Bind taskDetailsViewModel.CurrTask.PriorityData.ColorCode, Mode=OneWay}"
+                      MinWidth="0"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Checked="TaskDetailsCheckBox_Checked"
+                      Unchecked="TaskDetailsCheckBox_Checked"/>
+            <TextBox Name="TaskTitle"
+                     Style="{StaticResource TextNoBackground}"
+                     HorizontalAlignment="Stretch"
+                     Margin="5, 10, 15, 0"
+                     Padding="10"
+                     FontSize="20"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Grid.ColumnSpan="10"
+                     Text="{x:Bind taskDetailsViewModel.CurrTask.Name, Mode=OneWay}"
+                     MaxLength="300"
+                     LostFocus="TaskUpdate"
+                     TextChanged="TaskDetailsChanged"/>
+
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="10"
+                        Margin="15, 0, 0, 0">
+                <ComboBox Name="Priority"
+                          PlaceholderText="Priority"
+                          CornerRadius="2"
+                          Margin="0, 0, 10, 0"
+                          ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
+                          SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
+                          SelectionChanged="TaskUpdateTriggered"
+                          Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                          Style="{StaticResource CustomComboBox}"
+                          ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
+                          FontSize="12"
+                          Grid.Row="0"
+                          Grid.Column="3"/>
+            </StackPanel>
+            
+            <customusercontrol:IconedLabelControl Grid.Row="3"
+                                                  Grid.Column="0"
+                                                  Grid.ColumnSpan="10"
                                                   Icon="&#xE700;"
                                                   ContentText="Description"
                                                   Style="{StaticResource LabelStyles}"/>
@@ -248,7 +351,9 @@
                           Margin="15, 0, 15, 0"
                           PointerEntered="PointerEntered"
                           PointerExited="PointerExited"
-                          Grid.Row="3">
+                          Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="10">
                 <TextBox Name="TaskDescription"
                          Style="{StaticResource TextNoBackground}"
                          CornerRadius="5"
@@ -259,9 +364,9 @@
             </ScrollViewer>
 
             <Pivot x:Name="TaskViewPivot"
-                   Grid.Row="20"
+                   Grid.Row="5"
                    Grid.Column="0"
-                   Grid.ColumnSpan="2"
+                   Grid.ColumnSpan="10"
                    Margin="5, 20, 5, 0"
                    SelectedIndex="0"
                    SelectionChanged="TaskViewPivot_SelectionChanged">

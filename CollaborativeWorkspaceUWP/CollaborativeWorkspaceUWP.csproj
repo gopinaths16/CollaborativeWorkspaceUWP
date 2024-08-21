@@ -152,6 +152,9 @@
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\ProjectInfoControl.xaml.cs">
+      <DependentUpon>ProjectInfoControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\SecondaryAttachmentItemControl.xaml.cs">
       <DependentUpon>SecondaryAttachmentItemControl.xaml</DependentUpon>
     </Compile>
@@ -325,6 +328,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\ProjectInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

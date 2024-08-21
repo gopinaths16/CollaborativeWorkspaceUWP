@@ -75,7 +75,10 @@
 
                     <DataTemplate x:Key="ProjectListViewItemTemplate" 
                                   x:DataType="models:Project">
-                        <Grid Margin="10">
+                        <Grid Margin="10"
+                              IsDoubleTapEnabled="True"
+                              DoubleTapped="Grid_DoubleTapped"
+                              Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -97,7 +100,6 @@
                                         HorizontalAlignment="Right"
                                         Grid.Column="2">
                             </StackPanel>
-
                         </Grid>
                     </DataTemplate>
 
@@ -485,6 +487,16 @@
         </ContentDialog>
 
         <!--#endregion-->
-        
+
+        <Popup Name="ProjectInfoView"
+               IsLightDismissEnabled="false">
+            <Border BorderThickness="0.5"
+                    CornerRadius="5"
+                    BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}"
+                    Height="300"
+                    Width="300">
+                <customusercontrol:ProjectInfoControl />
+            </Border>
+        </Popup>
     </Grid>
 </Page>

@@ -115,12 +115,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             if(status != null && priority != null)
             {
                 long taskId = (long)TaskCompletionCheckBox.Tag;
-                if (taskId == taskDetailsViewModel.CurrTask.Id && (status.Id != taskDetailsViewModel.CurrTask.Status || priority.Id != taskDetailsViewModel.CurrTask.Priority || TaskCompletionCheckBox.IsChecked != taskDetailsViewModel.CurrTask.IsCompleted))
+                if (taskId == taskDetailsViewModel.CurrTask.Id && !taskDetailsViewModel.IsSubTaskSelected && (status.Id != taskDetailsViewModel.CurrTask.Status || priority.Id != taskDetailsViewModel.CurrTask.Priority || TaskCompletionCheckBox.IsChecked != taskDetailsViewModel.CurrTask.IsCompleted))
                 {
                     taskDetailsViewModel.CurrTask.Status = status.Id;
                     taskDetailsViewModel.CurrTask.Priority = priority.Id;
                     await taskDetailsViewModel.UpdateTask(true);
                 }
+                taskDetailsViewModel.IsSubTaskSelected = false;
             }
         }
 
@@ -229,6 +230,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void SubTaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            taskDetailsViewModel.IsSubTaskSelected = true;
             taskDetailsViewModel.SetSubTaskToCurrTask((UserTask)e.ClickedItem);
             AttachmentDialog.SetCurrTask(null);
             CommentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);
@@ -237,6 +239,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void GoToPrevTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            taskDetailsViewModel.IsSubTaskSelected = true;
             taskDetailsViewModel.ReturnToPrevTask();
             AttachmentDialog.SetCurrTask(null);
             CommentDialog.SetCurrTask(taskDetailsViewModel.CurrTask);

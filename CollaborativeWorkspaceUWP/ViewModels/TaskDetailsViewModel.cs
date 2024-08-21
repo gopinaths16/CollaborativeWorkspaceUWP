@@ -18,6 +18,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         bool isAddAttachmentContextTriggered;
 
         public bool IsLoaeded { get; set; }
+        public bool IsSubTaskSelected { get; set; }
 
         List<Priority> priorityList;
         List<Status> statusList;

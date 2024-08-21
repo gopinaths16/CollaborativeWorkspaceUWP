@@ -363,8 +363,7 @@
                                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                                     BorderBrush="{TemplateBinding Background}"
                                     BorderThickness="1"
-                                    CornerRadius="5"
-                                    Width="{TemplateBinding Width}">
+                                    CornerRadius="5">
                                 <ScrollViewer HorizontalScrollBarVisibility="Hidden"
                                               VerticalScrollBarVisibility="Hidden">
                                     <ItemsPresenter/>

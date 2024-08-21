@@ -292,5 +292,23 @@ namespace CollaborativeWorkspaceUWP.Views
             }
             isDragging = false;
         }
+
+        private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            var grid = sender as Grid;
+            if (grid != null)
+            {
+                var flyoutBase = FlyoutBase.GetAttachedFlyout(grid);
+                if (flyoutBase != null)
+                {
+                    flyoutBase.ShowAt(grid);
+                }
+            }
+        }
+
+        private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            ProjectInfoView.IsOpen = true;
+        }
     }
 }
