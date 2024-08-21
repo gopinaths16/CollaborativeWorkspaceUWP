@@ -49,7 +49,7 @@ namespace CollaborativeWorkspaceUWP.Views
         public TaskView()
         {
             this.InitializeComponent();
-            
+
             projectListViewModel = new ProjectListViewModel();
             taskListViewModel = new TaskListViewModel();
             addProjectViewModel = new AddProjectViewModel();
@@ -59,7 +59,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void OnVisualStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if(e.NewState != null && e.NewState.Name != null)
+            if (e.NewState != null && e.NewState.Name != null)
             {
                 GoToVisualState(e.NewState.Name, 1200);
             }
@@ -123,12 +123,12 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if(TaskDetailsView.GetCurrentTask() != null)
+            if (TaskDetailsView.GetCurrentTask() != null)
             {
                 await TaskDetailsView.UpdateCurrentTask();
             }
             TaskDetailsView.SetCurrentTask(null);
-            if(taskListViewModel.IsSingleWindowLayoutTriggered)
+            if (taskListViewModel.IsSingleWindowLayoutTriggered)
             {
                 TaskListView.Visibility = Visibility.Collapsed;
                 TaskDetailsViewContainer.Visibility = Visibility.Visible;
@@ -192,7 +192,7 @@ namespace CollaborativeWorkspaceUWP.Views
             Teamspace teamspace = new Teamspace() { Name = TeamspaceName.Text, OrgId = mainViewModel.CurrOrganization.Id, OwnerId = UserSessionHandler.Instance.CurrUser.Id };
             currTeamspaceViewModel.CurrTeamspace = mainViewModel.CreateTeamspaceInCurrentOrganization(teamspace);
             projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
-            if(projectListViewModel.Projects.Count > 0)
+            if (projectListViewModel.Projects.Count > 0)
             {
                 taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
             }
@@ -231,7 +231,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
+            if (mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
             {
                 await AddTeamspaceDialog.ShowAsync();
             }
@@ -243,7 +243,7 @@ namespace CollaborativeWorkspaceUWP.Views
                 {
                     taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
                 }
-                if(taskListViewModel.Tasks.Count > 0)
+                if (taskListViewModel.Tasks.Count > 0)
                 {
                     taskListViewModel.CurrTask = taskListViewModel.Tasks[0];
                     TaskDetailsView.SetCurrentTask(taskListViewModel.Tasks[0]);
@@ -261,7 +261,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)
         {
             taskListViewModel.CurrTask = null;
-            if(taskListViewModel.IsSingleWindowLayoutTriggered)
+            if (taskListViewModel.IsSingleWindowLayoutTriggered)
             {
                 TaskListView.Visibility = Visibility.Visible;
                 TaskDetailsViewContainer.Visibility = Visibility.Collapsed;

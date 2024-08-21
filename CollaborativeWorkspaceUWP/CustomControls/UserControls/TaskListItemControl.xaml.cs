@@ -8,10 +8,12 @@ using System.Net.Mail;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -90,6 +92,25 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             TaskCompletionCheckBox.Checked += TaskListCheckBox_Checked;
             TaskCompletionCheckBox.Unchecked += TaskListCheckBox_Checked;
+        }
+
+        private async void UserControl_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            AppWindow appWindow;
+            Grid newWindowLayout = new Grid();
+            newWindowLayout.Style = TaskDetailsViewSeparateDisplay;
+            TaskDetailsControl taskDetailsControl = new TaskDetailsControl();
+            taskDetailsControl.SetCurrentTask((UserTask)taskItemViewModel.Task.Clone());
+            taskDetailsControl.IsSeparateWindow = true;
+            taskDetailsControl.AllowTaskClear = false;
+            newWindowLayout.Children.Add(taskDetailsControl);
+            appWindow = await AppWindow.TryCreateAsync();
+            ElementCompositionPreview.SetAppWindowContent(appWindow, newWindowLayout);
+            await appWindow.TryShowAsync();
+            appWindow.Closed += delegate
+            {
+                appWindow = null;
+            };
         }
     }
 }

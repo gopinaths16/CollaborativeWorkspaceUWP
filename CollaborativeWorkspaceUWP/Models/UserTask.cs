@@ -71,7 +71,7 @@ namespace CollaborativeWorkspaceUWP.Models
                 {
                     return modifiedTime.ToString("F");
                 }
-                return "Nil";
+                return null;
             }
         }
 

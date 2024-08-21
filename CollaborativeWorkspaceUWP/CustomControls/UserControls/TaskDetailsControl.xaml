@@ -150,7 +150,7 @@
                               Margin="10, 0, 10, 0"
                               ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
                               SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
-                              Background="Gray"
+                              Background="{x:Bind taskDetailsViewModel.CurrTask.StatusData.ColorCode, Mode=OneWay}"
                               SelectionChanged="TaskUpdateTriggered"
                               Style="{StaticResource CustomComboBox}"
                               ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"/>

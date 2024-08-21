@@ -29,7 +29,7 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
                 {
                     while (Reader.Read())
                     {
-                        statusList.Add(new Status(Reader.GetInt64(0), Reader.GetString(1)));
+                        statusList.Add(new Status(Reader.GetInt64(0), Reader.GetString(1), Reader.GetString(2)));
                     }
                 }
             }
