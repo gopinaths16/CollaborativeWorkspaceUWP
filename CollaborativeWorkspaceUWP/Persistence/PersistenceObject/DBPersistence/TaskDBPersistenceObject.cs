@@ -107,6 +107,17 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
+        public void SetUpdateOrderForTasksContext(int start, int end, int value, long taskId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET TASK_ORDER=TASK_ORDER+@Value WHERE TASK_ORDER >= @Start AND TASK_ORDER <= @End AND ID!=@Id";
+            command.Parameters.AddWithValue("@Value", value);
+            command.Parameters.AddWithValue("@Start", start);
+            command.Parameters.AddWithValue("@End", end);
+            command.Parameters.AddWithValue("@Id", taskId);
+            Query = command;
+        }
+
         public ObservableCollection<UserTask> GetAllTasks()
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();

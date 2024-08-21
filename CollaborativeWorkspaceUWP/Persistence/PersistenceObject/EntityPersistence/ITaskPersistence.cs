@@ -12,7 +12,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
     {
         void SetAddContext(UserTask task);
         void SetGetAllTasksContext();
-
         void SetGetTasksForProjectContext(long projectId);
         void SetGetNonSubTasksContext(long taskId, long projectId);
         void SetAddSubTaskContext(long parentTaskId, long childTaskId);
@@ -20,6 +19,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         void SetUpdateDescriptionContext(UserTask task);
         void SetDeleteTaskContext(long taskId);
         void SetUpdateOrderContext(UserTask task);
+        void SetUpdateOrderForTasksContext(int start, int end, int value, long taskId);
         UserTask GetTask();
         ObservableCollection<UserTask> GetAllTasks();
     }

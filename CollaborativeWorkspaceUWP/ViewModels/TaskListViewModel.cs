@@ -203,16 +203,30 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public async Task ReOrderTasks()
+        public async Task ReOrderTasks(UserTask taskToBeReOrdered)
         {
-            int order = 0;
-            foreach (var task in Tasks)
+            if (taskToBeReOrdered != null)
             {
-                order++;
-                task.Order = order;
-                taskDataHandler.UpdateOrderForTask(task);
-            }
-            await ViewmodelEventHandler.Instance.Publish(new UpdateOrderEvent());
+                int startIndex = taskToBeReOrdered.Order - 1;
+                int endIndex = Tasks.IndexOf(taskToBeReOrdered);
+                taskToBeReOrdered.Order = endIndex + 1;
+                taskDataHandler.UpdateOrderForTask(taskToBeReOrdered);
+                if(startIndex <= endIndex)
+                {
+                    taskDataHandler.UpdateOrderForTasks(startIndex + 1, endIndex + 1, -1, taskToBeReOrdered.Id);
+                }
+                else
+                {
+                    taskDataHandler.UpdateOrderForTasks(endIndex + 1, startIndex + 1, 1, taskToBeReOrdered.Id);
+                }
+                int order = 0;
+                foreach (var task in Tasks)
+                {
+                    order++;
+                    task.Order = order;
+                }
+                await ViewmodelEventHandler.Instance.Publish(new UpdateOrderEvent());
+            }        
         }
 
         public override void Dispose()

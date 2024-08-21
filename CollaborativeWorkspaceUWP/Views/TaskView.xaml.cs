@@ -283,7 +283,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private async void TaskListViewByProject_DragItemsCompleted(ListViewBase sender, DragItemsCompletedEventArgs args)
         {
             UserTask draggedTask = args.Items.First() as UserTask;
-            await taskListViewModel.ReOrderTasks();
+            await taskListViewModel.ReOrderTasks(draggedTask);
             if (draggedTask != null)
             {
                 ListViewItem draggedItem = TaskListViewByProject.ContainerFromItem(draggedTask) as ListViewItem;
