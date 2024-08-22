@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +21,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
     public sealed partial class BoardViewControl : UserControl
     {
+        BoardGroupViewModel boardGroupViewModel;
+
         public BoardViewControl()
         {
             this.InitializeComponent();
+
+            boardGroupViewModel = new BoardGroupViewModel();
+        }
+
+        public void SetBoardGroup(BoardGroup boardGroup)
+        {
+            boardGroupViewModel.BoardGroup = boardGroup.Clone() as BoardGroup;
         }
     }
 }

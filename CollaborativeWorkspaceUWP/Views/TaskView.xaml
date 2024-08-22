@@ -24,112 +24,131 @@
     
     <Page.Resources>
 
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
+        <Style TargetType="PivotItem" x:Name="TaskTabItem">
+            <Setter Property="FontSize" Value="2" />
+        </Style>
 
-                    <Style TargetType="PivotItem" x:Name="TaskTabItem">
-                        <Setter Property="FontSize" Value="2" />
-                    </Style>
+        <Style TargetType="StackPanel" x:Name="PivotRightHeader">
+            <Setter Property="Margin" Value="10, 13, 0, 0" />
+        </Style>
 
-                    <Style TargetType="StackPanel" x:Name="PivotRightHeader">
-                        <Setter Property="Margin" Value="10, 13, 0, 0" />
-                    </Style>
+        <Style TargetType="ComboBox" x:Name="ComboBoxCustom">
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="Margin" Value="0, 5, 0, 20" />
+        </Style>
 
-                    <Style TargetType="ComboBox" x:Name="ComboBoxCustom">
-                        <Setter Property="CornerRadius" Value="2" />
-                        <Setter Property="Margin" Value="0, 5, 0, 20" />
-                    </Style>
+        <Style TargetType="TextBlock" x:Name="TaskDetailsViewTitleStyle">
+            <Setter Property="FontSize" Value="50" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
 
-                    <Style TargetType="TextBlock" x:Name="TaskDetailsViewTitleStyle">
-                        <Setter Property="FontSize" Value="50" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
+        <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
+            <Setter Property="Margin" Value="10, 20, 0, 0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
 
-                    <Style TargetType="customusercontrol:IconedLabelControl" x:Key="LabelStyles" >
-                        <Setter Property="Margin" Value="10, 20, 0, 0" />
-                        <Setter Property="VerticalAlignment" Value="Top" />
-                    </Style>
+        <Style TargetType="Grid" x:Key="TaskListViewByProjectStyle">
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="0, 20, 0, 0" />
+        </Style>
 
-                    <Style TargetType="Grid" x:Key="TaskListViewByProjectStyle">
-                        <Setter Property="CornerRadius" Value="5"/>
-                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Property="Padding" Value="5" />
-                        <Setter Property="Margin" Value="0, 20, 0, 0" />
-                    </Style>
+        <Style TargetType="StackPanel" x:Key="AddTaskDialogStyle">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="5, 25, 10, 5" />
+        </Style>
 
-                    <Style TargetType="StackPanel" x:Key="AddTaskDialogStyle">
-                        <Setter Property="CornerRadius" Value="5" />
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="BorderBrush" Value="Gray" />
-                        <Setter Property="Padding" Value="10" />
-                        <Setter Property="Margin" Value="5, 25, 10, 5" />
-                    </Style>
+        <Style TargetType="Grid" x:Name="TaskDetailsViewSeparateDisplay">
+            <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
 
-                    <Style TargetType="Grid" x:Name="TaskDetailsViewSeparateDisplay">
-                        <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-                        <Setter Property="Padding" Value="20" />
-                    </Style>
+        <DataTemplate x:Key="ProjectListViewItemTemplate" 
+                      x:DataType="models:Project">
+            <customusercontrol:DropDownListViewControl x:Name="ProjectGroupDropDown" 
+                                                       DropdownTitle="{x:Bind Name, Mode=OneWay}"
+                                                       ListViewItemSource="{x:Bind BoardGroups, Mode=TwoWay}"
+                                                       ListViewItemClickEnabled="True"
+                                                       AllowAdditionToListView="True"
+                                                       HideContentOnInitialization="True"
+                                                       TitleIcon="&#xE70B;"
+                                                       IsSubList="True"
+                                                       OnItemAddClick="ProjectGroupDropDown_OnItemAddClick"
+                                                       ListViewItemClicked="ProjectGroupDropDown_ListViewItemClicked"
+                                                       MessageOnSourceEmpty="No Groups Available"/>
+        </DataTemplate>
 
-                    <DataTemplate x:Key="ProjectListViewItemTemplate" 
-                                  x:DataType="models:Project">
-                        <Grid Margin="10"
-                              IsDoubleTapEnabled="True"
-                              DoubleTapped="Grid_DoubleTapped"
-                              Background="Transparent">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+        <DataTemplate x:DataType="models:BoardGroup"
+                      x:Key="BoardGroupListViewTemplate">
+            <StackPanel Orientation="Horizontal"
+                        Margin="60, 0, 0, 0">
+                <FontIcon Glyph="&#xf168;"
+                          VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"
+                           Margin="10, 0, 0, 0"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
 
-                            <TextBlock FontFamily="Segoe Fluent Icons"
-                                       Text="&#xE70B;"
-                                       Margin="0, 4, 10, 0"
-                                       Grid.Column="0"/>
+        <DataTemplate x:Key="ProjectListViewItemTemplateForBoardView" 
+                      x:DataType="models:Project">
+            <customusercontrol:DropDownListViewControl x:Name="ProjectBoardGroupDropDown" 
+                                                       DropdownTitle="{x:Bind Name, Mode=OneWay}"
+                                                       ListViewItemSource="{x:Bind BoardGroups, Mode=OneWay}"
+                                                       ListViewItemTemplate="{StaticResource BoardGroupListViewTemplate}"
+                                                       ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
+                                                       ListViewItemClickEnabled="True"
+                                                       AllowAdditionToListView="True"
+                                                       HideContentOnInitialization="True"
+                                                       TitleIcon="&#xE70B;"
+                                                       IsSubList="True"
+                                                       OnItemAddClick="ProjectBoardGroupDropDown_OnItemAddClick"
+                                                       ListViewItemClicked="ProjectBoardGroupDropDown_ListViewItemClicked"
+                                                       MessageOnSourceEmpty="No Groups available">
+                <customusercontrol:DropDownListViewControl.AddButtonFlyout>
+                    <Flyout>
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Background" Value="{ThemeResource SecondaryBackground}"/>
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <customusercontrol:AddBoardGroupControl ProjectId="{Binding Id}" 
+                                                                CancelButtonClick="AddBoardGroupControl_CancelButtonClick" />
+                    </Flyout>
+                </customusercontrol:DropDownListViewControl.AddButtonFlyout>
+            </customusercontrol:DropDownListViewControl>
+        </DataTemplate>
 
-                            <TextBlock Text="{Binding Name}"
-                                       Grid.Column="1"
-                                       TextWrapping="Wrap"
-                                       TextTrimming="WordEllipsis"
-                                       MaxLines="1"/>
+        <DataTemplate x:Key="TaskListViewDataTemplate"
+                                 x:DataType="models:UserTask">
+            <Border BorderThickness="0, 0, 0, 0.5"
+                               BorderBrush="{StaticResource SystemListLowColor}">
+                <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
+                                                                  Name="{x:Bind Id}"/>
+            </Border>
+        </DataTemplate>
 
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        Grid.Column="2">
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
+        <DataTemplate x:Key="ComboboxPriorityItemTemplate"
+                                 x:DataType="models:Priority">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
 
-                    <DataTemplate x:Key="TaskListViewDataTemplate"
-                                  x:DataType="models:UserTask">
-                        <Border BorderThickness="0, 0, 0, 0.5"
-                                BorderBrush="{StaticResource SystemListLowColor}">
-                            <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                                   Name="{x:Bind Id}"/>
-                        </Border>
-                    </DataTemplate>
+        <DataTemplate x:Key="ComboboxStatusItemTemplate"
+                                 x:DataType="models:Status">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
 
-                    <DataTemplate x:Key="ComboboxPriorityItemTemplate"
-                                  x:DataType="models:Priority">
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-
-                    <DataTemplate x:Key="ComboboxStatusItemTemplate"
-                                  x:DataType="models:Status">
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-
-                    <DataTemplate x:Key="SelectTeamspaceComboboxTemplate"
-                                  x:DataType="models:Teamspace">
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                    
-                </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <DataTemplate x:Key="SelectTeamspaceComboboxTemplate"
+                                 x:DataType="models:Teamspace">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
 
     </Page.Resources>
 
@@ -204,9 +223,11 @@
                                 Margin="20, 0, 0, 0"
                                 Name="ProjectListSplitViewPane">
 
-                        <customusercontrol:DropDownListViewControl DropdownTitle="My Projects"
+                        <customusercontrol:DropDownListViewControl x:Name="ProjectListDropDown" 
+                                                                   DropdownTitle="My Projects"
                                                                    ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
                                                                    ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                                                   ListViewItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
                                                                    AllowAdditionToListView="True"
                                                                    Margin="0, 30, 0, 0"
                                                                    OnItemAddClick="AddProjectButton_ButtonClick"
@@ -218,6 +239,7 @@
 
                 <SplitView.Content>
                     <Pivot x:Name="TaskTabView"
+                           SelectionChanged="TaskTabView_SelectionChanged"
                            Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
                         <Pivot.LeftHeader>
                             <StackPanel Style="{StaticResource PivotRightHeader}">
@@ -269,15 +291,13 @@
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel Grid.Row="0"
-                                                Orientation="Horizontal">
-                                        <TextBlock Name="TaskListProjectTitle"
-                                                   Text="{x:Bind taskListViewModel.CurrentProject.Name, Mode=OneWay}"
-                                                   FontSize="15"
-                                                   Margin="10, 10, 0, 0"
-                                                   FontWeight="Bold"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <TextBlock Name="TaskListProjectTitle"
+                                               Text="{x:Bind taskListViewModel.CurrentProject.Name, Mode=OneWay}"
+                                               FontSize="15"
+                                               Margin="10, 10, 0, 0"
+                                               Grid.Row="0"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"/>
 
 
                                     <StackPanel Grid.Row="1"
@@ -367,7 +387,7 @@
                             <Grid Margin="0, 20, 0, 0">
                                 <Border CornerRadius="5"
                                         x:Name="BoardViewContainer">
-                                    <customusercontrol:BoardViewControl />
+                                    <customusercontrol:BoardViewControl x:Name="BoardGroupView"/>
                                 </Border>
                             </Grid>
                         </PivotItem>
@@ -500,5 +520,6 @@
                 <customusercontrol:ProjectInfoControl />
             </Border>
         </Popup>
+        
     </Grid>
 </Page>

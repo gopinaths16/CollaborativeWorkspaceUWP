@@ -124,6 +124,7 @@
 
     <Style TargetType="ListViewItem" x:Key="ListViewItemStyleAccent">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
@@ -170,7 +171,7 @@
 
     <Style TargetType="ListViewItem" x:Key="ListViewItemStyleDormant">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
@@ -178,28 +179,6 @@
                     <Border x:Name="OuterContainer" 
                             Background="{TemplateBinding Background}"
                             CornerRadius="10">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="PointerOver">
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="{StaticResource SystemListLowColor}" 
-                                                    Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed" />
-                                <VisualState x:Name="Selected">
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="OuterContainer"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="{StaticResource SystemListLowColor}" 
-                                                    Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
                         <ContentPresenter Content="{TemplateBinding Content}" 
                                           ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Border>

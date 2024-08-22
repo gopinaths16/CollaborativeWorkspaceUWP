@@ -43,6 +43,9 @@ namespace CollaborativeWorkspaceUWP.Views
         AddTaskViewModel addTaskViewModel;
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
+        BoardGroupViewModel boardGroupViewModel;
+
+        ResourceDictionary staticStyles = new ResourceDictionary();
 
         private bool isDragging = false;
 
@@ -55,6 +58,9 @@ namespace CollaborativeWorkspaceUWP.Views
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
             currTeamspaceViewModel = new CurrentTeamspaceViewModel();
+            boardGroupViewModel = new BoardGroupViewModel();
+
+            staticStyles.Source = new Uri("ms-appx:///Styles/StaticStyles.xaml");
         }
 
         private void OnVisualStateChanged(object sender, VisualStateChangedEventArgs e)
@@ -310,6 +316,49 @@ namespace CollaborativeWorkspaceUWP.Views
         private void Grid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             ProjectInfoView.IsOpen = true;
+        }
+
+        private void TaskTabView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Pivot pivot = sender as Pivot;
+            if (pivot != null)
+            {
+                DataTemplate listViewItemTemplate = pivot.SelectedIndex == 1 ? this.Resources["ProjectListViewItemTemplateForBoardView"] as DataTemplate : this.Resources["ProjectListViewItemTemplate"] as DataTemplate ;
+                ProjectListDropDown.SetListViewItemTemplate(listViewItemTemplate);
+                ProjectListDropDown.ListViewItemClickEnabled = pivot.SelectedIndex == 1 ? false : true;
+            }
+        }
+
+        private void ProjectGroupDropDown_OnItemAddClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ProjectGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
+        {
+
+        }
+
+        private void ProjectBoardGroupDropDown_OnItemAddClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
+        {
+            BoardGroup boardGroup = e.ClickedItem as BoardGroup;
+            BoardGroupView.SetBoardGroup(boardGroup);
+        }
+
+        private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Parent is FlyoutPresenter presenter)
+            {
+                if (presenter.Parent is Flyout flyout)
+                {
+                    flyout.Hide();
+                }
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     {
         ObservableCollection<Project> projects;
         ProjectDataHandler projectDataHandler;
+        BoardDataHandler boardDataHandler;
         bool isProjectListPaneOpen;
 
         public ObservableCollection<Project> Projects
@@ -29,10 +30,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public ProjectListViewModel()
         {
             projectDataHandler = new ProjectDataHandler();
+            boardDataHandler = new BoardDataHandler();
             Projects = new ObservableCollection<Project>();
             IsProjectListPaneOpen = true;
 
             ViewmodelEventHandler.Instance.Subscribe<AddProjectEvent>(OnProjectAddition);
+            ViewmodelEventHandler.Instance.Subscribe<AddBoardGroupEvent>(OnBoardGroupAddition);
         }
 
         public bool IsProjectListPaneOpen
@@ -46,6 +49,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public void AddProjectToList(Project project)
         {
+            project.BoardGroups = boardDataHandler.GetAllBoardsForProject(project.Id);
             Projects.Add(project);
             NotifyPropertyChanged(nameof(Projects));
         }
@@ -54,6 +58,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             foreach (var project in projectDataHandler.GetProjectsForTeamspace(teamspaceId))
             {
+                project.BoardGroups = boardDataHandler.GetAllBoardsForProject(project.Id);
                 Projects.Add(project);
             }
             NotifyPropertyChanged(nameof(Projects));
@@ -64,6 +69,18 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             AddProjectToList((Project)e.Project.Clone());
         }
 
-        //private void OnTaskAddtion(AddTaskEvent e)
+        private async Task OnBoardGroupAddition(AddBoardGroupEvent e)
+        {
+            if (e.BoardGroup != null)
+            {
+                foreach (Project project in Projects)
+                {
+                    if(project.Id == e.BoardGroup.ProjectId)
+                    {
+                        project.BoardGroups.Add(e.BoardGroup);
+                    }
+                }
+            }
+        }
     }
 }

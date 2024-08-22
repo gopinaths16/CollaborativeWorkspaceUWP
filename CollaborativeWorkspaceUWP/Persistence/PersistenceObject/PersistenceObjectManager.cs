@@ -71,5 +71,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
         {
             return _provider.GetUserPersistenceObject();
         }
+
+        public IBoardPersistence GetBoardPersistenceObject()
+        {
+            return _provider.GetBoardPersistenceObject();
+        }
     }
 }

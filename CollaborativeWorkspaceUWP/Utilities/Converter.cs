@@ -93,7 +93,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Converters
             {
                 return collection.Count > 0 ? true : false;
             }
-            return Visibility.Collapsed;
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -110,7 +110,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Converters
             {
                 return collection.Count <= 0 ? true : false;
             }
-            return Visibility.Visible;
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

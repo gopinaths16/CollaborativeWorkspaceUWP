@@ -35,6 +35,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(ListViewItemSourceProperty, value); }
         }
 
+        public Style ListViewItemContainerStyle
+        {
+            get { return (Style)GetValue(ListViewItemContainerStyleProperty); }
+            set { SetValue(ListViewItemContainerStyleProperty, value); }
+        }
+
         public string DropdownTitle
         {
             get { return (string)GetValue(DropdownTitleProperty); }
@@ -45,6 +51,36 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             get { return (bool)GetValue(AllowAdditionToListViewProperty); }
             set { SetValue(AllowAdditionToListViewProperty, value); }
+        }
+
+        public bool IsSubList
+        {
+            get { return (bool)GetValue(IsSubListProperty); }
+            set { SetValue(IsSubListProperty, value); }
+        }
+
+        public string TitleIcon
+        {
+            get { return (string)GetValue(TitleIconProperty); }
+            set { SetValue(TitleIconProperty, value); }
+        }
+
+        public Flyout AddButtonFlyout
+        {
+            get { return (Flyout)GetValue(AddButtonFlyoutProperty); }
+            set { SetValue(AddButtonFlyoutProperty, value); }
+        }
+
+        public bool HideContentOnInitialization
+        {
+            get { return (bool)GetValue(HideContentOnInitializationProperty); }
+            set { SetValue(HideContentOnInitializationProperty, value); }
+        }
+
+        public bool ListViewItemClickEnabled
+        {
+            get { return (bool)GetValue(ListViewItemClickEnabledProperty); }
+            set { SetValue(ListViewItemClickEnabledProperty, value); }
         }
 
         public event ItemClickEventHandler ListViewItemClicked
@@ -75,6 +111,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty MessageOnSourceEmptyProperty = DependencyProperty.Register("MessageOnSourceEmpty", typeof(string), typeof(DropDownListViewControl), null);
 
+        public static readonly DependencyProperty IsSubListProperty = DependencyProperty.Register("IsSubList", typeof(bool), typeof(DropDownListViewControl), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty ListViewItemClickEnabledProperty = DependencyProperty.Register("ListViewItemClickEnabled", typeof(bool), typeof(DropDownListViewControl), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty TitleIconProperty = DependencyProperty.Register("TitleIcon", typeof(string), typeof(DropDownListViewControl), new PropertyMetadata(""));
+
+        public static readonly DependencyProperty HideContentOnInitializationProperty = DependencyProperty.Register("HideContentOnInitialization", typeof(bool), typeof(DropDownListViewControl), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty AddButtonFlyoutProperty = DependencyProperty.Register("AddButtonFlyout", typeof(Flyout), typeof(DropDownListViewControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ListViewItemContainerStyleProperty = DependencyProperty.Register("ListViewItemContainerStyle", typeof(Style), typeof(DropDownListViewControl), new PropertyMetadata(null));
+
         public DropDownListViewControl()
         {
             this.InitializeComponent();
@@ -85,29 +133,63 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             if (DropdownListViewContent.Visibility == Visibility.Collapsed)
             {
                 OpenDropdownButton.Content = "\uE70D";
+                OpenDropdownButtonAlt.Content = "\uE70D";
                 DropdownListViewContent.Visibility = Visibility.Visible;
             }
             else
             {
                 OpenDropdownButton.Content = "\uE76C";
+                OpenDropdownButtonAlt.Content = "\uE76C";
                 DropdownListViewContent.Visibility = Visibility.Collapsed;
             }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            OpenDropdownButton.Content = "\uE70D";
-            DropdownListViewContent.Visibility = Visibility.Visible;
+            DropdownListView.ItemTemplate = ListViewItemTemplate;
+            if (HideContentOnInitialization)
+            {
+                OpenDropdownButton.Content = "\uE76C";
+                OpenDropdownButtonAlt.Content = "\uE76C";
+                DropdownListViewContent.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                OpenDropdownButton.Content = "\uE70D";
+                OpenDropdownButtonAlt.Content = "\uE70D";
+                DropdownListViewContent.Visibility = Visibility.Visible;
+            }
+            DropdownListView.ItemsSource = ListViewItemSource;
+            DropdownListView.ItemContainerStyle = ListViewItemContainerStyle;
+            ICollection collection = ListViewItemSource as ICollection;
+            if (collection.Count <= 0)
+            {
+                NoSourceAvailableMessage.Visibility = Visibility.Visible;
+            }
         }
 
         private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
+            if (AddButtonFlyout != null)
+            {
+                var button = sender as FrameworkElement;
+                AddButtonFlyout.ShowAt(button, new FlyoutShowOptions
+                {
+                    Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft,
+                    ShowMode = FlyoutShowMode.Standard
+                });
+            }
             _itemAddEventHandler?.Invoke(sender, e);
             ICollection collection = ListViewItemSource as ICollection;
             if(collection.Count > 0)
             {
                 NoSourceAvailableMessage.Visibility = Visibility.Collapsed;
             }
+        }
+
+        public void SetListViewItemTemplate(DataTemplate template)
+        {
+            DropdownListView.ItemTemplate = template;
         }
     }
 }

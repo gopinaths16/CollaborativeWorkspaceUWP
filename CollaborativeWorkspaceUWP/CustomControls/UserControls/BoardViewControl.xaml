@@ -10,7 +10,29 @@
     d:DesignWidth="400">
 
     <Grid Background="{ThemeResource SecondaryBackground}">
-        <TextBlock Text="Board View"
-                   Margin="10, 10, 0, 0"/>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Name="TaskListProjectTitle"
+                   Text="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
+                   Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                   FontSize="15"
+                   Margin="15, 15, 0, 0"
+                   Grid.Row="0"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"/>
+
+        <StackPanel Name="NoGroupSelectedMessage"
+                    Grid.Row="0"
+                    Margin="0, 20, 0, 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
+            <TextBlock Text="No Group Selected"
+                       Foreground="Gray"
+                       FontSize="20"/>
+        </StackPanel>
     </Grid>
 </UserControl>

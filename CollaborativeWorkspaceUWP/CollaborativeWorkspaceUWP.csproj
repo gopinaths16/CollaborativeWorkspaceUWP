@@ -131,6 +131,9 @@
     <Compile Include="CustomControls\UserControls\AccountDetailsControl.xaml.cs">
       <DependentUpon>AccountDetailsControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\AddBoardGroupControl.xaml.cs">
+      <DependentUpon>AddBoardGroupControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\AttachmentControl.xaml.cs">
       <DependentUpon>AttachmentControl.xaml</DependentUpon>
     </Compile>
@@ -185,7 +188,7 @@
     <Compile Include="DAL\UserDataHandler.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\BoardGroup.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Enums\AuthManagerMode.cs" />
     <Compile Include="Models\Enums\AuthProviderMode.cs" />
@@ -233,6 +236,7 @@
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\AddBoardGroupEvent.cs" />
     <Compile Include="Utilities\Events\AddCommentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
     <Compile Include="Utilities\Events\AddTaskEvent.cs" />
@@ -246,11 +250,13 @@
     <Compile Include="Utilities\Util.cs" />
     <Compile Include="Utilities\ViewmodelEventHandler.cs" />
     <Compile Include="ViewModels\AccountDetailsViewModel.cs" />
+    <Compile Include="ViewModels\AddBoardViewModel.cs" />
     <Compile Include="ViewModels\AttachmentItemViewModel.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BoardGroupViewModel.cs" />
     <Compile Include="ViewModels\CommentItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
@@ -307,6 +313,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="CustomControls\UserControls\AccountDetailsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\AddBoardGroupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

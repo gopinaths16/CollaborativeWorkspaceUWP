@@ -11,7 +11,9 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersiste
 {
     public interface IBoardPersistence : IPersistenceObject
     {
-        void SetGetAllBoardsForProjectContext(long projectId);
-        ObservableCollection<Board> GetAllBoards();
+        void SetGetAllBoardGroupsForProjectContext(long projectId);
+        void SetAddBoardGroupForProjectContext(string boardName, long projectId);
+        ObservableCollection<BoardGroup> GetAllBoardGroups();
+        BoardGroup GetBoardGroup();
     }
 }

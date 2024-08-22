@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace CollaborativeWorkspaceUWP.Models
         public long TeamsapceId {  get { return _teamspaceId; } set { _teamspaceId = value; } }
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
 
+        public ObservableCollection<BoardGroup> BoardGroups { get; set; }
+
         public Project()
         {
 
@@ -35,11 +38,18 @@ namespace CollaborativeWorkspaceUWP.Models
             this._priority = priority;
             this._teamspaceId = teamspaceId;
             this._ownerId = ownerId;
+
+            BoardGroups = new ObservableCollection<BoardGroup>();
         }
 
         public object Clone()
         {
-            return new Project(Id, Name, Status, Priority, TeamsapceId, OwnerId);
+            Project project = new Project(Id, Name, Status, Priority, TeamsapceId, OwnerId);
+            foreach (BoardGroup group in BoardGroups)
+            {
+                project.BoardGroups.Add(group);
+            }
+            return project;
         }
     }
 }
