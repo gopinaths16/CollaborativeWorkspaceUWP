@@ -60,5 +60,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         {
             return new UserDBPersistenceObject();
         }
+
+        public IBoardPersistence GetBoardPersistenceObject()
+        {
+            return new BoardDBPersistenceObject();
+        }
     }
 }

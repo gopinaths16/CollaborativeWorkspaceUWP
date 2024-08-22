@@ -33,7 +33,7 @@
                     </Style>
 
                     <Style TargetType="StackPanel" x:Name="PivotRightHeader">
-                        <Setter Property="Margin" Value="0, 10, 20, 0" />
+                        <Setter Property="Margin" Value="10, 13, 0, 0" />
                     </Style>
 
                     <Style TargetType="ComboBox" x:Name="ComboBoxCustom">
@@ -218,12 +218,17 @@
 
                 <SplitView.Content>
                     <Pivot x:Name="TaskTabView"
-                           Margin="10, 0, 0, 0"
                            Visibility="{Binding TeamspacesForCurrOrganization, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverter}}">
-                        <Pivot.RightHeader>
+                        <Pivot.LeftHeader>
                             <StackPanel Style="{StaticResource PivotRightHeader}">
+                                <Button Name="OpenSplitViewButton" 
+                                        Style="{StaticResource ButtonNoBackground}"
+                                        Click="OpenSplitViewButton_Click"
+                                        FontFamily="Segoe Fluent Icons"
+                                        Content="&#xe8a0;"
+                                        FontSize="17"/>
                             </StackPanel>
-                        </Pivot.RightHeader>
+                        </Pivot.LeftHeader>
 
                         <PivotItem>
                             <PivotItem.Header>
@@ -266,17 +271,10 @@
 
                                     <StackPanel Grid.Row="0"
                                                 Orientation="Horizontal">
-                                        <Button Name="OpenSplitViewButton" 
-                                                Style="{StaticResource ButtonNoBackground}"
-                                                Visibility="{x:Bind taskListViewModel.IsSingleWindowLayoutTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                Click="OpenSplitViewButton_Click"
-                                                FontFamily="Segoe Fluent Icons"
-                                                Content="&#xe8a0;"
-                                                FontSize="17"/>
                                         <TextBlock Name="TaskListProjectTitle"
                                                    Text="{x:Bind taskListViewModel.CurrentProject.Name, Mode=OneWay}"
                                                    FontSize="15"
-                                                   Margin="5, 0, 0, 0"
+                                                   Margin="10, 10, 0, 0"
                                                    FontWeight="Bold"
                                                    VerticalAlignment="Center"/>
                                     </StackPanel>
@@ -359,7 +357,6 @@
                                               FontSize="12"
                                               VerticalAlignment="Center"
                                               FontWeight="Bold"/>
-
                                     <TextBlock Text="Board View"
                                                FontSize="12"
                                                Margin="5, 0, 0, 0"
@@ -367,8 +364,13 @@
                                                FontWeight="Bold"/>
                                 </StackPanel>
                             </PivotItem.Header>
+                            <Grid Margin="0, 20, 0, 0">
+                                <Border CornerRadius="5"
+                                        x:Name="BoardViewContainer">
+                                    <customusercontrol:BoardViewControl />
+                                </Border>
+                            </Grid>
                         </PivotItem>
-
                     </Pivot>
                 </SplitView.Content>
             </SplitView>

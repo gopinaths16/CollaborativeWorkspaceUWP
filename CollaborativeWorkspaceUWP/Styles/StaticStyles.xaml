@@ -330,7 +330,6 @@
     </Style>
 
     <Style TargetType="ComboBox" x:Key="CustomComboBox">
-        <Setter Property="Width" Value="100" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
@@ -341,7 +340,7 @@
                                 CornerRadius="5"
                                 Visibility="{Binding SelectedItem, Converter={StaticResource VisibilityToNullConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                             <ContentPresenter x:Name="ContentPresenter"
-                                              Margin="{TemplateBinding Padding}"
+                                              Margin="5"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               Content="{TemplateBinding SelectedItem}"

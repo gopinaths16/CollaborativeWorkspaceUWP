@@ -137,6 +137,9 @@
     <Compile Include="CustomControls\UserControls\AttachmentItemControl.xaml.cs">
       <DependentUpon>AttachmentItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\BoardViewControl.xaml.cs">
+      <DependentUpon>BoardViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
     </Compile>
@@ -171,6 +174,7 @@
       <DependentUpon>UserOnboardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\AttachmentDataHandler.cs" />
+    <Compile Include="DAL\BoardDataHandler.cs" />
     <Compile Include="DAL\CommentDataHandler.cs" />
     <Compile Include="DAL\OrganizationDataHandler.cs" />
     <Compile Include="DAL\PriorityDataHandler.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="DAL\UserDataHandler.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Enums\AuthManagerMode.cs" />
     <Compile Include="Models\Enums\AuthProviderMode.cs" />
@@ -195,11 +200,13 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserTask.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
+    <Compile Include="Persistence\PersistenceObject\DBPersistence\BoardDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\CommentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\PriorityDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\StatusDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\UserDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IAttachmentPersistence.cs" />
+    <Compile Include="Persistence\PersistenceObject\EntityPersistence\IBoardPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\ICommentPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IPriorityPersistence.cs" />
     <Compile Include="Persistence\PersistenceObject\EntityPersistence\IStatusPersistence.cs" />
@@ -308,6 +315,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\AttachmentItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\BoardViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

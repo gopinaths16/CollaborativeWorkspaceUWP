@@ -19,5 +19,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         IAttachmentPersistence GetAttachmentPersistenceObject();
         ICommentPersistence GetCommentPersistenceObject();
         IUserPersistence GetUserPersistenceObject();
+        IBoardPersistence GetBoardPersistenceObject();
     }
 }

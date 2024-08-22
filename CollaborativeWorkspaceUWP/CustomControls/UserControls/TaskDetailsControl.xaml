@@ -46,7 +46,7 @@
                       x:DataType="models:Status">
             <StackPanel Orientation="Horizontal">
                 <Ellipse x:Name="Ellipse"
-                         Margin="0, 0, 8, 0"
+                         Margin="5, 2, 10, 0"
                          Width="10"
                          Height="10"
                          Stroke="{x:Bind ColorCode, Mode=OneWay}"
@@ -54,7 +54,9 @@
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Name}"
-                           Margin="0, 0, 8, 0"
+                           TextWrapping="Wrap"
+                           MaxLines="1"
+                           TextTrimming="CharacterEllipsis"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
@@ -143,6 +145,7 @@
                         <Setter Target="MoreOptionsButton.Visibility" Value="Collapsed" />
                         <Setter Target="DeleteTaskButton.Visibility" Value="Visible" />
                         <Setter Target="AddAttachmentsButton.Visibility" Value="Visible" />
+                        <Setter Target="Status.Width" Value="100" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SingleWindowLayout">
@@ -153,6 +156,7 @@
                         <Setter Target="MoreOptionsButton.Visibility" Value="Visible" />
                         <Setter Target="DeleteTaskButton.Visibility" Value="Collapsed" />
                         <Setter Target="AddAttachmentsButton.Visibility" Value="Collapsed" />
+                        <Setter Target="Status.Width" Value="34" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -211,6 +215,7 @@
                           PlaceholderText="Status"
                           CornerRadius="2"
                           Margin="10, 0, 10, 0"
+                          Width="100"
                           ItemsSource="{x:Bind taskDetailsViewModel.StatusData}"
                           SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Status, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
                           SelectionChanged="TaskUpdateTriggered"

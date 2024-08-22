@@ -185,6 +185,7 @@ namespace CollaborativeWorkspaceUWP.Views
         private void OpenSplitViewButton_Click(object sender, RoutedEventArgs e)
         {
             projectListViewModel.IsProjectListPaneOpen = !projectListViewModel.IsProjectListPaneOpen;
+            OpenSplitViewButton.Content = projectListViewModel.IsProjectListPaneOpen ? "\ue8a0" : "\ue89f";
         }
 
         private void AddTeamspace_ButtonClick(object sender, RoutedEventArgs e)
