@@ -127,13 +127,16 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AccountDetailsNavigationItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            UIElement element = sender as UIElement;
-            GeneralTransform transform = element.TransformToVisual(Window.Current.Content);
-            Point point = transform.TransformPoint(new Point(0, 0));
-
-            AccountDetailsPopup.HorizontalOffset = point.X - 263;
-            AccountDetailsPopup.VerticalOffset = point.Y + 35;
-            AccountDetailsPopup.IsOpen = true;
+            PersonPicture personPicture = sender as PersonPicture;
+            if (personPicture.ContextFlyout != null)
+            {
+                var element = sender as FrameworkElement;
+                personPicture.ContextFlyout.ShowAt(element, new FlyoutShowOptions
+                {
+                    Placement = FlyoutPlacementMode.BottomEdgeAlignedLeft,
+                    ShowMode = FlyoutShowMode.Standard
+                });
+            }
         }
 
         public async Task OnLogoutTriggered(LogoutEvent logoutEvent)

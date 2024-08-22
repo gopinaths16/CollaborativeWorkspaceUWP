@@ -27,7 +27,7 @@
                       x:DataType="models:Priority">
             <StackPanel Orientation="Horizontal">
                 <FontIcon x:Name="Ellipse"
-                          Margin="0, 0, 8, 0"
+                          Margin="5, 0, 8, 0"
                           FontFamily="Segoe Fluent Icons"
                           FontSize="12"
                           Glyph="&#xe8c9;"
@@ -46,7 +46,7 @@
                       x:DataType="models:Status">
             <StackPanel Orientation="Horizontal">
                 <Ellipse x:Name="Ellipse"
-                         Margin="5, 2, 10, 0"
+                         Margin="5, 0, 10, 0"
                          Width="10"
                          Height="10"
                          Stroke="{x:Bind ColorCode, Mode=OneWay}"
@@ -58,7 +58,6 @@
                            MaxLines="1"
                            TextTrimming="CharacterEllipsis"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
                            Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
             </StackPanel>
         </DataTemplate>
@@ -146,6 +145,7 @@
                         <Setter Target="DeleteTaskButton.Visibility" Value="Visible" />
                         <Setter Target="AddAttachmentsButton.Visibility" Value="Visible" />
                         <Setter Target="Status.Width" Value="100" />
+                        <Setter Target="Priority.Width" Value="100" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SingleWindowLayout">
@@ -157,6 +157,7 @@
                         <Setter Target="DeleteTaskButton.Visibility" Value="Collapsed" />
                         <Setter Target="AddAttachmentsButton.Visibility" Value="Collapsed" />
                         <Setter Target="Status.Width" Value="34" />
+                        <Setter Target="Priority.Width" Value="34" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -164,7 +165,6 @@
 
         <Grid Visibility="{x:Bind taskDetailsViewModel.CurrTask, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -226,6 +226,22 @@
                           Height="35"
                           Grid.Row="0"
                           Grid.Column="2"/>
+
+                <ComboBox Name="Priority"
+                          PlaceholderText="Priority"
+                          CornerRadius="2"
+                          Margin="0, 0, 10, 0"
+                          Width="100"
+                          ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
+                          SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
+                          SelectionChanged="TaskUpdateTriggered"
+                          Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                          Style="{StaticResource CustomComboBox}"
+                          ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
+                          FontSize="12"
+                          Height="35"
+                          Grid.Row="0"
+                          Grid.Column="3"/>
                 <CalendarDatePicker Name="DueDatePicker"
                                     PlaceholderText="Due Date"
                                     Date="{x:Bind taskDetailsViewModel.CurrTask.DueDate, Mode=OneWay}"
@@ -320,27 +336,8 @@
                      LostFocus="TaskUpdate"
                      TextChanged="TaskDetailsChanged"/>
 
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="10"
-                        Margin="15, 0, 0, 0">
-                <ComboBox Name="Priority"
-                          PlaceholderText="Priority"
-                          CornerRadius="2"
-                          Margin="0, 0, 10, 0"
-                          ItemsSource="{x:Bind taskDetailsViewModel.PriorityData}"
-                          SelectedIndex="{x:Bind taskDetailsViewModel.CurrTask.Priority, Mode=OneWay, Converter={StaticResource LongToIntConverter}}"
-                          SelectionChanged="TaskUpdateTriggered"
-                          Tag="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
-                          Style="{StaticResource CustomComboBox}"
-                          ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
-                          FontSize="12"
-                          Grid.Row="0"
-                          Grid.Column="3"/>
-            </StackPanel>
             
-            <customusercontrol:IconedLabelControl Grid.Row="3"
+            <customusercontrol:IconedLabelControl Grid.Row="2"
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="10"
                                                   Icon="&#xE700;"
@@ -356,7 +353,7 @@
                           Margin="15, 0, 15, 0"
                           PointerEntered="PointerEntered"
                           PointerExited="PointerExited"
-                          Grid.Row="4"
+                          Grid.Row="3"
                           Grid.Column="0"
                           Grid.ColumnSpan="10">
                 <TextBox Name="TaskDescription"
@@ -369,7 +366,7 @@
             </ScrollViewer>
 
             <Pivot x:Name="TaskViewPivot"
-                   Grid.Row="5"
+                   Grid.Row="4"
                    Grid.Column="0"
                    Grid.ColumnSpan="10"
                    Margin="5, 20, 5, 0"

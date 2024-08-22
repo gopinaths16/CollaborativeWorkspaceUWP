@@ -118,7 +118,25 @@
                                    DisplayName="{Binding CurrUser.DisplayName}"
                                    Height="30"
                                    Margin="0, 2, 10, 0"
-                                   Tapped="AccountDetailsNavigationItem_Tapped"/>
+                                   Tapped="AccountDetailsNavigationItem_Tapped">
+                        <PersonPicture.ContextFlyout>
+                            <Flyout>
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style TargetType="FlyoutPresenter">
+                                        <Setter Property="Background" 
+                                                Value="{ThemeResource SecondaryBackground}"/>
+                                        <Setter Property="CornerRadius" 
+                                                Value="5" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+                                <StackPanel Width="250"
+                                            Height="300"
+                                            VerticalAlignment="Stretch">
+                                    <customusercontrol:AccountDetailsControl/>
+                                </StackPanel>
+                            </Flyout>
+                        </PersonPicture.ContextFlyout>
+                    </PersonPicture>
                 </StackPanel>
             </NavigationView.PaneFooter>
         </NavigationView>
@@ -221,17 +239,6 @@
         </ContentDialog>
 
         <!--#endregion-->
-
-        <Popup Name="AccountDetailsPopup"
-               IsLightDismissEnabled="True">
-            <Border BorderThickness="0.5"
-                    CornerRadius="5"
-                    BorderBrush="{ThemeResource AppBarItemForegroundThemeBrush}"
-                    Height="300"
-                    Width="300">
-                <customusercontrol:AccountDetailsControl />
-            </Border>
-        </Popup>
 
     </Grid>
 </Page>
