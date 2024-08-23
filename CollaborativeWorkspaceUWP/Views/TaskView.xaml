@@ -86,14 +86,25 @@
 
         <DataTemplate x:DataType="models:BoardGroup"
                       x:Key="BoardGroupListViewTemplate">
-            <StackPanel Orientation="Horizontal"
-                        Margin="60, 0, 0, 0">
+            <Grid Height="30"
+                  Margin="60, 0, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <FontIcon Glyph="&#xf168;"
-                          VerticalAlignment="Center"/>
+                          FontSize="13"
+                          VerticalAlignment="Center"
+                          Grid.Column="0"/>
                 <TextBlock Text="{Binding Name}"
                            Margin="10, 0, 0, 0"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
+                           TextWrapping="Wrap"
+                           FontSize="13"
+                           MaxLines="1"
+                           TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center"
+                           Grid.Column="1"/>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="ProjectListViewItemTemplateForBoardView" 
@@ -115,8 +126,10 @@
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
-                                <Setter Property="Background" Value="{ThemeResource SecondaryBackground}"/>
-                                <Setter Property="CornerRadius" Value="5" />
+                                <Setter Property="Background" 
+                                        Value="{ThemeResource SecondaryBackground}"/>
+                                <Setter Property="CornerRadius" 
+                                        Value="5" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
                         <customusercontrol:AddBoardGroupControl ProjectId="{Binding Id}" 
@@ -215,7 +228,8 @@
             <SplitView Name="ProjectListSplitView"
                        IsPaneOpen="{x:Bind projectListViewModel.IsProjectListPaneOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        DisplayMode="Inline"
-                       PaneBackground="Transparent">
+                       PaneBackground="Transparent"
+                       OpenPaneLength="250">
 
                 <SplitView.Pane>
                     <StackPanel Grid.Row="0"

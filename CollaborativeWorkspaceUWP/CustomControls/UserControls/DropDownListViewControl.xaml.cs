@@ -146,6 +146,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            if(!IsSubList)
+            {
+                DropdownListView.Margin = new Thickness(0, 10, 0, 0);
+            }
             DropdownListView.ItemTemplate = ListViewItemTemplate;
             if (HideContentOnInitialization)
             {

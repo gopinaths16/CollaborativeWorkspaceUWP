@@ -5,6 +5,7 @@
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -26,8 +27,36 @@
                    FontSize="15"
                    Margin="15, 15, 0, 0"
                    Grid.Row="0"
+                   Grid.Column="0"
                    FontWeight="Bold"
+                   TextTrimming="CharacterEllipsis"
+                   MaxLines="1"
+                   TextWrapping="Wrap"
                    VerticalAlignment="Center"/>
+        <customtemplatecontrol:CustomIconButtonControl x:Name="AddBoardButton"
+                                                       Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                                       ToolTipService.Placement="Bottom"
+                                                       ToolTipService.ToolTip="Add Board"
+                                                       Content="Add Board"
+                                                       Grid.Row="0"
+                                                       Grid.Column="1"
+                                                       FontSize="12"
+                                                       Icon="&#xe82e;"
+                                                       Margin="10, 15, 15, 0">
+            <customtemplatecontrol:CustomIconButtonControl.Flyout>
+                <Flyout Placement="Bottom">
+                    <Flyout.FlyoutPresenterStyle>
+                        <Style TargetType="FlyoutPresenter">
+                            <Setter Property="Background" 
+                                    Value="{ThemeResource SecondaryBackground}"/>
+                            <Setter Property="CornerRadius" 
+                                    Value="5" />
+                        </Style>
+                    </Flyout.FlyoutPresenterStyle>
+                    <local:AddBoardGroupControl ProjectId="{x:Bind boardGroupViewModel.BoardGroup.ProjectId, Mode=OneWay}" />
+                </Flyout>
+            </customtemplatecontrol:CustomIconButtonControl.Flyout>
+        </customtemplatecontrol:CustomIconButtonControl>
 
         <StackPanel Name="NoGroupSelectedMessage"
                     Grid.Row="10"
