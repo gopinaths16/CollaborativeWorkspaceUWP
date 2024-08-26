@@ -1,0 +1,94 @@
+﻿<UserControl
+    x:Class="CollaborativeWorkspaceUWP.CustomControls.UserControls.BoardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="TaskListViewDataTemplate"
+                      x:DataType="models:UserTask">
+            <local:TaskListItemControl Task="{x:Bind Self}"
+                                       Name="{x:Bind Id}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Name="TaskListView"
+          Background="{ThemeResource PrimaryBackground}"
+          Padding="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Name="TaskListProjectTitle"
+                   Text="{x:Bind boardViewModel.CurrBoard.Name, Mode=OneWay}"
+                   FontSize="15"
+                   Margin="10, 10, 0, 0"
+                   Grid.Row="0"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"/>
+
+        <Line X1="5" Y1="20" X2="375" Y2="20" 
+              Stroke="Gray"
+              StrokeThickness="3"
+              Grid.Row="1"/>
+
+        <StackPanel Grid.Row="2"
+                    Width="370">
+            <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
+                                                           Content="Add Task"
+                                                           Click="AddTaskDialog_AddTaskButtonClick"
+                                                           FontSize="12"
+                                                           Visibility="{x:Bind boardViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                                                           IsEnabled="True"
+                                                           Margin="0, 10, 0, 0"/>
+
+            <local:AddTaskControl Visibility="{x:Bind boardViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                  x:Name="AddTaskDialog"
+                                  CurrProjectId="{x:Bind boardViewModel.CurrBoard.ProjectId, Mode=OneWay}"
+                                  GroupId="{x:Bind boardViewModel.CurrBoard.Id, Mode=OneWay}"
+                                  CancelButtonClick="AddTaskDialog_AddTaskButtonClick"
+                                  AddTaskButtonClick="AddTaskDialog_AddTaskButtonClick"/>
+        </StackPanel>
+
+        
+
+        <ListView Name="TaskListViewByGroup" 
+                  ItemsSource="{x:Bind boardViewModel.CurrBoard.Tasks, Mode=TwoWay}"
+                  ItemTemplate="{StaticResource TaskListViewDataTemplate}"
+                  Margin="0, 15, 0, 0"
+                  Grid.Row="3"
+                  IsItemClickEnabled="True"
+                  ItemClick="TaskListView_ItemClick"
+                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <StackPanel Name="NoTasksInListMessage"
+                    Grid.Row="3"
+                    Margin="0, 20, 0, 0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{x:Bind boardViewModel.CurrBoard.Tasks, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+            <TextBlock Text="No Tasks available"
+                       Foreground="Gray"
+                       FontSize="15"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

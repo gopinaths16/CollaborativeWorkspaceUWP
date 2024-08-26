@@ -15,7 +15,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     {
         ObservableCollection<Project> projects;
         ProjectDataHandler projectDataHandler;
-        BoardDataHandler boardDataHandler;
+        GroupDataHandler boardDataHandler;
         bool isProjectListPaneOpen;
 
         public ObservableCollection<Project> Projects
@@ -30,12 +30,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public ProjectListViewModel()
         {
             projectDataHandler = new ProjectDataHandler();
-            boardDataHandler = new BoardDataHandler();
+            boardDataHandler = new GroupDataHandler();
             Projects = new ObservableCollection<Project>();
             IsProjectListPaneOpen = true;
 
             ViewmodelEventHandler.Instance.Subscribe<AddProjectEvent>(OnProjectAddition);
-            ViewmodelEventHandler.Instance.Subscribe<AddBoardGroupEvent>(OnBoardGroupAddition);
+            ViewmodelEventHandler.Instance.Subscribe<AddGroupEvent>(OnBoardGroupAddition);
         }
 
         public bool IsProjectListPaneOpen
@@ -69,15 +69,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             AddProjectToList((Project)e.Project.Clone());
         }
 
-        private async Task OnBoardGroupAddition(AddBoardGroupEvent e)
+        private async Task OnBoardGroupAddition(AddGroupEvent e)
         {
-            if (e.BoardGroup != null)
+            if (e.Group != null)
             {
                 foreach (Project project in Projects)
                 {
-                    if(project.Id == e.BoardGroup.ProjectId)
+                    if(project.Id == e.Group.ProjectId && e.Group.IsBoardGroup)
                     {
-                        project.BoardGroups.Add(e.BoardGroup);
+                        project.BoardGroups.Add(e.Group);
                     }
                 }
             }

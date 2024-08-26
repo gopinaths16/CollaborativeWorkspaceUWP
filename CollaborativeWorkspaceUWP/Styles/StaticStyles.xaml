@@ -173,7 +173,7 @@
 
     <Style TargetType="ListViewItem" x:Key="ListViewItemStyleDormant">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="MinHeight" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -181,7 +181,7 @@
                     <Border x:Name="OuterContainer" 
                             Background="{TemplateBinding Background}"
                             CornerRadius="10">
-                        <ContentPresenter Content="{TemplateBinding Content}" 
+                        <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Border>
                 </ControlTemplate>

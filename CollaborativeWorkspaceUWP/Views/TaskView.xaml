@@ -73,7 +73,7 @@
                       x:DataType="models:Project">
             <customusercontrol:DropDownListViewControl x:Name="ProjectGroupDropDown" 
                                                        DropdownTitle="{x:Bind Name, Mode=OneWay}"
-                                                       ListViewItemSource="{x:Bind BoardGroups, Mode=TwoWay}"
+                                                       ListViewItemSource="{x:Bind Groups, Mode=TwoWay}"
                                                        ListViewItemClickEnabled="True"
                                                        AllowAdditionToListView="True"
                                                        HideContentOnInitialization="True"
@@ -84,7 +84,7 @@
                                                        MessageOnSourceEmpty="No Groups Available"/>
         </DataTemplate>
 
-        <DataTemplate x:DataType="models:BoardGroup"
+        <DataTemplate x:DataType="models:Group"
                       x:Key="BoardGroupListViewTemplate">
             <Grid Height="30"
                   Margin="60, 0, 0, 0">
@@ -132,19 +132,20 @@
                                         Value="5" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <customusercontrol:AddBoardGroupControl ProjectId="{Binding Id}" 
-                                                                CancelButtonClick="AddBoardGroupControl_CancelButtonClick" />
+                        <customusercontrol:AddGroupdControl ProjectId="{Binding Id}"
+                                                            IsBoardGroupContext="True"
+                                                            CancelButtonClick="AddBoardGroupControl_CancelButtonClick" />
                     </Flyout>
                 </customusercontrol:DropDownListViewControl.AddButtonFlyout>
             </customusercontrol:DropDownListViewControl>
         </DataTemplate>
 
         <DataTemplate x:Key="TaskListViewDataTemplate"
-                                 x:DataType="models:UserTask">
+                      x:DataType="models:UserTask">
             <Border BorderThickness="0, 0, 0, 0.5"
-                               BorderBrush="{StaticResource SystemListLowColor}">
+                    BorderBrush="{StaticResource SystemListLowColor}">
                 <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                                  Name="{x:Bind Id}"/>
+                                                       Name="{x:Bind Id}"/>
             </Border>
         </DataTemplate>
 
@@ -296,8 +297,7 @@
                                 <Grid Name="TaskListView" 
                                       Grid.Row="0"
                                       Grid.Column="0"
-                                      Style="{StaticResource TaskListViewByProjectStyle}"
-                                      Visibility="{Binding IsVisible}">
+                                      Style="{StaticResource TaskListViewByProjectStyle}">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />

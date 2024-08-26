@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
+    xmlns:models="using:CollaborativeWorkspaceUWP.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
@@ -10,53 +11,93 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="BoardDataTemplate"
+                      x:DataType="models:Group">
+            <Border CornerRadius="5"
+                    Margin="10, 10, 10, 0"
+                    Width="400">
+                <local:BoardControl Board="{x:Bind Self}"/>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid Background="{ThemeResource SecondaryBackground}">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <Grid Background="{ThemeResource SecondaryBackground}"
+              Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <TextBlock Name="TaskListProjectTitle"
-                   Text="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
-                   Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
-                   FontSize="15"
-                   Margin="15, 15, 0, 0"
-                   Grid.Row="0"
-                   Grid.Column="0"
-                   FontWeight="Bold"
-                   TextTrimming="CharacterEllipsis"
-                   MaxLines="1"
-                   TextWrapping="Wrap"
-                   VerticalAlignment="Center"/>
-        <customtemplatecontrol:CustomIconButtonControl x:Name="AddBoardButton"
-                                                       Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
-                                                       ToolTipService.Placement="Bottom"
-                                                       ToolTipService.ToolTip="Add Board"
-                                                       Content="Add Board"
-                                                       Grid.Row="0"
-                                                       Grid.Column="1"
-                                                       FontSize="12"
-                                                       Icon="&#xe82e;"
-                                                       Margin="10, 15, 15, 0">
-            <customtemplatecontrol:CustomIconButtonControl.Flyout>
-                <Flyout Placement="Bottom">
-                    <Flyout.FlyoutPresenterStyle>
-                        <Style TargetType="FlyoutPresenter">
-                            <Setter Property="Background" 
-                                    Value="{ThemeResource SecondaryBackground}"/>
-                            <Setter Property="CornerRadius" 
-                                    Value="5" />
-                        </Style>
-                    </Flyout.FlyoutPresenterStyle>
-                    <local:AddBoardGroupControl ProjectId="{x:Bind boardGroupViewModel.BoardGroup.ProjectId, Mode=OneWay}" />
-                </Flyout>
-            </customtemplatecontrol:CustomIconButtonControl.Flyout>
-        </customtemplatecontrol:CustomIconButtonControl>
+            <TextBlock Name="TaskListProjectTitle"
+                       Text="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
+                       FontSize="15"
+                       Margin="20, 15, 0, 0"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       FontWeight="Bold"
+                       TextTrimming="CharacterEllipsis"
+                       MaxLines="1"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"/>
+            <customtemplatecontrol:CustomIconButtonControl x:Name="AddBoardButton"
+                                                           ToolTipService.Placement="Bottom"
+                                                           ToolTipService.ToolTip="Add Board"
+                                                           Content="Add Board"
+                                                           Grid.Row="0"
+                                                           Grid.Column="1"
+                                                           FontSize="12"
+                                                           Icon="&#xe82e;"
+                                                           Margin="10, 15, 15, 0">
+                <customtemplatecontrol:CustomIconButtonControl.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="Background" 
+                                        Value="{ThemeResource SecondaryBackground}"/>
+                                <Setter Property="CornerRadius" 
+                                        Value="5" />
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <local:AddGroupdControl ProjectId="{x:Bind boardGroupViewModel.BoardGroup.ProjectId, Mode=OneWay}"
+                                                BoardGroupId="{x:Bind boardGroupViewModel.BoardGroup.Id, Mode=OneWay}"/>
+                    </Flyout>
+                </customtemplatecontrol:CustomIconButtonControl.Flyout>
+            </customtemplatecontrol:CustomIconButtonControl>
+
+            <ListView x:Name="BoardListView"
+                      ItemsSource="{x:Bind boardGroupViewModel.BoardGroup.Boards, Mode=OneWay}"
+                      ItemTemplate="{StaticResource BoardDataTemplate}"
+                      ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
+                      Margin="10, 0, 0, 0"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+
+            <StackPanel Name="NoBoardAvailableMessage"
+                        Grid.Row="10"
+                        Grid.ColumnSpan="2"
+                        Margin="0, 20, 0, 0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind boardGroupViewModel.BoardGroup.Boards, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                <TextBlock Text="No Boards Available"
+                           Foreground="Gray"
+                           FontSize="20"/>
+            </StackPanel>
+        </Grid>
 
         <StackPanel Name="NoGroupSelectedMessage"
                     Grid.Row="10"

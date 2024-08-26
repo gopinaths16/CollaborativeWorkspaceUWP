@@ -18,17 +18,32 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class AddBoardGroupControl : UserControl
+    public sealed partial class AddGroupdControl : UserControl
     {
-        AddBoardViewModel addBoardViewModel;
+        AddGroupViewModel addGroupViewModel;
 
         public long ProjectId
         {
             get { return (long)GetValue(ProjectIdProperty); }
             set { SetValue(ProjectIdProperty, value); }
         }
+        public long BoardGroupId
+        {
+            get { return (long)GetValue(BoardGroupIdProperty); }
+            set { SetValue(BoardGroupIdProperty, value); }
+        }
 
-        public static readonly DependencyProperty ProjectIdProperty = DependencyProperty.Register("ProjectId", typeof(long), typeof(AddBoardGroupControl), new PropertyMetadata(-1));
+        public bool IsBoardGroupContext
+        {
+            get { return (bool)GetValue(IsBoardGroupContextProperty); }
+            set { SetValue(IsBoardGroupContextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProjectIdProperty = DependencyProperty.Register("ProjectId", typeof(long), typeof(AddGroupdControl), new PropertyMetadata(-1L));
+
+        public static readonly DependencyProperty BoardGroupIdProperty = DependencyProperty.Register("BoardGroupId", typeof(long), typeof(AddGroupdControl), new PropertyMetadata(-1L));
+
+        public static readonly DependencyProperty IsBoardGroupContextProperty = DependencyProperty.Register("IsBoardGroupContext", typeof(bool), typeof(AddGroupdControl), new PropertyMetadata(false));
 
         private RoutedEventHandler cancelButtonClickEventHandler;
 
@@ -38,29 +53,23 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { cancelButtonClickEventHandler -= value; }
         }
 
-        public AddBoardGroupControl()
+        public AddGroupdControl()
         {
             this.InitializeComponent();
 
-            addBoardViewModel = new AddBoardViewModel();
+            addGroupViewModel = new AddGroupViewModel();
         }
 
         private void Name_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(Name.Text.Length > 0)
             {
-                AddBoardButton.IsEnabled = true;
+                AddGroupButton.IsEnabled = true;
             }
             else
             {
-                AddBoardButton.IsEnabled = false;
+                AddGroupButton.IsEnabled = false;
             }
-        }
-
-        private async void AddBoardButton_Click(object sender, RoutedEventArgs e)
-        {
-            await addBoardViewModel.AddBoardGroup(Name.Text);
-            Name.Text = string.Empty;
         }
 
         private void CloseDialogButton_Click(object sender, RoutedEventArgs e)
@@ -72,8 +81,16 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             if (ProjectId != -1)
             {
-                addBoardViewModel.ProjectId = ProjectId;
+                addGroupViewModel.ProjectId = ProjectId;
+                addGroupViewModel.BoardGroupId = BoardGroupId;
+                addGroupViewModel.IsBoardGroupContext = IsBoardGroupContext;
             }
+        }
+
+        private async void AddGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            await addGroupViewModel.AddBoardGroup(Name.Text);
+            Name.Text = string.Empty;
         }
     }
 }

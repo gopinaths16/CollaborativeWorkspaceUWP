@@ -261,5 +261,30 @@ namespace CollaborativeWorkspaceUWP.DAL
                 }
             }
         }
+
+        public ObservableCollection<UserTask> GetTasksForGroup(long groupId)
+        {
+            ObservableCollection<UserTask> result = null;
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetTasksForGroupContext(groupId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetAllTasks();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
     }
 }

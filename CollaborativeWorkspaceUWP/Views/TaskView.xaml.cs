@@ -346,7 +346,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
         {
-            BoardGroup boardGroup = e.ClickedItem as BoardGroup;
+            Group boardGroup = e.ClickedItem as Group;
             BoardGroupView.SetBoardGroup(boardGroup);
         }
 

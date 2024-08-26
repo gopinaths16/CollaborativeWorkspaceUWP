@@ -20,6 +20,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.Enti
         void SetDeleteTaskContext(long taskId);
         void SetUpdateOrderContext(UserTask task);
         void SetUpdateOrderForTasksContext(int start, int end, int value, long taskId);
+        void SetGetTasksForGroupContext(long groupId);
         UserTask GetTask();
         ObservableCollection<UserTask> GetAllTasks();
     }

@@ -68,7 +68,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             if(Task != null)
             {
                 taskItemViewModel.Task = Task;
-                this.DataContext = Task;
             }
         }
 

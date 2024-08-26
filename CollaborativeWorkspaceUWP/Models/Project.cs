@@ -24,7 +24,8 @@ namespace CollaborativeWorkspaceUWP.Models
         public long TeamsapceId {  get { return _teamspaceId; } set { _teamspaceId = value; } }
         public long OwnerId { get { return _ownerId; } set { _ownerId = value; } }
 
-        public ObservableCollection<BoardGroup> BoardGroups { get; set; }
+        public ObservableCollection<Group> BoardGroups { get; set; }
+        public ObservableCollection<Group> Groups { get; set; }
 
         public Project()
         {
@@ -39,15 +40,20 @@ namespace CollaborativeWorkspaceUWP.Models
             this._teamspaceId = teamspaceId;
             this._ownerId = ownerId;
 
-            BoardGroups = new ObservableCollection<BoardGroup>();
+            BoardGroups = new ObservableCollection<Group>();
+            Groups = new ObservableCollection<Group>();
         }
 
         public object Clone()
         {
             Project project = new Project(Id, Name, Status, Priority, TeamsapceId, OwnerId);
-            foreach (BoardGroup group in BoardGroups)
+            foreach (Group group in BoardGroups)
             {
                 project.BoardGroups.Add(group);
+            }
+            foreach (Group group in Groups)
+            {
+                project.Groups.Add(group);
             }
             return project;
         }

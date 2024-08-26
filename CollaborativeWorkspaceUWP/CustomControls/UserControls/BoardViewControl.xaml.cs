@@ -30,9 +30,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             boardGroupViewModel = new BoardGroupViewModel();
         }
 
-        public void SetBoardGroup(BoardGroup boardGroup)
+        public void SetBoardGroup(Group boardGroup)
         {
-            boardGroupViewModel.BoardGroup = boardGroup.Clone() as BoardGroup;
+            boardGroupViewModel.BoardGroup = boardGroup.Clone() as Group;
         }
     }
 }

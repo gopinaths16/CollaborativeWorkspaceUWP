@@ -69,13 +69,21 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(ParentTaskIdProperty, value); }
         }
 
-        public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(0));
+        public long GroupId
+        {
+            get { return (long)GetValue(GroupIdProperty); }
+            set { SetValue(GroupIdProperty, value); }
+        }
 
-        public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty CurrProjectIdProperty = DependencyProperty.Register("CurrProjectId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty ParentTaskIdProperty = DependencyProperty.Register("ParentTaskId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty CurrProjectIdProperty = DependencyProperty.Register("CurrProjectId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(-1L));
+
+        public static readonly DependencyProperty ParentTaskIdProperty = DependencyProperty.Register("ParentTaskId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(-1L));
+
+        public static readonly DependencyProperty GroupIdProperty = DependencyProperty.Register("GroupId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(-1L));
 
         public AddTaskControl()
         {
@@ -96,6 +104,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             task.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
             task.AssigneeId = 0;
             task.ParentTaskId = ParentTaskId > 0 ? ParentTaskId : -1;
+            task.GroupId = GroupId;
             if(DueDatePicker.Date != null)
             {
                 task.DueDate = DueDatePicker.Date.Value.DateTime;

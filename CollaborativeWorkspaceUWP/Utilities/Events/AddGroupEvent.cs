@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
-    public class AddBoardGroupEvent
+    public class AddGroupEvent
     {
-        public BoardGroup BoardGroup { get; set; }
+        public Group Group { get; set; }
     }
 }

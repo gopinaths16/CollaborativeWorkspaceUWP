@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence
 {
-    public interface IBoardPersistence : IPersistenceObject
+    public interface IGroupPersistence : IPersistenceObject
     {
         void SetGetAllBoardGroupsForProjectContext(long projectId);
-        void SetAddBoardGroupForProjectContext(string boardName, long projectId);
-        ObservableCollection<BoardGroup> GetAllBoardGroups();
-        BoardGroup GetBoardGroup();
+        void SetGetAllBoardsForBoardGroupContext(long boardId);
+        void SetAddBoardGroupForProjectContext(string boardName, long projectId, long boardGroupId, bool isBoardGroup);
+        ObservableCollection<Group> GetAllGroups();
+        Group GetGroup();
     }
 }
