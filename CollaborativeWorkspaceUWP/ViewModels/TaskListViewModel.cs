@@ -210,14 +210,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 int startIndex = taskToBeReOrdered.Order - 1;
                 int endIndex = Tasks.IndexOf(taskToBeReOrdered);
                 taskToBeReOrdered.Order = endIndex + 1;
-                taskDataHandler.UpdateOrderForTask(taskToBeReOrdered);
                 if(startIndex <= endIndex)
                 {
-                    taskDataHandler.UpdateOrderForTasks(startIndex + 1, endIndex + 1, -1, taskToBeReOrdered.Id);
+                    taskDataHandler.UpdateOrderForTasks(startIndex + 1, endIndex + 1, -1, taskToBeReOrdered);
                 }
                 else
                 {
-                    taskDataHandler.UpdateOrderForTasks(endIndex + 1, startIndex + 1, 1, taskToBeReOrdered.Id);
+                    taskDataHandler.UpdateOrderForTasks(endIndex + 1, startIndex + 1, 1, taskToBeReOrdered);
                 }
                 int order = 0;
                 foreach (var task in Tasks)

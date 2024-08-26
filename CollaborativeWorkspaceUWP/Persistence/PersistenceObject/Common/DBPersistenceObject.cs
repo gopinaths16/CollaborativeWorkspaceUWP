@@ -24,6 +24,8 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             set { reader = value; }
         }
 
+        public bool GetResult { get; set; }
+
         public void Dispose()
         {
             if(reader != null)

@@ -60,5 +60,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence
         {
             manager.Delete(persistenceObject);
         }
+
+        public void PerformTransaction(List<IPersistenceObject> persistenceObjects)
+        {
+            manager.PerformTransaction(persistenceObjects);
+        }
     }
 }

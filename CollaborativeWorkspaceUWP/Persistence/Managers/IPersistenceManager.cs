@@ -15,6 +15,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.Managers
         void Get(IPersistenceObject persistenceObject);
         void Update(IPersistenceObject persistenceObject);
         void Delete(IPersistenceObject persistenceObject);
+        void PerformTransaction(List<IPersistenceObject> persistenceObjects);
 
     }
 }

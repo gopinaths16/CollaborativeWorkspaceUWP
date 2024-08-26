@@ -231,14 +231,20 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
         }
 
-        public void UpdateOrderForTask(UserTask task)
+        public void UpdateOrderForTasks(int start, int end, int value, UserTask taskToBeReordered)
         {
             ITaskPersistence persistenceObject = null;
+            ITaskPersistence persistenceObjectAlt = null;
+            List<IPersistenceObject> persistenceObjects = new List<IPersistenceObject>();
             try
             {
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
-                persistenceObject.SetUpdateOrderContext(task);
-                PersistenceHandler.Instance.Update(persistenceObject);
+                persistenceObjectAlt = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetUpdateOrderContext(taskToBeReordered);
+                persistenceObjectAlt.SetUpdateOrderForTasksContext(start, end, value, taskToBeReordered.Id);
+                persistenceObjects.Add(persistenceObject);
+                persistenceObjects.Add(persistenceObjectAlt);
+                PersistenceHandler.Instance.PerformTransaction(persistenceObjects);
             }
             catch (Exception ex)
             {
@@ -246,31 +252,12 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             finally
             {
-                if (persistenceObject != null)
+                foreach (IPersistenceObject persObj in persistenceObjects)
                 {
-                    persistenceObject.Dispose();
-                }
-            }
-        }
-
-        public void UpdateOrderForTasks(int start, int end, int value, long taskId)
-        {
-            ITaskPersistence persistenceObject = null;
-            try
-            {
-                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
-                persistenceObject.SetUpdateOrderForTasksContext(start, end, value, taskId);
-                PersistenceHandler.Instance.Update(persistenceObject);
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                if (persistenceObject != null)
-                {
-                    persistenceObject.Dispose();
+                    if(persObj != null)
+                    {
+                        persObj.Dispose();
+                    }
                 }
             }
         }

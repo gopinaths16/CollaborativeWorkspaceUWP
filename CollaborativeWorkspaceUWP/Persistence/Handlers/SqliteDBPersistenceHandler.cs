@@ -146,5 +146,34 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence
             ExecuteQuery(((DBPersistenceObject)persistenceObject).Query);
         }
 
+        public void PerformTransaction(List<IPersistenceObject> persistenceObjects)
+        {
+            using (var transaction = connection.BeginTransaction())
+            {
+                SQLiteConnection con = GetConnection();
+                try
+                {
+                    foreach (var persistenceObject in persistenceObjects)
+                    {
+                        DBPersistenceObject dBPersistenceObject = persistenceObject as DBPersistenceObject;
+                        dBPersistenceObject.Query.Connection = con;
+                        if (dBPersistenceObject.GetResult)
+                        {
+                            dBPersistenceObject.Reader = dBPersistenceObject.Query.ExecuteReader();
+                        }
+                        else
+                        {
+                            dBPersistenceObject.Query.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                }
+            }
+        }
     }
 }

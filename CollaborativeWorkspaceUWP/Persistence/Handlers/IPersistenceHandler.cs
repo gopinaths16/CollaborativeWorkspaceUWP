@@ -11,11 +11,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence
     public interface IPersistenceHandler
     {
         Task Initialize();
-
         void Add(IPersistenceObject persistenceObject);
         void Get(IPersistenceObject persistenceObject);
         void Update(IPersistenceObject persistenceObject);
         void Delete(IPersistenceObject persistenceObject);
-
+        void PerformTransaction(List<IPersistenceObject> persistenceObjects);
     }
 }
