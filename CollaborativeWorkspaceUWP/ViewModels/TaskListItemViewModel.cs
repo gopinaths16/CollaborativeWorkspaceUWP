@@ -20,6 +20,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         PriorityDataHandler priorityDataHandler;
         StatusDataHandler statusDataHandler;
         UserDataHandler userDataHandler;
+        CommentDataHandler commentDataHandler;
+        AttachmentDataHandler attachmentDataHandler;
 
         public UserTask Task
         {
@@ -27,7 +29,15 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set
             {
                 task = value;
-                task.Owner = userDataHandler.GetUser(task.OwnerId);
+                if(task != null)
+                {
+                    task.Owner = userDataHandler.GetUser(task.OwnerId);
+                    task.StatusData = GetTaskStatus(task.Status);
+                    task.PriorityData = GetTaskPriority(task.Priority);
+                    task.Comments = commentDataHandler.GetAllCommentsForCurrentTask(task.Id);
+                    task.Attachments = attachmentDataHandler.GetAllAttachmentsForTask(task.Id);
+                    task.SubTasks = taskDataHandler.GetAllSubTasks(task.Id);
+                }
                 NotifyPropertyChanged(nameof(Task));
             }
         }
@@ -38,9 +48,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityDataHandler = new PriorityDataHandler();
             statusDataHandler = new StatusDataHandler();
             userDataHandler = new UserDataHandler();
+            commentDataHandler = new CommentDataHandler();
+            attachmentDataHandler = new AttachmentDataHandler();
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
+
+            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
         }
 
         public async Task UpdateTaskCompletionStatus(bool status)
@@ -56,12 +70,21 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public Priority GetTaskPriority(long priorityId)
         {
-            return priorityList.Where(priority => priority.Id == priorityId).ToList()[0];
+            return priorityList.Where(priority => priority.Id == priorityId).FirstOrDefault();
         }
 
         public Status GetTaskStatus(long statusId)
         {
-            return statusList.Where(status => status.Id == statusId).ToList()[0];
+            return statusList.Where(status => status.Id == statusId).FirstOrDefault();
+        }
+
+        public async Task OnTaskUpdation(UpdateTaskEvent taskEvent)
+        {
+            if (taskEvent != null && taskEvent.Task != null && taskEvent.Task.Id == Task.Id)
+            {
+                Task.Update(taskEvent.Task);
+                NotifyPropertyChanged(nameof(Task));
+            }
         }
     }
 }

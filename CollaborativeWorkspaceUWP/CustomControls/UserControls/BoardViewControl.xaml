@@ -7,7 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
@@ -16,7 +18,7 @@
                       x:DataType="models:Group">
             <Border CornerRadius="5"
                     Margin="10, 10, 10, 0"
-                    Width="400">
+                    Width="450">
                 <local:BoardControl Board="{x:Bind Self}"/>
             </Border>
         </DataTemplate>
@@ -24,7 +26,12 @@
     
     <Grid Background="{ThemeResource SecondaryBackground}">
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
         <Grid Background="{ThemeResource SecondaryBackground}"
+              Grid.Row="0"
               Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -72,10 +79,13 @@
             </customtemplatecontrol:CustomIconButtonControl>
 
             <ListView x:Name="BoardListView"
-                      ItemsSource="{x:Bind boardGroupViewModel.BoardGroup.Boards, Mode=OneWay}"
                       ItemTemplate="{StaticResource BoardDataTemplate}"
                       ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
-                      Margin="10, 0, 0, 0"
+                      ScrollViewer.HorizontalScrollMode="Enabled"
+                      ScrollViewer.VerticalScrollMode="Disabled"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      Margin="10, 0, 10, 0"
                       Grid.Row="1"
                       Grid.Column="0"
                       Grid.ColumnSpan="3">
@@ -107,7 +117,11 @@
                     Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
             <TextBlock Text="No Group Selected"
                        Foreground="Gray"
-                       FontSize="20"/>
+                       FontSize="20"
+                       Visibility="{x:Bind boardGroupViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"/>
+            <muxc:ProgressRing IsActive="True"
+                               FontSize="30"
+                               Visibility="{x:Bind boardGroupViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
 </UserControl>

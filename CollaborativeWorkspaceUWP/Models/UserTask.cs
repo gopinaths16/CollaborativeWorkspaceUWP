@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
@@ -128,6 +128,7 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public int Order { get; set; }
 
+        [JsonIgnore]
         public UserTask Self
         {
             get
@@ -180,7 +181,8 @@ namespace CollaborativeWorkspaceUWP.Models
             UserTask task = new UserTask(_id, _name, _description, _status, _priority, _projectId, _ownerId, _assigneeId, _parentTaskId);
             task.SubTasks = new ObservableCollection<UserTask>();
             task.DueDate = DueDate;
-            if(PriorityData != null)
+            task.GroupId = GroupId;
+            if (PriorityData != null)
             {
                 task.PriorityData = (Priority)PriorityData.Clone();
             }

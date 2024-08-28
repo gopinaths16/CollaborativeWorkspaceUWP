@@ -19,7 +19,6 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="Padding" Value="0, 10, 0, 10" />
-            <Setter Property="Margin" Value="5, 25, 10, 5" />
         </Style>
 
         <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxNoBg}" x:Key="TextNoBackground">

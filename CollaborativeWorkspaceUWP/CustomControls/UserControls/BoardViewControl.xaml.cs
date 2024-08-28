@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,9 +32,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             boardGroupViewModel = new BoardGroupViewModel();
         }
 
-        public void SetBoardGroup(Group boardGroup)
+        public async Task SetBoardGroup(Group boardGroup)
         {
-            boardGroupViewModel.BoardGroup = boardGroup.Clone() as Group;
+            BoardListView.ItemsSource = null;
+            boardGroupViewModel.BoardGroup = null;
+            await Task.Delay(50);
+            boardGroupViewModel.IsLoading = true;
+            boardGroupViewModel.BoardGroup = boardGroup;
+            BoardListView.ItemsSource = boardGroupViewModel.BoardGroup.Boards;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

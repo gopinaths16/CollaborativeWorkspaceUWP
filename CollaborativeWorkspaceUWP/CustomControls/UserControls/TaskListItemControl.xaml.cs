@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -32,12 +33,30 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(TaskProperty, value); }
         }
 
+        public SolidColorBrush ItemBackground
+        {
+            get { return (SolidColorBrush)GetValue(ItemBackgroundProperty); }
+            set { SetValue(ItemBackgroundProperty, value); }
+        }
+
         public bool IsDragging
         {
             get; set;
         }
 
-        public static readonly DependencyProperty TaskProperty = DependencyProperty.Register("Task", typeof(UserTask), typeof(TaskListItemControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty TaskProperty = DependencyProperty.Register("Task", typeof(UserTask), typeof(TaskListItemControl), new PropertyMetadata(null, OnMyPropertyChanged));
+
+        public static readonly DependencyProperty ItemBackgroundProperty = DependencyProperty.Register("ItemBackground", typeof(SolidColorBrush), typeof(TaskListItemControl), new PropertyMetadata(0));
+
+        private static void OnMyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            TaskListItemControl control = d as TaskListItemControl;
+            UserTask task = e.NewValue as UserTask;
+            if (task != null)
+            {
+                control.taskItemViewModel.Task = task;
+            }
+        }
 
         public TaskListItemControl()
         {
@@ -65,10 +84,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Task != null)
-            {
-                taskItemViewModel.Task = Task;
-            }
+            
         }
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)

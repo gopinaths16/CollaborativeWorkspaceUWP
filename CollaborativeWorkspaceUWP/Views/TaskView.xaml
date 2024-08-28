@@ -145,7 +145,8 @@
             <Border BorderThickness="0, 0, 0, 0.5"
                     BorderBrush="{StaticResource SystemListLowColor}">
                 <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                       Name="{x:Bind Id}"/>
+                                                       Name="{x:Bind Id}"
+                                                       ItemBackground="Transparent"/>
             </Border>
         </DataTemplate>
 
@@ -326,6 +327,7 @@
                                         <customusercontrol:AddTaskControl Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                           x:Name="AddTaskDialog"
                                                                           CurrProjectId="{x:Bind taskListViewModel.CurrentProject.Id, Mode=OneWay}"
+                                                                          Margin="5, 25, 10, 5"
                                                                           CancelButtonClick="CloseTaskDialogButton_Click"
                                                                           AddTaskButtonClick="AddTaskFromDialogButton_ButtonClick"/>
                                     </StackPanel>
@@ -398,12 +400,11 @@
                                                FontWeight="Bold"/>
                                 </StackPanel>
                             </PivotItem.Header>
-                            <Grid Margin="0, 20, 0, 0">
-                                <Border CornerRadius="5"
-                                        x:Name="BoardViewContainer">
-                                    <customusercontrol:BoardViewControl x:Name="BoardGroupView"/>
-                                </Border>
-                            </Grid>
+                            <Border CornerRadius="5"
+                                    x:Name="BoardViewContainer"
+                                    Margin="0, 20, 0, 0">
+                                <customusercontrol:BoardViewControl x:Name="BoardGroupView"/>
+                            </Border>
                         </PivotItem>
                     </Pivot>
                 </SplitView.Content>

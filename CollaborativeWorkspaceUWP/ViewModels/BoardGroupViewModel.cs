@@ -15,6 +15,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private GroupDataHandler groupDataHandler;
 
         private Group boardGroup;
+        private bool isLoading;
+
+        public bool IsLoading
+        {
+            get { return isLoading; }
+            set
+            {
+                isLoading = value;
+                NotifyPropertyChanged(nameof(IsLoading));
+            }
+        }
 
         public Group BoardGroup
         {
@@ -22,7 +33,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set
             {
                 boardGroup = value;
-                if(boardGroup.Boards.Count <= 0)
+                if(boardGroup != null && boardGroup.Boards.Count <= 0)
                 {
                     boardGroup.Boards = groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id);
                 }
@@ -34,6 +45,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             groupDataHandler = new GroupDataHandler();
 
+            IsLoading = false;
             ViewmodelEventHandler.Instance.Subscribe<AddGroupEvent>(OnBoardAddition);
         }
 

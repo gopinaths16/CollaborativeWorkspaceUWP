@@ -109,14 +109,15 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
-        public void SetUpdateOrderForTasksContext(int start, int end, int value, long taskId)
+        public void SetUpdateOrderForTasksContext(int start, int end, int value, long taskId, long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = @"UPDATE CW_TASK_DETAILS SET TASK_ORDER=TASK_ORDER+@Value WHERE TASK_ORDER >= @Start AND TASK_ORDER <= @End AND ID!=@Id";
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET TASK_ORDER=TASK_ORDER+@Value WHERE TASK_ORDER >= @Start AND TASK_ORDER <= @End AND ID!=@Id AND PROJECTID=@ProjectId";
             command.Parameters.AddWithValue("@Value", value);
             command.Parameters.AddWithValue("@Start", start);
             command.Parameters.AddWithValue("@End", end);
             command.Parameters.AddWithValue("@Id", taskId);
+            command.Parameters.AddWithValue("@ProjectId", projectId);
             Query = command;
         }
 
@@ -125,6 +126,15 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             SQLiteCommand command = new SQLiteCommand();
             command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE, CS.COLOR_CODE, CWT.GROUP_ID FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.GROUP_ID=@GroupId ORDER BY CWT.TASK_ORDER ASC";
             command.Parameters.AddWithValue("@GroupId", groupId);
+            Query = command;
+        }
+
+        public void SetUpdateGroupForTaskContext(UserTask task)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"UPDATE CW_TASK_DETAILS SET GROUP_ID=@GroupId WHERE ID=@Id";
+            command.Parameters.AddWithValue("@GroupId", task.GroupId);
+            command.Parameters.AddWithValue("@Id", task.Id);
             Query = command;
         }
 

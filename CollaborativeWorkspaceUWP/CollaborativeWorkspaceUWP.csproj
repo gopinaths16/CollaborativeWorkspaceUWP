@@ -246,6 +246,7 @@
     <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\LogoutEvent.cs" />
+    <Compile Include="Utilities\Events\MoveTaskEvent.cs" />
     <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\UpdateOrderEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />

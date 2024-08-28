@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Auth.Handlers;
 using System.Collections.ObjectModel;
 using CollaborativeWorkspaceUWP.Utilities;
+using System.Security.Cryptography.X509Certificates;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -344,10 +345,10 @@ namespace CollaborativeWorkspaceUWP.Views
 
         }
 
-        private void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
+        private async void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
         {
             Group boardGroup = e.ClickedItem as Group;
-            BoardGroupView.SetBoardGroup(boardGroup);
+            await BoardGroupView.SetBoardGroup(boardGroup);
         }
 
         private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)

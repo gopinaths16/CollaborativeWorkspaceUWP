@@ -231,7 +231,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
         }
 
-        public void UpdateOrderForTasks(int start, int end, int value, UserTask taskToBeReordered)
+        public void UpdateOrderForTasks(int start, int end, int value, UserTask taskToBeReordered, long projectId)
         {
             ITaskPersistence persistenceObject = null;
             ITaskPersistence persistenceObjectAlt = null;
@@ -241,7 +241,7 @@ namespace CollaborativeWorkspaceUWP.DAL
                 persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObjectAlt = persistanceObjectManager.GetTaskPersistenceObject();
                 persistenceObject.SetUpdateOrderContext(taskToBeReordered);
-                persistenceObjectAlt.SetUpdateOrderForTasksContext(start, end, value, taskToBeReordered.Id);
+                persistenceObjectAlt.SetUpdateOrderForTasksContext(start, end, value, taskToBeReordered.Id, projectId);
                 persistenceObjects.Add(persistenceObject);
                 persistenceObjects.Add(persistenceObjectAlt);
                 PersistenceHandler.Instance.PerformTransaction(persistenceObjects);
@@ -285,6 +285,28 @@ namespace CollaborativeWorkspaceUWP.DAL
                 }
             }
             return result;
+        }
+
+        public void UpdateGroupIdForTask(UserTask task)
+        {
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetUpdateGroupForTaskContext(task);
+                PersistenceHandler.Instance.Update(persistenceObject);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
         }
     }
 }
