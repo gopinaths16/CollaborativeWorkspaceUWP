@@ -39,6 +39,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(ItemBackgroundProperty, value); }
         }
 
+        public bool EnableVisualAspects
+        {
+            get { return (bool)GetValue(EnableVisualAspectsProperty); }
+            set { SetValue(EnableVisualAspectsProperty, value); }
+        }
+
         public bool IsDragging
         {
             get; set;
@@ -47,6 +53,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty TaskProperty = DependencyProperty.Register("Task", typeof(UserTask), typeof(TaskListItemControl), new PropertyMetadata(null, OnMyPropertyChanged));
 
         public static readonly DependencyProperty ItemBackgroundProperty = DependencyProperty.Register("ItemBackground", typeof(SolidColorBrush), typeof(TaskListItemControl), new PropertyMetadata(0));
+
+        public static readonly DependencyProperty EnableVisualAspectsProperty = DependencyProperty.Register("EnableVisualAspects", typeof(bool), typeof(TaskListItemControl), new PropertyMetadata(false));
 
         private static void OnMyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -126,6 +134,22 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
                 appWindow = null;
             };
+        }
+
+        private void TaskItem_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (EnableVisualAspects)
+            {
+                VisualStateManager.GoToState(this, "FocusEngaged", true);
+            }
+        }
+
+        private void TaskItem_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (EnableVisualAspects)
+            {
+                VisualStateManager.GoToState(this, "FocusLost", true);
+            }
         }
     }
 }

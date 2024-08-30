@@ -15,6 +15,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     {
         private Group currBoard;
         private bool isAddTaskContextTriggered;
+        private bool isOpen;
 
         public UserTask MovedTask { get; set; }
 
@@ -33,6 +34,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     NotifyPropertyChanged(nameof(Tasks));
                     NotifyPropertyChanged(nameof(TaskCount));
                 }
+            }
+        }
+
+        public bool IsOpen
+        {
+            get { return isOpen; }
+            set
+            {
+                isOpen = value;
+                NotifyPropertyChanged(nameof(IsOpen));
             }
         }
 
@@ -63,6 +74,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public BoardViewModel()
         {
             IsAddTaskContextTriggered = false;
+            IsOpen = true;
 
             taskDataHandler = new TaskDataHandler();
             Tasks = new ObservableCollection<UserTask>();

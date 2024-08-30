@@ -8,7 +8,6 @@
         <ResourceDictionary>
 
             <FontFamily x:Key="IcoMoonCustomFontFree">/Assets/icomoon.ttf#icomoon</FontFamily>
-            <SolidColorBrush x:Key="PivotHeaderItemSelectedPipeFill" Color="Yellow"/>
             <ResourceDictionary.MergedDictionaries>
 
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>

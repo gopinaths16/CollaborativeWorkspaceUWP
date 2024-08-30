@@ -13,17 +13,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <UserControl.Resources>
-        <DataTemplate x:Key="BoardDataTemplate"
-                      x:DataType="models:Group">
-            <Border CornerRadius="5"
-                    Margin="10, 10, 10, 0"
-                    Width="450">
-                <local:BoardControl Board="{x:Bind Self}"/>
-            </Border>
-        </DataTemplate>
-    </UserControl.Resources>
-    
     <Grid Background="{ThemeResource SecondaryBackground}">
 
         <Grid.RowDefinitions>
@@ -32,7 +21,7 @@
         
         <Grid Background="{ThemeResource SecondaryBackground}"
               Grid.Row="0"
-              Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
+              Visibility="{x:Bind BoardSource, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -43,7 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Name="TaskListProjectTitle"
-                       Text="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
+                       Text="{x:Bind GroupName, Mode=OneWay}"
                        FontSize="15"
                        Margin="20, 15, 0, 0"
                        Grid.Row="0"
@@ -72,14 +61,51 @@
                                         Value="5" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
-                        <local:AddGroupdControl ProjectId="{x:Bind boardGroupViewModel.BoardGroup.ProjectId, Mode=OneWay}"
-                                                BoardGroupId="{x:Bind boardGroupViewModel.BoardGroup.Id, Mode=OneWay}"/>
+                        <StackPanel Background="{ThemeResource SecondaryBackground}">
+                            <TextBox Name="Name"
+                                     PlaceholderText="Group Name"
+                                     Style="{StaticResource TextNoBackground}"
+                                     Margin="0, 5, 0, 0"
+                                     FontWeight="Bold"
+                                     MaxLength="300"
+                                     PlaceholderForeground="Gray"
+                                     TextChanged="Name_TextChanged"/>
+                            <Border BorderThickness="0, 0, 0, 0.5"
+                                    BorderBrush="Gray"
+                                    Opacity="0.5"
+                                    Padding="10, 0, 0, 10"
+                                    Margin="0, 5, 0, 10"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        Margin="10, 5, 10, 5">
+                                <Button Name="CloseDialogButton"
+                                        Content="Cancel"
+                                        Background="Transparent"
+                                        Click="CloseDialogButton_Click"
+                                        Margin="0, 0, 10, 0"
+                                        CornerRadius="5"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                <customtemplatecontrol:CustomIconButtonControl x:Name="AddGroupButton" 
+                                                                               Icon="&#xE948;"
+                                                                               Content="Add Group"
+                                                                               Click="AddGroupButton_Click"
+                                                                               Background="{StaticResource SystemAccentColor}"
+                                                                               HorizontalContentAlignment="Left"
+                                                                               BorderThickness="0"
+                                                                               Grid.Row="1"
+                                                                               Padding="10, 0, 10, 0"
+                                                                               IsEnabled="False"/>
+                            </StackPanel>
+                        </StackPanel>
                     </Flyout>
                 </customtemplatecontrol:CustomIconButtonControl.Flyout>
             </customtemplatecontrol:CustomIconButtonControl>
 
             <ListView x:Name="BoardListView"
-                      ItemTemplate="{StaticResource BoardDataTemplate}"
+                      ItemsSource="{x:Bind BoardSource, Mode=TwoWay}"
+                      ItemTemplate="{x:Bind BoardTemplate, Mode=OneWay}"
                       ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
                       ScrollViewer.HorizontalScrollMode="Enabled"
                       ScrollViewer.VerticalScrollMode="Disabled"
@@ -88,7 +114,12 @@
                       Margin="10, 0, 10, 0"
                       Grid.Row="1"
                       Grid.Column="0"
-                      Grid.ColumnSpan="3">
+                      Grid.ColumnSpan="3"
+                      CanDragItems="True"
+                      AllowDrop="True"
+                      CanReorderItems="False"
+                      DragItemsStarting="BoardListView_DragItemsStarting" 
+                      DragItemsCompleted="BoardListView_DragItemsCompleted">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -102,7 +133,7 @@
                         Margin="0, 20, 0, 0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind boardGroupViewModel.BoardGroup.Boards, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                        Visibility="{x:Bind BoardSource, Mode=OneWay, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
                 <TextBlock Text="No Boards Available"
                            Foreground="Gray"
                            FontSize="20"/>
@@ -114,14 +145,10 @@
                     Margin="0, 20, 0, 0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Visibility="{x:Bind boardGroupViewModel.BoardGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
+                    Visibility="{x:Bind BoardSource, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}">
             <TextBlock Text="No Group Selected"
                        Foreground="Gray"
-                       FontSize="20"
-                       Visibility="{x:Bind boardGroupViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"/>
-            <muxc:ProgressRing IsActive="True"
-                               FontSize="30"
-                               Visibility="{x:Bind boardGroupViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                       FontSize="20"/>
         </StackPanel>
     </Grid>
 </UserControl>

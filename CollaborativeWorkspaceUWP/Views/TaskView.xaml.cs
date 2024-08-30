@@ -45,6 +45,7 @@ namespace CollaborativeWorkspaceUWP.Views
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
         BoardGroupViewModel boardGroupViewModel;
+        AddGroupViewModel addGroupViewModel;
 
         ResourceDictionary staticStyles = new ResourceDictionary();
 
@@ -348,7 +349,13 @@ namespace CollaborativeWorkspaceUWP.Views
         private async void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
         {
             Group boardGroup = e.ClickedItem as Group;
-            await BoardGroupView.SetBoardGroup(boardGroup);
+            boardGroupViewModel.BoardGroup = boardGroup;
+            if (boardGroup != null)
+            {
+                boardGroupViewModel.ProjectId = boardGroup.ProjectId;
+                boardGroupViewModel.BoardGroupId = boardGroup.Id;
+                boardGroupViewModel.IsBoardGroupContext = false;
+            }
         }
 
         private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)
@@ -360,6 +367,18 @@ namespace CollaborativeWorkspaceUWP.Views
                     flyout.Hide();
                 }
             }
+        }
+
+        private async void BoardGroupView_OnBoardAddition(object sender, RoutedEventArgs e)
+        {
+            string boardName = BoardGroupView.BoardName;
+            await boardGroupViewModel.AddBoardGroup(boardName);
+            BoardGroupView.Clear();
+        }
+
+        private void BoardGroupView_CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

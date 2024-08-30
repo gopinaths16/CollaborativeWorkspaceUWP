@@ -35,7 +35,15 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(BoardProperty, value); }
         }
 
+        public DataTemplate BoardItemTemplate
+        {
+            get { return (DataTemplate)GetValue(BoardItemTemplateProperty); }
+            set { SetValue(BoardItemTemplateProperty, value); }
+        }
+
         public static readonly DependencyProperty BoardProperty = DependencyProperty.Register("Board", typeof(Group), typeof(BoardControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty BoardItemTemplateProperty = DependencyProperty.Register("BoardItemTemplate", typeof(DataTemplate), typeof(BoardControl), new PropertyMetadata(null));
 
         public BoardControl()
         {
@@ -52,7 +60,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -67,9 +74,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void TaskListViewByGroup_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
             UserTask draggedTask = e.Items.FirstOrDefault() as UserTask;
+            e.Data.Properties.Add("Task", draggedTask);
             boardViewModel.MovedTask = draggedTask;
-            string jsonData = JsonSerializer.Serialize(draggedTask);
-            e.Data.SetText(jsonData);
             e.Data.RequestedOperation = DataPackageOperation.Move;
         }
 
@@ -79,17 +85,37 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void TaskListViewByGroup_DragOver(object sender, DragEventArgs e)
         {
-            UserTask draggedTask = JsonSerializer.Deserialize<UserTask>(await e.DataView.GetTextAsync());
-            e.AcceptedOperation = draggedTask.GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
+            e.DataView.Properties.TryGetValue("Task", out object draggedTask);
+            e.AcceptedOperation = draggedTask != null && draggedTask is UserTask && (draggedTask as UserTask).GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
         }
 
         private async void TaskListViewByGroup_Drop(object sender, DragEventArgs e)
         {
-            if (e.DataView.Contains(StandardDataFormats.Text))
+            e.DataView.Properties.TryGetValue("Task", out object draggedTask);
+            if (draggedTask != null && draggedTask is UserTask)
             {
-                string draggedItem = await e.DataView.GetTextAsync();
-                UserTask draggedTask = JsonSerializer.Deserialize<UserTask>(draggedItem);
-                await boardViewModel.UpdateDraggedTask(draggedTask);
+                await boardViewModel.UpdateDraggedTask(draggedTask as UserTask);
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            boardViewModel.IsOpen = !boardViewModel.IsOpen;
+            if(boardViewModel.IsOpen)
+            {
+                MinimizeButton.Content = "\ue740";
+                TaskListView.ColumnDefinitions.Clear();
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+            }
+            else
+            {
+                MinimizeButton.Content = "\ue73f";
+                TaskListView.ColumnDefinitions.Clear();
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
             }
         }
     }

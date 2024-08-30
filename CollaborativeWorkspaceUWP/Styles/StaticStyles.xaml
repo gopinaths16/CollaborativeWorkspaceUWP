@@ -498,10 +498,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Border" x:Key="ReactiveBorder">
-        
-    </Style>
-
     <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxNoBg}" x:Key="TextNoBackground">
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Background" Value="Transparent"/>

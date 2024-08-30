@@ -407,7 +407,9 @@
                                                           x:Name="AddSubTaskDialog"
                                                           CurrProjectId="{x:Bind taskDetailsViewModel.CurrTask.ProjectId, Mode=OneWay}"
                                                           ParentTaskId="{x:Bind taskDetailsViewModel.CurrTask.Id, Mode=OneWay}"
+                                                          GroupId="{x:Bind taskDetailsViewModel.CurrTask.GroupId, Mode=OneWay}"
                                                           Grid.Row="0"
+                                                          Margin="0, 15, 0, 15"
                                                           CancelButtonClick="AddSubTaskDialog_CancelButtonClick"
                                                           AddTaskButtonClick="AddSubTaskFromDialogButton_ButtonClick"/>
 

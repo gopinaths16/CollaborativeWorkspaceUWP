@@ -27,17 +27,22 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public long ProjectId { get; set; }
+        public long BoardGroupId { get; set; }
+        public bool IsBoardGroupContext { get; set; }
+
         public Group BoardGroup
         {
             get { return boardGroup; }
             set
             {
                 boardGroup = value;
-                if(boardGroup != null && boardGroup.Boards.Count <= 0)
+                if(boardGroup != null && (boardGroup.Boards == null || boardGroup.Boards.Count <= 0))
                 {
                     boardGroup.Boards = groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id);
                 }
                 NotifyPropertyChanged(nameof(BoardGroup));
+                BoardGroup.NotifyChangesToEntity();
             }
         }
 
@@ -47,6 +52,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             IsLoading = false;
             ViewmodelEventHandler.Instance.Subscribe<AddGroupEvent>(OnBoardAddition);
+        }
+
+        public async Task AddBoardGroup(string name)
+        {
+            Group group = groupDataHandler.AddBoardGroupForProject(name, ProjectId, BoardGroupId, IsBoardGroupContext);
+            await ViewmodelEventHandler.Instance.Publish(new AddGroupEvent() { Group = group });
         }
 
         public async Task OnBoardAddition(AddGroupEvent e)

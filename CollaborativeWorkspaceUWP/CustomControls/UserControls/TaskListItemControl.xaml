@@ -27,18 +27,35 @@
     <Grid CornerRadius="5"
           Padding="20, 10, 20, 10"
           HorizontalAlignment="Stretch"
+          Name="TaskItem"
+          GotFocus="TaskItem_GotFocus"
+          LostFocus="TaskItem_LostFocus"
           Background="{x:Bind ItemBackground}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
                 <VisualState x:Name="Normal">
                     <VisualState.Setters>
-                        <Setter Target="Options.Visibility" Value="Collapsed"/>
+                        <Setter Target="Options.Visibility" 
+                                Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="PointerOver">
                     <VisualState.Setters>
-                        <Setter Target="Options.Visibility" Value="Visible"/>
+                        <Setter Target="Options.Visibility" 
+                                Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="FocusEngaged">
+                    <VisualState.Setters>
+                        <Setter Target="TaskItem.Background" 
+                                Value="{StaticResource SystemAccentColor}"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="FocusLost">
+                    <VisualState.Setters>
+                        <Setter Target="TaskItem.Background" 
+                                Value="{x:Bind ItemBackground}"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

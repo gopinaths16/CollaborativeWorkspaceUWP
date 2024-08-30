@@ -80,7 +80,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task OnTaskUpdation(UpdateTaskEvent taskEvent)
         {
-            if (taskEvent != null && taskEvent.Task != null && taskEvent.Task.Id == Task.Id)
+            if (taskEvent != null && taskEvent.Task != null && Task != null && taskEvent.Task.Id == Task.Id)
             {
                 Task.Update(taskEvent.Task);
                 NotifyPropertyChanged(nameof(Task));

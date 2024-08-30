@@ -10,6 +10,7 @@ namespace CollaborativeWorkspaceUWP.Models
     public class Group : BaseModel, ICloneable
     {
         ObservableCollection<UserTask> tasks;
+        ObservableCollection<Group> boards;
 
         public long Id { get; set; }
         public string Name { get; set; }
@@ -17,7 +18,11 @@ namespace CollaborativeWorkspaceUWP.Models
         public long BoardGroupId { get; set; }
         public bool IsBoardGroup { get; set; }
 
-        public ObservableCollection<Group> Boards { get; set; }
+        public ObservableCollection<Group> Boards
+        {
+            get { return boards; }
+            set { boards = value; }
+        }
 
         public ObservableCollection<UserTask> Tasks
         {
@@ -58,6 +63,7 @@ namespace CollaborativeWorkspaceUWP.Models
         public void NotifyChangesToEntity()
         {
             NotifyPropertyChanged(nameof(Tasks));
+            NotifyPropertyChanged(nameof(Boards));
         }
     }
 }
