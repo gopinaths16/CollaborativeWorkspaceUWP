@@ -9,6 +9,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
     public class MoveTaskEvent
     {
-       public UserTask Task { get; set; }
+       public ICollection<UserTask> Tasks { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private bool isAddTaskContextTriggered;
         private bool isOpen;
 
-        public UserTask MovedTask { get; set; }
+        public List<UserTask> MovedTask { get; set; }
 
         private TaskDataHandler taskDataHandler;
 
@@ -95,23 +95,29 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public async Task UpdateDraggedTask(UserTask task)
+        public async Task UpdateDraggedTask(ICollection<UserTask> tasks)
         {
-            if(task.GroupId != CurrBoard.Id)
+            foreach(var taskItem in tasks)
             {
-                task.GroupId = CurrBoard.Id;
-                taskDataHandler.UpdateGroupIdForTask(task);
-                Tasks.Insert(0, task);
-                NotifyPropertyChanged(nameof(TaskCount));
-                await ViewmodelEventHandler.Instance.Publish(new MoveTaskEvent() { Task = task });
+                if (taskItem.GroupId != CurrBoard.Id)
+                {
+                    taskItem.GroupId = CurrBoard.Id;
+                    taskDataHandler.UpdateGroupIdForTask(taskItem);
+                    Tasks.Insert(0, taskItem);
+                    NotifyPropertyChanged(nameof(TaskCount));
+                }
             }
+            await ViewmodelEventHandler.Instance.Publish(new MoveTaskEvent() { Tasks = tasks });
         }
 
         public async Task OnMovingTask(MoveTaskEvent e)
         {
-            if(e != null && e.Task != null && MovedTask != null && e.Task.Id == MovedTask.Id)
+            if(e != null && e.Tasks != null && MovedTask != null && e.Tasks.Count > 0)
             {
-                Tasks.Remove(Tasks.Where(item => item.Id == e.Task.Id).FirstOrDefault());
+                foreach (var task in e.Tasks)
+                {
+                    Tasks.Remove(Tasks.Where(item => item.Id == task.Id).FirstOrDefault());
+                }
                 MovedTask = null;
                 NotifyPropertyChanged(nameof(CurrBoard));
             }

@@ -1,14 +1,20 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.ViewModels;
+using CollaborativeWorkspaceUWP.Views;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.System;
 using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -46,6 +52,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         }
 
         public bool IsDragging
+        {
+            get; set;
+        }
+
+        public bool IsStateModified
         {
             get; set;
         }
@@ -136,19 +147,21 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             };
         }
 
-        private void TaskItem_GotFocus(object sender, RoutedEventArgs e)
+        private void TaskItem_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            if (EnableVisualAspects)
+            if(EnableVisualAspects)
             {
-                VisualStateManager.GoToState(this, "FocusEngaged", true);
-            }
-        }
-
-        private void TaskItem_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (EnableVisualAspects)
-            {
-                VisualStateManager.GoToState(this, "FocusLost", true);
+                bool isControlPressed = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
+                if (!IsStateModified && isControlPressed)
+                {
+                    IsStateModified = true;
+                    TaskItem.Background = new SolidColorBrush(Colors.Transparent);
+                }
+                else
+                {
+                    IsStateModified = false;
+                    TaskItem.Background = ItemBackground;
+                }
             }
         }
     }

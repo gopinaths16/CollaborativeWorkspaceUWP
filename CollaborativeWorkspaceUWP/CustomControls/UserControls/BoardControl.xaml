@@ -98,7 +98,7 @@
                   Grid.Row="3"
                   IsItemClickEnabled="True"
                   ItemClick="TaskListView_ItemClick"
-                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
+                  ItemContainerStyle="{StaticResource BoardItem}"
                   CanDragItems="True"
                   AllowDrop="True"
                   CanReorderItems="False"

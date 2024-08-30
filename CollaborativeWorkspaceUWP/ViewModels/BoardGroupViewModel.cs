@@ -4,6 +4,7 @@ using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         private Group boardGroup;
         private bool isLoading;
+        private ObservableCollection<Group> boards;
 
         public bool IsLoading
         {
@@ -31,25 +33,30 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public long BoardGroupId { get; set; }
         public bool IsBoardGroupContext { get; set; }
 
+
         public Group BoardGroup
         {
             get { return boardGroup; }
             set
             {
                 boardGroup = value;
-                if(boardGroup != null && (boardGroup.Boards == null || boardGroup.Boards.Count <= 0))
-                {
-                    boardGroup.Boards = groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id);
-                }
                 NotifyPropertyChanged(nameof(BoardGroup));
-                BoardGroup.NotifyChangesToEntity();
+            }
+        }
+
+        public ObservableCollection<Group> Boards
+        {
+            get { return boards; }
+            set
+            {
+                boards = value;
+                NotifyPropertyChanged(nameof(Boards));
             }
         }
 
         public BoardGroupViewModel()
         {
             groupDataHandler = new GroupDataHandler();
-
             IsLoading = false;
             ViewmodelEventHandler.Instance.Subscribe<AddGroupEvent>(OnBoardAddition);
         }
@@ -60,13 +67,21 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             await ViewmodelEventHandler.Instance.Publish(new AddGroupEvent() { Group = group });
         }
 
+        public void GetBoards()
+        {
+            if (BoardGroup != null)
+            {
+                Boards = groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id);
+            }
+        }
+
         public async Task OnBoardAddition(AddGroupEvent e)
         {
             if(BoardGroup != null)
             {
                 if(e.Group != null && e.Group.BoardGroupId == BoardGroup.Id)
                 {
-                    BoardGroup.Boards.Add(e.Group);
+                    Boards.Add(e.Group);
                     NotifyPropertyChanged(nameof(BoardGroup));
                 }
             }

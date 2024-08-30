@@ -28,8 +28,7 @@
           Padding="20, 10, 20, 10"
           HorizontalAlignment="Stretch"
           Name="TaskItem"
-          GotFocus="TaskItem_GotFocus"
-          LostFocus="TaskItem_LostFocus"
+          PointerPressed="TaskItem_PointerPressed"
           Background="{x:Bind ItemBackground}">
 
         <VisualStateManager.VisualStateGroups>
@@ -44,18 +43,6 @@
                     <VisualState.Setters>
                         <Setter Target="Options.Visibility" 
                                 Value="Visible"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="FocusEngaged">
-                    <VisualState.Setters>
-                        <Setter Target="TaskItem.Background" 
-                                Value="{StaticResource SystemAccentColor}"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="FocusLost">
-                    <VisualState.Setters>
-                        <Setter Target="TaskItem.Background" 
-                                Value="{x:Bind ItemBackground}"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

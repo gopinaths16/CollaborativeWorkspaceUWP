@@ -73,9 +73,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void TaskListViewByGroup_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            UserTask draggedTask = e.Items.FirstOrDefault() as UserTask;
-            e.Data.Properties.Add("Task", draggedTask);
-            boardViewModel.MovedTask = draggedTask;
+            List<UserTask> draggedTasks = new List<UserTask>();
+            foreach (UserTask task in e.Items)
+            {
+                draggedTasks.Add(task);
+            }
+            e.Data.Properties.Add("Task", draggedTasks);
+            boardViewModel.MovedTask = draggedTasks;
             e.Data.RequestedOperation = DataPackageOperation.Move;
         }
 
@@ -85,16 +89,16 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void TaskListViewByGroup_DragOver(object sender, DragEventArgs e)
         {
-            e.DataView.Properties.TryGetValue("Task", out object draggedTask);
-            e.AcceptedOperation = draggedTask != null && draggedTask is UserTask && (draggedTask as UserTask).GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
+            e.DataView.Properties.TryGetValue("Task", out object draggedTasks);
+            e.AcceptedOperation = draggedTasks != null && draggedTasks is ICollection<UserTask> && (draggedTasks as ICollection<UserTask>).FirstOrDefault() != null && (draggedTasks as ICollection<UserTask>).FirstOrDefault().GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
         }
 
         private async void TaskListViewByGroup_Drop(object sender, DragEventArgs e)
         {
-            e.DataView.Properties.TryGetValue("Task", out object draggedTask);
-            if (draggedTask != null && draggedTask is UserTask)
+            e.DataView.Properties.TryGetValue("Task", out object draggedTasks);
+            if (draggedTasks != null && draggedTasks is ICollection<UserTask>)
             {
-                await boardViewModel.UpdateDraggedTask(draggedTask as UserTask);
+                await boardViewModel.UpdateDraggedTask(draggedTasks as ICollection<UserTask>);
             }
         }
 

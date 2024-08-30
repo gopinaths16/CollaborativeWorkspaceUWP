@@ -21,7 +21,7 @@
     <Page.DataContext>
         <vm:MainViewModel />
     </Page.DataContext>
-    
+
     <Page.Resources>
 
         <Style TargetType="PivotItem" x:Name="TaskTabItem">
@@ -405,7 +405,7 @@
                                     Margin="0, 20, 0, 0">
                                 <customusercontrol:BoardViewControl x:Name="BoardGroupView"
                                                                     GroupName="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
-                                                                    BoardSource="{x:Bind boardGroupViewModel.BoardGroup.Boards, Mode=TwoWay}"
+                                                                    BoardSource="{x:Bind boardGroupViewModel.Boards, Mode=TwoWay}"
                                                                     OnBoardAddition="BoardGroupView_OnBoardAddition"
                                                                     CancelButtonClick="BoardGroupView_CancelButtonClick">
                                     <customusercontrol:BoardViewControl.BoardTemplate>
@@ -417,7 +417,6 @@
                                                         <DataTemplate  x:DataType="models:UserTask">
                                                             <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
                                                                                                    Name="{x:Bind Id}"
-                                                                                                   Margin="0, 15, 0, 0"
                                                                                                    ItemBackground="{ThemeResource SecondaryBackground}"
                                                                                                    EnableVisualAspects="True"/>
                                                         </DataTemplate>

@@ -28,6 +28,7 @@ using CollaborativeWorkspaceUWP.Auth.Handlers;
 using System.Collections.ObjectModel;
 using CollaborativeWorkspaceUWP.Utilities;
 using System.Security.Cryptography.X509Certificates;
+using CollaborativeWorkspaceUWP.DAL;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -352,6 +353,7 @@ namespace CollaborativeWorkspaceUWP.Views
             boardGroupViewModel.BoardGroup = boardGroup;
             if (boardGroup != null)
             {
+                boardGroupViewModel.GetBoards();
                 boardGroupViewModel.ProjectId = boardGroup.ProjectId;
                 boardGroupViewModel.BoardGroupId = boardGroup.Id;
                 boardGroupViewModel.IsBoardGroupContext = false;

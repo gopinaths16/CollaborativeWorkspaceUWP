@@ -6,7 +6,6 @@
 
     <Application.Resources>
         <ResourceDictionary>
-
             <FontFamily x:Key="IcoMoonCustomFontFree">/Assets/icomoon.ttf#icomoon</FontFamily>
             <ResourceDictionary.MergedDictionaries>
 
