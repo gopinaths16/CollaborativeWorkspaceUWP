@@ -46,6 +46,31 @@ namespace CollaborativeWorkspaceUWP.DAL
             return result;
         }
 
+        public ObservableCollection<Group> GetAllGroupsForProject(long projectId)
+        {
+            ObservableCollection<Group> result = new ObservableCollection<Group>();
+            IGroupPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetGroupPersistenceObject();
+                persistenceObject.SetGetAllGroupsForProjectContext(projectId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                result = persistenceObject.GetAllGroups();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
+
         public Group AddBoardGroupForProject(string name, long projectId, long boardGroupId, bool isBoardGroup)
         {
             Group result = null;

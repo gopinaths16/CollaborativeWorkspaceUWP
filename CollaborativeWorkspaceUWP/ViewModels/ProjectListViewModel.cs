@@ -50,6 +50,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void AddProjectToList(Project project)
         {
             project.BoardGroups = boardDataHandler.GetAllBoardsForProject(project.Id);
+            project.Groups = boardDataHandler.GetAllGroupsForProject(project.Id);
             Projects.Add(project);
             NotifyPropertyChanged(nameof(Projects));
         }
@@ -59,6 +60,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             foreach (var project in projectDataHandler.GetProjectsForTeamspace(teamspaceId))
             {
                 project.BoardGroups = boardDataHandler.GetAllBoardsForProject(project.Id);
+                project.Groups = boardDataHandler.GetAllGroupsForProject(project.Id);
                 Projects.Add(project);
             }
             NotifyPropertyChanged(nameof(Projects));
@@ -78,6 +80,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     if(project.Id == e.Group.ProjectId && e.Group.IsBoardGroup)
                     {
                         project.BoardGroups.Add(e.Group);
+                    }
+                    else if(project.Id == e.Group.ProjectId)
+                    {
+                        project.Groups.Add(e.Group);
                     }
                 }
             }

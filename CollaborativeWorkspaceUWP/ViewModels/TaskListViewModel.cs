@@ -16,12 +16,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class TaskListViewModel : BaseViewModel
     {
         IncrementalLoadingCollection<UserTask> tasks;
+        IncrementalLoadingCollection<UserTask> tasksForGroup;
         bool isAddTaskContextTriggered;
         List<Priority> priorityList;
         List<Status> statusList;
         UserTask currTask;
         Project currProject;
         bool isSingleWindowLayoutTriggered;
+        Group currGroup;
 
         TaskDataHandler taskDataHandler;
         PriorityDataHandler priorityDataHandler;
@@ -50,6 +52,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { tasks = value; }
         }
 
+        public IncrementalLoadingCollection<UserTask> TasksForGroup
+        {
+            get { return tasksForGroup; }
+            set { tasksForGroup = value; }
+        }
+
         public Project CurrentProject
         {
             get { return currProject; }
@@ -57,6 +65,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 currProject = value;
                 NotifyPropertyChanged(nameof(CurrentProject));
+            }
+        }
+
+        public Group CurrGroup
+        {
+            get { return currGroup; }
+            set
+            {
+                currGroup = value;
+                NotifyPropertyChanged(nameof(CurrGroup));
             }
         }
 
@@ -109,6 +127,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             ViewmodelEventHandler.Instance.Subscribe<AddCommentEvent>(OnCommentAddition);
             NotifyPropertyChanged(nameof(CurrentProject));
             NotifyPropertyChanged(nameof(Tasks));
+        }
+
+        public void SetTasksForGroup(Group group)
+        {
+            CurrGroup = group;
+            NotifyPropertyChanged(nameof(Group));
+            TasksForGroup = new IncrementalLoadingCollection<UserTask>(new ObservableCollection<UserTask>(), 8);
+            foreach(UserTask userTask in Tasks.Where((item) => item.GroupId == group.Id))
+            {
+                TasksForGroup.Add(userTask);
+            }
         }
 
         public void AddTaskToList(UserTask task)

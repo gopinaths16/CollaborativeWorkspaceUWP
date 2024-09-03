@@ -45,14 +45,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty IsBoardGroupContextProperty = DependencyProperty.Register("IsBoardGroupContext", typeof(bool), typeof(AddGroupdControl), new PropertyMetadata(false));
 
-        private RoutedEventHandler cancelButtonClickEventHandler;
-
-        public event RoutedEventHandler CancelButtonClick
-        {
-            add { cancelButtonClickEventHandler += value; }
-            remove { cancelButtonClickEventHandler -= value; }
-        }
-
         public AddGroupdControl()
         {
             this.InitializeComponent();
@@ -74,7 +66,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void CloseDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            cancelButtonClickEventHandler?.Invoke(sender, e);
+            if (this.Parent is FlyoutPresenter presenter && presenter.Parent is Popup popup)
+            {
+                popup.IsOpen = false;
+            }
+            Name.Text = string.Empty;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -90,7 +86,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private async void AddGroupButton_Click(object sender, RoutedEventArgs e)
         {
             await addGroupViewModel.AddBoardGroup(Name.Text);
-            Name.Text = string.Empty;
+            if (this.Parent is FlyoutPresenter presenter && presenter.Parent is Popup popup)
+            {
+                popup.IsOpen = false;
+            }
+            CloseDialogButton_Click(sender, e);
         }
     }
 }

@@ -118,16 +118,19 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             await TaskDetailsView.UpdateCurrentTask();
             taskListViewModel.Dispose();
-            Project currProject = (Project)e.ClickedItem;
-            if (taskListViewModel.IsSingleWindowLayoutTriggered)
+            if(e.ClickedItem is Project)
             {
-                TaskListView.Visibility = Visibility.Visible;
-                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
-                projectListViewModel.IsProjectListPaneOpen = false;
+                Project currProject = (Project)e.ClickedItem;
+                if (taskListViewModel.IsSingleWindowLayoutTriggered)
+                {
+                    TaskListView.Visibility = Visibility.Visible;
+                    TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+                    projectListViewModel.IsProjectListPaneOpen = false;
+                }
+                taskListViewModel.GetTasksForProject((Project)currProject.Clone());
+                TaskDetailsView.SetCurrentTask(null);
+                taskListViewModel.CurrTask = null;
             }
-            taskListViewModel.GetTasksForProject((Project)currProject.Clone());
-            TaskDetailsView.SetCurrentTask(null);
-            taskListViewModel.CurrTask = null;
         }
 
         private async void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -326,20 +329,33 @@ namespace CollaborativeWorkspaceUWP.Views
             Pivot pivot = sender as Pivot;
             if (pivot != null)
             {
-                DataTemplate listViewItemTemplate = pivot.SelectedIndex == 1 ? this.Resources["ProjectListViewItemTemplateForBoardView"] as DataTemplate : this.Resources["ProjectListViewItemTemplate"] as DataTemplate ;
-                ProjectListDropDown.SetListViewItemTemplate(listViewItemTemplate);
-                ProjectListDropDown.ListViewItemClickEnabled = pivot.SelectedIndex == 1 ? false : true;
+                if(pivot.SelectedIndex == 1)
+                {
+                    DataTemplate listViewItemTemplate = this.Resources["ProjectListViewItemTemplateForBoardView"] as DataTemplate;
+                    ProjectListSplitViewPane.SetListViewItemTemplateSelector(null);
+                    ProjectListSplitViewPane.SetListViewItemTemplate(listViewItemTemplate);
+                }
+                else
+                {
+                    ProjectListSplitViewPane.SetListViewItemTemplate(null);
+                    ProjectListSplitViewPane.SetListViewItemTemplateSelector(this.Resources["ProjectListViewTemplateSelector"] as DataTemplateSelector);
+                }
+                ProjectListSplitViewPane.ListViewItemClickEnabled = pivot.SelectedIndex == 1 ? false : true;
+                ProjectListSplitViewPane.ListViewItemContainerStyle = pivot.SelectedIndex == 1 ? (Style)staticStyles["ListViewItemStyleDormant"] : (Style)staticStyles["ListViewItemStyleAccent"];
             }
         }
 
         private void ProjectGroupDropDown_OnItemAddClick(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void ProjectGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
         {
-
+            Group group = e.ClickedItem as Group;
+            if(group != null) 
+            {
+            }
         }
 
         private void ProjectBoardGroupDropDown_OnItemAddClick(object sender, RoutedEventArgs e)
@@ -362,13 +378,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.Parent is FlyoutPresenter presenter)
-            {
-                if (presenter.Parent is Flyout flyout)
-                {
-                    flyout.Hide();
-                }
-            }
+            
         }
 
         private async void BoardGroupView_OnBoardAddition(object sender, RoutedEventArgs e)
@@ -376,6 +386,11 @@ namespace CollaborativeWorkspaceUWP.Views
             string boardName = BoardGroupView.BoardName;
             await boardGroupViewModel.AddBoardGroup(boardName);
             BoardGroupView.Clear();
+        }
+
+        private void OpenDropdownButtonAlt_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

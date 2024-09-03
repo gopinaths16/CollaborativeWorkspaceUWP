@@ -37,7 +37,6 @@
                     FontFamily="Segoe Fluent Icons"
                     Style="{StaticResource ButtonNoBackgroundDormant}"
                     Visibility="{x:Bind IsSubList, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                    IsEnabled="{x:Bind ListViewItemSource, Mode=OneWay, Converter={StaticResource CollectionToBoolConverter}}"
                     Content="&#xE76C;"
                     Margin="0, 1, 0, 0"
                     FontSize="10"

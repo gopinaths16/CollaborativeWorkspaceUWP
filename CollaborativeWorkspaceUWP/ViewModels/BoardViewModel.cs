@@ -117,7 +117,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 foreach (var task in e.Tasks)
                 {
-                    Tasks.Remove(Tasks.Where(item => item.Id == task.Id).FirstOrDefault());
+                    Tasks.Remove(task);
                 }
                 MovedTask = null;
                 NotifyPropertyChanged(nameof(CurrBoard));

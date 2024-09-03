@@ -140,7 +140,7 @@
                   x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}" >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsStackPanel/>
+                    <StackPanel/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>

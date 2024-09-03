@@ -239,6 +239,7 @@
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Custom\IncrementalLoadingCollection.cs" />
+    <Compile Include="Utilities\DataTemplateSelectors\ProjectListViewTemplateSelector.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\AddGroupEvent.cs" />
     <Compile Include="Utilities\Events\AddCommentEvent.cs" />

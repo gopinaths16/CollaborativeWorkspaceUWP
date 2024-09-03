@@ -11,6 +11,7 @@
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:XamlControlResources="using:Microsoft.UI.Xaml.Controls"
+    xmlns:util="using:CollaborativeWorkspaceUWP.Utilities"
     xmlns:vm="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -71,21 +72,62 @@
 
         <DataTemplate x:Key="ProjectListViewItemTemplate" 
                       x:DataType="models:Project">
-            <customusercontrol:DropDownListViewControl x:Name="ProjectGroupDropDown" 
-                                                       DropdownTitle="{x:Bind Name, Mode=OneWay}"
-                                                       ListViewItemSource="{x:Bind Groups, Mode=TwoWay}"
-                                                       ListViewItemClickEnabled="True"
-                                                       AllowAdditionToListView="True"
-                                                       HideContentOnInitialization="True"
-                                                       TitleIcon="&#xE70B;"
-                                                       IsSubList="True"
-                                                       OnItemAddClick="ProjectGroupDropDown_OnItemAddClick"
-                                                       ListViewItemClicked="ProjectGroupDropDown_ListViewItemClicked"
-                                                       MessageOnSourceEmpty="No Groups Available"/>
+            <Grid Grid.Row="0"
+                  VerticalAlignment="Center"
+                  Margin="0, 3, 0, 3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Name="OpenDropdownButtonAlt"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe Fluent Icons"
+                        Style="{StaticResource ButtonNoBackgroundDormant}"
+                        Content="&#xE76C;"
+                        Margin="0, 1, 0, 0"
+                        FontSize="10"
+                        Click="OpenDropdownButtonAlt_Click"
+                        Grid.Column="0"/>
+                <TextBlock FontFamily="Segoe Fluent Icons"
+                           Text="&#xE70B;"
+                           Margin="0, 6, 10, 0"
+                           FontSize="13"
+                           Grid.Column="1"/>
+                <TextBlock Name="DropdownHeader"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           FontSize="13"
+                           Grid.Column="2"/>
+                <Button Name="AddItemButton"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe Fluent Icons"
+                        Style="{StaticResource ButtonNoBackgroundDormant}"
+                        Content="&#xE710;"
+                        FontSize="10"
+                        Grid.Column="3">
+                    <Button.Flyout>
+                        <Flyout>
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="Background" 
+                                            Value="{ThemeResource SecondaryBackground}"/>
+                                    <Setter Property="CornerRadius" 
+                                            Value="5" />
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <customusercontrol:AddGroupdControl ProjectId="{Binding Id}"
+                                                                IsBoardGroupContext="False"/>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
         </DataTemplate>
-
+        
         <DataTemplate x:DataType="models:Group"
-                      x:Key="BoardGroupListViewTemplate">
+                      x:Key="GroupListViewTemplate">
             <Grid Height="30"
                   Margin="60, 0, 0, 0">
                 <Grid.ColumnDefinitions>
@@ -107,21 +149,25 @@
             </Grid>
         </DataTemplate>
 
+        <util:ProjectListViewTemplateSelector x:Key="ProjectListViewTemplateSelector"
+                                              ProjectItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                              GroupItemTemplate="{StaticResource GroupListViewTemplate}" />
+
         <DataTemplate x:Key="ProjectListViewItemTemplateForBoardView" 
                       x:DataType="models:Project">
             <customusercontrol:DropDownListViewControl x:Name="ProjectBoardGroupDropDown" 
                                                        DropdownTitle="{x:Bind Name, Mode=OneWay}"
                                                        ListViewItemSource="{x:Bind BoardGroups, Mode=OneWay}"
-                                                       ListViewItemTemplate="{StaticResource BoardGroupListViewTemplate}"
+                                                       ListViewItemTemplate="{StaticResource GroupListViewTemplate}"
                                                        ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
                                                        ListViewItemClickEnabled="True"
                                                        AllowAdditionToListView="True"
-                                                       HideContentOnInitialization="True"
+                                                       HideContentOnInitialization="False"
                                                        TitleIcon="&#xE70B;"
                                                        IsSubList="True"
                                                        OnItemAddClick="ProjectBoardGroupDropDown_OnItemAddClick"
                                                        ListViewItemClicked="ProjectBoardGroupDropDown_ListViewItemClicked"
-                                                       MessageOnSourceEmpty="No Groups available">
+                                                       MessageOnSourceEmpty="No Boards available">
                 <customusercontrol:DropDownListViewControl.AddButtonFlyout>
                     <Flyout>
                         <Flyout.FlyoutPresenterStyle>
@@ -133,8 +179,7 @@
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
                         <customusercontrol:AddGroupdControl ProjectId="{Binding Id}"
-                                                            IsBoardGroupContext="True"
-                                                            CancelButtonClick="AddBoardGroupControl_CancelButtonClick" />
+                                                            IsBoardGroupContext="True"/>
                     </Flyout>
                 </customusercontrol:DropDownListViewControl.AddButtonFlyout>
             </customusercontrol:DropDownListViewControl>
@@ -234,23 +279,19 @@
                        OpenPaneLength="250">
 
                 <SplitView.Pane>
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="20, 0, 0, 0"
-                                Name="ProjectListSplitViewPane">
-
-                        <customusercontrol:DropDownListViewControl x:Name="ProjectListDropDown" 
+                    <Border Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0, 30, 0, 0">
+                        <customusercontrol:DropDownListViewControl x:Name="ProjectListSplitViewPane" 
                                                                    DropdownTitle="My Projects"
                                                                    ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
                                                                    ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
-                                                                   ListViewItemContainerStyle="{StaticResource ListViewItemStyleDormant}"
+                                                                   ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
                                                                    AllowAdditionToListView="True"
-                                                                   Margin="0, 30, 0, 0"
                                                                    OnItemAddClick="AddProjectButton_ButtonClick"
                                                                    ListViewItemClicked="ProjectListView_ItemClick"
                                                                    MessageOnSourceEmpty="No Projects available"/>
-
-                    </StackPanel>
+                    </Border>
                 </SplitView.Pane>
 
                 <SplitView.Content>

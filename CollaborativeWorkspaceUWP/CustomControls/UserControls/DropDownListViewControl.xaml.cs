@@ -195,5 +195,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
             DropdownListView.ItemTemplate = template;
         }
+
+        public void SetListViewItemTemplateSelector(DataTemplateSelector selector)
+        {
+            DropdownListView.ItemTemplateSelector = selector;
+        }
     }
 }

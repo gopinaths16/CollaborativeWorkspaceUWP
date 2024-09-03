@@ -15,7 +15,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
 {
     public class IncrementalLoadingCollection<T> : ObservableCollection<T>, INotifyCollectionChanged, ISupportIncrementalLoading
     {
-        private ObservableCollection<T> source;
+        public ObservableCollection<T> source;
         private bool _hasMoreItems = true;
         private bool _isLoading = false;
         private int _currentPage = 0;
@@ -40,12 +40,12 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             _isLoading = true;
             try
             {
-                
+
                 if (items.Count() < PageSize) _hasMoreItems = false;
                 _currentPage++;
                 foreach (var item in items)
                 {
-                    Add(item);
+                    base.Add(item);
                 }
             }
             finally
@@ -53,6 +53,20 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
                 _isLoading = false;
             }
             return new LoadMoreItemsResult { Count = (uint)items.Count() };
+        }
+
+        public new void Add(T item)
+        {
+            source.Add(item);
+            if(this.Count < PageSize)
+            {
+                base.Add(item);
+            }
+        }
+
+        public IEnumerable<T> Where(Func<T, bool> predicate)
+        {
+            return source.Where(predicate);
         }
 
         public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)

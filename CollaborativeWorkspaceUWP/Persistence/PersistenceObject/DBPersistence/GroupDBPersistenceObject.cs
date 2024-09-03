@@ -23,6 +23,15 @@ namespace CollaborativeWorkspaceUWP.Persistence.PersistenceObject.DBPersistence
             Query = command;
         }
 
+        public void SetGetAllGroupsForProjectContext(long projectId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT ID, NAME, PROJECT_ID, BOARD_GROUP_ID, IS_BOARD_GROUP FROM CW_GROUP_DETAILS WHERE PROJECT_ID=@ProjectId AND IS_BOARD_GROUP=@IsBoardGroup";
+            command.Parameters.AddWithValue("@ProjectId", projectId);
+            command.Parameters.AddWithValue("@IsBoardGroup", false);
+            Query = command;
+        }
+
         public void SetGetAllBoardsForBoardGroupContext(long boardGroupId)
         {
             SQLiteCommand command = new SQLiteCommand();
