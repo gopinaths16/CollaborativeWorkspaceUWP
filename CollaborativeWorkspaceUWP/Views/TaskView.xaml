@@ -406,17 +406,16 @@
                                 <customusercontrol:BoardViewControl x:Name="BoardGroupView"
                                                                     GroupName="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
                                                                     BoardSource="{x:Bind boardGroupViewModel.Boards, Mode=TwoWay}"
-                                                                    OnBoardAddition="BoardGroupView_OnBoardAddition"
-                                                                    CancelButtonClick="BoardGroupView_CancelButtonClick">
+                                                                    OnBoardAddition="BoardGroupView_OnBoardAddition">
                                     <customusercontrol:BoardViewControl.BoardTemplate>
                                         <DataTemplate x:DataType="models:Group">
-                                            <Border CornerRadius="5"
-                                                    Margin="10, 10, 10, 0">
+                                            <Border Margin="10, 10, 10, 0">
                                                 <customusercontrol:BoardControl Board="{x:Bind Self}">
                                                     <customusercontrol:BoardControl.BoardItemTemplate>
                                                         <DataTemplate  x:DataType="models:UserTask">
                                                             <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
                                                                                                    Name="{x:Bind Id}"
+                                                                                                   Width="430"
                                                                                                    ItemBackground="{ThemeResource SecondaryBackground}"
                                                                                                    EnableVisualAspects="True"/>
                                                         </DataTemplate>

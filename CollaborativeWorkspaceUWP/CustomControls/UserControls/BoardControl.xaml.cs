@@ -20,6 +20,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Text.Json;
+using System.Numerics;
+using Windows.UI.Xaml.Media.Animation;
+using static System.Net.Mime.MediaTypeNames;
+using Windows.UI.Core;
+using System.Threading.Tasks;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -62,7 +67,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if(Board != null)
             {
@@ -105,8 +110,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             boardViewModel.IsOpen = !boardViewModel.IsOpen;
-            if(boardViewModel.IsOpen)
+            if (boardViewModel.IsOpen)
             {
+                VisualStateManager.GoToState(this, "Expanded", true);
                 MinimizeButton.Content = "\ue740";
                 TaskListView.ColumnDefinitions.Clear();
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -115,12 +121,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             }
             else
             {
+                VisualStateManager.GoToState(this, "Collapsed", true);
                 MinimizeButton.Content = "\ue73f";
                 TaskListView.ColumnDefinitions.Clear();
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
             }
+        }
+
+        private void TaskListViewByGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+            TaskListViewByGroup.ItemsSource = boardViewModel.Tasks;
         }
     }
 }

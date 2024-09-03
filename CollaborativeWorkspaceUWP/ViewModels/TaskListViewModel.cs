@@ -1,6 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 {
     public class TaskListViewModel : BaseViewModel
     {
-        ObservableCollection<UserTask> tasks;
+        IncrementalLoadingCollection<UserTask> tasks;
         bool isAddTaskContextTriggered;
         List<Priority> priorityList;
         List<Status> statusList;
@@ -40,11 +41,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
-            Tasks = new ObservableCollection<UserTask>();
             IsAddTaskContextTriggered = false;
         }
 
-        public ObservableCollection<UserTask> Tasks
+        public IncrementalLoadingCollection<UserTask> Tasks
         {
             get { return tasks; }
             set { tasks = value; }
@@ -91,7 +91,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void GetTasksForProject(Project project)
         {
             CurrentProject = project;
-            Tasks = taskDataHandler.GetTasksForProject(project.Id);
+            Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForProject(project.Id), 9);
             foreach (UserTask task in Tasks)
             {
                 task.Attachments = attachmentDataHandler.GetAllAttachmentsForTask(task.Id);

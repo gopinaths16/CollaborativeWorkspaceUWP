@@ -1,6 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         private Group boardGroup;
         private bool isLoading;
-        private ObservableCollection<Group> boards;
+        private IncrementalLoadingCollection<Group> boards;
 
         public bool IsLoading
         {
@@ -44,7 +45,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public ObservableCollection<Group> Boards
+        public IncrementalLoadingCollection<Group> Boards
         {
             get { return boards; }
             set
@@ -71,7 +72,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if (BoardGroup != null)
             {
-                Boards = groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id);
+                Boards = new IncrementalLoadingCollection<Group>(groupDataHandler.GetBoardsForBoardGroup(boardGroup.Id), 4);
             }
         }
 

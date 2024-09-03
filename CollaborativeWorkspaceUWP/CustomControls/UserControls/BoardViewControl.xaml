@@ -52,7 +52,8 @@
                                                            Icon="&#xe82e;"
                                                            Margin="10, 15, 15, 0">
                 <customtemplatecontrol:CustomIconButtonControl.Flyout>
-                    <Flyout Placement="Bottom">
+                    <Flyout Placement="Bottom"
+                            x:Name="AddBoardFlyout">
                         <Flyout.FlyoutPresenterStyle>
                             <Style TargetType="FlyoutPresenter">
                                 <Setter Property="Background" 
@@ -122,7 +123,7 @@
                       DragItemsCompleted="BoardListView_DragItemsCompleted">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <ItemsStackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>

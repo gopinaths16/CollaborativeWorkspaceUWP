@@ -1,6 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 NotifyPropertyChanged(nameof(CurrBoard));
                 if (currBoard != null && currBoard.Tasks.Count <= 0)
                 {
-                    Tasks = taskDataHandler.GetTasksForGroup(currBoard.Id);
+                    Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForGroup(currBoard.Id), 8);
                     NotifyPropertyChanged(nameof(Tasks));
                     NotifyPropertyChanged(nameof(TaskCount));
                 }
@@ -59,7 +60,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public ObservableCollection<UserTask> Tasks { get; set; }
+        public IncrementalLoadingCollection<UserTask> Tasks { get; set; }
 
         public bool IsAddTaskContextTriggered
         {
@@ -75,9 +76,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             IsAddTaskContextTriggered = false;
             IsOpen = true;
+            Tasks = new IncrementalLoadingCollection<UserTask>(new ObservableCollection<UserTask>(), 8);
 
             taskDataHandler = new TaskDataHandler();
-            Tasks = new ObservableCollection<UserTask>();
 
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Subscribe<MoveTaskEvent>(OnMovingTask);
@@ -121,6 +122,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 MovedTask = null;
                 NotifyPropertyChanged(nameof(CurrBoard));
             }
+        }
+
+        public void NotifyUI(object property)
+        {
+            NotifyPropertyChanged(nameof(property));
         }
     }
 }

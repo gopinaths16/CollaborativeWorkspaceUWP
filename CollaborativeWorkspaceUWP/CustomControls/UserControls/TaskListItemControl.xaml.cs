@@ -1,6 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.ViewModels;
 using CollaborativeWorkspaceUWP.Views;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -157,7 +158,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     IsStateModified = true;
                     TaskItem.Background = new SolidColorBrush(Colors.Transparent);
                 }
-                else
+                else if (IsStateModified)
                 {
                     IsStateModified = false;
                     TaskItem.Background = ItemBackground;

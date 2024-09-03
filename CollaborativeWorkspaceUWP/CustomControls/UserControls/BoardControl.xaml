@@ -16,7 +16,36 @@
 
     <Grid Name="TaskListView"
           Background="{ThemeResource PrimaryBackground}"
+          CornerRadius="5"
           Padding="10">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Expanded">
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="ContentGridTransform"
+                                         Storyboard.TargetProperty="ScaleX"
+                                         To="1"
+                                         Duration="0:0:0.1"/>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Collapsed">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ContentGridTransform"
+                                                       Storyboard.TargetProperty="ScaleX"
+                                                       Duration="0:0:0.1">
+                            <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                            <LinearDoubleKeyFrame KeyTime="0:0:0.05" Value="0.8"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        <Grid.RenderTransform>
+            <ScaleTransform x:Name="ContentGridTransform" ScaleX="1" ScaleY="1"/>
+        </Grid.RenderTransform>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -92,8 +121,8 @@
 
 
 
-        <ListView Name="TaskListViewByGroup" 
-                  ItemsSource="{x:Bind boardViewModel.Tasks, Mode=OneWay}"
+        <ListView Name="TaskListViewByGroup"
+                  Loaded="TaskListViewByGroup_Loaded"
                   ItemTemplate="{x:Bind BoardItemTemplate, Mode=OneWay}"
                   Grid.Row="3"
                   IsItemClickEnabled="True"
@@ -108,7 +137,12 @@
                   DragOver="TaskListViewByGroup_DragOver"
                   Drop="TaskListViewByGroup_Drop"
                   Grid.ColumnSpan="3"
-                  Width="430"
-                  x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}" />
+                  x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </UserControl>

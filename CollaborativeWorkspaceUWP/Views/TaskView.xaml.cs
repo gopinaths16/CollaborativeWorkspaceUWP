@@ -377,10 +377,5 @@ namespace CollaborativeWorkspaceUWP.Views
             await boardGroupViewModel.AddBoardGroup(boardName);
             BoardGroupView.Clear();
         }
-
-        private void BoardGroupView_CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

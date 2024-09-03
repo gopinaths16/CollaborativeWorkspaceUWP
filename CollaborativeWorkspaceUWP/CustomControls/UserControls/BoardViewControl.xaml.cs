@@ -70,12 +70,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { addBoardClickEventHandler -= value; }
         }
 
-        public event RoutedEventHandler CancelButtonClick
-        {
-            add { cancelButtonClickEventHandler += value; }
-            remove { cancelButtonClickEventHandler -= value; }
-        }
-
         public string BoardName
         {
             get
@@ -112,12 +106,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void CloseDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            cancelButtonClickEventHandler?.Invoke(sender, e);
+            AddBoardFlyout.Hide();
         }
 
         private async void AddGroupButton_Click(object sender, RoutedEventArgs e)
         {
            addBoardClickEventHandler?.Invoke(sender, e);
+           AddBoardFlyout.Hide();
         }
 
         public void Clear()
