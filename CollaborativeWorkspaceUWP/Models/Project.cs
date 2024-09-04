@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Project : ICloneable
+    public class Project : BaseModel, ICloneable
     {
 
         private long _id;
@@ -16,6 +16,8 @@ namespace CollaborativeWorkspaceUWP.Models
         private long _priority;
         private long _teamspaceId;
         private long _ownerId;
+
+        private bool isOpen;
 
         public long Id { get { return _id; } set { _id = value; } }
         public string Name { get { return _name; } set { _name = value; } }
@@ -27,11 +29,22 @@ namespace CollaborativeWorkspaceUWP.Models
         public ObservableCollection<Group> BoardGroups { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
 
+        public bool IsOpen
+        {
+            get { return isOpen; }
+            set
+            {
+                isOpen = value;
+                NotifyPropertyChanged(nameof(IsOpen));
+            }
+        }
+
         public Project()
         {
-
+            IsOpen = true;
         }
-        public Project(long id, string name, long status, long priority, long teamspaceId, long ownerId)
+
+        public Project(long id, string name, long status, long priority, long teamspaceId, long ownerId) : base()
         {
             this._id = id;
             this._name = name;
@@ -39,6 +52,7 @@ namespace CollaborativeWorkspaceUWP.Models
             this._priority = priority;
             this._teamspaceId = teamspaceId;
             this._ownerId = ownerId;
+            IsOpen = true;
 
             BoardGroups = new ObservableCollection<Group>();
             Groups = new ObservableCollection<Group>();
@@ -47,6 +61,7 @@ namespace CollaborativeWorkspaceUWP.Models
         public object Clone()
         {
             Project project = new Project(Id, Name, Status, Priority, TeamsapceId, OwnerId);
+            project.IsOpen = IsOpen;
             foreach (Group group in BoardGroups)
             {
                 project.BoardGroups.Add(group);

@@ -80,7 +80,17 @@
                       ItemClick="{x:Bind _itemClickEventHandler}"
                       ItemsSource="{x:Bind ListViewItemSource, Mode=OneWay}" 
                       ItemTemplate="{x:Bind ListViewItemTemplate, Mode=OneWay}"
-                      ItemContainerStyle="{x:Bind ListViewItemContainerStyle, Mode=OneWay}"/>
+                      ItemTemplateSelector="{x:Bind ListViewItemTemplateSelector, Mode=OneWay}"
+                      ItemContainerStyle="{x:Bind ListViewItemContainerStyle, Mode=OneWay}">
+                <ListView.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ListView.ItemContainerTransitions>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
 
             <StackPanel Name="NoSourceAvailableMessage"
                         HorizontalAlignment="Center"

@@ -44,6 +44,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             priorityList = priorityDataHandler.GetPriorityData();
             statusList = statusDataHandler.GetStatusData();
             IsAddTaskContextTriggered = false;
+
+            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
+            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
+            ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
+            ViewmodelEventHandler.Instance.Subscribe<AddCommentEvent>(OnCommentAddition);
         }
 
         public IncrementalLoadingCollection<UserTask> Tasks
@@ -80,8 +86,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public UserTask CurrTask
         {
-            get { return  currTask; }
-            set { 
+            get { return currTask; }
+            set {
                 currTask = value;
                 NotifyPropertyChanged(nameof(CurrTask));
             }
@@ -90,8 +96,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public bool IsAddTaskContextTriggered
         {
             get { return isAddTaskContextTriggered; }
-            set { 
-                isAddTaskContextTriggered = value; 
+            set {
+                isAddTaskContextTriggered = value;
                 NotifyPropertyChanged(nameof(IsAddTaskContextTriggered));
             }
         }
@@ -109,6 +115,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public void GetTasksForProject(Project project)
         {
             CurrentProject = project;
+            CurrGroup = null;
             Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForProject(project.Id), 9);
             foreach (UserTask task in Tasks)
             {
@@ -120,12 +127,25 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                     temp[0].SubTasks.Add(task);
                 }
             }
-            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddtion);
-            ViewmodelEventHandler.Instance.Subscribe<UpdateTaskEvent>(OnTaskUpdation);
-            ViewmodelEventHandler.Instance.Subscribe<DeleteTaskEvent>(OnTaskDeletion);
-            ViewmodelEventHandler.Instance.Subscribe<AddAttachmentEvent>(OnAttachmentAddition);
-            ViewmodelEventHandler.Instance.Subscribe<AddCommentEvent>(OnCommentAddition);
             NotifyPropertyChanged(nameof(CurrentProject));
+            NotifyPropertyChanged(nameof(Tasks));
+        }
+
+        public void GetTasksForGroup(Group group)
+        {
+            CurrGroup = group;
+            Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForGroup(group.Id), 9);
+            foreach (UserTask task in Tasks)
+            {
+                task.Attachments = attachmentDataHandler.GetAllAttachmentsForTask(task.Id);
+                task.Comments = commentDataHandler.GetAllCommentsForCurrentTask(task.Id);
+                var temp = Tasks.Where(item => item.Id == task.ParentTaskId).ToList();
+                if (temp.Count > 0 && temp[0] != null)
+                {
+                    temp[0].SubTasks.Add(task);
+                }
+            }
+            NotifyPropertyChanged(nameof(CurrGroup));
             NotifyPropertyChanged(nameof(Tasks));
         }
 

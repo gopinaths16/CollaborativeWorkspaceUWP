@@ -8,6 +8,7 @@ using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Events;
+using Microsoft.Toolkit.Uwp.UI.Controls.TextToolbarSymbols;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
@@ -22,9 +23,27 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             get { return projects; }
             set { 
-                projects = value; 
+                projects = value;
+                ProjectListWithGroup = new ObservableCollection<object>();
+                foreach (var project in projects)
+                {
+                    ProjectListWithGroup.Add(project);
+                    if(project.IsOpen)
+                    {
+                        foreach (var group in project.Groups)
+                        {
+                            ProjectListWithGroup.Add(group);
+                        }
+                    }
+                }
                 NotifyPropertyChanged(nameof(Projects));
+                NotifyPropertyChanged(nameof(ProjectListWithGroup));
             }
+        }
+
+        public ObservableCollection<object> ProjectListWithGroup
+        {
+            get; set;
         }
 
         public ProjectListViewModel()
@@ -62,6 +81,14 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 project.BoardGroups = boardDataHandler.GetAllBoardsForProject(project.Id);
                 project.Groups = boardDataHandler.GetAllGroupsForProject(project.Id);
                 Projects.Add(project);
+                ProjectListWithGroup.Add(project);
+                if(project.IsOpen)
+                {
+                    foreach (var group in project.Groups)
+                    {
+                        ProjectListWithGroup.Add(group);
+                    }
+                }
             }
             NotifyPropertyChanged(nameof(Projects));
         }

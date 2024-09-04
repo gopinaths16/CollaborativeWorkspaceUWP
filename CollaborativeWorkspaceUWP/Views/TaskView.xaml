@@ -82,15 +82,28 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <Button Name="OpenDropdownButton"
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe Fluent Icons"
+                        Style="{StaticResource ButtonNoBackgroundDormant}"
+                        Content="&#xE70D;"
+                        Tag="{Binding}"
+                        Margin="0, 1, 0, 0"
+                        FontSize="10"
+                        Click="OpenDropdownButtonAlt_Click"
+                        Visibility="{Binding IsOpen, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Grid.Column="0" />
                 <Button Name="OpenDropdownButtonAlt"
                         VerticalAlignment="Center"
                         FontFamily="Segoe Fluent Icons"
                         Style="{StaticResource ButtonNoBackgroundDormant}"
                         Content="&#xE76C;"
+                        Tag="{Binding}"
                         Margin="0, 1, 0, 0"
                         FontSize="10"
                         Click="OpenDropdownButtonAlt_Click"
-                        Grid.Column="0"/>
+                        Visibility="{Binding IsOpen, Converter={StaticResource BoolToVisibilityConverterInverse}}"
+                        Grid.Column="0" />
                 <TextBlock FontFamily="Segoe Fluent Icons"
                            Text="&#xE70B;"
                            Margin="0, 6, 10, 0"
@@ -123,6 +136,13 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
+                <StackPanel Name="NoSourceAvailableMessage"
+                            HorizontalAlignment="Center"
+                            Margin="30"
+                            Visibility="{Binding Groups, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
+                    <TextBlock Text="No Groups Available"
+                               Foreground="Gray"/>
+                </StackPanel>
             </Grid>
         </DataTemplate>
         
@@ -284,8 +304,7 @@
                             Margin="0, 30, 0, 0">
                         <customusercontrol:DropDownListViewControl x:Name="ProjectListSplitViewPane" 
                                                                    DropdownTitle="My Projects"
-                                                                   ListViewItemSource="{x:Bind projectListViewModel.Projects, Mode=TwoWay}"
-                                                                   ListViewItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                                                   ListViewItemSource="{x:Bind projectListViewModel.ProjectListWithGroup, Mode=OneWay}"
                                                                    ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
                                                                    AllowAdditionToListView="True"
                                                                    OnItemAddClick="AddProjectButton_ButtonClick"
@@ -353,6 +372,15 @@
                                                Margin="10, 10, 0, 0"
                                                Grid.Row="0"
                                                FontWeight="Bold"
+                                               Visibility="{x:Bind taskListViewModel.CurrGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Name="TaskListGroupTitle"
+                                               Text="{x:Bind taskListViewModel.CurrGroup.Name, Mode=OneWay}"
+                                               FontSize="15"
+                                               Margin="10, 10, 0, 0"
+                                               Grid.Row="0"
+                                               FontWeight="Bold"
+                                               Visibility="{x:Bind taskListViewModel.CurrGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
                                                VerticalAlignment="Center"/>
 
 

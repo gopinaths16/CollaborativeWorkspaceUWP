@@ -101,6 +101,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(MessageOnSourceEmptyProperty, value); }
         }
 
+        public DataTemplateSelector ListViewItemTemplateSelector
+        {
+            get { return (DataTemplateSelector)GetValue(ListViewItemTemplateSelectorProperty); }
+            set { SetValue(ListViewItemTemplateSelectorProperty, value); }
+        }
+
         public static readonly DependencyProperty ListViewItemTemplateProperty = DependencyProperty.Register("ListViewItemTemplate", typeof(DataTemplate), typeof(DropDownListViewControl), null);
         
         public static readonly DependencyProperty ListViewItemSourceProperty = DependencyProperty.Register("ListViewItemSource", typeof(Object), typeof(DropDownListViewControl), null);
@@ -122,6 +128,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty AddButtonFlyoutProperty = DependencyProperty.Register("AddButtonFlyout", typeof(Flyout), typeof(DropDownListViewControl), new PropertyMetadata(null));
 
         public static readonly DependencyProperty ListViewItemContainerStyleProperty = DependencyProperty.Register("ListViewItemContainerStyle", typeof(Style), typeof(DropDownListViewControl), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ListViewItemTemplateSelectorProperty = DependencyProperty.Register("ListViewItemTemplateSelector", typeof(DataTemplateSelector), typeof(DropDownListViewControl), new PropertyMetadata(null));
 
         public DropDownListViewControl()
         {
@@ -166,7 +174,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             DropdownListView.ItemsSource = ListViewItemSource;
             DropdownListView.ItemContainerStyle = ListViewItemContainerStyle;
             ICollection collection = ListViewItemSource as ICollection;
-            if (collection.Count <= 0)
+            if (collection != null && collection.Count <= 0)
             {
                 NoSourceAvailableMessage.Visibility = Visibility.Visible;
             }
@@ -199,6 +207,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public void SetListViewItemTemplateSelector(DataTemplateSelector selector)
         {
             DropdownListView.ItemTemplateSelector = selector;
+        }
+
+        public void SetListViewItemSource(IList source)
+        {
+            DropdownListView.ItemsSource = source;
         }
     }
 }

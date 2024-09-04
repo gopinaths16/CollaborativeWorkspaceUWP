@@ -121,16 +121,21 @@ namespace CollaborativeWorkspaceUWP.Views
             if(e.ClickedItem is Project)
             {
                 Project currProject = (Project)e.ClickedItem;
-                if (taskListViewModel.IsSingleWindowLayoutTriggered)
-                {
-                    TaskListView.Visibility = Visibility.Visible;
-                    TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
-                    projectListViewModel.IsProjectListPaneOpen = false;
-                }
                 taskListViewModel.GetTasksForProject((Project)currProject.Clone());
-                TaskDetailsView.SetCurrentTask(null);
-                taskListViewModel.CurrTask = null;
             }
+            else if(e.ClickedItem is Group)
+            {
+                Group group = e.ClickedItem as Group;
+                taskListViewModel.GetTasksForGroup((Group)group.Clone());
+            }
+            if (taskListViewModel.IsSingleWindowLayoutTriggered)
+            {
+                TaskListView.Visibility = Visibility.Visible;
+                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+                projectListViewModel.IsProjectListPaneOpen = false;
+            }
+            TaskDetailsView.SetCurrentTask(null);
+            taskListViewModel.CurrTask = null;
         }
 
         private async void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -269,6 +274,7 @@ namespace CollaborativeWorkspaceUWP.Views
             GoToVisualState(string.Empty, windowWidth);
             AddTaskDialog.ParentTaskId = -1;
             taskListViewModel.IsLoaded = true;
+            UpdateProjectListViewSource();
         }
 
         private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)
@@ -334,15 +340,31 @@ namespace CollaborativeWorkspaceUWP.Views
                     DataTemplate listViewItemTemplate = this.Resources["ProjectListViewItemTemplateForBoardView"] as DataTemplate;
                     ProjectListSplitViewPane.SetListViewItemTemplateSelector(null);
                     ProjectListSplitViewPane.SetListViewItemTemplate(listViewItemTemplate);
+                    ProjectListSplitViewPane.SetListViewItemSource(projectListViewModel.Projects);
                 }
                 else
                 {
                     ProjectListSplitViewPane.SetListViewItemTemplate(null);
                     ProjectListSplitViewPane.SetListViewItemTemplateSelector(this.Resources["ProjectListViewTemplateSelector"] as DataTemplateSelector);
+                    UpdateProjectListViewSource();
                 }
                 ProjectListSplitViewPane.ListViewItemClickEnabled = pivot.SelectedIndex == 1 ? false : true;
                 ProjectListSplitViewPane.ListViewItemContainerStyle = pivot.SelectedIndex == 1 ? (Style)staticStyles["ListViewItemStyleDormant"] : (Style)staticStyles["ListViewItemStyleAccent"];
             }
+        }
+
+        private void UpdateProjectListViewSource()
+        {
+            List<object> list = new List<object>();
+            foreach(var project in projectListViewModel.Projects)
+            {
+                list.Add(project);
+                if(project.IsOpen)
+                {
+                    list.AddRange(project.Groups);
+                }
+            }
+            ProjectListSplitViewPane.SetListViewItemSource(list);
         }
 
         private void ProjectGroupDropDown_OnItemAddClick(object sender, RoutedEventArgs e)
@@ -378,7 +400,6 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            
         }
 
         private async void BoardGroupView_OnBoardAddition(object sender, RoutedEventArgs e)
@@ -390,7 +411,11 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private void OpenDropdownButtonAlt_Click(object sender, RoutedEventArgs e)
         {
-
+            Button button = sender as Button;
+            Project project = button.Tag as Project;
+            project.IsOpen = !project.IsOpen;
+            UpdateProjectListViewSource();
+            button.Content = project.IsOpen ? "\uE70D" : "\uE76C";
         }
     }
 }

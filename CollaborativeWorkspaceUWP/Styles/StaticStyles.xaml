@@ -18,6 +18,7 @@
     <converters:VisibilityToNullConverter x:Key="VisibilityToNullConverter" />
     <converters:CollectionToBoolConverter x:Key="CollectionToBoolConverter" />
     <converters:CollectionToBoolConverterInverse x:Key="CollectionToBoolConverterInverse" />
+    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
     <Style TargetType="TextBlock" x:Name="TaskViewTitle">
         <Setter Property="Text" Value="Task view"/>
