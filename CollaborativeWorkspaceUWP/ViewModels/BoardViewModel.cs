@@ -115,7 +115,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 foreach (var task in e.BoardItems)
                 {
-                    BoardItems.Remove(task);
+                    await BoardItems.Remove(task);
                 }
                 MovedTask = null;
                 NotifyPropertyChanged(nameof(CurrBoard));

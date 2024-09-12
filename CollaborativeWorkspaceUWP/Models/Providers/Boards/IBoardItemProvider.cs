@@ -16,5 +16,6 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
         ICollection<IBoardItem> GetBoardItems(long boardId, long projectId);
         bool DoesItemBelongToBoard(IBoardItem item);
         ICollection<IDefaultArgs> GetDefaultArgs();
+        ICollection<IBoardItem> UpdateBoardItems(ICollection<IBoardItem> boardItems);
     }
 }

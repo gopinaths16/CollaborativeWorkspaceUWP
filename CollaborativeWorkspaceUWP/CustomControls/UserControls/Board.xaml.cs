@@ -138,6 +138,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
                 await boardViewModel.UpdateDraggedTask(draggedItems as ICollection<IBoardItem>);
             }
+            boardViewModel.NotifyUI();
         }
 
         public void LoadBoardItems()

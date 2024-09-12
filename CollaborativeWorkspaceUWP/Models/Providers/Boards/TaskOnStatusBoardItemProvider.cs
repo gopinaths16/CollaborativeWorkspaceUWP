@@ -53,5 +53,11 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
         {
             return DefaultArgs;
         }
+
+        public ICollection<IBoardItem> UpdateBoardItems(ICollection<IBoardItem> boardItems)
+        {
+            ICollection<IBoardItem> result = new List<IBoardItem>();
+            return result;
+        }
     }
 }

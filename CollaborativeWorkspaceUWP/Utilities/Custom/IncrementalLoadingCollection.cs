@@ -75,6 +75,14 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             _hasMoreItems = true;
         }
 
+        public async new Task<bool> Remove(T item)
+        {
+            bool result = base.Remove(item);
+            source.Remove(item);
+            await LoadMoreItemsAsync();
+            return result;
+        }
+
         public void Clear()
         {
             source.Clear();
