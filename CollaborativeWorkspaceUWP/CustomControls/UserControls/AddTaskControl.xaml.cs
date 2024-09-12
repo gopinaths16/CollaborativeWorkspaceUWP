@@ -1,5 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Auth.Handlers;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Models.Providers.Boards;
 using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class AddTaskControl : UserControl
+    public sealed partial class AddTaskControl : UserControl, IBoardAdder
     {
         private AddTaskViewModel addTaskViewModel;
 
@@ -75,6 +76,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(GroupIdProperty, value); }
         }
 
+        public ICollection<IDefaultArgs> DefaultArgs
+        {
+            get { return (ICollection<IDefaultArgs>)GetValue(DefaultArgsProperty); }
+            set { SetValue(DefaultArgsProperty, value); }
+        }
+
         public static readonly DependencyProperty PriorityComboBoxSourceProperty = DependencyProperty.Register("PriorityComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(null));
 
         public static readonly DependencyProperty StatusComboBoxSourceProperty = DependencyProperty.Register("StatusComboBoxSource", typeof(object), typeof(AddTaskControl), new PropertyMetadata(null));
@@ -84,6 +91,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty ParentTaskIdProperty = DependencyProperty.Register("ParentTaskId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(-1L));
 
         public static readonly DependencyProperty GroupIdProperty = DependencyProperty.Register("GroupId", typeof(long), typeof(AddTaskControl), new PropertyMetadata(-1L));
+
+        public static readonly DependencyProperty DefaultArgsProperty = DependencyProperty.Register("DefaultArgs", typeof(ICollection<IDefaultArgs>), typeof(AddTaskControl), new PropertyMetadata(new List<IDefaultArgs>()));
 
         public AddTaskControl()
         {
@@ -98,8 +107,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
             task.Name = Name.Text;
             task.Description = Description.Text;
-            task.Status = ((Status)Status.SelectedItem).Id;
-            task.Priority = ((Priority)Priority.SelectedItem).Id;
+            task.Status = addTaskViewModel.Status.Id;
+            task.Priority = addTaskViewModel.Priority.Id;
             task.ProjectId = CurrProjectId;
             task.OwnerId = UserSessionHandler.Instance.CurrUser.Id;
             task.AssigneeId = 0;
@@ -149,6 +158,27 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             addTaskViewModel.Dispose();
+        }
+
+        public void SetDefaultArgs(ICollection<IDefaultArgs> args)
+        {
+            foreach (var arg in args)
+            {
+                if(arg != null)
+                {
+                    if (arg is Priority)
+                    {
+                        addTaskViewModel.Priority = arg as Priority;
+                        Priority.Visibility = Visibility.Collapsed;
+                    }
+                    else if (arg is Status)
+                    {
+                        addTaskViewModel.Status = arg as Status;
+                        Status.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+            addTaskViewModel.NotifyUI();
         }
     }
 }

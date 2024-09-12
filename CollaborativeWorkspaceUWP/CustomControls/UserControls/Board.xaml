@@ -58,6 +58,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Name="TaskListProjectTitle"
@@ -68,7 +69,7 @@
                    FontWeight="Bold"
                    VerticalAlignment="Center"
                    x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}"/>
-        <TextBlock Text="{x:Bind boardViewModel.BoardItems.Count, Mode=OneWay}"
+        <TextBlock Text="{x:Bind boardViewModel.BoardItemsCount, Mode=OneWay}"
                    x:Name="TaskCountIndicator"
                    Grid.Row="0"
                    Grid.Column="1"
@@ -84,46 +85,42 @@
               Stroke="Gray"
               StrokeThickness="3"
               Grid.Row="1"
-              Grid.ColumnSpan="3"
+              Grid.ColumnSpan="4"
               x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}"/>
 
-        <Button Content="&#xe740;"
-                x:Name="MinimizeButton"
+        <Button Content="&#xe710;"
+                x:Name="AddBoardItemButton"
                 FontFamily="Segoe Fluent Icons"
                 Grid.Row="0"
                 Grid.Column="2"
                 Foreground="Gray"
                 Margin="3, 8, 0, 0"
+                Click="AddBoardItemButton_Click"
+                x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}"
+                Style="{StaticResource ButtonNoBackgroundDormant}"/>
+
+        <Button Content="&#xe740;"
+                x:Name="MinimizeButton"
+                FontFamily="Segoe Fluent Icons"
+                Grid.Row="0"
+                Grid.Column="3"
+                Foreground="Gray"
+                Margin="3, 8, 0, 0"
                 Click="MinimizeButton_Click"
                 Style="{StaticResource ButtonNoBackgroundDormant}"/>
 
-        <StackPanel x:Name="AddTaskControlDialog"
-                    Grid.Row="2"
-                    Margin="3, 0, 3, 0"
-                    Grid.ColumnSpan="3"
-                    x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}">
-            <customtemplatecontrol:CustomIconButtonControl Icon="&#xf8aa;"
-                                                           Content="Add Task"
-                                                           Click="AddTaskDialog_AddTaskButtonClick"
-                                                           FontSize="12"
-                                                           Visibility="{x:Bind boardViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                                                           IsEnabled="True"
-                                                           Margin="0, 10, 0, 0"/>
-
-            <local:AddTaskControl Visibility="{x:Bind boardViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
-                                  x:Name="AddTaskDialog"
-                                  CurrProjectId="{x:Bind boardViewModel.CurrBoard.ProjectId, Mode=OneWay}"
-                                  GroupId="{x:Bind boardViewModel.CurrBoard.Id, Mode=OneWay}"
-                                  CancelButtonClick="AddTaskDialog_AddTaskButtonClick"
-                                  AddTaskButtonClick="AddTaskDialog_AddTaskButtonClick"
-                                  Margin="0, 15, 0, 0"/>
-        </StackPanel>
-
-
+        <ContentPresenter Content="{x:Bind AddBoardItemControl}"
+                          x:Name="AddBoardItemDialog"
+                          Grid.Row="2"
+                          Margin="3, 0, 3, 0"
+                          Grid.ColumnSpan="4"
+                          x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}"
+                          Visibility="{x:Bind boardViewModel.IsAddBoardItemContextTriggered, Mode=OneWay}"/>
 
         <ListView Name="TaskListViewByGroup"
                   ItemsSource="{x:Bind boardViewModel.BoardItems, Mode=OneWay}"
                   ItemTemplate="{x:Bind BoardItemTemplate, Mode=OneWay}"
+                  Margin="0, 8, 0, 0"
                   Grid.Row="3"
                   IsItemClickEnabled="True"
                   ItemClick="TaskListView_ItemClick"
@@ -137,7 +134,7 @@
                   DragOver="TaskListViewByGroup_DragOver"
                   Drop="TaskListViewByGroup_Drop"
                   Width="440"
-                  Grid.ColumnSpan="3"
+                  Grid.ColumnSpan="4"
                   x:Load="{x:Bind boardViewModel.IsOpen, Mode=OneWay}" >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -17,8 +17,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
     public class BoardViewModel : BaseViewModel
     {
         private Group currBoard;
-        private bool isAddTaskContextTriggered;
+        private bool isAddBoardItemContextTriggered;
         private bool isOpen;
+
+        public IBoardItemProvider BoardItemProvider;
 
         public IncrementalLoadingCollection<IBoardItem> BoardItems;
 
@@ -54,25 +56,25 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 if(BoardItems.Count > 0)
                 {
-                    return "(" + BoardItems.Count.ToString() + ")";
+                    return "(" + BoardItems.SourceCount.ToString() + ")";
                 }
                 return "";
             }
         }
 
-        public bool IsAddTaskContextTriggered
+        public bool IsAddBoardItemContextTriggered
         {
-            get { return isAddTaskContextTriggered; }
+            get { return isAddBoardItemContextTriggered; }
             set
             {
-                isAddTaskContextTriggered = value;
-                NotifyPropertyChanged(nameof(IsAddTaskContextTriggered));
+                isAddBoardItemContextTriggered = value;
+                NotifyPropertyChanged(nameof(IsAddBoardItemContextTriggered));
             }
         }
 
         public BoardViewModel()
         {
-            IsAddTaskContextTriggered = false;
+            IsAddBoardItemContextTriggered = false;
             IsOpen = true;
 
             taskDataHandler = new TaskDataHandler();
@@ -80,6 +82,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             BoardItems = new IncrementalLoadingCollection<IBoardItem>(new ObservableCollection<IBoardItem>(), 8);
 
             ViewmodelEventHandler.Instance.Subscribe<MoveBoardItemEvent>(OnMovingBoardItem);
+            ViewmodelEventHandler.Instance.Subscribe<AddBoardItemEvent>(OnBoardItemAddition);
         }
 
         public async Task OnTaskAddition(AddTaskEvent e)
@@ -119,9 +122,21 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public void NotifyUI(object property)
+        public async Task OnBoardItemAddition(AddBoardItemEvent e)
         {
-            NotifyPropertyChanged(nameof(property));
+            if(e.BoardItem != null && e.BoardItem.GroupId == CurrBoard.Id)
+            {
+                if(BoardItemProvider.DoesItemBelongToBoard(e.BoardItem))
+                {
+                    BoardItems.Add(e.BoardItem);
+                    NotifyPropertyChanged(nameof(BoardItemsCount));
+                }
+            }
+        }
+
+        public void NotifyUI()
+        {
+            NotifyPropertyChanged(nameof(BoardItemsCount));
         }
     }
 }

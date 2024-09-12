@@ -9,6 +9,12 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
 {
     public interface IBoardItemProvider
     {
+        long BoardId { get; set; }
+        bool IsDefaultProvider { get; }
+        ICollection<IDefaultArgs> DefaultArgs { get; }
+
         ICollection<IBoardItem> GetBoardItems(long boardId, long projectId);
+        bool DoesItemBelongToBoard(IBoardItem item);
+        ICollection<IDefaultArgs> GetDefaultArgs();
     }
 }

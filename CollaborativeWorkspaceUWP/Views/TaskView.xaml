@@ -467,6 +467,11 @@
                                                                                                ItemBackground="{ThemeResource SecondaryBackground}"/>
                                                     </DataTemplate>
                                                 </customusercontrol:Board.BoardItemTemplate>
+                                                <customusercontrol:Board.AddBoardItemControl>
+                                                    <customusercontrol:AddTaskControl CurrProjectId="{x:Bind ProjectId, Mode=OneWay}"
+                                                                                      GroupId="{x:Bind Id, Mode=OneWay}"
+                                                                                      Margin="0, 15, 0, 0"/>
+                                                </customusercontrol:Board.AddBoardItemControl>
                                             </customusercontrol:Board>
                                         </DataTemplate>
                                     </customusercontrol:BoardView.BoardTemplate>

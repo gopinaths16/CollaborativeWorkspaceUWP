@@ -21,11 +21,13 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
         public override ICollection<IBoard> GetBoards()
         {
             ICollection<IBoard> boards = new List<IBoard>();
-            foreach(Priority priority in priorityDataHandler.GetPriorityBoards())
+            foreach(Priority priority in priorityDataHandler.GetPriorityData())
             {
-                boards.Add(new Group() { Id = priority.Id, Name = priority.Name, ProjectId = ProjectId, ColorCode = priority.ColorCode, IsBoardGroup = false, BoardItemProvider = new TaskOnPriorityBoardItemProvider() });
+                TaskOnPriorityBoardItemProvider boardProvider = new TaskOnPriorityBoardItemProvider() { BoardId = priority.Id };
+                boardProvider.DefaultArgs.Add(priority);
+                boards.Add(new Group() { Id = priority.Id, Name = priority.Name, ProjectId = ProjectId, ColorCode = priority.ColorCode, IsBoardGroup = false, BoardItemProvider = boardProvider });
             }
             return boards;
-        } 
+        }
     }
 }

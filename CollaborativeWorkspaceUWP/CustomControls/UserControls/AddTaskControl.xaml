@@ -31,13 +31,42 @@
         </Style>
 
         <DataTemplate x:Key="ComboboxPriorityItemTemplate"
-              x:DataType="models:Priority">
-            <TextBlock Text="{Binding Name}" />
+                      x:DataType="models:Priority">
+            <StackPanel Orientation="Horizontal">
+                <FontIcon x:Name="Ellipse"
+                          Margin="5, 0, 8, 0"
+                          FontFamily="Segoe Fluent Icons"
+                          FontSize="12"
+                          Glyph="&#xe8c9;"
+                          Foreground="{x:Bind ColorCode, Mode=OneWay}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"
+                           Margin="0, 0, 8, 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="ComboboxStatusItemTemplate"
-              x:DataType="models:Status">
-            <TextBlock Text="{Binding Name}" />
+                      x:DataType="models:Status">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse x:Name="Ellipse"
+                         Margin="5, 0, 10, 0"
+                         Width="10"
+                         Height="10"
+                         Stroke="{x:Bind ColorCode, Mode=OneWay}"
+                         StrokeThickness="2"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Name}"
+                           TextWrapping="Wrap"
+                           MaxLines="1"
+                           TextTrimming="CharacterEllipsis"
+                           HorizontalAlignment="Center"
+                           Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"/>
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
     
@@ -76,7 +105,8 @@
                       ItemsSource="{x:Bind addTaskViewModel.PriorityData}"
                       ItemTemplate="{StaticResource ComboboxPriorityItemTemplate}"
                       Style="{StaticResource CustomComboBox}"
-                      Background="Gray"
+                      SelectedItem="{x:Bind addTaskViewModel.Priority, Mode=TwoWay}"
+                      Width="100"
                       SelectedIndex="0"/>
 
             <ComboBox Name="Status"
@@ -86,7 +116,8 @@
                       ItemsSource="{x:Bind addTaskViewModel.StatusData}"
                       ItemTemplate="{StaticResource ComboboxStatusItemTemplate}"
                       Style="{StaticResource CustomComboBox}"
-                      Background="Gray"
+                      SelectedItem="{x:Bind addTaskViewModel.Status, Mode=TwoWay}"
+                      Width="100"
                       SelectedIndex="0"/>
             <CalendarDatePicker x:Name="DueDatePicker" 
                                 PlaceholderText="Due Date"

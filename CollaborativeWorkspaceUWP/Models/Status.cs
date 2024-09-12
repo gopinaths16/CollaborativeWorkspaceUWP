@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Status : ICloneable
+    public class Status : ICloneable, IDefaultArgs
     {
         public long Id { get; set; }
         public string Name { get; set; }

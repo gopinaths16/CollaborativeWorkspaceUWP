@@ -59,23 +59,25 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(BoardItemProviderProperty, value); }
         }
 
+        public IBoardAdder AddBoardItemControl
+        {
+            get { return (IBoardAdder)GetValue(AddBoardItemControlProperty); }
+            set { SetValue(AddBoardItemControlProperty, value); }
+        }
+
         public static readonly DependencyProperty BoardSourcedProperty = DependencyProperty.Register("BoardSource", typeof(Group), typeof(Board), new PropertyMetadata(null));
 
         public static readonly DependencyProperty BoardItemTemplateProperty = DependencyProperty.Register("BoardItemTemplate", typeof(DataTemplate), typeof(Board), new PropertyMetadata(null));
 
         public static readonly DependencyProperty BoardItemProviderProperty = DependencyProperty.Register("BoardItemProvider", typeof(IBoardItemProvider), typeof(Board), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty AddBoardItemControlProperty = DependencyProperty.Register("AddBoardItemControl", typeof(IBoardAdder), typeof(Board), new PropertyMetadata(null));
+
         public Board()
         {
             this.InitializeComponent();
 
             boardViewModel = new BoardViewModel();
-        }
-
-        private void AddTaskDialog_AddTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            boardViewModel.IsAddTaskContextTriggered = !boardViewModel.IsAddTaskContextTriggered;
-            AddTaskDialog.Focus();
         }
 
         private void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -88,9 +90,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             {
                 boardViewModel.CurrBoard = BoardSource;
                 this.DataContext = boardViewModel.CurrBoard;
+                boardViewModel.BoardItemProvider = BoardItemProvider;
                 if(boardViewModel.CurrBoard.ColorCode != null && boardViewModel.CurrBoard.ColorCode != string.Empty)
                 {
                     Separator.Stroke = Util.CreateBrushFromHex(boardViewModel.CurrBoard.ColorCode);
+                }
+                if(BoardItemProvider.GetDefaultArgs().Count() > 0)
+                {
+                    AddBoardItemControl.SetDefaultArgs(BoardItemProvider.GetDefaultArgs());
                 }
                 Task.Run(async () =>
                 {
@@ -144,7 +151,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                     {
                         boardViewModel.BoardItems.Add(item);
                     }
-                    boardViewModel.NotifyUI(boardViewModel.BoardItemsCount);
+                    boardViewModel.NotifyUI();
                 }
             }
         }
@@ -170,6 +177,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
             }
+        }
+
+        private void AddBoardItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            boardViewModel.IsAddBoardItemContextTriggered = !boardViewModel.IsAddBoardItemContextTriggered;
         }
     }
 }

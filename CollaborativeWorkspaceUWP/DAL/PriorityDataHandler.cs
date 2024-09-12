@@ -46,33 +46,5 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return result;
         }
-
-        public ICollection<IBoard> GetPriorityBoards()
-        {
-            ICollection<IBoard> result = new List<IBoard>();
-            IPriorityPersistence persistenceObject = null;
-            try
-            {
-                persistenceObject = _persistenceObjectManager.GetPriorityPersistenceObject();
-                persistenceObject.SetGetPrioritiesContext();
-                PersistenceHandler.Instance.Get(persistenceObject);
-                foreach(IBoard board in persistenceObject.GetPriorities())
-                {
-                    result.Add(board);
-                } 
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                if (persistenceObject != null)
-                {
-                    persistenceObject.Dispose();
-                }
-            }
-            return result;
-        }
     }
 }

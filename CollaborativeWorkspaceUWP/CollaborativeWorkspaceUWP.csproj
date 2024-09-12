@@ -196,11 +196,13 @@
     <Compile Include="Models\Enums\AuthManagerMode.cs" />
     <Compile Include="Models\Enums\AuthProviderMode.cs" />
     <Compile Include="Models\Enums\PersistenceMode.cs" />
+    <Compile Include="Models\IDefaultArgs.cs" />
     <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Providers\Boards\BoardProvider.cs" />
+    <Compile Include="Models\Providers\Boards\IBoardAdder.cs" />
     <Compile Include="Models\Providers\Boards\IBoardItemProvider.cs" />
     <Compile Include="Models\Providers\Boards\TaskBoardItemProvider.cs" />
     <Compile Include="Models\Providers\Boards\TaskBoardProvider.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="Utilities\DataTemplateSelectors\FolderTemplateSelector.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\AddBoardEvent.cs" />
+    <Compile Include="Utilities\Events\AddBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\AddGroupEvent.cs" />
     <Compile Include="Utilities\Events\AddCommentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />

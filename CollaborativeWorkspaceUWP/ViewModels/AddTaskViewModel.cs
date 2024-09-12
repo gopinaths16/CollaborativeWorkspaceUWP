@@ -16,6 +16,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private List<Priority> priorityData;
         private List<Status> statusData;
 
+        private Priority priority;
+        private Status status;
+        
         private long projectId;
 
         TaskDataHandler taskDataHandler;
@@ -36,6 +39,24 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { statusData = value; }
         }
 
+        public Priority Priority
+        {
+            get { return priority; }
+            set
+            {
+                priority = value;
+            }
+        }
+
+        public Status Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+            }
+        }
+
         public long ProjectId
         {
             get { return projectId; }
@@ -54,6 +75,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             PriorityData = priorityDataHandler.GetPriorityData();
             StatusData = statusDataHandler.GetStatusData();
 
+            Priority = PriorityData.FirstOrDefault();
+            Status = StatusData.FirstOrDefault();
+
             ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Subscribe<UpdateOrderEvent>(OnTaskOrderUpdation);
         }
@@ -67,6 +91,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
             UserTask result = taskDataHandler.AddTask(task);
             await ViewmodelEventHandler.Instance.Publish(new AddTaskEvent() { Task = result });
+            await ViewmodelEventHandler.Instance.Publish(new AddBoardItemEvent() { BoardItem = result });
         }
 
         public async Task OnTaskAddition(AddTaskEvent addTaskEvent)
@@ -87,6 +112,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddition);
             ViewmodelEventHandler.Instance.Unsubscribe<UpdateOrderEvent>(OnTaskOrderUpdation);
+        }
+
+        public void NotifyUI()
+        {
+            NotifyPropertyChanged(nameof(Status));
+            NotifyPropertyChanged(nameof(Priority));
         }
     }
 }

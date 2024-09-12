@@ -28,7 +28,8 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
             ICollection<IBoard> boards = groupDataHandler.GetBoardsForBoardGroup(BoardGroupId);
             foreach (IBoard board in boards)
             {
-                board.SetBoardItemProvider(new TaskBoardItemProvider());
+                TaskBoardItemProvider boardItemProvider = new TaskBoardItemProvider() { BoardId = board.Id };
+                board.SetBoardItemProvider(boardItemProvider);
             }
             return boards;
         }

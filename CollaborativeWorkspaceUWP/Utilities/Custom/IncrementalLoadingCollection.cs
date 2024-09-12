@@ -57,10 +57,18 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             return new LoadMoreItemsResult { Count = (uint)items.Count() };
         }
 
+        public int SourceCount
+        {
+            get
+            {
+                return source.Count();
+            }
+        }
+
         public new void Add(T item)
         {
             source.Add(item);
-            if(this.Count < PageSize)
+            if(base.Count < PageSize)
             {
                 base.Add(item);
             }

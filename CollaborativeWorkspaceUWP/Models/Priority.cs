@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Priority : ICloneable, IBoard
+    public class Priority : ICloneable, IDefaultArgs
     {
         public IBoardItemProvider BoardItemProvider { get; set; }
 

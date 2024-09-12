@@ -22,7 +22,9 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
             ICollection<IBoard> boards = new List<IBoard>();
             foreach (Status status in statusDataHandler.GetStatusData())
             {
-                boards.Add(new Group() { Id = status.Id, Name = status.Name, ProjectId = ProjectId, ColorCode = status.ColorCode, IsBoardGroup = false, BoardItemProvider = new TaskOnStatusBoardItemProvider() });
+                TaskOnStatusBoardItemProvider boardProvider = new TaskOnStatusBoardItemProvider() { BoardId = status.Id };
+                boardProvider.DefaultArgs.Add(status);
+                boards.Add(new Group() { Id = status.Id, Name = status.Name, ProjectId = ProjectId, ColorCode = status.ColorCode, IsBoardGroup = false, BoardItemProvider = boardProvider });
             }
             return boards;
         }
