@@ -25,14 +25,17 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
         {
             this.source = source;
             PageSize = pageSize;
-            LoadMoreItemsAsync();
+            Task.Run(async () =>
+            {
+                await LoadMoreItemsAsync();
+            });
         }
 
         public bool HasMoreItems => _hasMoreItems;
 
         public async Task<LoadMoreItemsResult> LoadMoreItemsAsync()
         {
-            var items = source.Skip(PageSize * _currentPage).Take(PageSize);
+            var items = source.Skip(Count).Take(PageSize);
             if (_isLoading || !HasMoreItems)
             {
                 return new LoadMoreItemsResult { Count = (uint)items.Count() };
@@ -40,7 +43,6 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             _isLoading = true;
             try
             {
-
                 if (items.Count() < PageSize) _hasMoreItems = false;
                 _currentPage++;
                 foreach (var item in items)
@@ -62,6 +64,14 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             {
                 base.Add(item);
             }
+            _hasMoreItems = true;
+        }
+
+        public void Clear()
+        {
+            source.Clear();
+            _currentPage = 0;
+            base.Clear();
         }
 
         public IEnumerable<T> Where(Func<T, bool> predicate)

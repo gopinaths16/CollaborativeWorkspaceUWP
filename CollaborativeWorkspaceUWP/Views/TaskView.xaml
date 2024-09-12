@@ -9,6 +9,7 @@
     xmlns:viewmodels="using:CollaborativeWorkspaceUWP.ViewModels"
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
+    xmlns:commcontrols="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:XamlControlResources="using:Microsoft.UI.Xaml.Controls"
     xmlns:util="using:CollaborativeWorkspaceUWP.Utilities"
@@ -16,6 +17,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    NavigationCacheMode="Required"
     Background="{ThemeResource PrimaryBackground}"
     Loaded="Page_Loaded">
 
@@ -136,13 +138,6 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <StackPanel Name="NoSourceAvailableMessage"
-                            HorizontalAlignment="Center"
-                            Margin="30"
-                            Visibility="{Binding Groups, Converter={StaticResource CollectionToVisibilityConverterInverse}}">
-                    <TextBlock Text="No Groups Available"
-                               Foreground="Gray"/>
-                </StackPanel>
             </Grid>
         </DataTemplate>
         
@@ -169,41 +164,9 @@
             </Grid>
         </DataTemplate>
 
-        <util:ProjectListViewTemplateSelector x:Key="ProjectListViewTemplateSelector"
-                                              ProjectItemTemplate="{StaticResource ProjectListViewItemTemplate}"
-                                              GroupItemTemplate="{StaticResource GroupListViewTemplate}" />
-
-        <DataTemplate x:Key="ProjectListViewItemTemplateForBoardView" 
-                      x:DataType="models:Project">
-            <customusercontrol:DropDownListViewControl x:Name="ProjectBoardGroupDropDown" 
-                                                       DropdownTitle="{x:Bind Name, Mode=OneWay}"
-                                                       ListViewItemSource="{x:Bind BoardGroups, Mode=OneWay}"
-                                                       ListViewItemTemplate="{StaticResource GroupListViewTemplate}"
-                                                       ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
-                                                       ListViewItemClickEnabled="True"
-                                                       AllowAdditionToListView="True"
-                                                       HideContentOnInitialization="False"
-                                                       TitleIcon="&#xE70B;"
-                                                       IsSubList="True"
-                                                       OnItemAddClick="ProjectBoardGroupDropDown_OnItemAddClick"
-                                                       ListViewItemClicked="ProjectBoardGroupDropDown_ListViewItemClicked"
-                                                       MessageOnSourceEmpty="No Boards available">
-                <customusercontrol:DropDownListViewControl.AddButtonFlyout>
-                    <Flyout>
-                        <Flyout.FlyoutPresenterStyle>
-                            <Style TargetType="FlyoutPresenter">
-                                <Setter Property="Background" 
-                                        Value="{ThemeResource SecondaryBackground}"/>
-                                <Setter Property="CornerRadius" 
-                                        Value="5" />
-                            </Style>
-                        </Flyout.FlyoutPresenterStyle>
-                        <customusercontrol:AddGroupdControl ProjectId="{Binding Id}"
-                                                            IsBoardGroupContext="True"/>
-                    </Flyout>
-                </customusercontrol:DropDownListViewControl.AddButtonFlyout>
-            </customusercontrol:DropDownListViewControl>
-        </DataTemplate>
+        <util:FolderTemplateSelector x:Key="ProjectListViewTemplateSelector"
+                                     ProjectItemTemplate="{StaticResource ProjectListViewItemTemplate}"
+                                     GroupItemTemplate="{StaticResource GroupListViewTemplate}" />
 
         <DataTemplate x:Key="TaskListViewDataTemplate"
                       x:DataType="models:UserTask">
@@ -305,6 +268,7 @@
                         <customusercontrol:DropDownListViewControl x:Name="ProjectListSplitViewPane" 
                                                                    DropdownTitle="My Projects"
                                                                    ListViewItemSource="{x:Bind projectListViewModel.ProjectListWithGroup, Mode=OneWay}"
+                                                                   ListViewItemTemplateSelector="{StaticResource ProjectListViewTemplateSelector}"
                                                                    ListViewItemContainerStyle="{StaticResource ListViewItemStyleAccent}"
                                                                    AllowAdditionToListView="True"
                                                                    OnItemAddClick="AddProjectButton_ButtonClick"
@@ -371,14 +335,31 @@
                                                FontSize="15"
                                                Margin="10, 10, 0, 0"
                                                Grid.Row="0"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxLines="1"
                                                FontWeight="Bold"
-                                               Visibility="{x:Bind taskListViewModel.CurrGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverterInverse}}"
                                                VerticalAlignment="Center"/>
+                                    <TextBlock Name="Separator"
+                                               Text="/"
+                                               FontSize="15"
+                                               Margin="10, 10, 0, 0"
+                                               Grid.Row="0"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxLines="1"
+                                               Foreground="Gray"
+                                               FontWeight="Light"
+                                               Visibility="{x:Bind taskListViewModel.CurrGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
+                                               VerticalAlignment="Center"/>                                    
                                     <TextBlock Name="TaskListGroupTitle"
                                                Text="{x:Bind taskListViewModel.CurrGroup.Name, Mode=OneWay}"
                                                FontSize="15"
                                                Margin="10, 10, 0, 0"
                                                Grid.Row="0"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxLines="1"
                                                FontWeight="Bold"
                                                Visibility="{x:Bind taskListViewModel.CurrGroup, Mode=OneWay, Converter={StaticResource ObjectToVisibilityConverter}}"
                                                VerticalAlignment="Center"/>
@@ -396,6 +377,7 @@
                                         <customusercontrol:AddTaskControl Visibility="{x:Bind taskListViewModel.IsAddTaskContextTriggered, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                           x:Name="AddTaskDialog"
                                                                           CurrProjectId="{x:Bind taskListViewModel.CurrentProject.Id, Mode=OneWay}"
+                                                                          GroupId="{x:Bind taskListViewModel.CurrGroup.Id, Mode=OneWay}"
                                                                           Margin="5, 25, 10, 5"
                                                                           CancelButtonClick="CloseTaskDialogButton_Click"
                                                                           AddTaskButtonClick="AddTaskFromDialogButton_ButtonClick"/>
@@ -472,28 +454,23 @@
                             <Border CornerRadius="5"
                                     x:Name="BoardViewContainer"
                                     Margin="0, 20, 0, 0">
-                                <customusercontrol:BoardViewControl x:Name="BoardGroupView"
-                                                                    GroupName="{x:Bind boardGroupViewModel.BoardGroup.Name, Mode=OneWay}"
-                                                                    BoardSource="{x:Bind boardGroupViewModel.Boards, Mode=TwoWay}"
-                                                                    OnBoardAddition="BoardGroupView_OnBoardAddition">
-                                    <customusercontrol:BoardViewControl.BoardTemplate>
+                                <customusercontrol:BoardView x:Name="BoardGroupView"
+                                                             OnBoardAddition="BoardGroupView_OnBoardAddition">
+                                    <customusercontrol:BoardView.BoardTemplate>
                                         <DataTemplate x:DataType="models:Group">
-                                            <Border Margin="10, 10, 10, 0">
-                                                <customusercontrol:BoardControl Board="{x:Bind Self}">
-                                                    <customusercontrol:BoardControl.BoardItemTemplate>
-                                                        <DataTemplate  x:DataType="models:UserTask">
-                                                            <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                                                                   Name="{x:Bind Id}"
-                                                                                                   Width="430"
-                                                                                                   ItemBackground="{ThemeResource SecondaryBackground}"
-                                                                                                   EnableVisualAspects="True"/>
-                                                        </DataTemplate>
-                                                    </customusercontrol:BoardControl.BoardItemTemplate>
-                                                </customusercontrol:BoardControl>
-                                            </Border>
+                                            <customusercontrol:Board BoardSource="{Binding Self}"
+                                                                     BoardItemProvider="{Binding BoardItemProvider}">
+                                                <customusercontrol:Board.BoardItemTemplate>
+                                                    <DataTemplate x:DataType="models:UserTask">
+                                                        <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
+                                                                                               Name="{x:Bind Id}"
+                                                                                               ItemBackground="{ThemeResource SecondaryBackground}"/>
+                                                    </DataTemplate>
+                                                </customusercontrol:Board.BoardItemTemplate>
+                                            </customusercontrol:Board>
                                         </DataTemplate>
-                                    </customusercontrol:BoardViewControl.BoardTemplate>
-                                </customusercontrol:BoardViewControl>
+                                    </customusercontrol:BoardView.BoardTemplate>
+                                </customusercontrol:BoardView>
                             </Border>
                         </PivotItem>
                     </Pivot>

@@ -1,8 +1,10 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
 using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Models.Providers.Boards;
 using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Utilities.Events;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +20,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private bool isAddTaskContextTriggered;
         private bool isOpen;
 
-        public List<UserTask> MovedTask { get; set; }
+        public IncrementalLoadingCollection<IBoardItem> BoardItems;
+
+        private BoardProvider boardProvider;
+
+        public ICollection<IBoardItem> MovedTask { get; set; }
 
         private TaskDataHandler taskDataHandler;
 
@@ -29,12 +35,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 currBoard = value;
                 NotifyPropertyChanged(nameof(CurrBoard));
-                if (currBoard != null && currBoard.Tasks.Count <= 0)
-                {
-                    Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForGroup(currBoard.Id), 8);
-                    NotifyPropertyChanged(nameof(Tasks));
-                    NotifyPropertyChanged(nameof(TaskCount));
-                }
             }
         }
 
@@ -48,19 +48,17 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
-        public string TaskCount
+        public string BoardItemsCount
         {
             get
             {
-                if(Tasks.Count > 0)
+                if(BoardItems.Count > 0)
                 {
-                    return "(" + Tasks.Count.ToString() + ")";
+                    return "(" + BoardItems.Count.ToString() + ")";
                 }
                 return "";
             }
         }
-
-        public IncrementalLoadingCollection<UserTask> Tasks { get; set; }
 
         public bool IsAddTaskContextTriggered
         {
@@ -76,12 +74,12 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             IsAddTaskContextTriggered = false;
             IsOpen = true;
-            Tasks = new IncrementalLoadingCollection<UserTask>(new ObservableCollection<UserTask>(), 8);
 
             taskDataHandler = new TaskDataHandler();
 
-            ViewmodelEventHandler.Instance.Subscribe<AddTaskEvent>(OnTaskAddition);
-            ViewmodelEventHandler.Instance.Subscribe<MoveTaskEvent>(OnMovingTask);
+            BoardItems = new IncrementalLoadingCollection<IBoardItem>(new ObservableCollection<IBoardItem>(), 8);
+
+            ViewmodelEventHandler.Instance.Subscribe<MoveBoardItemEvent>(OnMovingBoardItem);
         }
 
         public async Task OnTaskAddition(AddTaskEvent e)
@@ -90,34 +88,31 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 if(e.Task.GroupId ==  currBoard.Id)
                 {
-                    Tasks.Add(e.Task);
-                    NotifyPropertyChanged(nameof(TaskCount));
+                    BoardItems.Add(e.Task);
+                    NotifyPropertyChanged(nameof(BoardItemsCount));
                 }
             }
         }
 
-        public async Task UpdateDraggedTask(ICollection<UserTask> tasks)
+        public async Task UpdateDraggedTask(ICollection<IBoardItem> boardItems)
         {
-            foreach(var taskItem in tasks)
+            foreach(IBoardItem boardItem in boardItems)
             {
-                if (taskItem.GroupId != CurrBoard.Id)
+                if (boardItem.GroupId != CurrBoard.Id)
                 {
-                    taskItem.GroupId = CurrBoard.Id;
-                    taskDataHandler.UpdateGroupIdForTask(taskItem);
-                    Tasks.Insert(0, taskItem);
-                    NotifyPropertyChanged(nameof(TaskCount));
+                    BoardItems.Insert(0, boardItem);
                 }
             }
-            await ViewmodelEventHandler.Instance.Publish(new MoveTaskEvent() { Tasks = tasks });
+            await ViewmodelEventHandler.Instance.Publish(new MoveBoardItemEvent() { BoardItems = boardItems });
         }
 
-        public async Task OnMovingTask(MoveTaskEvent e)
+        public async Task OnMovingBoardItem(MoveBoardItemEvent e)
         {
-            if(e != null && e.Tasks != null && MovedTask != null && e.Tasks.Count > 0)
+            if(e != null && e.BoardItems != null && MovedTask != null && e.BoardItems.Count > 0)
             {
-                foreach (var task in e.Tasks)
+                foreach (var task in e.BoardItems)
                 {
-                    Tasks.Remove(task);
+                    BoardItems.Remove(task);
                 }
                 MovedTask = null;
                 NotifyPropertyChanged(nameof(CurrBoard));

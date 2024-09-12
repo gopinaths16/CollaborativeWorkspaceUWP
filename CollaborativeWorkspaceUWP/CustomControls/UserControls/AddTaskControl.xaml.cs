@@ -116,6 +116,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             ClearAllFields();
         }
 
+        public void SetGroupId(long groupId)
+        {
+            GroupId = groupId;
+        }
+
         private void AddTaskDialogTaskName_TextChanged(object sender, TextChangedEventArgs e)
         {
             AddTaskFromDialogButton.IsEnabled = Name.Text.Length > 0 ? true : false;

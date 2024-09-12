@@ -25,32 +25,47 @@ using Windows.UI.Xaml.Media.Animation;
 using static System.Net.Mime.MediaTypeNames;
 using Windows.UI.Core;
 using System.Threading.Tasks;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
+using CollaborativeWorkspaceUWP.Utilities.Custom;
+using System.Collections.ObjectModel;
+using Microsoft.Toolkit.Uwp;
+using System.Collections;
+using CollaborativeWorkspaceUWP.Models.Providers.Boards;
+using CollaborativeWorkspaceUWP.Utilities;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 {
-    public sealed partial class BoardControl : UserControl
+    public sealed partial class Board : UserControl
     {
         BoardViewModel boardViewModel;
 
-        public Group Board
+        public Group BoardSource
         {
-            get { return (Group)GetValue(BoardProperty); }
-            set { SetValue(BoardProperty, value); }
+            get { return (Group)GetValue(BoardSourcedProperty); }
+            set { SetValue(BoardSourcedProperty, value); }
         }
-
+        
         public DataTemplate BoardItemTemplate
         {
             get { return (DataTemplate)GetValue(BoardItemTemplateProperty); }
             set { SetValue(BoardItemTemplateProperty, value); }
         }
 
-        public static readonly DependencyProperty BoardProperty = DependencyProperty.Register("Board", typeof(Group), typeof(BoardControl), new PropertyMetadata(null));
+        public IBoardItemProvider BoardItemProvider
+        {
+            get { return (IBoardItemProvider)GetValue(BoardItemProviderProperty); }
+            set { SetValue(BoardItemProviderProperty, value); }
+        }
 
-        public static readonly DependencyProperty BoardItemTemplateProperty = DependencyProperty.Register("BoardItemTemplate", typeof(DataTemplate), typeof(BoardControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BoardSourcedProperty = DependencyProperty.Register("BoardSource", typeof(Group), typeof(Board), new PropertyMetadata(null));
 
-        public BoardControl()
+        public static readonly DependencyProperty BoardItemTemplateProperty = DependencyProperty.Register("BoardItemTemplate", typeof(DataTemplate), typeof(Board), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty BoardItemProviderProperty = DependencyProperty.Register("BoardItemProvider", typeof(IBoardItemProvider), typeof(Board), new PropertyMetadata(null));
+
+        public Board()
         {
             this.InitializeComponent();
 
@@ -67,23 +82,34 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         {
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Board != null)
+            if (BoardSource != null)
             {
-                boardViewModel.CurrBoard = Board;
+                boardViewModel.CurrBoard = BoardSource;
                 this.DataContext = boardViewModel.CurrBoard;
+                if(boardViewModel.CurrBoard.ColorCode != null && boardViewModel.CurrBoard.ColorCode != string.Empty)
+                {
+                    Separator.Stroke = Util.CreateBrushFromHex(boardViewModel.CurrBoard.ColorCode);
+                }
+                Task.Run(async () =>
+                {
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        LoadBoardItems();
+                    });
+                });
             }
         }
 
         private void TaskListViewByGroup_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
         {
-            List<UserTask> draggedTasks = new List<UserTask>();
-            foreach (UserTask task in e.Items)
+            ICollection<IBoardItem> draggedTasks = new List<IBoardItem>();
+            foreach (IBoardItem task in e.Items)
             {
                 draggedTasks.Add(task);
             }
-            e.Data.Properties.Add("Task", draggedTasks);
+            e.Data.Properties.Add("Item", draggedTasks);
             boardViewModel.MovedTask = draggedTasks;
             e.Data.RequestedOperation = DataPackageOperation.Move;
         }
@@ -94,16 +120,32 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void TaskListViewByGroup_DragOver(object sender, DragEventArgs e)
         {
-            e.DataView.Properties.TryGetValue("Task", out object draggedTasks);
-            e.AcceptedOperation = draggedTasks != null && draggedTasks is ICollection<UserTask> && (draggedTasks as ICollection<UserTask>).FirstOrDefault() != null && (draggedTasks as ICollection<UserTask>).FirstOrDefault().GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
+            e.DataView.Properties.TryGetValue("Item", out object draggedTasks);
+            e.AcceptedOperation = draggedTasks != null && draggedTasks is ICollection<IBoardItem> && (draggedTasks as ICollection<IBoardItem>).FirstOrDefault() != null && (draggedTasks as ICollection<IBoardItem>).FirstOrDefault().GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
         }
 
         private async void TaskListViewByGroup_Drop(object sender, DragEventArgs e)
         {
-            e.DataView.Properties.TryGetValue("Task", out object draggedTasks);
-            if (draggedTasks != null && draggedTasks is ICollection<UserTask>)
+            e.DataView.Properties.TryGetValue("Item", out object draggedItems);
+            if (draggedItems != null && draggedItems is ICollection<IBoardItem>)
             {
-                await boardViewModel.UpdateDraggedTask(draggedTasks as ICollection<UserTask>);
+                await boardViewModel.UpdateDraggedTask(draggedItems as ICollection<IBoardItem>);
+            }
+        }
+
+        public void LoadBoardItems()
+        {
+            if(BoardItemProvider != null)
+            {
+                ICollection<IBoardItem> boardItems = BoardItemProvider.GetBoardItems(BoardSource.Id, BoardSource.ProjectId);
+                if (boardItems != null && boardItems.Count > 0)
+                {
+                    foreach (IBoardItem item in boardItems)
+                    {
+                        boardViewModel.BoardItems.Add(item);
+                    }
+                    boardViewModel.NotifyUI(boardViewModel.BoardItemsCount);
+                }
             }
         }
 
@@ -128,11 +170,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
             }
-        }
-
-        private void TaskListViewByGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            TaskListViewByGroup.ItemsSource = boardViewModel.Tasks;
         }
     }
 }

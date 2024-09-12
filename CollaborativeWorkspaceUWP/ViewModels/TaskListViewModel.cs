@@ -117,7 +117,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             CurrentProject = project;
             CurrGroup = null;
             Tasks = new IncrementalLoadingCollection<UserTask>(taskDataHandler.GetTasksForProject(project.Id), 9);
-            foreach (UserTask task in Tasks)
+            foreach (UserTask task in Tasks.source)
             {
                 task.Attachments = attachmentDataHandler.GetAllAttachmentsForTask(task.Id);
                 task.Comments = commentDataHandler.GetAllCommentsForCurrentTask(task.Id);
@@ -128,6 +128,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 }
             }
             NotifyPropertyChanged(nameof(CurrentProject));
+            NotifyPropertyChanged(nameof(CurrGroup));
             NotifyPropertyChanged(nameof(Tasks));
         }
 

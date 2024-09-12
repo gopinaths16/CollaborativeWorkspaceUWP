@@ -29,6 +29,10 @@ using System.Collections.ObjectModel;
 using CollaborativeWorkspaceUWP.Utilities;
 using System.Security.Cryptography.X509Certificates;
 using CollaborativeWorkspaceUWP.DAL;
+using CollaborativeWorkspaceUWP.Utilities.Events;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
+using CollaborativeWorkspaceUWP.Models.Providers.Boards;
+using CollaborativeWorkspaceUWP.Models.ViewObjects.Folders;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -45,12 +49,13 @@ namespace CollaborativeWorkspaceUWP.Views
         AddTaskViewModel addTaskViewModel;
         MainViewModel mainViewModel;
         CurrentTeamspaceViewModel currTeamspaceViewModel;
-        BoardGroupViewModel boardGroupViewModel;
+        AddBoardViewModel boardGroupViewModel;
         AddGroupViewModel addGroupViewModel;
 
         ResourceDictionary staticStyles = new ResourceDictionary();
 
         private bool isDragging = false;
+        private bool isCached = false;
 
         public TaskView()
         {
@@ -61,9 +66,10 @@ namespace CollaborativeWorkspaceUWP.Views
             addProjectViewModel = new AddProjectViewModel();
             addTaskViewModel = new AddTaskViewModel();
             currTeamspaceViewModel = new CurrentTeamspaceViewModel();
-            boardGroupViewModel = new BoardGroupViewModel();
+            boardGroupViewModel = new AddBoardViewModel();
 
             staticStyles.Source = new Uri("ms-appx:///Styles/StaticStyles.xaml");
+            ViewmodelEventHandler.Instance.Subscribe<AddGroupEvent>(OnGroupAddition);
         }
 
         private void OnVisualStateChanged(object sender, VisualStateChangedEventArgs e)
@@ -116,26 +122,81 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void ProjectListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            await TaskDetailsView.UpdateCurrentTask();
-            taskListViewModel.Dispose();
-            if(e.ClickedItem is Project)
+            if(TaskTabView.SelectedIndex == 0)
             {
-                Project currProject = (Project)e.ClickedItem;
-                taskListViewModel.GetTasksForProject((Project)currProject.Clone());
+                await TaskDetailsView.UpdateCurrentTask();
+                taskListViewModel.Dispose();
+                if (e.ClickedItem is Project)
+                {
+                    Project currProject = (Project)e.ClickedItem;
+                    taskListViewModel.GetTasksForProject((Project)currProject.Clone());
+                    AddTaskDialog.SetGroupId(-1);
+                }
+                else if (e.ClickedItem is Group)
+                {
+                    Group group = e.ClickedItem as Group;
+                    taskListViewModel.GetTasksForGroup((Group)group.Clone());
+                    AddTaskDialog.SetGroupId(group.Id);
+                }
+                if (taskListViewModel.IsSingleWindowLayoutTriggered)
+                {
+                    TaskListView.Visibility = Visibility.Visible;
+                    TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
+                    projectListViewModel.IsProjectListPaneOpen = false;
+                }
+                TaskDetailsView.SetCurrentTask(null);
+                taskListViewModel.CurrTask = null;
             }
-            else if(e.ClickedItem is Group)
+            else if(TaskTabView.SelectedIndex == 1)
             {
-                Group group = e.ClickedItem as Group;
-                taskListViewModel.GetTasksForGroup((Group)group.Clone());
+                if(e.ClickedItem is IBoardGroup)
+                {
+                    Group boardGroup = e.ClickedItem as Group;
+                    if (boardGroup != null)
+                    {
+                        TaskBoardProvider boardProvider = new TaskBoardProvider();
+                        boardProvider.ProjectId = boardGroup.ProjectId;
+                        boardProvider.BoardGroupId = boardGroup.Id;
+                        boardGroupViewModel.BoardGroupId = boardGroup.Id;
+                        boardGroupViewModel.ProjectId = boardGroup.ProjectId;
+                        Task.Run(async () =>
+                        {
+                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                BoardGroupView.IsDefaultBoardContext = false;
+                                BoardGroupView.SetDefaultBoardProviders(new List<BoardProvider>());
+                                BoardGroupView.GroupName = boardGroup.Name;
+                                BoardGroupView.SetBoardProvider(boardProvider);
+                                BoardGroupView.LoadBoards();
+                            });
+                        });
+                    }
+                }
+                else if(e.ClickedItem is IFolder)
+                {
+                    Project project = e.ClickedItem as Project;
+                    if(project != null)
+                    {
+                        TaskOnPriorityBoardProvider boardProvider = new TaskOnPriorityBoardProvider();
+                        boardProvider.ProjectId = project.Id;
+                        boardProvider.Name = "Priority";
+                        Task.Run(async () =>
+                        {
+                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                BoardGroupView.IsDefaultBoardContext = true;
+                                BoardGroupView.GroupName = project.Name;
+                                BoardGroupView.SetBoardProvider(boardProvider);
+                                ICollection<BoardProvider> providers = new List<BoardProvider>();
+                                providers.Add(boardProvider);
+                                providers.Add(new TaskOnStatusBoardProvider() { Name = "Status", ProjectId = project.Id });
+                                BoardGroupView.SetDefaultBoardProviders(providers);
+                                BoardGroupView.LoadBoards();
+                            });
+                        });
+                    }
+                }
             }
-            if (taskListViewModel.IsSingleWindowLayoutTriggered)
-            {
-                TaskListView.Visibility = Visibility.Visible;
-                TaskDetailsViewContainer.Visibility = Visibility.Collapsed;
-                projectListViewModel.IsProjectListPaneOpen = false;
-            }
-            TaskDetailsView.SetCurrentTask(null);
-            taskListViewModel.CurrTask = null;
         }
 
         private async void TaskListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -240,7 +301,7 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is MainViewModel mainViewModel)
+            if (e.Parameter != null && e.Parameter is MainViewModel mainViewModel)
             {
                 this.mainViewModel = mainViewModel;
                 this.DataContext = mainViewModel;
@@ -249,32 +310,36 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
+            if(!isCached)
             {
-                await AddTeamspaceDialog.ShowAsync();
-            }
-            else
-            {
-                currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
-                projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
-                if (projectListViewModel.Projects.Count > 0)
+                if (mainViewModel.TeamspacesForCurrOrganization.Count <= 0)
                 {
-                    taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
+                    await AddTeamspaceDialog.ShowAsync();
                 }
-                if (taskListViewModel.Tasks.Count > 0)
+                else
                 {
-                    taskListViewModel.CurrTask = taskListViewModel.Tasks[0];
-                    TaskDetailsView.SetCurrentTask(taskListViewModel.Tasks[0]);
+                    currTeamspaceViewModel.CurrTeamspace = mainViewModel.TeamspacesForCurrOrganization[0];
+                    projectListViewModel.GetProjectsForCurrentTeamspace(currTeamspaceViewModel.CurrTeamspace.Id);
+                    if (projectListViewModel.Projects.Count > 0)
+                    {
+                        taskListViewModel.GetTasksForProject((Project)projectListViewModel.Projects[0].Clone());
+                    }
+                    if (taskListViewModel.Tasks.Count > 0)
+                    {
+                        taskListViewModel.CurrTask = taskListViewModel.Tasks[0];
+                        TaskDetailsView.SetCurrentTask(taskListViewModel.Tasks[0]);
+                    }
                 }
+                var visualStates = VisualStateManager.GetVisualStateGroups(TaskViewPanel).ToList();
+                visualStates.First().CurrentStateChanging += OnVisualStateChanged;
+                var windowBounds = Window.Current.Bounds;
+                double windowWidth = windowBounds.Width;
+                GoToVisualState(string.Empty, windowWidth);
+                AddTaskDialog.ParentTaskId = -1;
+                taskListViewModel.IsLoaded = true;
+                isCached = true;
             }
-            var visualStates = VisualStateManager.GetVisualStateGroups(TaskViewPanel).ToList();
-            visualStates.First().CurrentStateChanging += OnVisualStateChanged;
-            var windowBounds = Window.Current.Bounds;
-            double windowWidth = windowBounds.Width;
-            GoToVisualState(string.Empty, windowWidth);
-            AddTaskDialog.ParentTaskId = -1;
-            taskListViewModel.IsLoaded = true;
-            UpdateProjectListViewSource();
+            UpdateProjectListViewSource(false);
         }
 
         private void TaskDetailsView_OnTaskClear(object sender, RoutedEventArgs e)
@@ -337,23 +402,16 @@ namespace CollaborativeWorkspaceUWP.Views
             {
                 if(pivot.SelectedIndex == 1)
                 {
-                    DataTemplate listViewItemTemplate = this.Resources["ProjectListViewItemTemplateForBoardView"] as DataTemplate;
-                    ProjectListSplitViewPane.SetListViewItemTemplateSelector(null);
-                    ProjectListSplitViewPane.SetListViewItemTemplate(listViewItemTemplate);
-                    ProjectListSplitViewPane.SetListViewItemSource(projectListViewModel.Projects);
+                    UpdateProjectListViewSource(true);
                 }
                 else
                 {
-                    ProjectListSplitViewPane.SetListViewItemTemplate(null);
-                    ProjectListSplitViewPane.SetListViewItemTemplateSelector(this.Resources["ProjectListViewTemplateSelector"] as DataTemplateSelector);
-                    UpdateProjectListViewSource();
+                    UpdateProjectListViewSource(false);
                 }
-                ProjectListSplitViewPane.ListViewItemClickEnabled = pivot.SelectedIndex == 1 ? false : true;
-                ProjectListSplitViewPane.ListViewItemContainerStyle = pivot.SelectedIndex == 1 ? (Style)staticStyles["ListViewItemStyleDormant"] : (Style)staticStyles["ListViewItemStyleAccent"];
             }
         }
 
-        private void UpdateProjectListViewSource()
+        private void UpdateProjectListViewSource(bool isBoardView)
         {
             List<object> list = new List<object>();
             foreach(var project in projectListViewModel.Projects)
@@ -361,7 +419,14 @@ namespace CollaborativeWorkspaceUWP.Views
                 list.Add(project);
                 if(project.IsOpen)
                 {
-                    list.AddRange(project.Groups);
+                    if(isBoardView)
+                    {
+                        list.AddRange(project.BoardGroups);
+                    }
+                    else
+                    {
+                        list.AddRange(project.Groups);
+                    }
                 }
             }
             ProjectListSplitViewPane.SetListViewItemSource(list);
@@ -385,19 +450,6 @@ namespace CollaborativeWorkspaceUWP.Views
 
         }
 
-        private async void ProjectBoardGroupDropDown_ListViewItemClicked(object sender, ItemClickEventArgs e)
-        {
-            Group boardGroup = e.ClickedItem as Group;
-            boardGroupViewModel.BoardGroup = boardGroup;
-            if (boardGroup != null)
-            {
-                boardGroupViewModel.GetBoards();
-                boardGroupViewModel.ProjectId = boardGroup.ProjectId;
-                boardGroupViewModel.BoardGroupId = boardGroup.Id;
-                boardGroupViewModel.IsBoardGroupContext = false;
-            }
-        }
-
         private void AddBoardGroupControl_CancelButtonClick(object sender, RoutedEventArgs e)
         {
         }
@@ -414,8 +466,30 @@ namespace CollaborativeWorkspaceUWP.Views
             Button button = sender as Button;
             Project project = button.Tag as Project;
             project.IsOpen = !project.IsOpen;
-            UpdateProjectListViewSource();
+            if(TaskTabView.SelectedIndex == 1)
+            {
+                UpdateProjectListViewSource(true);
+            }
+            else
+            {
+                UpdateProjectListViewSource(false);
+            }
             button.Content = project.IsOpen ? "\uE70D" : "\uE76C";
+        }
+
+        public async Task OnGroupAddition(AddGroupEvent addGroupEvent)
+        {
+            if(addGroupEvent.Group != null && !addGroupEvent.Group.IsBoardGroup) 
+            {
+                if (TaskTabView.SelectedIndex == 1)
+                {
+                    UpdateProjectListViewSource(true);
+                }
+                else
+                {
+                    UpdateProjectListViewSource(false);
+                }
+            }
         }
     }
 }

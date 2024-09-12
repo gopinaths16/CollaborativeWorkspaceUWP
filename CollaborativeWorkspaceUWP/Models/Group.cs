@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models.Providers.Boards;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,16 +9,19 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Group : BaseModel, ICloneable
+    public class Group : BaseModel, ICloneable, IBoardGroup, IBoard
     {
         ObservableCollection<UserTask> tasks;
         ObservableCollection<Group> boards;
+
+        public IBoardItemProvider BoardItemProvider { get; set; }
 
         public long Id { get; set; }
         public string Name { get; set; }
         public long ProjectId { get; set; }
         public long BoardGroupId { get; set; }
         public bool IsBoardGroup { get; set; }
+        public string ColorCode {  get; set; }
 
         public ObservableCollection<UserTask> Tasks
         {
@@ -47,6 +52,11 @@ namespace CollaborativeWorkspaceUWP.Models
         {
             Tasks = tasks;
             NotifyPropertyChanged(nameof(Tasks));
+        }
+
+        public void SetBoardItemProvider(IBoardItemProvider boardItemProvider)
+        {
+            BoardItemProvider = boardItemProvider;
         }
 
         public void NotifyChangesToEntity()

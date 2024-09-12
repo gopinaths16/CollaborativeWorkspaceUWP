@@ -55,9 +55,9 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             remove { _onTaskClear -= value; }
         }
 
-        public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty IsSeparateWindowProperty = DependencyProperty.Register("IsSeparateWindow", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty AllowTaskClearProperty = DependencyProperty.Register("AllowTaskClear", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty AllowTaskClearProperty = DependencyProperty.Register("AllowTaskClear", typeof(bool), typeof(TaskDetailsControl), new PropertyMetadata(false));
 
         public TaskDetailsControl()
         {

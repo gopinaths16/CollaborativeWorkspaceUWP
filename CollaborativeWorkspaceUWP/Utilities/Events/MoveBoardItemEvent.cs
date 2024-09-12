@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Utilities.Events
 {
-    public class MoveTaskEvent
+    public class MoveBoardItemEvent
     {
-       public ICollection<UserTask> Tasks { get; set; }
+       public ICollection<IBoardItem> BoardItems { get; set; }
     }
 }

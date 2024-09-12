@@ -117,11 +117,11 @@ namespace CollaborativeWorkspaceUWP.Views
         {
             if (NavigationBar.SelectedItem == TaskViewNavigationItem)
             {
-                HomeViewFrame.Navigate(typeof(TaskView), this.DataContext, new SuppressNavigationTransitionInfo());
+                HomeViewFrame.Navigate(typeof(TaskView), null, new SuppressNavigationTransitionInfo());
             }
             else if(NavigationBar.SelectedItem == SprintViewNavigationItem)
             {
-                HomeViewFrame.Navigate(typeof(SprintView), this.DataContext, new SuppressNavigationTransitionInfo());
+                HomeViewFrame.Navigate(typeof(SprintView), null, new SuppressNavigationTransitionInfo());
             }
         }
 

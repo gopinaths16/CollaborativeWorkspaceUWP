@@ -104,11 +104,15 @@
             </StackPanel>
         </Grid>
 
-        <ScrollViewer Grid.Row="1">
-            <ItemsControl ItemTemplate="{StaticResource CommentItemTemplate}"
-                          ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
-                          Margin="10, 10, 0, 0"/>
-        </ScrollViewer>
+        <ListView ItemTemplate="{StaticResource CommentItemTemplate}"
+                  ItemsSource="{x:Bind commentViewModel.CommentsForCurrTask, Mode=TwoWay}"
+                  Margin="10, 10, 0, 0"
+                  Grid.Row="1"
+                  ItemContainerStyle="{StaticResource ListViewItemStyleDormant}">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection />
+            </ListView.ItemContainerTransitions>
+        </ListView>
 
         <StackPanel Name="NoAttachmentMessage"
                     Margin="0, 20, 0, 0"

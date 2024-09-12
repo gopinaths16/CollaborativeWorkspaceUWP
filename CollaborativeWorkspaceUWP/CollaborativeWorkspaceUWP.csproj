@@ -140,11 +140,11 @@
     <Compile Include="CustomControls\UserControls\AttachmentItemControl.xaml.cs">
       <DependentUpon>AttachmentItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\UserControls\BoardControl.xaml.cs">
-      <DependentUpon>BoardControl.xaml</DependentUpon>
+    <Compile Include="CustomControls\UserControls\Board.xaml.cs">
+      <DependentUpon>Board.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\UserControls\BoardViewControl.xaml.cs">
-      <DependentUpon>BoardViewControl.xaml</DependentUpon>
+    <Compile Include="CustomControls\UserControls\BoardView.xaml.cs">
+      <DependentUpon>BoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\UserControls\CommentControl.xaml.cs">
       <DependentUpon>CommentControl.xaml</DependentUpon>
@@ -200,11 +200,20 @@
     <Compile Include="Models\Organization.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\Providers\Boards\BoardProvider.cs" />
+    <Compile Include="Models\Providers\Boards\IBoardItemProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskBoardItemProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskBoardProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskOnPriorityBoardItemProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskOnPriorityBoardProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskOnStatusBoardItemProvider.cs" />
+    <Compile Include="Models\Providers\Boards\TaskOnStatusBoardProvider.cs" />
     <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Teamspace.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserTask.cs" />
+    <Compile Include="Models\ViewObjects\Folders\IFolder.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\AttachmentDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\GroupDBPersistenceObject.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\CommentDBPersistenceObject.cs" />
@@ -239,8 +248,9 @@
     <Compile Include="Persistence\PersistenceObject\PersistenceObjectManager.cs" />
     <Compile Include="Persistence\PersistenceObject\DBPersistence\TaskDBPersistenceObject.cs" />
     <Compile Include="Utilities\Custom\IncrementalLoadingCollection.cs" />
-    <Compile Include="Utilities\DataTemplateSelectors\ProjectListViewTemplateSelector.cs" />
+    <Compile Include="Utilities\DataTemplateSelectors\FolderTemplateSelector.cs" />
     <Compile Include="Utilities\Events\AddAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\AddBoardEvent.cs" />
     <Compile Include="Utilities\Events\AddGroupEvent.cs" />
     <Compile Include="Utilities\Events\AddCommentEvent.cs" />
     <Compile Include="Utilities\Events\AddProjectEvent.cs" />
@@ -248,7 +258,7 @@
     <Compile Include="Utilities\Events\DeleteAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\DeleteTaskEvent.cs" />
     <Compile Include="Utilities\Events\LogoutEvent.cs" />
-    <Compile Include="Utilities\Events\MoveTaskEvent.cs" />
+    <Compile Include="Utilities\Events\MoveBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
     <Compile Include="Utilities\Events\UpdateOrderEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
@@ -262,8 +272,9 @@
     <Compile Include="ViewModels\AddProjectViewModel.cs" />
     <Compile Include="ViewModels\AddTaskViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\BoardGroupViewModel.cs" />
+    <Compile Include="ViewModels\AddBoardViewModel.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
+    <Compile Include="ViewModels\BoardviewViewModel.cs" />
     <Compile Include="ViewModels\CommentItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
@@ -297,6 +308,9 @@
     <Compile Include="Views\UserOnboardView.xaml.cs">
       <DependentUpon>UserOnboardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewObjects\Boards\IBoard.cs" />
+    <Compile Include="Models\ViewObjects\Boards\IBoardGroup.cs" />
+    <Compile Include="Models\ViewObjects\Boards\IBoardItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -335,11 +349,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\UserControls\BoardControl.xaml">
+    <Page Include="CustomControls\UserControls\Board.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\UserControls\BoardViewControl.xaml">
+    <Page Include="CustomControls\UserControls\BoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -460,9 +474,7 @@
       <Version>1.0.118</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\SubViews\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\icomoon.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

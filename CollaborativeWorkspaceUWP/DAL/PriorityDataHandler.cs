@@ -3,6 +3,7 @@ using CollaborativeWorkspaceUWP.Models.Enums;
 using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,34 @@ namespace CollaborativeWorkspaceUWP.DAL
             finally
             {
                 if(persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
+
+        public ICollection<IBoard> GetPriorityBoards()
+        {
+            ICollection<IBoard> result = new List<IBoard>();
+            IPriorityPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = _persistenceObjectManager.GetPriorityPersistenceObject();
+                persistenceObject.SetGetPrioritiesContext();
+                PersistenceHandler.Instance.Get(persistenceObject);
+                foreach(IBoard board in persistenceObject.GetPriorities())
+                {
+                    result.Add(board);
+                } 
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
                 {
                     persistenceObject.Dispose();
                 }

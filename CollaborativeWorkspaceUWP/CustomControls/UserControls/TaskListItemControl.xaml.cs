@@ -1,6 +1,7 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
 using CollaborativeWorkspaceUWP.ViewModels;
 using CollaborativeWorkspaceUWP.Views;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,6 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(ItemBackgroundProperty, value); }
         }
 
-        public bool EnableVisualAspects
-        {
-            get { return (bool)GetValue(EnableVisualAspectsProperty); }
-            set { SetValue(EnableVisualAspectsProperty, value); }
-        }
-
         public bool IsDragging
         {
             get; set;
@@ -64,9 +59,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public static readonly DependencyProperty TaskProperty = DependencyProperty.Register("Task", typeof(UserTask), typeof(TaskListItemControl), new PropertyMetadata(null, OnMyPropertyChanged));
 
-        public static readonly DependencyProperty ItemBackgroundProperty = DependencyProperty.Register("ItemBackground", typeof(SolidColorBrush), typeof(TaskListItemControl), new PropertyMetadata(0));
-
-        public static readonly DependencyProperty EnableVisualAspectsProperty = DependencyProperty.Register("EnableVisualAspects", typeof(bool), typeof(TaskListItemControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty ItemBackgroundProperty = DependencyProperty.Register("ItemBackground", typeof(SolidColorBrush), typeof(TaskListItemControl), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
 
         private static void OnMyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -148,21 +141,11 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             };
         }
 
-        private void TaskItem_PointerPressed(object sender, PointerRoutedEventArgs e)
+        public void LoadData<T>(T task)
         {
-            if(EnableVisualAspects)
+            if (task != null)
             {
-                bool isControlPressed = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
-                if (!IsStateModified && isControlPressed)
-                {
-                    IsStateModified = true;
-                    TaskItem.Background = new SolidColorBrush(Colors.Transparent);
-                }
-                else if (IsStateModified)
-                {
-                    IsStateModified = false;
-                    TaskItem.Background = ItemBackground;
-                }
+                taskItemViewModel.Task = task as UserTask;
             }
         }
     }

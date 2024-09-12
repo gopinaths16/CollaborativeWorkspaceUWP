@@ -39,6 +39,24 @@ namespace CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject
             Query = command;
         }
 
+        public void SetGetAllTasksForPriorityContext(long priorityId, long projectId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE, CS.COLOR_CODE, CWT.GROUP_ID FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.PRIORITY=@PriorityId AND CWT.PROJECTID=@ProjectId ORDER BY CWT.TASK_ORDER ASC";
+            command.Parameters.AddWithValue("@PriorityId", priorityId);
+            command.Parameters.AddWithValue("@ProjectId", projectId);
+            Query = command;
+        }
+
+        public void SetGetAllTasksForStatusContext(long statusId, long projectId)
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = @"SELECT CWT.ID, CWT.NAME, CWT.DESCRIPTION, CWT.STATUS, CWT.PRIORITY, CWT.PROJECTID, CWT.OWNERID, CWT.ASSIGNEEID, CWT.PARENT_TASK_ID, CWT.MODIFIED_TIME, CS.ID, CS.NAME, CP.ID, CP.NAME, CP.COLOR_CODE, CUD.ID, CUD.USERNAME, CUD.DISPLAYNAME, CWT.TASK_ORDER, CWT.DUE_DATE, CS.COLOR_CODE, CWT.GROUP_ID FROM CW_TASK_DETAILS AS CWT JOIN CW_STATUS AS CS ON CWT.STATUS=CS.ID JOIN CW_PRIORITY AS CP ON CWT.PRIORITY=CP.ID JOIN CW_USER_DETAILS AS CUD ON CWT.OWNERID=CUD.ID WHERE CWT.STATUS=@StatusId AND CWT.PROJECTID=@ProjectId ORDER BY CWT.TASK_ORDER ASC";
+            command.Parameters.AddWithValue("@StatusId", statusId);
+            command.Parameters.AddWithValue("@ProjectId", projectId);
+            Query = command;
+        }
+
         public void SetGetTasksForProjectContext(long projectId)
         {
             SQLiteCommand command = new SQLiteCommand();

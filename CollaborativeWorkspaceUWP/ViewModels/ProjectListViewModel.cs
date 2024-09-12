@@ -98,6 +98,23 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             AddProjectToList((Project)e.Project.Clone());
         }
 
+        private void UpdateProjectListViewSource()
+        {
+            ProjectListWithGroup.Clear();
+            foreach (var project in Projects)
+            {
+                ProjectListWithGroup.Add(project);
+                if (project.IsOpen)
+                {
+                    foreach(var group in project.Groups)
+                    {
+                        ProjectListWithGroup.Add(group);
+                    }
+                }
+            }
+            NotifyPropertyChanged(nameof(ProjectListWithGroup));
+        }
+
         private async Task OnBoardGroupAddition(AddGroupEvent e)
         {
             if (e.Group != null)
@@ -113,6 +130,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                         project.Groups.Add(e.Group);
                     }
                 }
+                UpdateProjectListViewSource();
             }
         }
     }

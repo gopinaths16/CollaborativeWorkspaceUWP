@@ -87,7 +87,7 @@
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsStackPanel/>
+                        <ItemsStackPanel />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>

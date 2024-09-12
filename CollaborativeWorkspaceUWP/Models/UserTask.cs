@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class UserTask : BaseModel, ICloneable
+    public class UserTask : BaseModel, ICloneable, IBoardItem
     {
 
         private long _id;

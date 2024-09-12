@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollaborativeWorkspaceUWP.Models.ViewObjects.Folders;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.Models
 {
-    public class Project : BaseModel, ICloneable
+    public class Project : BaseModel, ICloneable, IFolder
     {
-
         private long _id;
         private string _name;
         private long _status;
@@ -41,7 +41,7 @@ namespace CollaborativeWorkspaceUWP.Models
 
         public Project()
         {
-            IsOpen = true;
+            IsOpen = false;
         }
 
         public Project(long id, string name, long status, long priority, long teamspaceId, long ownerId) : base()
@@ -52,7 +52,7 @@ namespace CollaborativeWorkspaceUWP.Models
             this._priority = priority;
             this._teamspaceId = teamspaceId;
             this._ownerId = ownerId;
-            IsOpen = true;
+            IsOpen = false;
 
             BoardGroups = new ObservableCollection<Group>();
             Groups = new ObservableCollection<Group>();

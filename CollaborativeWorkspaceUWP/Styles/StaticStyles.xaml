@@ -186,6 +186,7 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border x:Name="OuterContainer" 
                             Background="{TemplateBinding Background}"
+                            Margin="{TemplateBinding Margin}"
                             CornerRadius="10">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"/>
@@ -344,6 +345,8 @@
                                        Foreground="{TemplateBinding Foreground}"/>
                         </StackPanel>
                         <Popup x:Name="Popup"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
                                IsOpen="{TemplateBinding IsDropDownOpen}">
                             <Border x:Name="PopupBorder"
                                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"

@@ -3,6 +3,7 @@ using CollaborativeWorkspaceUWP.Models.Enums;
 using CollaborativeWorkspaceUWP.Persistence.PersistenceObject.EntityPersistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,16 +97,19 @@ namespace CollaborativeWorkspaceUWP.DAL
             return result;
         }
 
-        public ObservableCollection<Group> GetBoardsForBoardGroup(long boardGrouId)
+        public ICollection<IBoard> GetBoardsForBoardGroup(long boardGrouId)
         {
-            ObservableCollection<Group> result = new ObservableCollection<Group>();
+            ICollection<IBoard> result = new ObservableCollection<IBoard>();
             IGroupPersistence persistenceObject = null;
             try
             {
                 persistenceObject = persistanceObjectManager.GetGroupPersistenceObject();
                 persistenceObject.SetGetAllBoardsForBoardGroupContext(boardGrouId);
                 PersistenceHandler.Instance.Get(persistenceObject);
-                result = persistenceObject.GetAllGroups();
+                foreach (IBoard boardGroup in persistenceObject.GetAllGroups())
+                {
+                    result.Add(boardGroup);
+                }
             }
             catch(Exception ex)
             {

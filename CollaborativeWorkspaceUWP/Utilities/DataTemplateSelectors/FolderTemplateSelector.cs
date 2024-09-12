@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Models.ViewObjects.Folders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,14 @@ using Windows.UI.Xaml.Controls;
 
 namespace CollaborativeWorkspaceUWP.Utilities
 {
-    public class ProjectListViewTemplateSelector : DataTemplateSelector 
+    public class FolderTemplateSelector : DataTemplateSelector 
     {
         public DataTemplate ProjectItemTemplate { get; set; }
         public DataTemplate GroupItemTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (item is Project)
+            if (item is IFolder)
             {
                 return ProjectItemTemplate;
             }

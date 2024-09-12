@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.Utilities.Persistence.PersistenceObject.EntityPersistence;
 using Windows.UI.Xaml.Media;
+using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 
 namespace CollaborativeWorkspaceUWP.DAL
 {
@@ -66,6 +67,7 @@ namespace CollaborativeWorkspaceUWP.DAL
             }
             return tasks;
         }
+
         public ObservableCollection<UserTask> GetTasksForProject(long projectId)
         {
             ObservableCollection<UserTask> tasks = new ObservableCollection<UserTask>();
@@ -287,6 +289,34 @@ namespace CollaborativeWorkspaceUWP.DAL
             return result;
         }
 
+        public ICollection<IBoardItem> GetTasksForBoard(long groupId)
+        {
+            ICollection<IBoardItem> result = new List<IBoardItem>();
+            ITaskPersistence persistenceObject = null;
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetTasksForGroupContext(groupId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                foreach (IBoardItem item in persistenceObject.GetAllTasks())
+                {
+                    result.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return result;
+        }
+
         public void UpdateGroupIdForTask(UserTask task)
         {
             ITaskPersistence persistenceObject = null;
@@ -307,6 +337,62 @@ namespace CollaborativeWorkspaceUWP.DAL
                     persistenceObject.Dispose();
                 }
             }
+        }
+
+        public ICollection<IBoardItem> GetAllTasksForPriorityBoard(long priorityId, long projectId)
+        {
+            ITaskPersistence persistenceObject = null;
+            ICollection<IBoardItem> tasks = new List<IBoardItem>();
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetAllTasksForPriorityContext(priorityId, projectId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                foreach (IBoardItem task in persistenceObject.GetAllTasks())
+                {
+                    tasks.Add(task);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return tasks;
+        }
+
+        public ICollection<IBoardItem> GetAllTasksForStatusBoard(long statusId, long projectId)
+        {
+            ITaskPersistence persistenceObject = null;
+            ICollection<IBoardItem> tasks = new List<IBoardItem>();
+            try
+            {
+                persistenceObject = persistanceObjectManager.GetTaskPersistenceObject();
+                persistenceObject.SetGetAllTasksForStatusContext(statusId, projectId);
+                PersistenceHandler.Instance.Get(persistenceObject);
+                foreach (IBoardItem task in persistenceObject.GetAllTasks())
+                {
+                    tasks.Add(task);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (persistenceObject != null)
+                {
+                    persistenceObject.Dispose();
+                }
+            }
+            return tasks;
         }
     }
 }

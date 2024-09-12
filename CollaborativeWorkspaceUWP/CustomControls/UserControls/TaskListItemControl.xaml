@@ -28,7 +28,6 @@
           Padding="20, 10, 20, 10"
           HorizontalAlignment="Stretch"
           Name="TaskItem"
-          PointerPressed="TaskItem_PointerPressed"
           Background="{x:Bind ItemBackground}">
 
         <VisualStateManager.VisualStateGroups>
