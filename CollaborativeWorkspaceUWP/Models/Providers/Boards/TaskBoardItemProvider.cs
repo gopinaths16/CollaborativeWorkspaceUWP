@@ -57,7 +57,13 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
         public ICollection<IBoardItem> UpdateBoardItems(ICollection<IBoardItem> boardItems)
         {
             ICollection<IBoardItem> result = new List<IBoardItem>();
-            return result;
+            foreach (UserTask item in boardItems)
+            {
+                item.GroupId = BoardId;
+                taskDataHandler.UpdateGroupIdForTask(item);
+                result.Add(item);
+            }
+            return boardItems;
         }
     }
 }

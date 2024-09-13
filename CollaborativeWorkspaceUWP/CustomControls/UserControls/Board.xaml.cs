@@ -162,18 +162,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             boardViewModel.IsOpen = !boardViewModel.IsOpen;
             if (boardViewModel.IsOpen)
             {
-                VisualStateManager.GoToState(this, "Expanded", true);
                 MinimizeButton.Content = "\ue740";
                 TaskListView.ColumnDefinitions.Clear();
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
             }
             else
             {
-                VisualStateManager.GoToState(this, "Collapsed", true);
                 MinimizeButton.Content = "\ue73f";
                 TaskListView.ColumnDefinitions.Clear();
+                TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 TaskListView.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
@@ -183,6 +183,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void AddBoardItemButton_Click(object sender, RoutedEventArgs e)
         {
             boardViewModel.IsAddBoardItemContextTriggered = !boardViewModel.IsAddBoardItemContextTriggered;
+            if(boardViewModel.IsAddBoardItemContextTriggered)
+            {
+                AddBoardItemControl.Focus();
+            }
+            if (!boardViewModel.IsAddBoardItemContextTriggered)
+            {
+                AddBoardItemControl.ClearAllFields();
+            }
         }
     }
 }

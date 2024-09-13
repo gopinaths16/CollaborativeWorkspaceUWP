@@ -99,12 +99,9 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
         public async Task UpdateDraggedTask(ICollection<IBoardItem> boardItems)
         {
-            foreach(IBoardItem boardItem in boardItems)
+            foreach(IBoardItem boardItem in BoardItemProvider.UpdateBoardItems(boardItems))
             {
-                if (boardItem.GroupId != CurrBoard.Id)
-                {
-                    BoardItems.Insert(0, boardItem);
-                }
+                BoardItems.Insert(0, boardItem);
             }
             await ViewmodelEventHandler.Instance.Publish(new MoveBoardItemEvent() { BoardItems = boardItems });
         }

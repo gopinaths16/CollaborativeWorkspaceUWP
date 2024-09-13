@@ -9,5 +9,7 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
     public interface IBoardAdder
     {
         void SetDefaultArgs(ICollection<IDefaultArgs> args);
+        void Focus();
+        void ClearAllFields();
     }
 }

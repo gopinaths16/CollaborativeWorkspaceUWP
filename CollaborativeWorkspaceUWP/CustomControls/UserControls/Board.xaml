@@ -19,30 +19,6 @@
           CornerRadius="5"
           Padding="10">
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="CommonStates">
-                <VisualState x:Name="Expanded">
-                    <Storyboard>
-                        <DoubleAnimation Storyboard.TargetName="ContentGridTransform"
-                                         Storyboard.TargetProperty="ScaleX"
-                                         To="1"
-                                         Duration="0:0:0.1"/>
-                    </Storyboard>
-                </VisualState>
-                <VisualState x:Name="Collapsed">
-                    <Storyboard>
-                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ContentGridTransform"
-                                                       Storyboard.TargetProperty="ScaleX"
-                                                       Duration="0:0:0.1">
-                            <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
-                            <LinearDoubleKeyFrame KeyTime="0:0:0.05" Value="0.8"/>
-                            <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="1"/>
-                        </DoubleAnimationUsingKeyFrames>
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        
         <Grid.RenderTransform>
             <ScaleTransform x:Name="ContentGridTransform" ScaleX="1" ScaleY="1"/>
         </Grid.RenderTransform>
