@@ -178,6 +178,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 CurrTask.Update(task);
                 NotifyPropertyChanged(nameof(CurrTask));
                 await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = CurrTask });
+                await ViewmodelEventHandler.Instance.Publish(new UpdateBoardItemEvent() { BoardItem = CurrTask });
                 CurrTask.IsUpdated = false;
             }
         }
@@ -214,6 +215,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 CurrTask.PriorityData = GetTaskPriority(CurrTask.Priority);
                 taskDataHandler.UpdateTask(CurrTask);
                 await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = (UserTask)CurrTask.Clone() });
+                await ViewmodelEventHandler.Instance.Publish(new UpdateBoardItemEvent() { BoardItem = CurrTask });
                 NotifyPropertyChanged(nameof(CurrTask));
             }
         }
@@ -228,6 +230,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 task.PriorityData = GetTaskPriority(task.Priority);
                 taskDataHandler.UpdateTask(task);
                 await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = task });
+                await ViewmodelEventHandler.Instance.Publish(new UpdateBoardItemEvent() { BoardItem = task });
             }
         }
 

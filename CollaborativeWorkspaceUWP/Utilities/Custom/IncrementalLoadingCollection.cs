@@ -44,10 +44,13 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             try
             {
                 if (items.Count() < PageSize) _hasMoreItems = false;
-                _currentPage++;
-                foreach (var item in items)
+                if(base.Count < PageSize && source.Count > 0)
                 {
-                    base.Add(item);
+                    _currentPage++;
+                    foreach (var item in items)
+                    {
+                        base.Add(item);
+                    }
                 }
             }
             finally
@@ -75,11 +78,10 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             _hasMoreItems = true;
         }
 
-        public async new Task<bool> Remove(T item)
+        public new bool Remove(T item)
         {
             bool result = base.Remove(item);
             source.Remove(item);
-            await LoadMoreItemsAsync();
             return result;
         }
 

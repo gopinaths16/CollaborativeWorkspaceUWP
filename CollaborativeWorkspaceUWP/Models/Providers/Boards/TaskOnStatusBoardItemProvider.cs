@@ -1,4 +1,5 @@
 ﻿using CollaborativeWorkspaceUWP.DAL;
+using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,22 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
                 result.Add(item);
             }
             return boardItems;
+        }
+
+        public async Task UpdateSource(IBoardItem item, ICollection<IBoardItem> source)
+        {
+            UserTask task = (source as IncrementalLoadingCollection<IBoardItem>).Where(target => target.Id == item.Id).FirstOrDefault() as UserTask;
+            if (task != null)
+            {
+                if ((item as UserTask).Status != BoardId)
+                {
+                    (source as IncrementalLoadingCollection<IBoardItem>).Remove(task);
+                }
+            }
+            else if ((item as UserTask).Status == BoardId)
+            {
+                (source as IncrementalLoadingCollection<IBoardItem>).Add(item);
+            }
         }
     }
 }

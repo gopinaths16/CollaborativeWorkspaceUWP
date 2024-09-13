@@ -213,7 +213,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if (Tasks != null && e != null && IsLoaded)
             {
-                await Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
+                Tasks.Remove(Tasks.Where(task => e.TaskId == task.Id).First());
                 foreach(var task in Tasks)
                 {
                     if (task.SubTasks.Count > 0)

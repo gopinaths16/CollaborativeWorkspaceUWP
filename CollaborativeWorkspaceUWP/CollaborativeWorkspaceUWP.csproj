@@ -263,6 +263,7 @@
     <Compile Include="Utilities\Events\LogoutEvent.cs" />
     <Compile Include="Utilities\Events\MoveBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\UpdateBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\UpdateOrderEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
     <Compile Include="Utilities\DataTemplateSelectors\AttachmentTemplateSelector.cs" />

@@ -65,6 +65,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             UserTask temp = taskDataHandler.UpdateTask(Task);
             Task.Update(temp);
             await ViewmodelEventHandler.Instance.Publish(new UpdateTaskEvent() { Task = Task });
+            await ViewmodelEventHandler.Instance.Publish(new UpdateBoardItemEvent() { BoardItem = Task });
             NotifyPropertyChanged(nameof(Task));
         }
 

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CollaborativeWorkspaceUWP.ViewModels
 {
-    public class BoardViewModel : BaseViewModel
+    public class BoardViewModel : BaseViewModel, IDisposable
     {
         private Group currBoard;
         private bool isAddBoardItemContextTriggered;
@@ -83,6 +83,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
 
             ViewmodelEventHandler.Instance.Subscribe<MoveBoardItemEvent>(OnMovingBoardItem);
             ViewmodelEventHandler.Instance.Subscribe<AddBoardItemEvent>(OnBoardItemAddition);
+            ViewmodelEventHandler.Instance.Subscribe<UpdateBoardItemEvent>(OnBoardItemUpdation);
         }
 
         public async Task OnTaskAddition(AddTaskEvent e)
@@ -112,9 +113,10 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             {
                 foreach (var task in e.BoardItems)
                 {
-                    await BoardItems.Remove(task);
+                    BoardItems.Remove(task);
                 }
                 MovedTask = null;
+                await BoardItems.LoadMoreItemsAsync();
                 NotifyPropertyChanged(nameof(CurrBoard));
             }
         }
@@ -131,9 +133,26 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             }
         }
 
+        public async Task OnBoardItemUpdation(UpdateBoardItemEvent e)
+        {
+            if (e.BoardItem != null)
+            {
+                await BoardItemProvider.UpdateSource(e.BoardItem, BoardItems);
+                await BoardItems.LoadMoreItemsAsync();
+                NotifyPropertyChanged(nameof(BoardItemsCount));
+            }
+        }
+
         public void NotifyUI()
         {
             NotifyPropertyChanged(nameof(BoardItemsCount));
+        }
+
+        public void Dispose()
+        {
+            ViewmodelEventHandler.Instance.Unsubscribe<MoveBoardItemEvent>(OnMovingBoardItem);
+            ViewmodelEventHandler.Instance.Unsubscribe<AddBoardItemEvent>(OnBoardItemAddition);
+            ViewmodelEventHandler.Instance.Unsubscribe<UpdateBoardItemEvent>(OnBoardItemUpdation);
         }
     }
 }
