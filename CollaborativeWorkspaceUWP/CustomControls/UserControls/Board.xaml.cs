@@ -128,7 +128,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private async void TaskListViewByGroup_DragOver(object sender, DragEventArgs e)
         {
             e.DataView.Properties.TryGetValue("Item", out object draggedTasks);
-            e.AcceptedOperation = draggedTasks != null && draggedTasks is ICollection<IBoardItem> && (draggedTasks as ICollection<IBoardItem>).FirstOrDefault() != null && (draggedTasks as ICollection<IBoardItem>).FirstOrDefault().GroupId != boardViewModel.CurrBoard.Id ? DataPackageOperation.Move : DataPackageOperation.None;
+            e.AcceptedOperation = draggedTasks != null && draggedTasks is ICollection<IBoardItem> && (draggedTasks as ICollection<IBoardItem>).FirstOrDefault() != null && !BoardItemProvider.DoesItemBelongToBoard((draggedTasks as ICollection<IBoardItem>).FirstOrDefault()) ? DataPackageOperation.Move : DataPackageOperation.None;
         }
 
         private async void TaskListViewByGroup_Drop(object sender, DragEventArgs e)
