@@ -46,18 +46,17 @@
         </Style>
 
         <Style TargetType="Grid" x:Name="SettingsControlStyle">
-            <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-            <Setter Property="Padding" Value="20" />
+            <Setter Property="Background" Value="{ThemeResource PrimaryBackground}" />
         </Style>
 
         <DataTemplate x:Key="AllOrganizationsListViewItemTemplate"
                       x:DataType="models:Organization">
             <TextBlock Text="{Binding Name}" />
         </DataTemplate>
-        
+
     </Page.Resources>
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource TitleBarBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -67,60 +66,75 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox Name="SelectOrganizationCombobox"
-                  Margin="10"
-                  ItemsSource="{x:Bind mainViewModel.Organizations, Mode=TwoWay}"
-                  ItemTemplate="{StaticResource AllOrganizationsListViewItemTemplate}"
-                  SelectionChanged="SelectOrganizationCombobox_SelectionChanged"
-                  Width="100"
-                  Style="{StaticResource CustomComboBox}"
-                  Background="{StaticResource SystemAccentColor}"
-                  CornerRadius="2"
-                  Grid.Row="0"
-                  Grid.Column="0"/>
+        <Button Name="Organization"
+                Margin="10"
+                Width="100"
+                Background="{ThemeResource TitleBarButtonBackground}"
+                Foreground="White"
+                HorizontalContentAlignment="Left"
+                CornerRadius="5"
+                Grid.Row="0"
+                Grid.Column="0">
+            <Button.Flyout>
+                <Flyout Placement="BottomEdgeAlignedLeft"
+                        x:Name="OrganizationListFlyout">
+                    <Flyout.FlyoutPresenterStyle>
+                        <Style TargetType="FlyoutPresenter">
+                            <Setter Property="Background" 
+                                    Value="{ThemeResource SecondaryBackground}"/>
+                            <Setter Property="CornerRadius" 
+                                    Value="5" />
+                        </Style>
+                    </Flyout.FlyoutPresenterStyle>
+                    <Grid Width="300"
+                          MaxHeight="400"
+                          VerticalAlignment="Stretch">
+                        <customusercontrol:OrganizationListView Name="OrganizationListViewFlyout" />
+                    </Grid>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
 
-        <NavigationView x:Name="NavigationBar" 
-                        PaneDisplayMode="Top"
-                        SelectionFollowsFocus="Enabled" 
-                        IsBackButtonVisible="Collapsed"
-                        AlwaysShowHeader="False"
-                        IsSettingsVisible="False"
-                        ItemInvoked="NavigationBar_ItemInvoked"
-                        Grid.Row="0"
-                        Grid.Column="1">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Name="TaskViewNavigationItem">
-                    <NavigationViewItem.Icon>
+        <muxc:NavigationView x:Name="NavigationBar" 
+                             PaneDisplayMode="Top"
+                             SelectionFollowsFocus="Enabled" 
+                             IsBackButtonVisible="Collapsed"
+                             AlwaysShowHeader="False"
+                             IsSettingsVisible="False"
+                             Foreground="White"
+                             ItemInvoked="NavigationBar_ItemInvoked"
+                             Grid.Row="0"
+                             Grid.Column="1">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Name="TaskViewNavigationItem"
+                                         Foreground="White">
+                    <muxc:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource IcoMoonCustomFontFree}"
+                                  Foreground="White"
                                   Glyph="&#xea52;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem Name="SprintViewNavigationItem">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource IcoMoonCustomFontFree}"
-                                  Glyph="&#xe9b8;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.PaneFooter>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+            <muxc:NavigationView.PaneFooter>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center">
-                    <customtemplatecontrol:CustomIconButtonControl Name="SettingsButton"
+                    <!--<customtemplatecontrol:CustomIconButtonControl Name="SettingsButton"
                                                                    FontFamily="Segoe Fluent Icons"
                                                                    Content="&#xe713;"
                                                                    Click="SettingsButton_Click"
+                                                                   Foreground="White"
                                                                    Style="{StaticResource ButtonNoBackgroundDormantAlt}"
                                                                    Margin="0, 0, 5, 0"
                                                                    Height="30"
-                                                                   Padding="10, 5, 10, 5" />
+                                                                   Padding="10, 5, 10, 5" />-->
                     <PersonPicture Name="AccountDetailsNavigationItem"
                                    DisplayName="{Binding CurrUser.DisplayName}"
                                    Height="30"
                                    Margin="0, 2, 10, 0"
                                    Tapped="AccountDetailsNavigationItem_Tapped">
                         <PersonPicture.ContextFlyout>
-                            <Flyout>
+                            <Flyout x:Name="AccountFlyout">
                                 <Flyout.FlyoutPresenterStyle>
                                     <Style TargetType="FlyoutPresenter">
                                         <Setter Property="Background" 
@@ -130,16 +144,16 @@
                                     </Style>
                                 </Flyout.FlyoutPresenterStyle>
                                 <StackPanel Width="250"
-                                            Height="300"
+                                            Height="130"
                                             VerticalAlignment="Stretch">
-                                    <customusercontrol:AccountDetailsControl/>
+                                    <customusercontrol:AccountDetailsControl OnThemeChange="AccountDetailsControl_OnThemeChange"/>
                                 </StackPanel>
                             </Flyout>
                         </PersonPicture.ContextFlyout>
                     </PersonPicture>
                 </StackPanel>
-            </NavigationView.PaneFooter>
-        </NavigationView>
+            </muxc:NavigationView.PaneFooter>
+        </muxc:NavigationView>
 
         <Frame Name="HomeViewFrame" 
                Grid.Row="1"

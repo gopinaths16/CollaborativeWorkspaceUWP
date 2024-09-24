@@ -19,6 +19,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         private Group currBoard;
         private bool isAddBoardItemContextTriggered;
         private bool isOpen;
+        private string boardboardItemsCount;
 
         public IBoardItemProvider BoardItemProvider;
 
@@ -54,7 +55,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             get
             {
-                if(BoardItems.Count > 0)
+                if(BoardItems.SourceCount > 0)
                 {
                     return "(" + BoardItems.SourceCount.ToString() + ")";
                 }
@@ -86,18 +87,6 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             ViewmodelEventHandler.Instance.Subscribe<UpdateBoardItemEvent>(OnBoardItemUpdation);
         }
 
-        public async Task OnTaskAddition(AddTaskEvent e)
-        {
-            if(e.Task != null && currBoard != null)
-            {
-                if(e.Task.GroupId ==  currBoard.Id)
-                {
-                    BoardItems.Add(e.Task);
-                    NotifyPropertyChanged(nameof(BoardItemsCount));
-                }
-            }
-        }
-
         public async Task UpdateDraggedTask(ICollection<IBoardItem> boardItems)
         {
             foreach(IBoardItem boardItem in BoardItemProvider.UpdateBoardItems(boardItems))
@@ -118,6 +107,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 MovedTask = null;
                 await BoardItems.LoadMoreItemsAsync();
                 NotifyPropertyChanged(nameof(CurrBoard));
+                NotifyPropertyChanged(nameof(BoardItems));
+                NotifyPropertyChanged(nameof(BoardItemsCount));
             }
         }
 
@@ -129,6 +120,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 {
                     BoardItems.Add(e.BoardItem);
                     NotifyPropertyChanged(nameof(BoardItemsCount));
+                    NotifyPropertyChanged(nameof(BoardItems));
                 }
             }
         }
@@ -140,11 +132,13 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 await BoardItemProvider.UpdateSource(e.BoardItem, BoardItems);
                 await BoardItems.LoadMoreItemsAsync();
                 NotifyPropertyChanged(nameof(BoardItemsCount));
+                NotifyPropertyChanged(nameof(BoardItems));
             }
         }
 
         public void NotifyUI()
         {
+            NotifyPropertyChanged(nameof(BoardItems));
             NotifyPropertyChanged(nameof(BoardItemsCount));
         }
 

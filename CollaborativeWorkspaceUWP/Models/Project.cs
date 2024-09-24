@@ -29,6 +29,8 @@ namespace CollaborativeWorkspaceUWP.Models
         public ObservableCollection<Group> BoardGroups { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
 
+        public bool IsBoardView { get; set; }
+
         public bool IsOpen
         {
             get { return isOpen; }

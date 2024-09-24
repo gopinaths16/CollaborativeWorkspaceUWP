@@ -29,5 +29,10 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
             }
             return boards;
         }
+
+        public override IBoardItemProvider GetBoardItemProvider()
+        {
+            return new TaskOnPriorityBoardItemProvider();
+        }
     }
 }

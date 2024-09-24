@@ -18,17 +18,14 @@
     d:DesignWidth="400">
 
     <UserControl.Resources>
-        <Style TargetType="Grid" x:Name="TaskDetailsViewSeparateDisplay">
-            <Setter Property="Background" Value="{ThemeResource SecondaryBackground}" />
-            <Setter Property="Padding" Value="20" />
-        </Style>
     </UserControl.Resources>
     
     <Grid CornerRadius="5"
           Padding="20, 10, 20, 10"
           HorizontalAlignment="Stretch"
           Name="TaskItem"
-          Background="{x:Bind ItemBackground}">
+          x:DeferLoadStrategy="Lazy"
+          Background="{ThemeResource SecondaryBackground}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">

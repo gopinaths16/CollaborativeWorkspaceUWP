@@ -1,4 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using CollaborativeWorkspaceUWP.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -62,6 +64,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public TaskDetailsControl()
         {
             this.InitializeComponent();
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            string requestedTheme = localSettings.Values["RequestedTheme"] as string;
+
+            this.RequestedTheme = requestedTheme != null && requestedTheme != string.Empty ? requestedTheme == "Dark" ? ElementTheme.Dark : ElementTheme.Light : ElementTheme.Default;
+
+            ViewmodelEventHandler.Instance.Subscribe<ThemeChangedEvent>(OnThemeChange);
 
             taskDetailsViewModel = new TaskDetailsViewModel();
             addTaskViewModel = new AddTaskViewModel();
@@ -261,6 +270,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             taskDetailsViewModel.IsLoaeded = true;
+        }
+
+        public async Task OnThemeChange(ThemeChangedEvent e)
+        {
+            if(e != null && e.Theme != null && e.Theme != string.Empty)
+            {
+                this.RequestedTheme = e.Theme == "Dark" ? ElementTheme.Dark : ElementTheme.Light;
+            }
         }
     }
 }

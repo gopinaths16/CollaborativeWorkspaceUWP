@@ -1,4 +1,5 @@
-﻿using CollaborativeWorkspaceUWP.Utilities;
+﻿using CollaborativeWorkspaceUWP.Models.Providers.Boards;
+using CollaborativeWorkspaceUWP.Utilities;
 using CollaborativeWorkspaceUWP.Utilities.Custom;
 using CollaborativeWorkspaceUWP.Utilities.Events;
 using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
@@ -15,6 +16,8 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         public long ProjectId { get; set; }
         public long BoardViewId { get; set; }
 
+        public BoardProvider BoardProvider { get; set; }
+
         public IncrementalLoadingCollection<IBoard> Boards { get; set; }
 
         public BoardviewViewModel()
@@ -28,7 +31,11 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         {
             if (e.Board != null && e.Id == BoardViewId)
             {
+                IBoardItemProvider boardItemProvider = BoardProvider.GetBoardItemProvider();
+                boardItemProvider.BoardId = e.Board.Id;
+                e.Board.BoardItemProvider = boardItemProvider;
                 Boards.Add(e.Board);
+                NotifyPropertyChanged(nameof(Boards));
             }
         }
     }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CollaborativeWorkspaceUWP.ViewModels;
+using CollaborativeWorkspaceUWP.CustomControls.UserControls;
 
 namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
 {
@@ -32,6 +33,11 @@ namespace CollaborativeWorkspaceUWP.Models.Providers.Boards
                 board.SetBoardItemProvider(boardItemProvider);
             }
             return boards;
+        }
+
+        public override IBoardItemProvider GetBoardItemProvider()
+        {
+            return new TaskBoardItemProvider();
         }
     }
 }

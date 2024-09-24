@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,6 +25,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
     {
         AccountDetailsViewModel accountDetailsViewModel;
 
+        private RoutedEventHandler themeChangeEventHandler;
+
         public AccountDetailsControl()
         {
             this.InitializeComponent();
@@ -31,9 +34,23 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             this.DataContext = accountDetailsViewModel;
         }
 
+        public event RoutedEventHandler OnThemeChange
+        {
+            add { themeChangeEventHandler += value; }
+            remove { themeChangeEventHandler -= value; }
+        }
+
         private async void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            await ViewmodelEventHandler.Instance.Publish(new LogoutEvent());
+            await accountDetailsViewModel.Logout();
+        }
+
+        private async void ChangeThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            themeChangeEventHandler?.Invoke(sender, e);
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            string requestedTheme = localSettings.Values["RequestedTheme"] as string;
+            await accountDetailsViewModel.ChangeTheme(requestedTheme);
         }
     }
 }

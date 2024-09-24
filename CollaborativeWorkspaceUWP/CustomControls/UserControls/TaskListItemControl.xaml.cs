@@ -1,4 +1,6 @@
 ﻿using CollaborativeWorkspaceUWP.Models;
+using CollaborativeWorkspaceUWP.Utilities;
+using CollaborativeWorkspaceUWP.Utilities.Events;
 using CollaborativeWorkspaceUWP.ViewModels;
 using CollaborativeWorkspaceUWP.Views;
 using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
@@ -10,9 +12,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
@@ -74,7 +78,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public TaskListItemControl()
         {
             this.InitializeComponent();
-            
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            string requestedTheme = localSettings.Values["RequestedTheme"] as string;
+
+            this.RequestedTheme = requestedTheme != null && requestedTheme != string.Empty ? requestedTheme == "Dark" ? ElementTheme.Dark : ElementTheme.Light : ElementTheme.Default;
+
+            ViewmodelEventHandler.Instance.Subscribe<ThemeChangedEvent>(OnThemeChange);
+
             taskItemViewModel = new TaskListItemViewModel();
         }
 
@@ -97,7 +108,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            this.FindName("TaskItem");
         }
 
         private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -124,10 +135,13 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private async void UserControl_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            string requestedTheme = localSettings.Values["RequestedTheme"] as string;
+
             AppWindow appWindow;
             Grid newWindowLayout = new Grid();
-            newWindowLayout.Style = TaskDetailsViewSeparateDisplay;
             TaskDetailsControl taskDetailsControl = new TaskDetailsControl();
+            newWindowLayout.RequestedTheme = requestedTheme != null && requestedTheme != string.Empty ? requestedTheme == "Dark" ? ElementTheme.Dark : ElementTheme.Light : ElementTheme.Default;
             taskDetailsControl.SetCurrentTask((UserTask)taskItemViewModel.Task.Clone());
             taskDetailsControl.IsSeparateWindow = true;
             taskDetailsControl.AllowTaskClear = false;
@@ -146,6 +160,14 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             if (task != null)
             {
                 taskItemViewModel.Task = task as UserTask;
+            }
+        }
+
+        public async Task OnThemeChange(ThemeChangedEvent e)
+        {
+            if (e != null && e.Theme != null && e.Theme != string.Empty)
+            {
+                this.RequestedTheme = e.Theme == "Dark" ? ElementTheme.Dark : ElementTheme.Light;
             }
         }
     }

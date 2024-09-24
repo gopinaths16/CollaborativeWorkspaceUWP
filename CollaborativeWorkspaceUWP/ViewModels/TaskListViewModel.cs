@@ -277,12 +277,5 @@ namespace CollaborativeWorkspaceUWP.ViewModels
                 await ViewmodelEventHandler.Instance.Publish(new UpdateOrderEvent());
             }        
         }
-
-        public override void Dispose()
-        {
-            ViewmodelEventHandler.Instance.Unsubscribe<AddTaskEvent>(OnTaskAddtion);
-            ViewmodelEventHandler.Instance.Unsubscribe<UpdateTaskEvent>(OnTaskUpdation);
-            ViewmodelEventHandler.Instance.Unsubscribe<DeleteTaskEvent>(OnTaskDeletion);
-        }
     }
 }

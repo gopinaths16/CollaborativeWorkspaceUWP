@@ -65,6 +65,12 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             set { SetValue(AddBoardItemControlProperty, value); }
         }
 
+        public string NoItemAvailableMessage
+        {
+            get { return (string)GetValue(NoItemAvailableMessageProperty); }
+            set { SetValue(NoItemAvailableMessageProperty, value); }
+        }
+
         public static readonly DependencyProperty BoardSourcedProperty = DependencyProperty.Register("BoardSource", typeof(Group), typeof(Board), new PropertyMetadata(null));
 
         public static readonly DependencyProperty BoardItemTemplateProperty = DependencyProperty.Register("BoardItemTemplate", typeof(DataTemplate), typeof(Board), new PropertyMetadata(null));
@@ -72,6 +78,8 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         public static readonly DependencyProperty BoardItemProviderProperty = DependencyProperty.Register("BoardItemProvider", typeof(IBoardItemProvider), typeof(Board), new PropertyMetadata(null));
 
         public static readonly DependencyProperty AddBoardItemControlProperty = DependencyProperty.Register("AddBoardItemControl", typeof(IBoardAdder), typeof(Board), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty NoItemAvailableMessageProperty = DependencyProperty.Register("NoItemAvailableMessage", typeof(string), typeof(Board), new PropertyMetadata(null));
 
         public Board()
         {
@@ -91,22 +99,18 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
                 boardViewModel.CurrBoard = BoardSource;
                 this.DataContext = boardViewModel.CurrBoard;
                 boardViewModel.BoardItemProvider = BoardItemProvider;
-                if(boardViewModel.CurrBoard.ColorCode != null && boardViewModel.CurrBoard.ColorCode != string.Empty)
-                {
-                    Separator.Stroke = Util.CreateBrushFromHex(boardViewModel.CurrBoard.ColorCode);
-                }
+                //if(boardViewModel.CurrBoard.ColorCode != null && boardViewModel.CurrBoard.ColorCode != string.Empty)
+                //{
+                //    Separator.Stroke = Util.CreateBrushFromHex(boardViewModel.CurrBoard.ColorCode);
+                //}
                 if(BoardItemProvider.GetDefaultArgs().Count() > 0)
                 {
                     AddBoardItemControl.SetDefaultArgs(BoardItemProvider.GetDefaultArgs());
                 }
-                Task.Run(async () =>
-                {
-                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        LoadBoardItems();
-                    });
-                });
             }
+            this.FindName("TaskListView");
+            boardViewModel.IsOpen = true;
+            LoadBoardItems();
         }
 
         private void TaskListViewByGroup_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
@@ -143,18 +147,36 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         public void LoadBoardItems()
         {
-            if(BoardItemProvider != null)
-            {
-                ICollection<IBoardItem> boardItems = BoardItemProvider.GetBoardItems(BoardSource.Id, BoardSource.ProjectId);
-                if (boardItems != null && boardItems.Count > 0)
+            //await Dispatcher.RunIdleAsync((IdleDispatchedHandlerArgs args) =>
+            //{
+            //    if (BoardItemProvider != null)
+            //    {
+            //        ICollection<IBoardItem> boardItems = BoardItemProvider.GetBoardItems(BoardSource.Id, BoardSource.ProjectId);
+            //        if (boardItems != null && boardItems.Count > 0)
+            //        {
+            //            foreach (IBoardItem item in boardItems)
+            //            {
+            //                boardViewModel.BoardItems.Add(item);
+            //            }
+            //            boardViewModel.NotifyUI();
+            //        }
+            //    }
+            //});
+            //await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //{
+                if (BoardItemProvider != null)
                 {
-                    foreach (IBoardItem item in boardItems)
+                    ICollection<IBoardItem> boardItems = BoardItemProvider.GetBoardItems(BoardSource.Id, BoardSource.ProjectId);
+                    if (boardItems != null && boardItems.Count > 0)
                     {
-                        boardViewModel.BoardItems.Add(item);
+                        foreach (IBoardItem item in boardItems)
+                        {
+                            boardViewModel.BoardItems.Add(item);
+                        }
+                        boardViewModel.NotifyUI();
                     }
-                    boardViewModel.NotifyUI();
                 }
-            }
+            //});
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)

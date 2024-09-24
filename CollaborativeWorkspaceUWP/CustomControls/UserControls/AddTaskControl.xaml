@@ -8,6 +8,7 @@
     xmlns:customusercontrol="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:customtemplatecontrol="using:CollaborativeWorkspaceUWP.CustomControls.Templates"
     xmlns:models="using:CollaborativeWorkspaceUWP.Models"
+    Loaded="UserControl_Loaded"
     Unloaded="UserControl_Unloaded"
     mc:Ignorable="d"
     d:DesignHeight="300"

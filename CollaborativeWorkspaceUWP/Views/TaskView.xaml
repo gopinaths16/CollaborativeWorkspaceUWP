@@ -134,7 +134,7 @@
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
                             <customusercontrol:AddGroupdControl ProjectId="{Binding Id}"
-                                                                IsBoardGroupContext="False"/>
+                                                                IsBoardGroupContext="{Binding IsBoardView}"/>
                         </Flyout>
                     </Button.Flyout>
                 </Button>
@@ -171,10 +171,9 @@
         <DataTemplate x:Key="TaskListViewDataTemplate"
                       x:DataType="models:UserTask">
             <Border BorderThickness="0, 0, 0, 0.5"
-                    BorderBrush="{StaticResource SystemListLowColor}">
+                    BorderBrush="Gray">
                 <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                       Name="{x:Bind Id}"
-                                                       ItemBackground="Transparent"/>
+                                                       Name="{x:Bind Id}"/>
             </Border>
         </DataTemplate>
 
@@ -215,7 +214,7 @@
                         <Setter Target="ProjectListSplitViewPane.Padding" Value="0" />
                         <Setter Target="ProjectListSplitViewPane.CornerRadius" Value="0" />
                         <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
-                        <Setter Target="ProjectListSplitViewPane.Margin" Value="20, 0, 0, 0" />
+                        <Setter Target="ProjectListSplitViewPane.Margin" Value="10, 0, 0, 0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="NarrowLayout">
@@ -230,7 +229,7 @@
                         <Setter Target="TaskListView.Grid.ColumnSpan" Value="1" />
                         <Setter Target="TaskTabView.Margin" Value="0" />
                         <Setter Target="TaskDetailsViewContainer.Margin" Value="10, 20, 0, 0" />
-                        <Setter Target="ProjectListSplitViewPane.Margin" Value="0" />
+                        <Setter Target="ProjectListSplitViewPane.Margin" Value="10, 0, 0, 0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SingleWindowLayout">
@@ -245,7 +244,7 @@
                         <Setter Target="TaskListView.Grid.ColumnSpan" Value="2" />
                         <Setter Target="TaskTabView.Margin" Value="0" />
                         <Setter Target="TaskDetailsViewContainer.Margin" Value="0, 20, 0, 0" />
-                        <Setter Target="ProjectListSplitViewPane.Margin" Value="0" />
+                        <Setter Target="ProjectListSplitViewPane.Margin" Value="10, 0, 0, 0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -459,12 +458,12 @@
                                     <customusercontrol:BoardView.BoardTemplate>
                                         <DataTemplate x:DataType="models:Group">
                                             <customusercontrol:Board BoardSource="{Binding Self}"
-                                                                     BoardItemProvider="{Binding BoardItemProvider}">
+                                                                     BoardItemProvider="{Binding BoardItemProvider}"
+                                                                     NoItemAvailableMessage="No Tasks Available">
                                                 <customusercontrol:Board.BoardItemTemplate>
                                                     <DataTemplate x:DataType="models:UserTask">
                                                         <customusercontrol:TaskListItemControl Task="{x:Bind Self}"
-                                                                                               Name="{x:Bind Id}"
-                                                                                               ItemBackground="{ThemeResource SecondaryBackground}"/>
+                                                                                               Name="{x:Bind Id}"/>
                                                     </DataTemplate>
                                                 </customusercontrol:Board.BoardItemTemplate>
                                                 <customusercontrol:Board.AddBoardItemControl>

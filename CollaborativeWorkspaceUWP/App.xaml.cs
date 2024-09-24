@@ -50,6 +50,8 @@ namespace CollaborativeWorkspaceUWP
             Frame rootFrame = Window.Current.Content as Frame;
             Window.Current.Activated += Current_Activated;
 
+            UpdateTitleBarColors();
+
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
@@ -115,7 +117,7 @@ namespace CollaborativeWorkspaceUWP
 
         private void Current_Activated(object sender, WindowActivatedEventArgs e)
         {
-            //UpdateTitleBarColors();
+            
         }
 
         private void UpdateTitleBarColors()
@@ -124,19 +126,11 @@ namespace CollaborativeWorkspaceUWP
 
             if (Application.Current.RequestedTheme == ApplicationTheme.Dark)
             {
-                // Dark theme colors
-                titleBar.ButtonForegroundColor = Colors.White;
-                titleBar.ButtonBackgroundColor = Colors.Black;
-                titleBar.ButtonHoverBackgroundColor = Colors.Gray;
-                titleBar.ButtonPressedBackgroundColor = Colors.DarkGray;
+                titleBar.BackgroundColor = (Color)(Application.Current.Resources["TitleBarDarkBackgroundColor"]);
             }
             else
             {
-                // Light theme colors
-                titleBar.ButtonForegroundColor = Colors.Black;
-                titleBar.ButtonBackgroundColor = Colors.White;
-                titleBar.ButtonHoverBackgroundColor = Colors.LightGray;
-                titleBar.ButtonPressedBackgroundColor = Colors.Gray;
+                titleBar.BackgroundColor = (Color)(Application.Current.Resources["SystemAccentColor"]);
             }
         }
     }

@@ -33,6 +33,8 @@ using CollaborativeWorkspaceUWP.Utilities.Events;
 using CollaborativeWorkspaceUWP.Views.ViewObjects.Boards;
 using CollaborativeWorkspaceUWP.Models.Providers.Boards;
 using CollaborativeWorkspaceUWP.Models.ViewObjects.Folders;
+using Windows.Storage;
+using Windows.UI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -125,7 +127,6 @@ namespace CollaborativeWorkspaceUWP.Views
             if(TaskTabView.SelectedIndex == 0)
             {
                 await TaskDetailsView.UpdateCurrentTask();
-                taskListViewModel.Dispose();
                 if (e.ClickedItem is Project)
                 {
                     Project currProject = (Project)e.ClickedItem;
@@ -159,17 +160,10 @@ namespace CollaborativeWorkspaceUWP.Views
                         boardProvider.BoardGroupId = boardGroup.Id;
                         boardGroupViewModel.BoardGroupId = boardGroup.Id;
                         boardGroupViewModel.ProjectId = boardGroup.ProjectId;
-                        Task.Run(async () =>
-                        {
-                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                            {
-                                BoardGroupView.IsDefaultBoardContext = false;
-                                BoardGroupView.SetDefaultBoardProviders(new List<BoardProvider>());
-                                BoardGroupView.GroupName = boardGroup.Name;
-                                BoardGroupView.SetBoardProvider(boardProvider);
-                                BoardGroupView.LoadBoards();
-                            });
-                        });
+                        BoardGroupView.IsDefaultBoardContext = false;
+                        BoardGroupView.SetDefaultBoardProviders(new List<BoardProvider>());
+                        BoardGroupView.GroupName = boardGroup.Name;
+                        BoardGroupView.SetBoardProvider(boardProvider);
                     }
                 }
                 else if(e.ClickedItem is IFolder)
@@ -180,22 +174,16 @@ namespace CollaborativeWorkspaceUWP.Views
                         TaskOnPriorityBoardProvider boardProvider = new TaskOnPriorityBoardProvider();
                         boardProvider.ProjectId = project.Id;
                         boardProvider.Name = "Priority";
-                        Task.Run(async () =>
-                        {
-                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                            {
-                                BoardGroupView.IsDefaultBoardContext = true;
-                                BoardGroupView.GroupName = project.Name;
-                                BoardGroupView.SetBoardProvider(boardProvider);
-                                ICollection<BoardProvider> providers = new List<BoardProvider>();
-                                providers.Add(boardProvider);
-                                providers.Add(new TaskOnStatusBoardProvider() { Name = "Status", ProjectId = project.Id });
-                                BoardGroupView.SetDefaultBoardProviders(providers);
-                                BoardGroupView.LoadBoards();
-                            });
-                        });
+                        BoardGroupView.IsDefaultBoardContext = true;
+                        BoardGroupView.GroupName = project.Name;
+                        BoardGroupView.SetBoardProvider(boardProvider);
+                        ICollection<BoardProvider> providers = new List<BoardProvider>();
+                        providers.Add(boardProvider);
+                        providers.Add(new TaskOnStatusBoardProvider() { Name = "Status", ProjectId = project.Id });
+                        BoardGroupView.SetDefaultBoardProviders(providers);
                     }
                 }
+                BoardGroupView.LoadBoards();
             }
         }
 
@@ -280,10 +268,14 @@ namespace CollaborativeWorkspaceUWP.Views
 
         private async void OpenTaskInSeparateWindow(object sender, RoutedEventArgs e)
         {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            string requestedTheme = localSettings.Values["RequestedTheme"] as string;
+
             AppWindow appWindow;
             Grid newWindowLayout = new Grid();
             newWindowLayout.Style = TaskDetailsViewSeparateDisplay;
             TaskDetailsControl taskDetailsControl = new TaskDetailsControl();
+            newWindowLayout.RequestedTheme = requestedTheme != null && requestedTheme != string.Empty ? requestedTheme == "Dark" ? ElementTheme.Dark : ElementTheme.Light : ElementTheme.Default;
             taskDetailsControl.SetCurrentTask((UserTask)TaskDetailsView.GetCurrentTask().Clone());
             taskDetailsControl.IsSeparateWindow = true;
             taskDetailsControl.AllowTaskClear = false;
@@ -427,6 +419,7 @@ namespace CollaborativeWorkspaceUWP.Views
                     {
                         list.AddRange(project.Groups);
                     }
+                    project.IsBoardView = isBoardView;
                 }
             }
             ProjectListSplitViewPane.SetListViewItemSource(list);
@@ -479,7 +472,7 @@ namespace CollaborativeWorkspaceUWP.Views
 
         public async Task OnGroupAddition(AddGroupEvent addGroupEvent)
         {
-            if(addGroupEvent.Group != null && !addGroupEvent.Group.IsBoardGroup) 
+            if(addGroupEvent.Group != null) 
             {
                 if (TaskTabView.SelectedIndex == 1)
                 {

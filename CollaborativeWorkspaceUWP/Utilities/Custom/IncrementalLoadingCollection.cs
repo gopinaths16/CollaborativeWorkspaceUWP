@@ -44,7 +44,7 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
             try
             {
                 if (items.Count() < PageSize) _hasMoreItems = false;
-                if(base.Count < PageSize && source.Count > 0)
+                if(source.Count > 0)
                 {
                     _currentPage++;
                     foreach (var item in items)
@@ -76,6 +76,12 @@ namespace CollaborativeWorkspaceUWP.Utilities.Custom
                 base.Add(item);
             }
             _hasMoreItems = true;
+        }
+
+        public void Insert(int index, T item)
+        {
+            base.Insert(index, item);
+            source.Add(item);
         }
 
         public new bool Remove(T item)

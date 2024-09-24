@@ -5,11 +5,35 @@
     xmlns:local="using:CollaborativeWorkspaceUWP.CustomControls.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+    Background="{ThemeResource PrimaryBackground}"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        <TextBlock Text="Settings Control" />
+    <Grid Background="{ThemeResource PrimaryBackground}">
+        <muxc:NavigationView x:Name="SettingsNavigationItem"
+                             IsPaneOpen="True"
+                             SelectedItem="0"
+                             IsBackButtonVisible="Collapsed"
+                             AlwaysShowHeader="False"
+                             IsSettingsVisible="False"
+                             OpenPaneLength="300">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Name="General" 
+                                         Icon="Setting" 
+                                         Content="General" 
+                                         Tag="General"/>
+                <muxc:NavigationViewItem Content="Appearance" 
+                                         Name="Appearance"
+                                         Tag="Appearance">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons"
+                                  Glyph="&#xf17f;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+        </muxc:NavigationView>
     </Grid>
 </UserControl>

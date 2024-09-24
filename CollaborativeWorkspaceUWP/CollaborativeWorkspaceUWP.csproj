@@ -161,6 +161,9 @@
     <Compile Include="CustomControls\UserControls\IconedLabelControl.xaml.cs">
       <DependentUpon>IconedLabelControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\UserControls\OrganizationListView.xaml.cs">
+      <DependentUpon>OrganizationListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\UserControls\ProjectInfoControl.xaml.cs">
       <DependentUpon>ProjectInfoControl.xaml</DependentUpon>
     </Compile>
@@ -263,6 +266,7 @@
     <Compile Include="Utilities\Events\LogoutEvent.cs" />
     <Compile Include="Utilities\Events\MoveBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\RemoveAttachmentEvent.cs" />
+    <Compile Include="Utilities\Events\ThemeChangedEvent.cs" />
     <Compile Include="Utilities\Events\UpdateBoardItemEvent.cs" />
     <Compile Include="Utilities\Events\UpdateOrderEvent.cs" />
     <Compile Include="Utilities\Events\UpdateTaskEvent.cs" />
@@ -283,6 +287,7 @@
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\CurrentTeamspaceViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\OrganizationListViewViewModel.cs" />
     <Compile Include="ViewModels\ProjectListViewModel.cs" />
     <Compile Include="ViewModels\TaskDetailsViewModel.cs" />
     <Compile Include="ViewModels\TaskListItemViewModel.cs" />
@@ -378,6 +383,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\UserControls\IconedLabelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\UserControls\OrganizationListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

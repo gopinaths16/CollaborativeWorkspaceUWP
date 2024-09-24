@@ -18,6 +18,7 @@ namespace CollaborativeWorkspaceUWP.ViewModels
         ProjectDataHandler projectDataHandler;
         GroupDataHandler boardDataHandler;
         bool isProjectListPaneOpen;
+        bool isBoardViewOpen;
 
         public ObservableCollection<Project> Projects
         {
@@ -63,6 +64,16 @@ namespace CollaborativeWorkspaceUWP.ViewModels
             set { 
                 isProjectListPaneOpen = value;
                 NotifyPropertyChanged(nameof(IsProjectListPaneOpen));
+            }
+        }
+
+        public bool IsBoardViewOpen
+        {
+            get { return isBoardViewOpen; }
+            set
+            {
+                isBoardViewOpen = value;
+                NotifyPropertyChanged(nameof(IsBoardViewOpen));
             }
         }
 

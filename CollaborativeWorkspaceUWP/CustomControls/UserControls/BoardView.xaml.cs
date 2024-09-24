@@ -95,6 +95,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            AddBoardButton.Visibility = Visibility.Collapsed;
         }
 
         private void BoardListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
@@ -136,26 +137,63 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             if(boardProvider != null)
             {
                 BoardProvider = boardProvider;
+                boardviewViewModel.BoardProvider = boardProvider;
                 boardviewViewModel.BoardViewId = boardProvider.GetBoardViewId();
             }
         }
 
         public void LoadBoards()
         {
-            boardviewViewModel.Boards.Clear();
-            ICollection<IBoard> boards = BoardProvider.GetBoards();
-            if (boards != null && boards.Count() > 0)
-            {
-                NoBoardAvailableMessage.Visibility = Visibility.Collapsed;
-                foreach (var board in boards)
+            //await Dispatcher.RunIdleAsync((IdleDispatchedHandlerArgs args) =>
+            //{
+            //    boardviewViewModel.Boards.Clear();
+            //    if (IsDefaultBoardContext)
+            //    {
+            //        AddBoardButton.Visibility = Visibility.Collapsed;
+            //    }
+            //    else
+            //    {
+            //        AddBoardButton.Visibility = Visibility.Visible;
+            //    }
+            //    ICollection<IBoard> boards = BoardProvider.GetBoards();
+            //    if (boards != null && boards.Count() > 0)
+            //    {
+            //        NoBoardAvailableMessage.Visibility = Visibility.Collapsed;
+            //        foreach (var board in boards)
+            //        {
+            //            boardviewViewModel.Boards.Add(board);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        NoBoardAvailableMessage.Visibility = Visibility.Visible;
+            //    }
+            //});
+            //await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //{
+                boardviewViewModel.Boards.Clear();
+                if (IsDefaultBoardContext)
                 {
-                    boardviewViewModel.Boards.Add(board);
+                    AddBoardButton.Visibility = Visibility.Collapsed;
                 }
-            }
-            else
-            {
-                NoBoardAvailableMessage.Visibility = Visibility.Visible;
-            }
+                else
+                {
+                    AddBoardButton.Visibility = Visibility.Visible;
+                }
+                ICollection<IBoard> boards = BoardProvider.GetBoards();
+                if (boards != null && boards.Count() > 0)
+                {
+                    NoBoardAvailableMessage.Visibility = Visibility.Collapsed;
+                    foreach (var board in boards)
+                    {
+                        boardviewViewModel.Boards.Add(board);
+                    }
+                }
+                else
+                {
+                    NoBoardAvailableMessage.Visibility = Visibility.Visible;
+                }
+            //});
         }
 
         public void SetDefaultBoardProviders(ICollection<BoardProvider> boardProviders)
@@ -174,14 +212,7 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
         private void DefaultProviderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SetBoardProvider(DefaultProviderComboBox.SelectedItem as BoardProvider);
-            Task.Run(async () =>
-            {
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    LoadBoards();
-                });
-            });
-
+            LoadBoards();
         }
     }
 }

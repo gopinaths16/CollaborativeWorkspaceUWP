@@ -180,5 +180,10 @@ namespace CollaborativeWorkspaceUWP.CustomControls.UserControls
             }
             addTaskViewModel.NotifyUI();
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Name.Focus(FocusState.Programmatic);
+        }
     }
 }

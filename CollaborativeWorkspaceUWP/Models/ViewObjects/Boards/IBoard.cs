@@ -11,6 +11,7 @@ namespace CollaborativeWorkspaceUWP.Views.ViewObjects.Boards
     {
         string Name { get; set; }
         long Id { get; set; }
+        IBoardItemProvider BoardItemProvider { get; set; }
         void SetBoardItemProvider(IBoardItemProvider boardItemProvider);
     }
 }
